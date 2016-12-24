@@ -1,0 +1,13 @@
+/bin/
+.classpath
+.project
+.settings/
+*.config
+/target/
+
+/build/
+/WebContent/WEB-INF/lib/
+.idea/*
+/.idea/*
+/out/
+untitled.iws

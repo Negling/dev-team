@@ -1,0 +1,11 @@
+@import "header-footer.css";
+
+body{
+    margin-bottom: 130px;
+}
+
+.error-image{
+    max-width: 100%;
+    height: auto;
+    width: auto\9;
+}

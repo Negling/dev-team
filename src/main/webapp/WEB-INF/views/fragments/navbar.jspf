@@ -1,0 +1,71 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<security:authorize access="isAuthenticated()" var="loggedIn"/>
+<core:choose>
+    <core:when test="${loggedIn}">
+        <security:authentication property="principal.firstName" var="username"/>
+    </core:when>
+    <core:otherwise>
+        <spring:message code="general.guest" var="username"/>
+    </core:otherwise>
+</core:choose>
+
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/">Dev-Team</a>
+            <p class="navbar-text"><spring:message code="general.greetings" arguments="${username}"/></p>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <security:authorize access="isAuthenticated()">
+                    <li>
+                        <a href="${pageContext.request.contextPath}/toCabinet">
+                            <spring:message code="general.cabinet"/>
+                        </a>
+                    </li>
+                </security:authorize>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"><spring:message code="general.language"/> <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="?language=en">English</a></li>
+                        <li><a href="?language=ru">Русский</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="${pageContext.request.contextPath}/about"><spring:message code="general.about"/></a>
+                </li>
+                <li>
+                    <security:authorize access="isAnonymous()">
+                        <a href="${pageContext.request.contextPath}/login">
+                            <span class="login-icon glyphicon glyphicon-log-in"></span>
+                            <spring:message code="general.login"/>
+                        </a>
+                    </security:authorize>
+                    <security:authorize access="isAuthenticated()">
+                        <sform:form id="logoutForm" action="/logout" method="post" cssClass="no-display"/>
+                        <a href="#" id="logoutLink">
+                            <span class="login-icon glyphicon glyphicon-log-out"></span>
+                            <spring:message code="general.logout"/>
+                        </a>
+                    </security:authorize>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>

@@ -1,0 +1,23 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-lg-offset-2">
+                <p><spring:message code="general.contactUs"/></p>
+                <ul class="list-unstyled">
+                    <li><span class="glyphicon glyphicon-envelope"></span> <spring:message code="general.email"/>:
+                        <a href="mailto:hr@dev_team.com">hr@dev_team.com</a>
+                    </li>
+                    <li><span class="glyphicon glyphicon-earphone"></span> <spring:message code="general.phone"/>:
+                        +3 8814-378-3094
+                    </li>
+                </ul>
+            </div>
+            <p class="text-muted"><spring:message code="general.author"/> &copy; Dev-Team Project 2016</p>
+        </div>
+    </div>
+</footer>
+<script src="<spring:url value="/resources/js/jquery-3.1.1.min.js" />"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>

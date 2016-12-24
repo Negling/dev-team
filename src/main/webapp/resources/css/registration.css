@@ -1,0 +1,21 @@
+@import "header-footer.css";
+
+/*Registration Page*/
+.hr {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.hr-last {
+    margin-top: 15px;
+}
+
+.hr-first {
+    margin-bottom: 15px;
+}
+
+.alert {
+    display: none;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}

@@ -1,0 +1,24 @@
+@import "header-footer.css";
+
+.hr {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.hr-last {
+    margin-top: 15px;
+}
+
+.hr-first {
+    margin-bottom: 15px;
+}
+
+.alert {
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+.spacer {
+    padding-top: 45px;
+    min-height: 25%;
+}

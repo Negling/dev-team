@@ -1,0 +1,61 @@
+@import "header-footer.css";
+
+body {
+    margin-bottom: 0px;
+}
+
+.content-container {
+    padding: 0 25px 25px 25px;
+}
+
+.tab-content > .tab-pane {
+    padding-top: 15px;
+}
+
+.page-header {
+    margin: 0 0 10px 0;
+    padding-bottom: 10px;
+}
+
+.form-control {
+    margin-bottom: 10px;
+}
+
+.nav-pills > li.active > a {
+    background-color: #777 !important;
+}
+
+.custom-tab-content > .tab-pane {
+    padding-top: 0px !important;
+}
+
+.project-pills {
+    border-left: 1px solid #ddd;
+    margin-top: -15px;
+    min-height: 60%;
+    padding-top: 15px;
+}
+
+.project-heading {
+    background-color: #5d6e89 !important;
+    color: white !important;
+}
+
+.task-heading {
+    background-color: #e2e1e1 !important;
+    color: black !important;
+}
+
+.description {
+    display: block;
+    padding: 9.5px;
+    margin: 0 0 10px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
