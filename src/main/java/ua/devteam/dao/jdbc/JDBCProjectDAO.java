@@ -23,11 +23,12 @@ public class JDBCProjectDAO extends JDBCGenericIdentifiedDAO<Project> implements
     public void update(Project oldEntity, Project newEntity) {
         super.jdbcUpdate(sqlBundle.getString("project.update"),
                 newEntity.getId(),
-                newEntity.getManagerId(),
-                newEntity.getCustomerId(),
                 newEntity.getTechnicalTaskId(),
+                newEntity.getCustomerId(),
+                newEntity.getManagerId(),
                 newEntity.getName(),
                 newEntity.getDescription(),
+                newEntity.getManagerCommentary(),
                 newEntity.getStartDate(),
                 newEntity.getEndDate(),
                 newEntity.getStatus().toString(),
@@ -52,18 +53,18 @@ public class JDBCProjectDAO extends JDBCGenericIdentifiedDAO<Project> implements
     @Override
     public List<Project> getAllByManagerAndStatus(Long managerId, Status status) {
         return jdbcOperations.query(sqlBundle.getString("project.selectByManagerAndStatus"), this::mapEntity,
-                managerId,
-                status.toString());
+                managerId, status.toString());
     }
 
     @Override
     protected Project mapEntity(ResultSet rs, int row) throws SQLException {
         return new Project(rs.getLong("id"),
-                rs.getLong("technical_task_id"),
-                rs.getLong("customer_id"),
-                rs.getLong("manager_id"),
                 rs.getString("name"),
                 rs.getString("description"),
+                rs.getLong("customer_id"),
+                rs.getLong("manager_id"),
+                rs.getString("manager_commentary"),
+                rs.getLong("technical_task_id"),
                 rs.getDate("start_date"),
                 rs.getDate("end_date"),
                 Status.valueOf(rs.getString("status")));
@@ -75,16 +76,25 @@ public class JDBCProjectDAO extends JDBCGenericIdentifiedDAO<Project> implements
                 Statement.RETURN_GENERATED_KEYS);
 
         Date startDate = entity.getStartDate() == null ? null : new Date(entity.getStartDate().getTime());
-        Date endDate = entity.getEndDate() == null ? null : new Date(entity.getEndDate().getTime());
 
-        ps.setLong(1, entity.getManagerId());
+        ps.setLong(1, entity.getTechnicalTaskId());
         ps.setLong(2, entity.getCustomerId());
-        ps.setLong(3, entity.getTechnicalTaskId());
+        ps.setLong(3, entity.getManagerId());
         ps.setString(4, entity.getName());
         ps.setString(5, entity.getDescription());
-        ps.setDate(6, startDate);
-        ps.setDate(7, endDate);
-        ps.setString(8, entity.getStatus().toString());
+        ps.setDate(7, startDate);
+        ps.setString(9, entity.getStatus().toString());
+
+        if (entity.getManagerCommentary() == null) {
+            ps.setNull(6, Types.VARCHAR);
+        } else {
+            ps.setString(6, entity.getManagerCommentary());
+        }
+        if (entity.getEndDate() == null) {
+            ps.setNull(8, Types.TIMESTAMP);
+        } else {
+            ps.setDate(8, new Date(entity.getEndDate().getTime()));
+        }
 
         return ps;
     }

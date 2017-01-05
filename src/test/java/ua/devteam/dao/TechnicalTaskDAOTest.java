@@ -12,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.configuration.DataAccessConfiguration;
+import ua.devteam.entity.enums.Status;
 import ua.devteam.entity.projects.TechnicalTask;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class TechnicalTaskDAOTest {
     @Before
     public void before() {
         testId = countRowsInTable(jdbcTemplate, tableName);
-        testData = new TechnicalTask((long) 1, (long) 1, "test", "test");
+        testData = new TechnicalTask("test", "test", (long) 1, null, Status.New);
     }
 
     @Test
@@ -92,24 +93,6 @@ public class TechnicalTaskDAOTest {
         technicalTaskDAO.getById(++testId);
     }
 
-    @Test
-    public void getByManagerIDTest() {
-        Long managerId = technicalTaskDAO.getById(testId).getManagerId();
-        List<TechnicalTask> data = technicalTaskDAO.getByManager(managerId);
-
-        assertThat(data, is(notNullValue()));
-        assertThat(data.size(), is(greaterThan(0)));
-        assertThat(data.get(0).getManagerId(), is(managerId));
-    }
-
-    @Test
-    public void getByBadManagerIDTest() {
-        long lastManagerId = countRowsInTable(jdbcTemplate, "managers");
-
-        List<TechnicalTask> data = technicalTaskDAO.getByManager(++lastManagerId);
-
-        assertThat(data.size(), is(0));
-    }
 
     @Test
     public void getAllTest() {

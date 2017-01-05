@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@include file="../fragments/head.jspf" %>
+<%@include file="fragments/head.jspf" %>
 <link href="<spring:url value="/resources/css/registration.css" />" rel="stylesheet">
 <title><spring:message code="general.register"/></title>
 </head>
 <body>
-<%@include file="../fragments/navbar.jspf" %>
+<%@include file="fragments/navbar.jspf" %>
 
 <div class="container">
     <div class="row">
@@ -131,6 +131,6 @@
     </div>
 </div>
 
-<%@include file="../fragments/footer.jspf" %>
+<%@include file="fragments/footer.jspf" %>
 </body>
 </html>

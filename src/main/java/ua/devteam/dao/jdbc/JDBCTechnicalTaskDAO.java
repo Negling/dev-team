@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 import ua.devteam.dao.TechnicalTaskDAO;
+import ua.devteam.entity.enums.Status;
 import ua.devteam.entity.projects.TechnicalTask;
 
 import java.sql.*;
@@ -24,9 +25,10 @@ public class JDBCTechnicalTaskDAO extends JDBCGenericIdentifiedDAO<TechnicalTask
         super.jdbcUpdate(sqlBundle.getString("technicalTask.update"),
                 newEntity.getId(),
                 newEntity.getCustomerId(),
-                newEntity.getManagerId(),
                 newEntity.getName(),
                 newEntity.getDescription(),
+                newEntity.getStatus().toString(),
+                newEntity.getManagerCommentary(),
                 oldEntity.getId());
     }
 
@@ -46,17 +48,23 @@ public class JDBCTechnicalTaskDAO extends JDBCGenericIdentifiedDAO<TechnicalTask
     }
 
     @Override
-    public List<TechnicalTask> getByManager(Long managerId) {
-        return jdbcOperations.query(sqlBundle.getString("technicalTask.selectByManager"), this::mapEntity, managerId);
+    public List<TechnicalTask> getAllByCustomer(Long customerId) {
+        return jdbcOperations.query(sqlBundle.getString("technicalTask.selectByCustomerId"), this::mapEntity, customerId);
+    }
+
+    @Override
+    public List<TechnicalTask> getAllNew() {
+        return jdbcOperations.query(sqlBundle.getString("technicalTask.selectAllNew"), this::mapEntity);
     }
 
     @Override
     protected TechnicalTask mapEntity(ResultSet rs, int row) throws SQLException {
         return new TechnicalTask(rs.getLong("id"),
-                rs.getLong("customer_id"),
-                rs.getLong("manager_id"),
                 rs.getString("name"),
-                rs.getString("description"));
+                rs.getString("description"),
+                rs.getLong("customer_id"),
+                rs.getString("manager_commentary"),
+                Status.valueOf(rs.getString("status")));
     }
 
     @Override
@@ -64,10 +72,17 @@ public class JDBCTechnicalTaskDAO extends JDBCGenericIdentifiedDAO<TechnicalTask
         final PreparedStatement ps = connection.prepareStatement(sqlBundle.getString("technicalTask.insertSQL"),
                 Statement.RETURN_GENERATED_KEYS);
 
+
         ps.setLong(1, entity.getCustomerId());
-        ps.setLong(2, entity.getManagerId());
-        ps.setString(3, entity.getName());
-        ps.setString(4, entity.getDescription());
+        ps.setString(2, entity.getName());
+        ps.setString(3, entity.getDescription());
+        ps.setString(4, entity.getStatus().toString());
+
+        if (entity.getManagerCommentary() == null) {
+            ps.setNull(5, Types.VARCHAR);
+        } else {
+            ps.setString(5, entity.getManagerCommentary());
+        }
 
         return ps;
     }

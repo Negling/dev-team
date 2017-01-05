@@ -10,8 +10,11 @@ public interface TaskDevelopersDAO extends GenericDAO<TaskDeveloper> {
 
     void createDefault(TaskDeveloper entity);
 
+    void deleteAllByProject(Long projectId);
+
     TaskDeveloper getByTaskAndDeveloper(Long taskId, Long developerId);
 
     List<TaskDeveloper> getAllByTask(Long taskId);
 
+    List<TaskDeveloper> getAllByProject(Long projectId);
 }

@@ -57,18 +57,15 @@ CREATE TABLE customers (
 );
 
 CREATE TABLE technical_tasks (
-  id          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  customer_id BIGINT UNSIGNED NOT NULL,
-  manager_id  BIGINT UNSIGNED NULL,
-  name        VARCHAR(50)     NOT NULL,
-  description TEXT            NOT NULL,
+  id                 BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  customer_id        BIGINT UNSIGNED NOT NULL,
+  name               VARCHAR(50)     NOT NULL,
+  description        TEXT            NOT NULL,
+  status             VARCHAR(20)     NOT NULL,
+  manager_commentary TEXT            NULL     DEFAULT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (customer_id)
   REFERENCES customers (id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  FOREIGN KEY (manager_id)
-  REFERENCES managers (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
@@ -97,15 +94,16 @@ CREATE TABLE requests_for_developers (
 );
 
 CREATE TABLE projects (
-  id                BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  technical_task_id BIGINT UNSIGNED NOT NULL,
-  customer_id       BIGINT UNSIGNED NOT NULL,
-  manager_id        BIGINT UNSIGNED NOT NULL,
-  name              VARCHAR(50)     NOT NULL,
-  description       TEXT            NOT NULL,
-  start_date        TIMESTAMP       NOT NULL,
-  end_date          TIMESTAMP       NULL,
-  status            VARCHAR(20)     NOT NULL,
+  id                 BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  technical_task_id  BIGINT UNSIGNED NOT NULL,
+  customer_id        BIGINT UNSIGNED NOT NULL,
+  manager_id         BIGINT UNSIGNED NOT NULL,
+  name               VARCHAR(50)     NOT NULL,
+  description        TEXT            NOT NULL,
+  manager_commentary TEXT            NULL     DEFAULT NULL,
+  start_date         TIMESTAMP       NOT NULL,
+  end_date           TIMESTAMP       NULL,
+  status             VARCHAR(20)     NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (technical_task_id)
   REFERENCES technical_tasks (id)
@@ -122,14 +120,19 @@ CREATE TABLE projects (
 );
 
 CREATE TABLE project_tasks (
-  id          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  project_id  BIGINT UNSIGNED NOT NULL,
-  name        VARCHAR(50)     NOT NULL,
-  description TEXT            NOT NULL,
-  status      VARCHAR(20)     NOT NULL,
+  id           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  project_id   BIGINT UNSIGNED NOT NULL,
+  operation_id BIGINT UNSIGNED NOT NULL,
+  name         VARCHAR(50)     NOT NULL,
+  description  TEXT            NOT NULL,
+  status       VARCHAR(20)     NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (project_id)
   REFERENCES projects (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (operation_id)
+  REFERENCES technical_task_operations (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );

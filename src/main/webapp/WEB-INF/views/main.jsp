@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@include file="../fragments/head.jspf" %>
+<%@include file="fragments/head.jspf" %>
 <link href="<spring:url value="/resources/css/main-page.css"/>" rel="stylesheet">
 <title>Dev-Team</title>
 </head>
 <body>
 <%--Navbar--%>
-<%@include file="../fragments/navbar.jspf" %>
+<%@include file="fragments/navbar.jspf" %>
 
 <!-- Header Carousel -->
 <header id="carousel" class="carousel slide" data-ride="carousel">
@@ -174,7 +174,7 @@
 </section>
 
 <%--Footer--%>
-<%@include file="../fragments/footer.jspf" %>
+<%@include file="fragments/footer.jspf" %>
 
 </body>
 </html>

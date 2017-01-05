@@ -64,12 +64,12 @@ INSERT INTO developers (first_name, last_name, email, phone, password, specializ
 VALUES ('John', 'Karasev', 'dev12@gmail.com', '+380454345493',
         '$2a$12$kOP7FU36h/9HjLzXAoyuC.cZd8bHk5wtXc3hA4RtR60Q24Q2ii02W', 'Backend', 'Senior', 4000.00, 'Available', 2);
 
-INSERT INTO technical_tasks (customer_id, manager_id, name, description)
-VALUES (1, NULL, 'This is test TT.', 'Thi is simple TT description.');
-INSERT INTO technical_tasks (customer_id, manager_id, name, description)
-VALUES (1, 1, 'This is test TT.', 'Thi is simple TT description.');
-INSERT INTO technical_tasks (customer_id, manager_id, name, description)
-VALUES (2, 2, 'This is test TT.', 'Thi is simple TT description.');
+INSERT INTO technical_tasks (customer_id, name, description, status)
+VALUES (1, 'This is test TT.', 'Thi is simple TT description.', 'New');
+INSERT INTO technical_tasks (customer_id, name, description, status)
+VALUES (1, 'This is test TT.', 'Thi is simple TT description.', 'Complete');
+INSERT INTO technical_tasks (customer_id, name, description, status)
+VALUES (2, 'This is test TT.', 'Thi is simple TT description.', 'Complete');
 
 INSERT INTO technical_task_operations (technical_task_id, name, description)
 VALUES (1, 'This is test task.', 'This is test task.');
@@ -91,10 +91,10 @@ VALUES (1, 1, 1, 'This is test task.', 'This is test task.', '2016-12-16', '2016
 INSERT INTO projects (technical_task_id, customer_id, manager_id, name, description, start_date, end_date, status)
 VALUES (2, 2, 2, 'This is test task.', 'This is test task.', '2016-12-16', '2016-12-19', 'Running');
 
-INSERT INTO project_tasks (project_id, name, description, status)
-VALUES (1, 'This is test task.', 'This is test task.', 'Complete');
-INSERT INTO project_tasks (project_id, name, description, status)
-VALUES (2, 'This is test task.', 'This is test task.', 'Running');
+INSERT INTO project_tasks (project_id, operation_id, name, description, status)
+VALUES (1, 1, 'This is test task.', 'This is test task.', 'Complete');
+INSERT INTO project_tasks (project_id, operation_id, name, description, status)
+VALUES (2, 2, 'This is test task.', 'This is test task.', 'Running');
 
 
 INSERT INTO task_developers (task_id, developer_id, hours_spent, status)

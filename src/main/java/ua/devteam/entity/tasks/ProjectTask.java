@@ -8,28 +8,39 @@ import java.util.List;
 
 public class ProjectTask extends AbstractTask {
     private Long projectId;
+    private Long operationId;
     private Status taskStatus;
     private Integer totalHoursSpent;
     private List<TaskDeveloper> taskDevelopers;
+    private List<RequestForDevelopers> requestsForDevelopers;
 
     public ProjectTask() {
     }
 
-    public ProjectTask(Long projectId, String name, String description, Status taskStatus, Integer totalHoursSpent) {
-        this(null, projectId, name, description, taskStatus, totalHoursSpent);
+    public ProjectTask(Long projectId, Operation operation) {
+        this(null, projectId, operation.getId(), operation.getName(), operation.getDescription(), Status.New, 0, null,
+                operation.getRequestsForDevelopers());
     }
 
-    public ProjectTask(Long id, Long projectId, String name, String description, Status taskStatus, Integer totalHoursSpent) {
-        this(id, projectId, name, description, taskStatus, totalHoursSpent, null);
+    public ProjectTask(Long projectId, Long operationId, String name, String description, Status taskStatus,
+                       Integer totalHoursSpent) {
+        this(null, projectId, operationId, name, description, taskStatus, totalHoursSpent);
     }
 
-    public ProjectTask(Long id, Long projectId, String name, String description, Status taskStatus, Integer totalHoursSpent,
-                       List<TaskDeveloper> taskDevelopers) {
+    public ProjectTask(Long id, Long projectId, Long operationId, String name, String description, Status taskStatus,
+                       Integer totalHoursSpent) {
+        this(id, projectId, operationId, name, description, taskStatus, totalHoursSpent, null, null);
+    }
+
+    public ProjectTask(Long id, Long projectId, Long operationId, String name, String description, Status taskStatus,
+                       Integer totalHoursSpent, List<TaskDeveloper> taskDevelopers, List<RequestForDevelopers> requestsForDevelopers) {
         super(id, name, description);
         this.projectId = projectId;
+        this.operationId = operationId;
         this.taskStatus = taskStatus;
         this.totalHoursSpent = totalHoursSpent;
         this.taskDevelopers = taskDevelopers;
+        this.requestsForDevelopers = requestsForDevelopers;
     }
 
     public Long getProjectId() {
@@ -38,6 +49,14 @@ public class ProjectTask extends AbstractTask {
 
     public void setProjectId(Long projectId) {
         this.projectId = projectId;
+    }
+
+    public Long getOperationId() {
+        return operationId;
+    }
+
+    public void setOperationId(Long operationId) {
+        this.operationId = operationId;
     }
 
     public Status getTaskStatus() {
@@ -64,6 +83,21 @@ public class ProjectTask extends AbstractTask {
         this.taskDevelopers = taskDevelopers;
     }
 
+    public List<RequestForDevelopers> getRequestsForDevelopers() {
+        return requestsForDevelopers;
+    }
+
+    public void setRequestsForDevelopers(List<RequestForDevelopers> requestsForDevelopers) {
+        this.requestsForDevelopers = requestsForDevelopers;
+    }
+
+    @Override
+    public void setDeepId(Long id) {
+        setId(id);
+
+        taskDevelopers.forEach(taskDeveloper -> taskDeveloper.setProjectTaskId(id));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -73,31 +107,40 @@ public class ProjectTask extends AbstractTask {
         ProjectTask that = (ProjectTask) o;
 
         if (projectId != null ? !projectId.equals(that.projectId) : that.projectId != null) return false;
+        if (operationId != null ? !operationId.equals(that.operationId) : that.operationId != null) return false;
         if (taskStatus != that.taskStatus) return false;
         if (totalHoursSpent != null ? !totalHoursSpent.equals(that.totalHoursSpent) : that.totalHoursSpent != null)
             return false;
+        if (taskDevelopers != null ? !taskDevelopers.equals(that.taskDevelopers) : that.taskDevelopers != null)
+            return false;
 
-        return taskDevelopers != null ? taskDevelopers.equals(that.taskDevelopers) : that.taskDevelopers == null;
+        return requestsForDevelopers != null ? requestsForDevelopers.equals(that.requestsForDevelopers)
+                : that.requestsForDevelopers == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (projectId != null ? projectId.hashCode() : 0);
+        result = 31 * result + (operationId != null ? operationId.hashCode() : 0);
         result = 31 * result + (taskStatus != null ? taskStatus.hashCode() : 0);
         result = 31 * result + (totalHoursSpent != null ? totalHoursSpent.hashCode() : 0);
         result = 31 * result + (taskDevelopers != null ? taskDevelopers.hashCode() : 0);
+        result = 31 * result + (requestsForDevelopers != null ? requestsForDevelopers.hashCode() : 0);
 
         return result;
     }
 
     @Override
     public String toString() {
-        return "ProjectTask{" +
-                "projectId=" + projectId +
-                ", taskStatus=" + taskStatus +
-                ", totalHoursSpent=" + totalHoursSpent +
-                ", taskDevelopers=" + taskDevelopers +
-                "} " + super.toString();
+        final StringBuilder sb = new StringBuilder("ProjectTask{");
+        sb.append("projectId=").append(projectId);
+        sb.append(", operationId=").append(operationId);
+        sb.append(", taskStatus=").append(taskStatus);
+        sb.append(", totalHoursSpent=").append(totalHoursSpent);
+        sb.append(", taskDevelopers=").append(taskDevelopers);
+        sb.append(", requestsForDevelopers=").append(requestsForDevelopers);
+        sb.append('}');
+        return sb.toString();
     }
 }

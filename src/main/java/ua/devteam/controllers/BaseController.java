@@ -1,4 +1,4 @@
-package ua.devteam.controller;
+package ua.devteam.controllers;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -17,6 +17,8 @@ public class BaseController {
 
         return "redirect:/".concat(role.getDefaultViewName());
     }
+
+
 
     @RequestMapping("/")
     public String main() {

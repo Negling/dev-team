@@ -2,26 +2,21 @@ package ua.devteam.entity.projects;
 
 
 import ua.devteam.entity.AbstractTask;
+import ua.devteam.entity.enums.Status;
 
 public abstract class AbstractTechnicalTask extends AbstractTask {
-    private Long managerId;
     private Long customerId;
+    private Status status;
+    private String managerCommentary;
 
-    AbstractTechnicalTask() {
+    public AbstractTechnicalTask() {
     }
 
-    AbstractTechnicalTask(Long id, String name, String description, Long managerId, Long customerId) {
+    public AbstractTechnicalTask(Long id, String name, String description, Long customerId, Status status, String managerCommentary) {
         super(id, name, description);
-        this.managerId = managerId;
         this.customerId = customerId;
-    }
-
-    public Long getManagerId() {
-        return managerId;
-    }
-
-    public void setManagerId(Long managerId) {
-        this.managerId = managerId;
+        this.status = status;
+        this.managerCommentary = managerCommentary;
     }
 
     public Long getCustomerId() {
@@ -32,6 +27,22 @@ public abstract class AbstractTechnicalTask extends AbstractTask {
         this.customerId = customerId;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getManagerCommentary() {
+        return managerCommentary;
+    }
+
+    public void setManagerCommentary(String managerCommentary) {
+        this.managerCommentary = managerCommentary;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -40,17 +51,21 @@ public abstract class AbstractTechnicalTask extends AbstractTask {
 
         AbstractTechnicalTask that = (AbstractTechnicalTask) o;
 
-        if (managerId != null ? !managerId.equals(that.managerId) : that.managerId != null) return false;
+        if (customerId != null ? !customerId.equals(that.customerId) : that.customerId != null) return false;
+        if (status != that.status) return false;
 
-        return customerId != null ? customerId.equals(that.customerId) : that.customerId == null;
+        return managerCommentary != null ? managerCommentary.equals(that.managerCommentary) : that.managerCommentary == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (managerId != null ? managerId.hashCode() : 0);
         result = 31 * result + (customerId != null ? customerId.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (managerCommentary != null ? managerCommentary.hashCode() : 0);
 
         return result;
     }
+
+
 }

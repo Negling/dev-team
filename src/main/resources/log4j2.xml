@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Appenders>
-        <File name="errorsLog" fileName="C:/logs/devteam/errors.log" >
-            <PatternLayout pattern="%d{dd-MMM-yyyy HH:mm:ss} %p %m%n%n"/>
+        <File name="errorsLog" fileName="C:/logs/devteam/errors.log">
+            <PatternLayout pattern="[%d{dd-MMM-yyyy HH:mm:ss,SSS} %p [%c{10}.%M] %m]%n%n"/>
             <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
         </File>
         <Console name="STDOUT" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{dd-MMM-yyyy HH:mm:ss} %p %m%n"/>
+            <PatternLayout pattern="%highlight{%d{dd-MMM-yyyy HH:mm:ss,SSS} %p [%c{10}.%M] %m%n}{FATAL=red, ERROR=magenta,
+            WARN=yellow bright, INFO=green bright, DEBUG=blue, TRACE=cyan bright}"/>
         </Console>
     </Appenders>
     <Loggers>
-        <Root level="trace" >
+        <Root level="trace">
             <AppenderRef ref="errorsLog"/>
             <AppenderRef ref="STDOUT"/>
         </Root>

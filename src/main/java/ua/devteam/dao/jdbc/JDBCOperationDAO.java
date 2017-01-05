@@ -39,8 +39,8 @@ public class JDBCOperationDAO extends JDBCGenericIdentifiedDAO<Operation> implem
     }
 
     @Override
-    public List<Operation> getByTechnicalTask(Long projectId) {
-        return jdbcOperations.query(sqlBundle.getString("operations.selectByTechnicalTask"), this::mapEntity, projectId);
+    public List<Operation> getByTechnicalTask(Long technicalTaskId) {
+        return jdbcOperations.query(sqlBundle.getString("operations.selectByTechnicalTask"), this::mapEntity, technicalTaskId);
     }
 
     @Override

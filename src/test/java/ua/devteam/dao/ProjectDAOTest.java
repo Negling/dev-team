@@ -40,7 +40,7 @@ public class ProjectDAOTest {
     @Before
     public void before() {
         testId = countRowsInTable(jdbcTemplate, tableName);
-        testData = new Project((long) 1, (long) 1, (long) 1, "test", "test", new Date(), new Date(), Status.Running);
+        testData = new Project("test", "test", (long) 1, (long) 1, null, (long) 1, new Date(), new Date(), Status.Running);
     }
 
     @Test

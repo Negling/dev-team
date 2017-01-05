@@ -8,5 +8,5 @@ public interface OperationDAO extends GenericDAO<Operation>, Identified<Operatio
 
     Operation getById(Long id);
 
-    List<Operation> getByTechnicalTask(Long projectId);
+    List<Operation> getByTechnicalTask(Long technicalTaskId);
 }

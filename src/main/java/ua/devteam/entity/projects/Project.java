@@ -12,34 +12,47 @@ import java.util.List;
 
 public class Project extends AbstractTechnicalTask {
     private final static DateFormat PROJECT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private Long managerId;
     private Long technicalTaskId;
     private Date startDate;
     private Date endDate;
-    private Status status;
     private List<ProjectTask> tasks;
 
     public Project() {
     }
 
-    public Project(Long managerId, Long customerId, Long technicalTaskId, String name, String description, Date startDate,
-                   Date endDate, Status status) {
-        this(null, managerId, customerId, technicalTaskId,  name, description, startDate, endDate, status);
+    public Project(Long managerId, TechnicalTask technicalTask) {
+        this(technicalTask.getName(), technicalTask.getDescription(), technicalTask.getCustomerId(), managerId, null,
+                technicalTask.getId(), new Date(), null, Status.New);
     }
 
-    public Project(Long id, Long managerId, Long customerId, Long technicalTaskId, String name, String description, Date startDate,
-                   Date endDate, Status status) {
-        this(id, managerId, customerId, technicalTaskId,  name, description, startDate, endDate, status, null);
+    public Project(String name, String description, Long customerId, Long managerId, String managerCommentary,
+                   Long technicalTaskId, Date startDate, Date endDate, Status status) {
+        this(null, name, description, customerId, managerId, managerCommentary, technicalTaskId, startDate, endDate, status);
     }
 
-    public Project(Long id, Long managerId, Long customerId, Long technicalTaskId, String name, String description,
-                   Date startDate, Date endDate, Status status, List<ProjectTask> tasks) {
+    public Project(Long id, String name, String description, Long customerId, Long managerId, String managerCommentary,
+                   Long technicalTaskId, Date startDate, Date endDate, Status status) {
+        this(id, name, description, customerId, managerId, managerCommentary, technicalTaskId, startDate, endDate, status, null);
+    }
 
-        super(id, name, description, managerId, customerId);
+    public Project(Long id, String name, String description, Long customerId, Long managerId, String managerCommentary,
+                   Long technicalTaskId, Date startDate, Date endDate, Status status, List<ProjectTask> tasks) {
+
+        super(id, name, description, customerId, status, managerCommentary);
+        this.managerId = managerId;
         this.technicalTaskId = technicalTaskId;
         this.startDate = formatDate(startDate);
         this.endDate = formatDate(endDate);
-        this.status = status;
         this.tasks = tasks;
+    }
+
+    public Long getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(Long managerId) {
+        this.managerId = managerId;
     }
 
     public Long getTechnicalTaskId() {
@@ -66,20 +79,19 @@ public class Project extends AbstractTechnicalTask {
         this.endDate = formatDate(endDate);
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
     public List<ProjectTask> getTasks() {
         return tasks;
     }
 
     public void setTasks(List<ProjectTask> tasks) {
         this.tasks = tasks;
+    }
+
+    @Override
+    public void setDeepId(Long id) {
+        setId(id);
+
+        tasks.forEach(projectTask -> projectTask.setProjectId(id));
     }
 
     @Override
@@ -90,23 +102,22 @@ public class Project extends AbstractTechnicalTask {
 
         Project project = (Project) o;
 
+        if (managerId != null ? !managerId.equals(project.managerId) : project.managerId != null) return false;
         if (technicalTaskId != null ? !technicalTaskId.equals(project.technicalTaskId) : project.technicalTaskId != null)
             return false;
         if (startDate != null ? !startDate.equals(project.startDate) : project.startDate != null) return false;
         if (endDate != null ? !endDate.equals(project.endDate) : project.endDate != null) return false;
-        if (status != project.status) return false;
 
         return tasks != null ? tasks.equals(project.tasks) : project.tasks == null;
-
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
+        result = 31 * result + (managerId != null ? managerId.hashCode() : 0);
         result = 31 * result + (technicalTaskId != null ? technicalTaskId.hashCode() : 0);
         result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
         result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (tasks != null ? tasks.hashCode() : 0);
 
         return result;
@@ -114,13 +125,20 @@ public class Project extends AbstractTechnicalTask {
 
     @Override
     public String toString() {
-        return "Project{" +
-                "technicalTaskId=" + technicalTaskId +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", status=" + status +
-                ", tasks=" + tasks +
-                "} " + super.toString();
+        final StringBuilder sb = new StringBuilder("Project{");
+        sb.append("id=").append(getId());
+        sb.append(", customerId=").append(getCustomerId());
+        sb.append(", managerId=").append(managerId);
+        sb.append(", managerCommentary=").append(getManagerCommentary());
+        sb.append(", name=").append(getName());
+        sb.append(", description=").append(getDescription());
+        sb.append(", technicalTaskId=").append(technicalTaskId);
+        sb.append(", startDate=").append(startDate);
+        sb.append(", endDate=").append(endDate);
+        sb.append(", status=").append(getStatus().toString());
+        sb.append(", tasks=").append(tasks);
+        sb.append('}');
+        return sb.toString();
     }
 
     private Date formatDate(Date date) {

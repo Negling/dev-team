@@ -1,6 +1,7 @@
 package ua.devteam.entity.projects;
 
 
+import ua.devteam.entity.enums.Status;
 import ua.devteam.entity.tasks.Operation;
 
 import java.util.List;
@@ -11,16 +12,17 @@ public class TechnicalTask extends AbstractTechnicalTask {
     public TechnicalTask() {
     }
 
-    public TechnicalTask(Long customerId, Long managerId, String name, String description) {
-        this(null, customerId, managerId, name, description);
+    public TechnicalTask(String name, String description, Long customerId, String managerCommentary, Status status) {
+        this(null, name, description, customerId, managerCommentary, status, null);
     }
 
-    public TechnicalTask(Long id, Long customerId, Long managerId, String name, String description) {
-        this(id, customerId, managerId, name, description, null);
+    public TechnicalTask(Long id, String name, String description, Long customerId, String managerCommentary, Status status) {
+        this(id, name, description, customerId, managerCommentary, status, null);
     }
 
-    public TechnicalTask(Long id, Long customerId, Long managerId, String name, String description, List<Operation> operations) {
-        super(id, name, description, managerId, customerId);
+    public TechnicalTask(Long id, String name, String description, Long customerId, String managerCommentary, Status status,
+                         List<Operation> operations) {
+        super(id, name, description, customerId, status, managerCommentary);
         this.operations = operations;
     }
 
@@ -30,6 +32,13 @@ public class TechnicalTask extends AbstractTechnicalTask {
 
     public void setOperations(List<Operation> operations) {
         this.operations = operations;
+    }
+
+    @Override
+    public void setDeepId(Long id) {
+        setId(id);
+
+        operations.forEach(operation -> operation.setTechnicalTaskId(id));
     }
 
     @Override
@@ -55,10 +64,12 @@ public class TechnicalTask extends AbstractTechnicalTask {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("TechnicalTask{");
-        sb.append("name=").append(this.getName());
-        sb.append(", description=").append(this.getDescription());
+        sb.append("id=").append(this.getId());
         sb.append(", customerId=").append(this.getCustomerId());
-        sb.append(", managerId=").append(this.getManagerId());
+        sb.append(", managerCommentary=").append(getManagerCommentary());
+        sb.append(", name=").append(this.getName());
+        sb.append(", description=").append(this.getDescription());
+        sb.append(", status=").append(getStatus().toString());
         sb.append(", operations=").append(operations);
         sb.append('}');
         return sb.toString();

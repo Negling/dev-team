@@ -5,6 +5,8 @@ import ua.devteam.entity.enums.DeveloperRank;
 import ua.devteam.entity.enums.DeveloperSpecialization;
 import ua.devteam.entity.enums.Status;
 
+import java.math.BigDecimal;
+
 public class TaskDeveloper {
     private Long projectTaskId;
     private Long developerId;
@@ -12,20 +14,28 @@ public class TaskDeveloper {
     private String developerLastName;
     private DeveloperSpecialization specialization;
     private DeveloperRank rank;
+    private BigDecimal hireCost;
     private Integer hoursSpent;
     private Status status;
 
     public TaskDeveloper() {
     }
 
+    public TaskDeveloper(Long projectTaskId, Long developerId) {
+        this.projectTaskId = projectTaskId;
+        this.developerId = developerId;
+    }
+
     public TaskDeveloper(Long projectTaskId, Long developerId, String developerFirstName, String developerLastName,
-                         DeveloperSpecialization specialization, DeveloperRank rank, Integer hoursSpent, Status status) {
+                         DeveloperSpecialization specialization, DeveloperRank rank, BigDecimal hireCost,
+                         Integer hoursSpent, Status status) {
         this.projectTaskId = projectTaskId;
         this.developerId = developerId;
         this.developerFirstName = developerFirstName;
         this.developerLastName = developerLastName;
         this.specialization = specialization;
         this.rank = rank;
+        this.hireCost = hireCost;
         this.hoursSpent = hoursSpent;
         this.status = status;
     }
@@ -78,6 +88,14 @@ public class TaskDeveloper {
         this.rank = rank;
     }
 
+    public BigDecimal getHireCost() {
+        return hireCost;
+    }
+
+    public void setHireCost(BigDecimal hireCost) {
+        this.hireCost = hireCost;
+    }
+
     public Integer getHoursSpent() {
         return hoursSpent;
     }
@@ -110,10 +128,10 @@ public class TaskDeveloper {
             return false;
         if (specialization != that.specialization) return false;
         if (rank != that.rank) return false;
+        if (hireCost != null ? !hireCost.equals(that.hireCost) : that.hireCost != null) return false;
         if (hoursSpent != null ? !hoursSpent.equals(that.hoursSpent) : that.hoursSpent != null) return false;
 
         return status == that.status;
-
     }
 
     @Override
@@ -124,6 +142,7 @@ public class TaskDeveloper {
         result = 31 * result + (developerLastName != null ? developerLastName.hashCode() : 0);
         result = 31 * result + (specialization != null ? specialization.hashCode() : 0);
         result = 31 * result + (rank != null ? rank.hashCode() : 0);
+        result = 31 * result + (hireCost != null ? hireCost.hashCode() : 0);
         result = 31 * result + (hoursSpent != null ? hoursSpent.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
 
@@ -132,15 +151,17 @@ public class TaskDeveloper {
 
     @Override
     public String toString() {
-        return "TaskDevelopment{" +
-                "projectTaskId=" + projectTaskId +
-                ", developerId=" + developerId +
-                ", developerFirstName='" + developerFirstName + '\'' +
-                ", developerLastName='" + developerLastName + '\'' +
-                ", specialization=" + specialization +
-                ", rank=" + rank +
-                ", hoursSpent=" + hoursSpent +
-                ", status=" + status +
-                '}';
+        final StringBuilder sb = new StringBuilder("TaskDeveloper{");
+        sb.append("projectTaskId=").append(projectTaskId);
+        sb.append(", developerId=").append(developerId);
+        sb.append(", developerFirstName='").append(developerFirstName).append('\'');
+        sb.append(", developerLastName='").append(developerLastName).append('\'');
+        sb.append(", specialization=").append(specialization);
+        sb.append(", rank=").append(rank);
+        sb.append(", hireCost=").append(hireCost);
+        sb.append(", hoursSpent=").append(hoursSpent);
+        sb.append(", status=").append(status);
+        sb.append('}');
+        return sb.toString();
     }
 }

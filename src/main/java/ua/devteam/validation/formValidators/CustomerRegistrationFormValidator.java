@@ -1,12 +1,11 @@
 package ua.devteam.validation.formValidators;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ua.devteam.service.UsersService;
-import ua.devteam.validation.formModels.CustomerRegistrationForm;
+import ua.devteam.entity.formModels.CustomerRegistrationForm;
 
 import static ua.devteam.validation.ValidationUtils.*;
 

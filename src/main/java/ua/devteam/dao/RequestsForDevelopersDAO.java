@@ -8,5 +8,5 @@ public interface RequestsForDevelopersDAO extends GenericDAO<RequestForDeveloper
 
     void create(RequestForDevelopers entity);
 
-    List<RequestForDevelopers> getByOperation(Long taskId);
+    List<RequestForDevelopers> getByOperation(Long operationId);
 }

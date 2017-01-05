@@ -1,16 +1,20 @@
 package ua.devteam.service;
 
 
+import ua.devteam.entity.projects.Project;
 import ua.devteam.entity.tasks.TaskDeveloper;
+import ua.devteam.entity.users.Check;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProjectsService {
 
-    void registerProjectDetails(Long projectId, BigDecimal projectPrice, List<TaskDeveloper> projectTaskDetails);
+   long createProject(Long technicalTaskId, Long managerId);
 
-    /*List<Project> getCompleteProjectsByManagerId(Long managerId);*/
+   List<Project> getNewByManager(Long managerId);
 
+    void confirmProject(Long projectId, Check projectCheck);
 
+    void decline(Long projectId);
 }

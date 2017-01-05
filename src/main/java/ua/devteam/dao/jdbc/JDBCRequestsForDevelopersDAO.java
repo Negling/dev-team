@@ -53,8 +53,8 @@ public class JDBCRequestsForDevelopersDAO extends JDBCGenericDAO<RequestForDevel
     }
 
     @Override
-    public List<RequestForDevelopers> getByOperation(Long taskId) {
-        return jdbcOperations.query(sqlBundle.getString("developersRequest.selectByOperation"), this::mapEntity, taskId);
+    public List<RequestForDevelopers> getByOperation(Long operationId) {
+        return jdbcOperations.query(sqlBundle.getString("developersRequest.selectByOperation"), this::mapEntity, operationId);
     }
 
     @Override

@@ -56,6 +56,11 @@ public class JDBCTaskDevelopersDAO extends JDBCGenericDAO<TaskDeveloper> impleme
     }
 
     @Override
+    public void deleteAllByProject(Long projectId) {
+        jdbcOperations.update(sqlBundle.getString("taskDevelopers.deleteAllByProject"), projectId);
+    }
+
+    @Override
     public TaskDeveloper getByTaskAndDeveloper(Long taskId, Long developerId) {
         return jdbcOperations.queryForObject(sqlBundle.getString("taskDevelopers.selectByTaskAndDeveloper"), this::mapEntity,
                 taskId,
@@ -68,6 +73,11 @@ public class JDBCTaskDevelopersDAO extends JDBCGenericDAO<TaskDeveloper> impleme
     }
 
     @Override
+    public List<TaskDeveloper> getAllByProject(Long projectId) {
+        return jdbcOperations.query(sqlBundle.getString("taskDevelopers.selectByProject"), this::mapEntity, projectId);
+    }
+
+    @Override
     protected TaskDeveloper mapEntity(ResultSet rs, int row) throws SQLException {
 
         return new TaskDeveloper(rs.getLong("task_id"),
@@ -76,6 +86,7 @@ public class JDBCTaskDevelopersDAO extends JDBCGenericDAO<TaskDeveloper> impleme
                 rs.getString("last_name"),
                 DeveloperSpecialization.valueOf(rs.getString("specialization")),
                 DeveloperRank.valueOf(rs.getString("rank")),
+                rs.getBigDecimal("hire_cost"),
                 rs.getInt("hours_spent"),
                 Status.valueOf(rs.getString("status")));
     }

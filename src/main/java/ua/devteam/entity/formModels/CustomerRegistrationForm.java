@@ -1,4 +1,4 @@
-package ua.devteam.validation.formModels;
+package ua.devteam.entity.formModels;
 
 import ua.devteam.entity.enums.Role;
 import ua.devteam.entity.users.Customer;

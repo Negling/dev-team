@@ -6,10 +6,14 @@ import java.util.List;
 
 public interface TechnicalTaskDAO extends GenericDAO<TechnicalTask>, Identified<TechnicalTask> {
 
+
+
     TechnicalTask getById(Long id);
 
     List<TechnicalTask> getAll();
 
-    List<TechnicalTask> getByManager(Long managerId);
+    List<TechnicalTask> getAllByCustomer(Long customerId);
+
+    List<TechnicalTask> getAllNew();
 
 }

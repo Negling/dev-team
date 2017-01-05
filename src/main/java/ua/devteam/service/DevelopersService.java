@@ -9,4 +9,8 @@ import java.util.List;
 public interface DevelopersService {
 
     List<Developer> getAvailableDevelopers(DeveloperSpecialization specialization, DeveloperRank rank, String lastName);
+
+    void unbind(Long developerId);
+
+    Developer bind(Long developerId, Long taskId);
 }

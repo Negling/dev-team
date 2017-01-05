@@ -59,4 +59,6 @@ public abstract class AbstractTask {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }
+
+    public abstract void setDeepId(Long id);
 }

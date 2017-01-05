@@ -9,7 +9,9 @@ public interface TechnicalTasksService {
 
     Long registerTechnicalTask(TechnicalTask task);
 
-    List<TechnicalTask> getTasksByManagerId(Long managerId, Status status);
+    List<TechnicalTask> getAllUnassigned();
 
     List<TechnicalTask> getAllTechnicalTasks();
+
+    void decline(Long technicalTaskId, String managerCommentary);
 }

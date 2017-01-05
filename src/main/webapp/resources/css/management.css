@@ -1,7 +1,7 @@
 @import "header-footer.css";
 
 body {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 .content-container {
@@ -26,7 +26,7 @@ body {
 }
 
 .custom-tab-content > .tab-pane {
-    padding-top: 0px !important;
+    padding-top: 0 !important;
 }
 
 .project-pills {
@@ -41,6 +41,11 @@ body {
     color: white !important;
 }
 
+.project-cost-input {
+    padding-top: 5px;
+    padding-left: 0;
+}
+
 .task-heading {
     background-color: #e2e1e1 !important;
     color: black !important;
@@ -48,7 +53,7 @@ body {
 
 .description {
     display: block;
-    padding: 9.5px;
+    padding: 10px;
     margin: 0 0 10px;
     font-size: 14px;
     line-height: 1.42857143;

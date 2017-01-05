@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@include file="../fragments/head.jspf" %>
+<%@include file="fragments/head.jspf" %>
 <link href="<spring:url value="/resources/css/customers-parlor.css" />" rel="stylesheet">
 <title>Parlor</title>
 </head>
 <body>
-<%@include file="../fragments/navbar.jspf" %>
+<%@include file="fragments/navbar.jspf" %>
 
 <div class="container content-container">
     <h2><spring:message code="customersParlor.parlor"/></h2>
@@ -231,17 +231,20 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td><select class="form-control" title="Specialization">
-                            <option>Designer</option>
-                            <option>Web-Dev</option>
-                            <option>Backend</option>
-                            <option>Database</option>
-                        </select></td>
-                        <td><select class="form-control" title="Rank">
-                            <option>Senior</option>
-                            <option>Middle</option>
-                            <option>Junior</option>
-                        </select></td>
+                        <td>
+                            <select class="form-control" title="Specialization">
+                            <core:forEach items="${specializations}" var="specialization">
+                                <option>${specialization}</option>
+                            </core:forEach>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control" title="Rank">
+                                <core:forEach items="${ranks}" var="rank">
+                                    <option>${rank}</option>
+                                </core:forEach>
+                            </select>
+                        </td>
                         <td><input class="form-control" type="number" min="1" max="100" value="1" placeholder="Max 100"
                                    title="Quantity">
                         </td>
@@ -297,7 +300,7 @@
     </div>
 </div>
 
-<%@include file="../fragments/footer.jspf" %>
+<%@include file="fragments/footer.jspf" %>
 
 <script src="<spring:url value="/resources/js/customers-parlor.js" />"></script>
 </body>

@@ -89,8 +89,8 @@ public class JDBCCustomerDAO extends JDBCGenericIdentifiedDAO<Customer> implemen
         ps.setString(1, entity.getFirstName());
         ps.setString(2, entity.getLastName());
         ps.setString(3, entity.getEmail());
-        ps.setString(4, entity.getPassword());
-        ps.setString(5, entity.getPhoneNumber());
+        ps.setString(4, entity.getPhoneNumber());
+        ps.setString(5, entity.getPassword());
         ps.setInt(6, entity.getRole().getId());
 
         return ps;

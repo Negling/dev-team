@@ -17,11 +17,12 @@ import javax.annotation.PostConstruct;
 import java.util.ResourceBundle;
 
 @Configuration
+@EnableAspectJAutoProxy
 @ComponentScan(basePackages = "ua.devteam.dao.jdbc")
 @PropertySource("classpath:properties/application.properties")
 public class DataAccessConfiguration {
 
-    private final Logger logger = LogManager.getLogger(DataAccessConfiguration.class);
+    private final static Logger logger = LogManager.getLogger(DataAccessConfiguration.class);
     private final Environment env;
 
     @Autowired

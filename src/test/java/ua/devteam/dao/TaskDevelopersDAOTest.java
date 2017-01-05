@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.configuration.DataAccessConfiguration;
 import ua.devteam.entity.tasks.TaskDeveloper;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
@@ -37,7 +38,7 @@ public class TaskDevelopersDAOTest {
 
     @Before
     public void before() {
-        testData = new TaskDeveloper((long) 1, (long) 1, "test", "test", Backend, Junior, 1, Running);
+        testData = new TaskDeveloper((long) 1, (long) 1, "test", "test", Backend, Junior, new BigDecimal("0.00"), 1, Running);
     }
 
     @Test

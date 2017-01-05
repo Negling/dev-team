@@ -1,4 +1,4 @@
-package ua.devteam.controller;
+package ua.devteam.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,7 +8,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ua.devteam.validation.formModels.CustomerRegistrationForm;
+import ua.devteam.service.CustomersService;
+import ua.devteam.entity.formModels.CustomerRegistrationForm;
 
 import javax.validation.Valid;
 
@@ -16,16 +17,17 @@ import javax.validation.Valid;
 @SessionAttributes("customerRegistrationForm")
 public class RegistrationController {
 
+    private CustomersService customersService;
     private Validator customerRegistrationFormValidator;
 
     @Autowired
-    public void setCustomerRegistrationFormValidator(Validator customerRegistrationFormValidator) {
+    public RegistrationController(CustomersService customersService, Validator customerRegistrationFormValidator) {
+        this.customersService = customersService;
         this.customerRegistrationFormValidator = customerRegistrationFormValidator;
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration() {
-        System.out.println("show registration page");
         return "registration";
     }
 
@@ -36,18 +38,16 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.customerRegistrationForm",
                     bindingResult);
-            System.out.println("notValid!");
             return "redirect:/registration";
         }
-        System.out.println(customerRegistrationForm);
         // save customer
+        customersService.registerCustomer(customerRegistrationForm.getEntity());
         sessionStatus.setComplete();
         return "redirect:/login?registered";
     }
 
     @ModelAttribute("customerRegistrationForm")
     public CustomerRegistrationForm getCustomerRegistrationForm() {
-        System.out.println("adding form");
         return new CustomerRegistrationForm();
     }
 

@@ -44,6 +44,12 @@ public class JDBCDeveloperDAO extends JDBCGenericIdentifiedDAO<Developer> implem
         super.jdbcUpdate(sqlBundle.getString("developer.delete"), entity.getId());
     }
 
+
+    @Override
+    public void updateStatusByProject(DeveloperStatus status, Long projectId) {
+        jdbcOperations.update(sqlBundle.getString("developer.updateStatusByProject"), status.toString(), projectId);
+    }
+
     @Override
     public Developer getById(Long id) {
         return jdbcOperations.queryForObject(sqlBundle.getString("developer.selectById"), this::mapEntity, id);
@@ -52,6 +58,18 @@ public class JDBCDeveloperDAO extends JDBCGenericIdentifiedDAO<Developer> implem
     @Override
     public Developer getByEmail(String email) {
         return jdbcOperations.queryForObject(sqlBundle.getString("developer.selectByEmail"), this::mapEntity, email);
+    }
+
+    @Override
+    public List<Developer> getAvailableByParams(DeveloperSpecialization specialization, DeveloperRank rank) {
+        return jdbcOperations.query(sqlBundle.getString("developer.selectAvailableBySpecAndRank"), this::mapEntity,
+                specialization.toString(), rank.toString());
+    }
+
+    @Override
+    public List<Developer> getAvailableByParams(DeveloperSpecialization specialization, DeveloperRank rank, String lastName) {
+        return jdbcOperations.query(sqlBundle.getString("developer.selectAvailableBySpecAndRankAndLastname"), this::mapEntity,
+                specialization.toString(), rank.toString(), lastName.concat("%"));
     }
 
     @Override

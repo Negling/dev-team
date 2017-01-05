@@ -1,20 +1,16 @@
 package ua.devteam.configuration;
 
-import org.springframework.http.server.ServletServerHttpRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+    private final static Logger logger = LogManager.getLogger(WebInitializer.class);
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -31,15 +27,13 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
         return new String[]{"/"};
     }
 
-    /*@Override
-    protected Filter[] getServletFilters() {
-        return new Filter[]{new CharacterEncodingFilter("UTF-8", true)};
-    }*/
-
     @Override
     protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
         DispatcherServlet dispatcherServlet = (DispatcherServlet) super.createDispatcherServlet(servletAppContext);
         dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
+
+        logger.info("DispatcherServlet successfully created, \"throwExceptionIfNoHandlerFound property\" is set to " +
+                "true.");
 
         return dispatcherServlet;
     }
@@ -47,6 +41,10 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
-        servletContext.setInitParameter("spring.profiles.active", "dev");
+
+        String activeProfiles = "dev";
+        servletContext.setInitParameter("spring.profiles.active", activeProfiles);
+
+        logger.info("Spring web application active profile is set to \"" + activeProfiles + "\".");
     }
 }

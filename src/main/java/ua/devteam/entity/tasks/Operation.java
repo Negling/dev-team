@@ -43,6 +43,13 @@ public class Operation extends AbstractTask {
     }
 
     @Override
+    public void setDeepId(Long id) {
+        setId(id);
+
+        requestsForDevelopers.forEach(requestForDevelopers -> requestForDevelopers.setOperation_id(id));
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Operation)) return false;

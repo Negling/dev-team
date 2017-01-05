@@ -3,9 +3,6 @@
   <component name="FacetManager">
     <facet type="web" name="Web">
       <configuration>
-        <descriptors>
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/web.xml" />
-        </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
@@ -16,7 +13,7 @@
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
-      <configuration>
+      <configuration process_explicitly_annotated="false">
         <fileset id="initializer ua.freelancer.configuration.AppInitializer servlet context" name="MVC dispatcher initializer servlet context" removed="true" profiles="dev,test">
           <file>file://$MODULE_DIR$/src/main/java/ua/freelancer/configuration/WebConfiguration.java</file>
         </fileset>
