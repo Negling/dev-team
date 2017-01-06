@@ -69,7 +69,7 @@ VALUES (1, 'This is test TT.', 'Thi is simple TT description.', 'New');
 INSERT INTO technical_tasks (customer_id, name, description, status)
 VALUES (1, 'This is test TT.', 'Thi is simple TT description.', 'Complete');
 INSERT INTO technical_tasks (customer_id, name, description, status)
-VALUES (2, 'This is test TT.', 'Thi is simple TT description.', 'Complete');
+VALUES (2, 'This is test TT.', 'Thi is simple TT description.', 'Running');
 
 INSERT INTO technical_task_operations (technical_task_id, name, description)
 VALUES (1, 'This is test task.', 'This is test task.');
@@ -87,14 +87,14 @@ VALUES (3, 'Designer', 'Junior', 1);
 
 
 INSERT INTO projects (technical_task_id, customer_id, manager_id, name, description, start_date, end_date, status)
-VALUES (1, 1, 1, 'This is test task.', 'This is test task.', '2016-12-16', '2016-12-19', 'Complete');
+VALUES (2, 1, 1, 'This is test task.', 'This is test task.', '2016-12-16', '2016-12-19', 'Complete');
 INSERT INTO projects (technical_task_id, customer_id, manager_id, name, description, start_date, end_date, status)
-VALUES (2, 2, 2, 'This is test task.', 'This is test task.', '2016-12-16', '2016-12-19', 'Running');
+VALUES (3, 2, 2, 'This is test task.', 'This is test task.', '2016-12-16', '2016-12-19', 'Running');
 
 INSERT INTO project_tasks (project_id, operation_id, name, description, status)
-VALUES (1, 1, 'This is test task.', 'This is test task.', 'Complete');
+VALUES (1, 2, 'This is test task.', 'This is test task.', 'Complete');
 INSERT INTO project_tasks (project_id, operation_id, name, description, status)
-VALUES (2, 2, 'This is test task.', 'This is test task.', 'Running');
+VALUES (2, 3, 'This is test task.', 'This is test task.', 'Running');
 
 
 INSERT INTO task_developers (task_id, developer_id, hours_spent, status)

@@ -4,8 +4,8 @@ $(function () {
     $.ajaxSetup({
         // we need to add csrf header to every ajax request accordingly to Spring Security settings
         beforeSend: function (jqXHR) {
-            jqXHR.setRequestHeader($("meta[name='_csrf_header']").attr("content"),
-                $("meta[name='_csrf']").attr("content"));
+            jqXHR.setRequestHeader($("meta[name=_csrf_header]").attr("content"),
+                $("meta[name=_csrf]").attr("content"));
         },
         contentType: "application/json",
         timeout: 10000
@@ -99,9 +99,7 @@ function displayDevsSearchResults(data) {
 
             newColumn = $("<td></td>").addClass("text-right").appendTo(newRow);
             $("<button></button>")
-                .addClass("btn")
-                .addClass("btn-info")
-                .addClass("btn-sm")
+                .addClass("btn btn-info btn-sm")
                 .attr("value", data[i].id)
                 .attr("type", "button")
                 .text($("#bind").text())
@@ -136,9 +134,7 @@ function calculateProjectCheck(projectId) {
     taxes = $("#project" + projectId + "Taxes");
     totalCost = $("#project" + projectId + "TotalCost");
 
-    servicesAndDevs = parseFloat(devsHireCost.val()) + parseFloat(servicesCost.val());
-
-    taxes.val((servicesAndDevs * 1.2).toFixed(0) - servicesAndDevs);
+    taxes.val(((parseFloat(devsHireCost.val()) + parseFloat(servicesCost.val())) * 0.2).toFixed(0));
     totalCost.val(parseFloat(devsHireCost.val()) + parseFloat(servicesCost.val()) + parseFloat(taxes.val()));
 }
 
@@ -170,9 +166,7 @@ function bindDeveloper(button, data) {
         .attr("href", "#")
         .text(data.firstName + " " + data.lastName);
     unbindButton = $("<button></button>")
-        .addClass("btn")
-        .addClass("btn-info")
-        .addClass("btn-sm")
+        .addClass("btn btn-info btn-sm")
         .attr("data-developer-hire-cost", data.hireCost)
         .attr("data-developer-id", data.id)
         .attr("data-project-id", projectId)
@@ -207,16 +201,6 @@ function unbindDeveloper(button) {
     calculateProjectCheck(projectId);
 }
 
-function removeAndReload(button, containerId) {
-    $(button).parentsUntil(containerId).animate({opacity: 0}, 500, function () {
-        $(this).remove();
-
-        if ($(containerId).children().length == 0) {
-            $(containerId).parent().load(document.URL + " " + containerId);
-        }
-    });
-}
-
 function declineProjectAjax(button) {
     $.ajax({
         method: "POST",
@@ -245,12 +229,16 @@ function acceptProjectAjax(button) {
     $.ajax({
         method: "POST",
         url: "/manage/accept",
-        data: JSON.stringify(check),
-        success: function () {
-            return removeAndReload(button, "#pendingProjectsAccordion");
-        },
-        error: function () {
-            alert("ERROR!");
+        data: JSON.stringify(check)
+    }).done(function (data) {
+        return removeAndReload(button, "#pendingProjectsAccordion", function () {
+            return displayAlertBox(data, "pendingProjectsAlertBox", "pendingProjectsAccordionParent", true);
+        });
+    }).fail(function (jqXHR) {
+        if (jqXHR.status === 422) {
+            displayAlertBox(JSON.parse(jqXHR.responseText), "pendingProjectsAlertBox", "pendingProjectsAccordionParent", false);
+        } else {
+            alert("Some server internal error occurred! Please try again later, or contact support.");
         }
     });
 }

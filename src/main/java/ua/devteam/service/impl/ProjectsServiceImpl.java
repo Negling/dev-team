@@ -59,8 +59,8 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
-    public void confirmProject(Long projectId, Check projectCheck) {
-        Project project = projectDAO.getById(projectId);
+    public void confirmProject(Check projectCheck) {
+        Project project = projectDAO.getById(projectCheck.getProjectId());
 
         project.setStatus(Pending);
         projectCheck.setStatus(CheckStatus.Awaiting);
@@ -81,23 +81,32 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
+    public Project getById(Long projectId) {
+        return formProject(projectDAO.getById(projectId));
+    }
+
+    @Override
     public List<Project> getNewByManager(Long managerId) {
         return formProject(projectDAO.getAllByManagerAndStatus(managerId, New));
     }
 
-    private List<Project> formProject(List<Project> projects) {
-        projects.forEach(project -> {
-            project.setTasks(projectTaskDAO.getByProject(project.getId()));
-            project.getTasks().forEach(projectTask -> {
-                projectTask.setRequestsForDevelopers(requestsForDevelopersDAO.getByOperation(projectTask.getOperationId()));
+    private Project formProject(Project project) {
+        project.setTasks(projectTaskDAO.getByProject(project.getId()));
+        project.getTasks().forEach(projectTask -> {
+            projectTask.setRequestsForDevelopers(requestsForDevelopersDAO.getByOperation(projectTask.getOperationId()));
 
-                try {
-                    projectTask.setTaskDevelopers(taskDevelopersDAO.getAllByTask(projectTask.getId()));
-                } catch (EmptyResultDataAccessException ex) {
-                    projectTask.setTaskDevelopers(null);
-                }
-            });
+            try {
+                projectTask.setTaskDevelopers(taskDevelopersDAO.getAllByTask(projectTask.getId()));
+            } catch (EmptyResultDataAccessException ex) {
+                projectTask.setTaskDevelopers(null);
+            }
         });
+
+        return project;
+    }
+
+    private List<Project> formProject(List<Project> projects) {
+        projects.forEach(this::formProject);
 
         return projects;
     }

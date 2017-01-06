@@ -57,12 +57,14 @@ public class TechnicalTaskValidator implements Validator {
                 new Object[]{formatStringOverflow(techTask.getDescription()), 5000});
 
         // Check if operations is empty
-        if (techTask.getOperations() == null) {
-            rejectIfEmpty(errors, "operations", "validationErrors.emptyOperations");
+        if (techTask.getOperations() == null|| techTask.getOperations().size() == 0) {
+            errors.reject("validationErrors.emptyOperations");
         } else {
             // Validate nested operations
-            for (Operation operation : techTask.getOperations()) {
-                invokeValidator(operationValidator, operation, errors);
+            for (int i = 0; i < techTask.getOperations().size(); i++) {
+                errors.pushNestedPath("operations[" + i + "]");
+                invokeValidator(operationValidator, techTask.getOperations().get(i), errors);
+                errors.popNestedPath();
             }
         }
     }

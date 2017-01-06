@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/manage/**")
                 .hasAnyAuthority(Manager.getAuthority(), Ultramanager.getAuthority(), Admin.getAuthority())
                 .antMatchers("/development/**").hasAuthority(Developer.getAuthority())
-                .antMatchers("/parlor/**").hasAuthority(Customer.getAuthority())
+                .antMatchers("/cabinet/**").hasAuthority(Customer.getAuthority())
                 .anyRequest().permitAll()
                 .and()
                 .formLogin().loginPage("/login").loginProcessingUrl("/login")

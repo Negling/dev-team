@@ -104,6 +104,7 @@ CREATE TABLE projects (
   start_date         TIMESTAMP       NOT NULL,
   end_date           TIMESTAMP       NULL,
   status             VARCHAR(20)     NOT NULL,
+  UNIQUE (technical_task_id),
   PRIMARY KEY (id),
   FOREIGN KEY (technical_task_id)
   REFERENCES technical_tasks (id)
@@ -126,6 +127,7 @@ CREATE TABLE project_tasks (
   name         VARCHAR(50)     NOT NULL,
   description  TEXT            NOT NULL,
   status       VARCHAR(20)     NOT NULL,
+  UNIQUE (operation_id),
   PRIMARY KEY (id),
   FOREIGN KEY (project_id)
   REFERENCES projects (id)

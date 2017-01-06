@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@include file="fragments/head.jspf" %>
-<link href="<spring:url value="/resources/css/customers-parlor.css" />" rel="stylesheet">
-<title>Parlor</title>
+<link href="<spring:url value="/resources/css/customers-cabinet.css" />" rel="stylesheet">
+<title>Private Cabinet</title>
 </head>
 <body>
 <%@include file="fragments/navbar.jspf" %>
 
 <div class="container content-container">
-    <h2><spring:message code="customersParlor.parlor"/></h2>
+    <h2><spring:message code="customersCabinet.cabinet"/></h2>
     <p>Here you can manage your personal information, create technical tasks, etc.</p>
 
     <ul class="nav nav-tabs nav-justified">
@@ -19,43 +19,33 @@
 
     <div class="tab-content">
         <div id="createProject" class="tab-pane fade in active">
-            <div class="row">
-                <div class="new-project col-lg-8 col-lg-offset-2">
-                    <form id="projectForm" class="form-horizontal">
-                        <div class="text-center col-lg-12">
-                            <h3 class="page-header"><strong><spring:message code="customersParlor.general"/></strong>
-                            </h3>
-                        </div>
-                        <div class="col-lg-12 form-group">
-                            <label class="control-label col-lg-2" for="projectName">Project name:</label>
-                            <div class="col-lg-10">
-                                <input id="projectName" name="projectName" type="text" class="form-control"
-                                       placeholder="Minimum 10 characters">
-                            </div>
-                        </div>
-                        <div class="col-lg-12 form-group">
-                            <label class="control-label col-lg-2" for="projectDescription">Project description:</label>
-                            <div class="col-lg-10">
-                                <textarea id="projectDescription" name="projectDescription" class="form-control"
-                                          placeholder="Minimum 20 characters" rows="3"></textarea>
-                            </div>
-                        </div>
-                        <div class="text-center col-lg-12">
-                            <h3 class="page-header"><strong>Tasks</strong></h3>
-                        </div>
-                        <div class="col-lg-12">
-                            <div id="tasks" class="panel-group">
-                            </div>
-                        </div>
-                        <div class="text-center col-lg-12">
-                            <button class="btn btn-primary btn-sm add-task-btn" type="button" data-toggle="modal"
-                                    data-target="#addTaskModal">Add Task
-                            </button>
-                        </div>
-                        <button id="submitProject" type="submit" class="btn btn-success submit-project-btn"
-                                disabled="disabled">Submit
+            <div id="formTechnicalTaskParent" class="row">
+                <div id="formTechnicalTask" class="new-project col-lg-8 col-lg-offset-2">
+                    <h3 class="text-center page-header">
+                        <strong><spring:message code="customersCabinet.projectData"/></strong>
+                    </h3>
+                    <div class="form-group">
+                        <label class="control-label" for="technicalTaskName">Project name:</label>
+                        <input id="technicalTaskName" name="projectName" type="text" class="form-control"
+                               placeholder="Minimum 10 characters">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="technicalTaskDescription">Project description:</label>
+                        <textarea id="technicalTaskDescription" name="projectDescription" class="form-control"
+                                  placeholder="Minimum 30 characters" rows="3"></textarea>
+                    </div>
+                    <h3 class="text-center page-header">
+                        <strong>Tasks</strong>
+                    </h3>
+                    <div id="tasks" class="panel-group">
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-sm add-task-btn" type="button" data-toggle="modal"
+                                data-target="#addTaskModal">Add Task
                         </button>
-                    </form>
+                    </div>
+                    <button id="submitTechnicalTask" class="btn btn-success submit-project-btn" type="submit">Submit
+                    </button>
                 </div>
             </div>
         </div>
@@ -215,7 +205,7 @@
         <div class="modal-content">
             <div class="no-borders modal-header">
                 <h4 class="modal-title"><strong>Task Name</strong></h4>
-                <input id="addTaskName" class="form-control" type="text" placeholder="Minimum 10 characters">
+                <input id="taskName" class="form-control" type="text" placeholder="Minimum 10 characters">
             </div>
             <div class="no-borders modal-body">
                 <h4 class="text-center"><strong>Developers</strong></h4>
@@ -233,9 +223,9 @@
                     <tr>
                         <td>
                             <select class="form-control" title="Specialization">
-                            <core:forEach items="${specializations}" var="specialization">
-                                <option>${specialization}</option>
-                            </core:forEach>
+                                <core:forEach items="${specializations}" var="specialization">
+                                    <option>${specialization}</option>
+                                </core:forEach>
                             </select>
                         </td>
                         <td>
@@ -245,23 +235,30 @@
                                 </core:forEach>
                             </select>
                         </td>
-                        <td><input class="form-control" type="number" min="1" max="100" value="1" placeholder="Max 100"
+                        <td>
+                            <input class="form-control" type="number" min="1" max="100" value="1" placeholder="Max 100"
                                    title="Quantity">
                         </td>
                         <td class="w-100"></td>
                     </tr>
                     </tbody>
                 </table>
-                <button id="addDevButton" class="btn btn-default btn-block"><span
-                        class="glyphicon glyphicon-plus"></span></button>
+                <button id="addDevButton" class="btn btn-default btn-block">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
             </div>
             <div class="no-borders modal-footer">
-                <h4 class="text-center"><strong>Description</strong></h4>
-                <textarea id="addTaskDescription" class="form-control" placeholder="Minimum 20 characters"
+                <h4 class="text-center">
+                    <strong>Description</strong>
+                </h4>
+                <textarea id="taskDescription" class="form-control" placeholder="Minimum 30 characters"
                           rows="6"></textarea>
-                <button id="taskBackButton" type="button" class="w-100 pull-left mt-10 btn btn-primary">Back
+                <button id="taskBackButton" type="button" class="w-100 pull-left mt-10 btn btn-primary"
+                        data-dismiss="modal">
+                    Back
                 </button>
-                <button id="addTaskButton" type="button" class="w-100 mt-10 btn btn-success" disabled="disabled">Add
+                <button id="addTaskButton" type="button" class="w-100 mt-10 btn btn-success" disabled>
+                    Add
                 </button>
             </div>
         </div>
@@ -272,7 +269,7 @@
 <div id="taskPrototype" class="no-display panel panel-default">
     <div class="panel-heading">
         <h4 class="panel-title">
-            <a data-toggle="collapse"></a>
+            <a data-parent="#tasks" data-toggle="collapse"></a>
         </h4>
     </div>
     <div class="panel-collapse collapse">
@@ -283,17 +280,14 @@
                     <tr>
                         <th>Specialization</th>
                         <th>Rank</th>
-                        <th>Quantity</th>
+                        <th class="text-vertical-center">Quantity</th>
                     </tr>
                     </thead>
                     <tbody>
                     </tbody>
                 </table>
             </div>
-            <textarea class="form-control" placeholder="Task Description" rows="6"
-                      readonly></textarea>
-            <input title="task-name"
-                   hidden>
+            <p title="taskDescription" class="data-description"></p>
             <button type="button" class="mt-10 pull-left btn btn-danger btn-sm">Drop Task
             </button>
         </div>
@@ -302,6 +296,6 @@
 
 <%@include file="fragments/footer.jspf" %>
 
-<script src="<spring:url value="/resources/js/customers-parlor.js" />"></script>
+<script src="<spring:url value="/resources/js/customers-cabinet.js" />"></script>
 </body>
 </html>

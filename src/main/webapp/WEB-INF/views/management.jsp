@@ -7,7 +7,7 @@
 <%@include file="fragments/navbar.jspf" %>
 
 <div class="container content-container">
-    <h2><spring:message code="customersParlor.parlor"/></h2>
+    <h2><spring:message code="customersCabinet.cabinet"/></h2>
     <p>Here you can manage your personal information, create technical tasks, etc.</p>
 
     <ul class="nav nav-tabs nav-justified">
@@ -149,6 +149,6 @@
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
 <script src="<spring:url value="/resources/js/managers.js" />"></script>
-<script src="<spring:url value="/resources/js/logout.js" />"></script>
+<script src="<spring:url value="/resources/js/utils.js" />"></script>
 </body>
 </html>

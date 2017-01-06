@@ -1,7 +1,6 @@
 package ua.devteam.validation.entityValidators;
 
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -63,8 +62,10 @@ public class OperationValidator implements Validator {
             rejectIfEmpty(errors, "requestsForDevelopers", "validationErrors.emptyRequestsForDevelopers");
         } else {
             // Validate nested requests for developers
-            for (RequestForDevelopers rfd : operation.getRequestsForDevelopers()) {
-                invokeValidator(requestForDevelopersValidator, rfd, errors);
+            for (int i = 0; i < operation.getRequestsForDevelopers().size(); i++) {
+                errors.pushNestedPath("requestsForDevelopers[" + i + "]");
+                invokeValidator(requestForDevelopersValidator, operation.getRequestsForDevelopers().get(i), errors);
+                errors.popNestedPath();
             }
         }
     }

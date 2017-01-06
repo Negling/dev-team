@@ -64,12 +64,12 @@ public class TechnicalTask extends AbstractTechnicalTask {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("TechnicalTask{");
-        sb.append("id=").append(this.getId());
-        sb.append(", customerId=").append(this.getCustomerId());
+        sb.append("id=").append(getId());
+        sb.append(", customerId=").append(getCustomerId());
         sb.append(", managerCommentary=").append(getManagerCommentary());
-        sb.append(", name=").append(this.getName());
-        sb.append(", description=").append(this.getDescription());
-        sb.append(", status=").append(getStatus().toString());
+        sb.append(", name=").append(getName());
+        sb.append(", description=").append(getDescription());
+        sb.append(", status=").append(getStatus() == null ? null : getStatus().toString());
         sb.append(", operations=").append(operations);
         sb.append('}');
         return sb.toString();

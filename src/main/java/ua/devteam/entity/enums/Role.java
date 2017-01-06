@@ -3,7 +3,7 @@ package ua.devteam.entity.enums;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-    Customer(1, "parlor"), Developer(2, "development"), Manager(3, "manage"), Ultramanager(4, "manage"), Admin(5, "manage");
+    Customer(1, "cabinet"), Developer(2, "development"), Manager(3, "manage"), Ultramanager(4, "manage"), Admin(5, "manage");
 
     private int id;
     private String defaultViewName;

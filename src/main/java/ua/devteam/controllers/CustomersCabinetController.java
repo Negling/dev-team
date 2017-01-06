@@ -26,25 +26,17 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/parlor")
-public class CustomersParlorController {
+@RequestMapping("/cabinet")
+public class CustomersCabinetController extends AbstractEntityProcessingController {
 
-    private ResourceBundleMessageSource messageSource;
     private TechnicalTasksService technicalTasksService;
     private Validator technicalTaskValidator;
 
     @Autowired
-    public void setMessageSource(ResourceBundleMessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
-
-    @Autowired
-    public void setTechnicalTasksService(TechnicalTasksService technicalTasksService) {
+    public CustomersCabinetController(ResourceBundleMessageSource messageSource, TechnicalTasksService technicalTasksService,
+                                      Validator technicalTaskValidator) {
+        super(messageSource);
         this.technicalTasksService = technicalTasksService;
-    }
-
-    @Autowired
-    public void setTechnicalTaskValidator(Validator technicalTaskValidator) {
         this.technicalTaskValidator = technicalTaskValidator;
     }
 
@@ -52,35 +44,19 @@ public class CustomersParlorController {
     @RequestMapping
     @PreAuthorize("hasAuthority('Customer')")
     public String parlor() {
-        return "customers-parlor";
+        return "customers-cabinet";
     }
 
     @ResponseBody
     @PreAuthorize("hasAuthority('Customer')")
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
-    public ResponseEntity<List<String>> createProject(@Valid @RequestBody TechnicalTask technicalTask, Authentication auth,
+    public ResponseEntity<List<String>> createProject(@RequestBody @Valid TechnicalTask technicalTask,
                                                       BindingResult bindingResult, Locale locale) {
-        List<String> responseMsg = new LinkedList<>();
-
-        if (bindingResult.hasErrors()) {
-            /*responseMsg.add();*/
-            responseMsg.addAll(bindingResult.getFieldErrors().stream()
-                    .map(error -> messageSource.getMessage(error.getCode(), error.getArguments(), locale))
-                    .collect(Collectors.toList()));
-
-            return new ResponseEntity<>(responseMsg, HttpStatus.BAD_REQUEST);
-        } else {
-
-            technicalTask.setCustomerId(((User) auth.getPrincipal()).getId());
-            technicalTask.setStatus(Status.New);
+        if (!bindingResult.hasErrors()) {
             technicalTasksService.registerTechnicalTask(technicalTask);
-
-            responseMsg.add(messageSource.getMessage("general.success", null, locale));
-            responseMsg.add(messageSource.getMessage("customersParlor.projectSubmitted",
-                    new Object[]{technicalTask.getName()}, locale));
-
-            return new ResponseEntity<>(responseMsg, HttpStatus.OK);
         }
+
+        return generateDefaultResponse(new LinkedList<>(), bindingResult, locale);
     }
 
     @ModelAttribute

@@ -14,7 +14,9 @@ public interface ProjectsService {
 
    List<Project> getNewByManager(Long managerId);
 
-    void confirmProject(Long projectId, Check projectCheck);
+    void confirmProject(Check projectCheck);
 
     void decline(Long projectId);
+
+    Project getById(Long projectId);
 }
