@@ -27,8 +27,18 @@ public class JDBCUsersDAO implements UsersDAO {
     @Override
     public boolean persists(String email) {
         try {
-            return jdbcOperations.queryForObject(sqlBundle.getString("users.persists"),
+            return jdbcOperations.queryForObject(sqlBundle.getString("users.persistsByEmail"),
                     (ResultSet rs, int rowNum) -> rs.getString("email"), email) != null;
+        } catch (EmptyResultDataAccessException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean persistsByPhone(String phoneNumber) {
+        try {
+            return jdbcOperations.queryForObject(sqlBundle.getString("users.persistsByPhone"),
+                    (ResultSet rs, int rowNum) -> rs.getString("phone"), phoneNumber) != null;
         } catch (EmptyResultDataAccessException ex) {
             return false;
         }

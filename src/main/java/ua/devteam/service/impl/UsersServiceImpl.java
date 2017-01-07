@@ -29,7 +29,12 @@ public class UsersServiceImpl implements UserDetailsService, UsersService {
     }
 
     @Override
-    public boolean isAvailable(String email) {
+    public boolean isPhoneAvailable(String phoneNumber) {
+        return !usersDAO.persistsByPhone(phoneNumber);
+    }
+
+    @Override
+    public boolean isEmailAvailable(String email) {
         return !usersDAO.persists(email);
     }
 }

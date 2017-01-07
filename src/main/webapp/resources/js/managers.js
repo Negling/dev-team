@@ -205,15 +205,13 @@ function declineProjectAjax(button) {
     $.ajax({
         method: "POST",
         url: "/manage/decline",
-        data: JSON.stringify($(button).attr("value")),
-        success: function () {
-            removeAndReload(button, "#pendingProjectsAccordion");
-            $("#activeProjectSelect").load(document.URL + " #activeProjectSelect > option");
-            $("#activeTaskSelect").load(document.URL + " #activeTaskSelect > option");
-        },
-        error: function () {
-            alert("ERROR!");
-        }
+        data: JSON.stringify($(button).attr("value"))
+    }).done(function () {
+        removeAndReload(button, "#pendingProjectsAccordion");
+        $("#activeProjectSelect").load(document.URL + " #activeProjectSelect > option");
+        $("#activeTaskSelect").load(document.URL + " #activeTaskSelect > option");
+    }).fail(function () {
+        alert("Some server internal error occurred! Please try again later, or contact support.");
     });
 }
 
@@ -232,7 +230,8 @@ function acceptProjectAjax(button) {
         data: JSON.stringify(check)
     }).done(function (data) {
         return removeAndReload(button, "#pendingProjectsAccordion", function () {
-            return displayAlertBox(data, "pendingProjectsAlertBox", "pendingProjectsAccordionParent", true);
+            displayAlertBox(data, "pendingProjectsAlertBox", "pendingProjectsAccordionParent", true);
+            calculateRegisteredProjectsChecks();
         });
     }).fail(function (jqXHR) {
         if (jqXHR.status === 422) {
@@ -253,15 +252,13 @@ function declineTechnicalTaskAjax() {
     $.ajax({
         method: "POST",
         url: "/manage/declineTechnicalTask",
-        data: JSON.stringify(data),
-        success: function () {
-            removeAndReload($("button[value=" + technicalTaskId + "][name=declineTechnicalTaskButton]"),
-                "#technicalTasksAccordion");
-            $("#declineTechnicalTaskManagerCommentary").val("");
-        },
-        error: function () {
-            alert("ERROR!");
-        }
+        data: JSON.stringify(data)
+    }).done(function () {
+        removeAndReload($("button[value=" + technicalTaskId + "][name=declineTechnicalTaskButton]"),
+            "#technicalTasksAccordion");
+        $("#declineTechnicalTaskManagerCommentary").val("");
+    }).fail(function () {
+        alert("Some server internal error occurred! Please try again later, or contact support.");
     });
 }
 
@@ -269,16 +266,15 @@ function formTechnicalTaskAsProjectAjax(button) {
     $.ajax({
         method: "POST",
         url: "/manage/formAsProject",
-        data: JSON.stringify($(button).attr("value")),
-        success: function () {
-            removeAndReload(button, "#technicalTasksAccordion");
-            $("#pendingProjectsAccordion").parent().load(document.URL + " #pendingProjectsAccordion");
-            $("#activeProjectSelect").load(document.URL + " #activeProjectSelect > option");
-            $("#activeTaskSelect").load(document.URL + " #activeTaskSelect > option");
-        },
-        error: function () {
-            alert("ERROR!");
-        }
+        data: JSON.stringify($(button).attr("value"))
+    }).done(function () {
+        removeAndReload(button, "#technicalTasksAccordion");
+        $("#pendingProjectsAccordion").parent().load(document.URL + " #pendingProjectsAccordion");
+        $("#activeProjectSelect").load(document.URL + " #activeProjectSelect > option");
+        $("#activeTaskSelect").load(document.URL + " #activeTaskSelect > option");
+        calculateRegisteredProjectsChecks();
+    }).fail(function () {
+        alert("Some server internal error occurred! Please try again later, or contact support.");
     });
 }
 
@@ -292,7 +288,7 @@ function searchForDevsAjax() {
     $.getJSON("/manage/getDevelopers", requestParams, function (data) {
         displayDevsSearchResults(data)
     }).fail(function () {
-        alert("ERROR!");
+        alert("Some server internal error occurred! Please try again later, or contact support.");
     });
 }
 
@@ -305,13 +301,11 @@ function bindDeveloperAjax(button) {
     $.ajax({
         method: "POST",
         url: "/manage/bind",
-        data: JSON.stringify(data),
-        success: function (data) {
-            return bindDeveloper(button, data);
-        },
-        error: function (e) {
-            alert("ERROR!");
-        }
+        data: JSON.stringify(data)
+    }).done(function (data) {
+        return bindDeveloper(button, data);
+    }).fail(function () {
+        alert("Some server internal error occurred! Please try again later, or contact support.");
     });
 }
 
@@ -319,12 +313,10 @@ function unbindDeveloperAjax(button) {
     $.ajax({
         method: "POST",
         url: "/manage/unbind",
-        data: JSON.stringify($(button).attr("data-developer-id")),
-        success: function () {
-            return unbindDeveloper(button);
-        },
-        error: function (e) {
-            alert("ERROR!");
-        }
+        data: JSON.stringify($(button).attr("data-developer-id"))
+    }).done(function (data) {
+        return unbindDeveloper(button);
+    }).fail(function () {
+        alert("Some server internal error occurred! Please try again later, or contact support.");
     });
 }

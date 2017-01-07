@@ -61,6 +61,11 @@ public class CustomerRegistrationFormValidator implements Validator {
         checkStringMatchPattern("phoneNumber", form.getPhoneNumber(), "(\\+[0-9]{12})",
                 errors, "validationErrors.phonePatternMismatch", null);
 
+        // Check if phone number is available
+        if (!errors.hasFieldErrors("phoneNumber") && !usersService.isPhoneAvailable(form.getPhoneNumber())) {
+            errors.rejectValue("phoneNumber", "validationErrors.phoneNumberIsNotAvailable");
+        }
+
         // Check if phone confirmation match phone field
         checkIfEquals("confirmedPhoneNumber", form.getPhoneNumber(), form.getConfirmedPhoneNumber(), errors,
                 "validationErrors.valuesMismatch", null);
@@ -77,7 +82,7 @@ public class CustomerRegistrationFormValidator implements Validator {
                 errors, "validationErrors.emailPatternMismatch", null);
 
         // Check if email is available
-        if (!errors.hasFieldErrors("email") && !usersService.isAvailable(form.getEmail())) {
+        if (!errors.hasFieldErrors("email") && !usersService.isEmailAvailable(form.getEmail())) {
             errors.rejectValue("email", "validationErrors.emailIsNotAvailable");
         }
 

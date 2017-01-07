@@ -57,7 +57,7 @@ public class TechnicalTaskValidator implements Validator {
                 new Object[]{formatStringOverflow(techTask.getDescription()), 5000});
 
         // Check if operations is empty
-        if (techTask.getOperations() == null|| techTask.getOperations().size() == 0) {
+        if (techTask.getOperations() == null || techTask.getOperations().size() == 0) {
             errors.reject("validationErrors.emptyOperations");
         } else {
             // Validate nested operations

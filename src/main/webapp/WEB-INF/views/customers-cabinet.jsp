@@ -1,20 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<html>
+<head>
 <%@include file="fragments/head.jspf" %>
 <link href="<spring:url value="/resources/css/customers-cabinet.css" />" rel="stylesheet">
-<title>Private Cabinet</title>
+<title><spring:message code="customersCabinet.cabinet"/></title>
 </head>
 <body>
 <%@include file="fragments/navbar.jspf" %>
 
 <div class="container content-container">
     <h2><spring:message code="customersCabinet.cabinet"/></h2>
-    <p>Here you can manage your personal information, create technical tasks, etc.</p>
+    <p><spring:message code="customersCabinet.description"/></p>
 
     <ul class="nav nav-tabs nav-justified">
-        <li class="active"><a data-toggle="tab" href="#createProject">Create Project</a></li>
-        <li><a data-toggle="tab" href="#activeTasks">Active Tasks</a></li>
-        <li><a data-toggle="tab" href="#history">History</a></li>
-        <li><a data-toggle="tab" href="#settings">Settings</a></li>
+        <li class="active"><a data-toggle="tab" href="#createProject">
+            <spring:message code="customersCabinet.createProject"/></a></li>
+        <li><a data-toggle="tab" href="#activeProjects"><spring:message code="customersCabinet.activeProjects"/></a>
+        </li>
+        <li><a data-toggle="tab" href="#history"><spring:message code="customersCabinet.history"/></a></li>
+        <li><a data-toggle="tab" href="#settings"><spring:message code="customersCabinet.settings"/></a></li>
     </ul>
 
     <div class="tab-content">
@@ -22,37 +26,55 @@
             <div id="formTechnicalTaskParent" class="row">
                 <div id="formTechnicalTask" class="new-project col-lg-8 col-lg-offset-2">
                     <h3 class="text-center page-header">
-                        <strong><spring:message code="customersCabinet.projectData"/></strong>
+                        <strong>
+                            <spring:message code="customersCabinet.projectData"/>
+                        </strong>
                     </h3>
+
+                    <%--technical task name--%>
                     <div class="form-group">
-                        <label class="control-label" for="technicalTaskName">Project name:</label>
+                        <label class="control-label" for="technicalTaskName">
+                            <spring:message code="entity.projectName"/>:
+                        </label>
+                        <spring:message code="entity.projectNamePlaceholder" var="projectNamePlaceholder"/>
                         <input id="technicalTaskName" name="projectName" type="text" class="form-control"
-                               placeholder="Minimum 10 characters">
+                               placeholder="<core:out value="${projectNamePlaceholder}"/>">
                     </div>
+                    <%--technical task description--%>
                     <div class="form-group">
-                        <label class="control-label" for="technicalTaskDescription">Project description:</label>
-                        <textarea id="technicalTaskDescription" name="projectDescription" class="form-control"
-                                  placeholder="Minimum 30 characters" rows="3"></textarea>
+                        <label class="control-label" for="technicalTaskDescription">
+                            <spring:message code="entity.projectDescription"/>:
+                        </label>
+                        <spring:message code="entity.projectDescriptionPlaceholder"
+                                        var="projectDescriptionPlaceholder"/>
+                        <textarea id="technicalTaskDescription" name="projectDescription" class="form-control" rows="3"
+                                  placeholder="<core:out value="${projectDescriptionPlaceholder}"/>"></textarea>
                     </div>
+
+                    <%--Tasks--%>
                     <h3 class="text-center page-header">
-                        <strong>Tasks</strong>
+                        <strong><spring:message code="entity.tasks"/></strong>
                     </h3>
                     <div id="tasks" class="panel-group">
                     </div>
                     <div class="text-center">
                         <button class="btn btn-primary btn-sm add-task-btn" type="button" data-toggle="modal"
-                                data-target="#addTaskModal">Add Task
+                                data-target="#addTaskModal">
+                            <spring:message code="customersCabinet.addTask"/>
                         </button>
                     </div>
-                    <button id="submitTechnicalTask" class="btn btn-success submit-project-btn" type="submit">Submit
+                    <button id="submitTechnicalTask" class="btn btn-success submit-project-btn" type="submit">
+                        <spring:message code="general.submit"/>
                     </button>
                 </div>
             </div>
         </div>
 
         <%--Active projects--%>
-        <div id="activeTasks" class="tab-pane fade">
-            <p class="lead">All projects which is currently under progress.</p>
+        <div id="activeProjects" class="tab-pane fade">
+            <p class="lead">
+                <spring:message code="customersCabinet.activeProjectsLead"/>
+            </p>
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
                     <table class="table table-striped">
@@ -96,7 +118,9 @@
 
         <%--History--%>
         <div id="history" class="tab-pane fade">
-            <p class="lead">Here you can track all your orders.</p>
+            <p class="lead">
+                <spring:message code="customersCabinet.historyLead"/>
+            </p>
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
                     <table class="table table-striped">
@@ -204,18 +228,38 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="no-borders modal-header">
-                <h4 class="modal-title"><strong>Task Name</strong></h4>
-                <input id="taskName" class="form-control" type="text" placeholder="Minimum 10 characters">
+
+                <%--task name--%>
+                <h4 class="modal-title">
+                    <strong>
+                        <spring:message code="entity.taskName"/>
+                    </strong>
+                </h4>
+                <input id="taskName" class="form-control" type="text"
+                       placeholder="<core:out value="${projectNamePlaceholder}"/>">
             </div>
+
+            <%--devs--%>
             <div class="no-borders modal-body">
-                <h4 class="text-center"><strong>Developers</strong></h4>
+                <h4 class="text-center">
+                    <strong>
+                        <spring:message code="entity.developers"/>
+                    </strong>
+                </h4>
                 <hr>
+                <%--devs table--%>
                 <table class="table table-condensed table-responsive">
                     <thead>
                     <tr>
-                        <th class="text-center">Specialization</th>
-                        <th class="text-center">Rank</th>
-                        <th class="text-center">Quantity</th>
+                        <th class="text-center">
+                            <spring:message code="entity.specialization"/>
+                        </th>
+                        <th class="text-center">
+                            <spring:message code="entity.rank"/>
+                        </th>
+                        <th class="text-center">
+                            <spring:message code="entity.quantity"/>
+                        </th>
                         <th></th>
                     </tr>
                     </thead>
@@ -247,18 +291,21 @@
                     <span class="glyphicon glyphicon-plus"></span>
                 </button>
             </div>
+            <%--task description--%>
             <div class="no-borders modal-footer">
                 <h4 class="text-center">
-                    <strong>Description</strong>
+                    <strong>
+                        <spring:message code="entity.taskDescription"/>
+                    </strong>
                 </h4>
-                <textarea id="taskDescription" class="form-control" placeholder="Minimum 30 characters"
-                          rows="6"></textarea>
+                <textarea id="taskDescription" class="form-control" rows="6"
+                          placeholder="<core:out value="${projectDescriptionPlaceholder}"/>"></textarea>
                 <button id="taskBackButton" type="button" class="w-100 pull-left mt-10 btn btn-primary"
                         data-dismiss="modal">
-                    Back
+                    <spring:message code="general.back"/>
                 </button>
                 <button id="addTaskButton" type="button" class="w-100 mt-10 btn btn-success" disabled>
-                    Add
+                    <spring:message code="general.add"/>
                 </button>
             </div>
         </div>
@@ -278,9 +325,15 @@
                 <table class="table table-condensed table-responsive">
                     <thead>
                     <tr>
-                        <th>Specialization</th>
-                        <th>Rank</th>
-                        <th class="text-vertical-center">Quantity</th>
+                        <th>
+                            <spring:message code="entity.specialization"/>
+                        </th>
+                        <th>
+                            <spring:message code="entity.rank"/>
+                        </th>
+                        <th class="text-center">
+                            <spring:message code="entity.quantity"/>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -288,11 +341,13 @@
                 </table>
             </div>
             <p title="taskDescription" class="data-description"></p>
-            <button type="button" class="mt-10 pull-left btn btn-danger btn-sm">Drop Task
+            <button type="button" class="mt-10 pull-left btn btn-danger btn-sm">
+                <spring:message code="customersCabinet.dropTask"/>
             </button>
         </div>
     </div>
 </div>
+<p id="deleteButtonText" class="no-display"> <spring:message code="general.delete"/></p>
 
 <%@include file="fragments/footer.jspf" %>
 

@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<html>
+<head>
 <%@include file="fragments/head.jspf" %>
 <link href="<spring:url value="/resources/css/login.css" />" rel="stylesheet">
 <title><spring:message code="general.login"/></title>
@@ -13,7 +15,7 @@
                 <div class="col-lg-12">
                     <div class="alert alert-success">
                         <core:if test="${not empty registered}">
-                            <spring:message code="login.successfulyRegistered"/>
+                            <spring:message code="login.successfullyRegistered"/>
                         </core:if>
                         <spring:message code="login.alreadyLogged"/>
                     </div>
@@ -26,7 +28,7 @@
                     <div class="col-lg-12">
                         <div class="alert alert-success alert-dismissable fade in">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            <spring:message code="login.successfulyRegistered"/>
+                            <spring:message code="login.successfullyRegistered"/>
                         </div>
                     </div>
                 </core:if>

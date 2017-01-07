@@ -77,7 +77,8 @@ function addTaskModalDevRow() {
     newRow = taskModal.find("tr:eq(1)").clone(true, true);
 
     // button to delete created row on demand
-    delButton = $("<button> Delete</button>")
+    delButton = $("<button></button>")
+        .text($("#deleteButtonText").text())
         .addClass("btn btn-default")
         .click(function () {
             newRow.animate({opacity: 0}, 300, function () {
