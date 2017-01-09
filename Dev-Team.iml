@@ -13,28 +13,7 @@
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
-      <configuration process_explicitly_annotated="false">
-        <fileset id="initializer ua.freelancer.configuration.AppInitializer servlet context" name="MVC dispatcher initializer servlet context" removed="true" profiles="dev,test">
-          <file>file://$MODULE_DIR$/src/main/java/ua/freelancer/configuration/WebConfiguration.java</file>
-        </fileset>
-        <fileset id="initializer ua.freelancer.configuration.AppInitializer root context" name="MVC dispatcher initializer root context" removed="true" profiles="dev,test" />
-        <fileset id="initializer ua.devteam.configuration.AppInitializer servlet context" name="MVC dispatcher initializer servlet context" removed="true" profiles="dev,test">
-          <file>file://$MODULE_DIR$/src/main/java/ua/devteam/configuration/WebConfiguration.java</file>
-        </fileset>
-        <fileset id="initializer ua.devteam.configuration.AppInitializer root context" name="MVC dispatcher initializer root context" removed="true" profiles="dev,test" />
-        <fileset id="initializer ua.devteam.configuration.WebInitializer servlet context" name="MVC dispatcher initializer servlet context" removed="true">
-          <file>file://$MODULE_DIR$/src/main/java/ua/devteam/configuration/WebConfiguration.java</file>
-        </fileset>
-        <fileset id="initializer ua.devteam.configuration.WebInitializer root context" name="MVC dispatcher initializer root context" removed="true">
-          <file>file://$MODULE_DIR$/src/main/java/ua/devteam/configuration/ServicesConfiguration.java</file>
-        </fileset>
-        <fileset id="fileset" name="Spring Application Context" removed="false" profiles="dev">
-          <file>file://$MODULE_DIR$/src/main/java/ua/devteam/configuration/ServicesConfiguration.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/ua/devteam/configuration/WebConfiguration.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/ua/devteam/configuration/DataAccessConfiguration.java</file>
-          <file>file://$MODULE_DIR$/src/main/java/ua/devteam/configuration/SecurityConfiguration.java</file>
-        </fileset>
-      </configuration>
+      <configuration />
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">

@@ -8,9 +8,13 @@ import java.util.List;
 
 public interface DevelopersService {
 
+    void lockDeveloper(Long developerId);
+
+    void unlockDeveloper(Long developerId);
+
     List<Developer> getAvailableDevelopers(DeveloperSpecialization specialization, DeveloperRank rank, String lastName);
 
-    void unbind(Long developerId);
+    void removeDevelopersFromProject(Long projectId);
 
-    Developer bind(Long developerId, Long taskId);
+    void approveDevelopersOnProject(Long projectId);
 }

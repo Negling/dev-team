@@ -2,21 +2,21 @@ package ua.devteam.service;
 
 
 import ua.devteam.entity.projects.Project;
-import ua.devteam.entity.tasks.TaskDeveloper;
-import ua.devteam.entity.users.Check;
+import ua.devteam.entity.projects.TechnicalTask;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProjectsService {
 
-   long createProject(Long technicalTaskId, Long managerId);
+    List<Project> getNewByManager(Long managerId);
 
-   List<Project> getNewByManager(Long managerId);
+    long createProject(TechnicalTask technicalTask, Long managerId);
 
-    void confirmProject(Check projectCheck);
+    void confirmProject(Long projectId);
 
-    void decline(Long projectId);
+    void runProject(Long projectId);
+
+    void decline(Long projectId, String managerCommentary);
 
     Project getById(Long projectId);
 }

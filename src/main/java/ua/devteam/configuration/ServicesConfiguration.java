@@ -15,7 +15,7 @@ import java.util.List;
 
 @Configuration
 @EnableAspectJAutoProxy
-@ComponentScan(basePackages = {"ua.devteam.service.impl", "ua.devteam.advice"})
+@ComponentScan(basePackages = {"ua.devteam.service.impl", "ua.devteam.advice", "ua.devteam.validation"})
 public class ServicesConfiguration {
 
 }

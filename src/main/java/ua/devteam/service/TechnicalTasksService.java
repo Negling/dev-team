@@ -13,5 +13,7 @@ public interface TechnicalTasksService {
 
     List<TechnicalTask> getAllTechnicalTasks();
 
+    void accept(Long technicalTaskId, Long managerId);
+
     void decline(Long technicalTaskId, String managerCommentary);
 }

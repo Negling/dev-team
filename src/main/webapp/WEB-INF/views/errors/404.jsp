@@ -6,9 +6,9 @@
 <body>
 <%@include file="../fragments/navbar.jspf" %>
 
-<core:if test="${empty requestURL}">
+<c:if test="${empty requestURL}">
     <spring:message code="errorPage.errorPage" var="requestURL"/>
-</core:if>
+</c:if>
 
 <div class="container">
     <div class="row">

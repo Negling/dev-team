@@ -11,6 +11,7 @@ import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.util.UriUtils;
 
@@ -20,6 +21,17 @@ import java.io.UnsupportedEncodingException;
 public class ControllersAdvice {
 
     private final static Logger logger = LogManager.getLogger("ExceptionsLogger");
+    private Validator checkValidator;
+    private Validator customerRegistrationFormValidator;
+    private Validator technicalTaskValidator;
+
+    @Autowired
+    public ControllersAdvice(Validator checkValidator, Validator customerRegistrationFormValidator,
+                             Validator technicalTaskValidator) {
+        this.checkValidator = checkValidator;
+        this.customerRegistrationFormValidator = customerRegistrationFormValidator;
+        this.technicalTaskValidator = technicalTaskValidator;
+    }
 
     @ExceptionHandler(Exception.class)
     public String handleInternalError(Exception ex) {
@@ -36,7 +48,7 @@ public class ControllersAdvice {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public String handleAccessDeniedException(){
+    public String handleAccessDeniedException() {
         if (logger.isTraceEnabled()) {
             logger.trace("Access Denied! Forwarding on 403 error page.");
         }
@@ -54,6 +66,11 @@ public class ControllersAdvice {
         }
 
         return "forward:/error-page-404";
+    }
+
+    @InitBinder({"check", "customerRegistrationForm", "technicalTask"})
+    public void dataBinding(WebDataBinder binder) {
+        binder.addValidators(checkValidator, customerRegistrationFormValidator, technicalTaskValidator);
     }
 
     private String formExceptionMessage(Exception ex) {

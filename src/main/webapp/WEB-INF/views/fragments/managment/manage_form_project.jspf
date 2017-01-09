@@ -12,12 +12,12 @@
         <%--Projects--%>
         <div id="pendingProjectsAccordionParent" class="col-lg-9">
             <div id="pendingProjectsAccordion" class="panel-group">
-                <core:choose>
-                    <core:when test="${empty pendingProjects}">
+                <c:choose>
+                    <c:when test="${empty pendingProjects}">
                         <h3 class="text-center">No New Requests!</h3>
-                    </core:when>
-                    <core:otherwise>
-                        <core:forEach items="${pendingProjects}" var="project" varStatus="loop">
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach items="${pendingProjects}" var="project" varStatus="loop">
                             <div class="panel panel-default">
                                 <div class="project-heading panel-heading">
                                     <h4 class="panel-title">
@@ -38,7 +38,7 @@
 
                                                 <%--Tasks--%>
                                             <div id="tasksAccordion${project.id}" class="panel-group">
-                                                <core:forEach items="${project.tasks}" var="task">
+                                                <c:forEach items="${project.tasks}" var="task">
                                                     <div class="panel panel-default">
                                                         <div class="task-heading panel-heading">
                                                             <h4 class="panel-title">
@@ -81,15 +81,14 @@
                                                                             </tr>
                                                                             </thead>
                                                                             <tbody>
-                                                                            <core:forEach
-                                                                                    items="${task.requestsForDevelopers}"
-                                                                                    var="taskRequest">
+                                                                            <c:forEach var="taskRequest"
+                                                                                       items="${task.requestsForDevelopers}">
                                                                                 <tr>
                                                                                     <td>${taskRequest.specialization}</td>
                                                                                     <td>${taskRequest.rank}</td>
                                                                                     <td>${taskRequest.quantity}</td>
                                                                                 </tr>
-                                                                            </core:forEach>
+                                                                            </c:forEach>
                                                                             </tbody>
                                                                         </table>
                                                                     </div>
@@ -128,8 +127,8 @@
                                                                             </tr>
                                                                             </thead>
                                                                             <tbody class="text-center">
-                                                                            <core:forEach items="${task.taskDevelopers}"
-                                                                                          var="taskDeveloper">
+                                                                            <c:forEach items="${task.taskDevelopers}"
+                                                                                       var="taskDeveloper">
                                                                                 <tr>
                                                                                     <td>
                                                                                         <a href="#">${taskDeveloper.developerFirstName}
@@ -139,8 +138,7 @@
                                                                                     <td>${taskDeveloper.specialization}</td>
                                                                                     <td>${taskDeveloper.rank}</td>
                                                                                     <td><fmt:formatNumber
-                                                                                            type="number"
-                                                                                            pattern="#"
+                                                                                            type="number" pattern="#"
                                                                                             value="${taskDeveloper.hireCost}"/>
                                                                                         $
                                                                                     </td>
@@ -155,7 +153,7 @@
                                                                                         </button>
                                                                                     </td>
                                                                                 </tr>
-                                                                            </core:forEach>
+                                                                            </c:forEach>
                                                                             </tbody>
                                                                         </table>
                                                                     </div>
@@ -164,7 +162,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </core:forEach>
+                                                </c:forEach>
                                             </div>
                                                 <%--end Tasks--%>
 
@@ -230,9 +228,9 @@
                                 </div>
                                     <%--end Project Body--%>
                             </div>
-                        </core:forEach>
-                    </core:otherwise>
-                </core:choose>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
         <%--end Projects--%>
@@ -272,21 +270,25 @@
                     <div class="col-lg-12">
                         <label>Select Project:</label>
                         <select id="activeProjectSelect" class="form-control" title="Active Project">
-                            <core:forEach items="${pendingProjects}" var="project">
+                            <c:forEach items="${pendingProjects}" var="project">
                                 <option value="${project.id}">
                                         ${project.name}
                                 </option>
-                            </core:forEach>
+                            </c:forEach>
                         </select>
                     </div>
                     <div class="col-lg-12">
                         <label>Select Task:</label>
                         <select id="activeTaskSelect" class="form-control" title="Active Task">
-                            <core:forEach items="${pendingProjects[0].tasks}" var="currentTask">
-                                <option value="${currentTask.id}">
-                                        ${currentTask.name}
-                                </option>
-                            </core:forEach>
+                            <c:forEach items="${pendingProjects}" var="currentTask" varStatus="status">
+                                <c:if test="${status.last}">
+                                    <c:forEach items="${currentTask.tasks}" var="task">
+                                        <option value="${task.id}">
+                                                ${task.name}
+                                        </option>
+                                    </c:forEach>
+                                </c:if>
+                            </c:forEach>
                         </select>
                     </div>
                 </div>
@@ -311,17 +313,17 @@
                     <div class="col-lg-4">
                         <label>Specialization:</label>
                         <select class="form-control" title="specialization" id="developerSpecialization">
-                            <core:forEach items="${specializations}" var="specialization">
+                            <c:forEach items="${specializations}" var="specialization">
                                 <option>${specialization}</option>
-                            </core:forEach>
+                            </c:forEach>
                         </select>
                     </div>
                     <div class="col-lg-4">
                         <label>Rank:</label>
                         <select class="form-control" title="rank" id="developerRank">
-                            <core:forEach items="${ranks}" var="rank">
+                            <c:forEach items="${ranks}" var="rank">
                                 <option>${rank}</option>
-                            </core:forEach>
+                            </c:forEach>
                         </select>
                     </div>
                     <div class="col-lg-4">

@@ -14,9 +14,9 @@
             <div class="spacer text-center col-lg-6 col-lg-offset-3">
                 <div class="col-lg-12">
                     <div class="alert alert-success">
-                        <core:if test="${not empty registered}">
+                        <c:if test="${not empty registered}">
                             <spring:message code="login.successfullyRegistered"/>
-                        </core:if>
+                        </c:if>
                         <spring:message code="login.alreadyLogged"/>
                     </div>
                 </div>
@@ -24,15 +24,15 @@
         </security:authorize>
         <security:authorize access="isAnonymous()">
             <div class="spacer text-center col-lg-6 col-lg-offset-3">
-                <core:if test="${not empty registered}">
+                <c:if test="${not empty registered}">
                     <div class="col-lg-12">
                         <div class="alert alert-success alert-dismissable fade in">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             <spring:message code="login.successfullyRegistered"/>
                         </div>
                     </div>
-                </core:if>
-                <core:if test="${not empty error}">
+                </c:if>
+                <c:if test="${not empty error}">
                     <div class="col-lg-12">
                         <div class="alert alert-danger alert-dismissable fade in">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -40,8 +40,8 @@
                             <spring:message code="login.badCredentials"/>
                         </div>
                     </div>
-                </core:if>
-                <core:if test="${not empty logout}">
+                </c:if>
+                <c:if test="${not empty logout}">
                     <div class="col-lg-12">
                         <div class="alert alert-success alert-dismissable fade in">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -49,7 +49,7 @@
                             <spring:message code="login.loggedOut"/>
                         </div>
                     </div>
-                </core:if>
+                </c:if>
             </div>
             <div class="col-sm-4 col-sm-offset-4">
                 <sform:form action="/login" method="post">

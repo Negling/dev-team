@@ -65,3 +65,7 @@ function displayAlertBox(data, alertBoxId, alertBoxParentId, isSuccessful) {
         }
     }
 }
+
+function updateNavsTab(navTabId) {
+    $("#" + navTabId).load(document.URL + " #" + navTabId + " > li");
+}

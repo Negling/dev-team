@@ -3,49 +3,44 @@ package ua.devteam.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.devteam.dao.DeveloperDAO;
-import ua.devteam.dao.TaskDevelopersDAO;
 import ua.devteam.entity.enums.DeveloperRank;
 import ua.devteam.entity.enums.DeveloperSpecialization;
 import ua.devteam.entity.enums.DeveloperStatus;
-import ua.devteam.entity.tasks.TaskDeveloper;
 import ua.devteam.entity.users.Developer;
 import ua.devteam.service.DevelopersService;
 
 import java.util.List;
 
+import static ua.devteam.entity.enums.DeveloperStatus.*;
+
 @Service("developersService")
 public class DevelopersServiceImpl implements DevelopersService {
 
     private DeveloperDAO developerDAO;
-    private TaskDevelopersDAO taskDevelopersDAO;
 
     @Autowired
-    public DevelopersServiceImpl(DeveloperDAO developerDAO, TaskDevelopersDAO taskDevelopersDAO) {
+    public DevelopersServiceImpl(DeveloperDAO developerDAO) {
         this.developerDAO = developerDAO;
-        this.taskDevelopersDAO = taskDevelopersDAO;
     }
 
     @Override
-    public Developer bind(Long developerId, Long taskId) {
-        Developer dev = developerDAO.getById(developerId);
-        dev.setStatus(DeveloperStatus.Locked);
-
-        taskDevelopersDAO.createDefault(new TaskDeveloper(taskId, developerId));
-        developerDAO.update(dev, dev);
-
-        return dev;
+    public void lockDeveloper(Long developerId) {
+        updateDeveloperStatus(developerId, Locked);
     }
 
     @Override
-    public void unbind(Long developerId) {
-        Developer dev = developerDAO.getById(developerId);
-        TaskDeveloper taskDev = taskDevelopersDAO.getByTaskAndDeveloper(dev.getCurrentTaskId(), developerId);
+    public void unlockDeveloper(Long developerId) {
+        updateDeveloperStatus(developerId, Available);
+    }
 
-        dev.setCurrentTaskId(null);
-        dev.setStatus(DeveloperStatus.Available);
+    @Override
+    public void removeDevelopersFromProject(Long projectId) {
+        developerDAO.updateStatusByProject(Available, projectId);
+    }
 
-        taskDevelopersDAO.delete(taskDev);
-        developerDAO.update(dev, dev);
+    @Override
+    public void approveDevelopersOnProject(Long projectId) {
+        developerDAO.updateStatusByProject(Hired, projectId);
     }
 
     @Override
@@ -55,5 +50,12 @@ public class DevelopersServiceImpl implements DevelopersService {
         } else {
             return developerDAO.getAvailableByParams(specialization, rank, lastName);
         }
+    }
+
+    private void updateDeveloperStatus(Long developerId, DeveloperStatus developerStatus) {
+        Developer dev = developerDAO.getById(developerId);
+        dev.setStatus(developerStatus);
+
+        developerDAO.update(dev, dev);
     }
 }

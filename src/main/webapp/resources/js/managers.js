@@ -8,7 +8,7 @@ $(function () {
                 $("meta[name=_csrf]").attr("content"));
         },
         contentType: "application/json",
-        timeout: 10000
+        timeout: 10000,
     });
 
     // when project on bind devs modal is changing - update task select options
@@ -18,22 +18,30 @@ $(function () {
     $("#searchDevsBtn").click(searchForDevsAjax);
 
     // in open "decline technical task" modal by clicking on cancel - clear manager commentary
-    $("#declineTechnicalTaskModal").find("button[id!=declineTechnicalTask]").click(function () {
-        $("#declineTechnicalTaskManagerCommentary").val("");
+    $("#declineModal").find("button[id!=declineButton]").click(function () {
+        $("#declineManagerCommentary").val("");
     });
 
-    // in open "decline technical task" modal by clicking on continue - send ajax POST request
-    $("#declineTechnicalTask").click(function () {
-        declineTechnicalTaskAjax();
+    // in open "decline" modal by clicking on continue - send ajax POST request
+    $("#declineButton").click(function () {
+        if ($(this).attr("data-entity-type") === "project") {
+            declineProjectAjax();
+        } else {
+            declineTechnicalTaskAjax();
+        }
     });
-
 
     $("body").on("click", "button[name=declineTechnicalTaskButton]", function () {
-        // on click change tt ID in "declineTechnicalTask" modal
-        $("#declineTechnicalTaskId").text($(this).attr("value"));
+
+        // on click change tt ID in "declineModal"
+        $("#declineId").text($(this).attr("value"));
+        $("#declineButton").attr("data-entity-type", "technicalTask");
+        $("#declineModal").modal("show");
     }).on("click", "button[name=declineProject]", function () {
-        // send decline project request
-        return declineProjectAjax($(this));
+
+        $("#declineId").text($(this).attr("value"));
+        $("#declineButton").attr("data-entity-type", "project");
+        $("#declineModal").modal("show");
     }).on("click", "button[name=acceptTechnicalTask]", function () {
         // send accept tt and form it as project request
         return formTechnicalTaskAsProjectAjax($(this));
@@ -164,11 +172,11 @@ function bindDeveloper(button, data) {
     newRow = $("<tr></tr>").appendTo(tableBody);
     link = $("<a></a>")
         .attr("href", "#")
-        .text(data.firstName + " " + data.lastName);
+        .text(data.developerFirstName + " " + data.developerLastName);
     unbindButton = $("<button></button>")
         .addClass("btn btn-info btn-sm")
         .attr("data-developer-hire-cost", data.hireCost)
-        .attr("data-developer-id", data.id)
+        .attr("data-developer-id", data.developerId)
         .attr("data-project-id", projectId)
         .attr("type", "button")
         .text($("#unbind").text())
@@ -201,15 +209,22 @@ function unbindDeveloper(button) {
     calculateProjectCheck(projectId);
 }
 
-function declineProjectAjax(button) {
+function declineProjectAjax() {
+    var projectId = $("#declineId").text();
+    var data = {
+        projectId: projectId,
+        managerCommentary: $("#declineManagerCommentary").val()
+    };
+
     $.ajax({
         method: "POST",
-        url: "/manage/decline",
-        data: JSON.stringify($(button).attr("value"))
+        url: "/manage/declineProject",
+        data: JSON.stringify(data)
     }).done(function () {
-        removeAndReload(button, "#pendingProjectsAccordion");
+        removeAndReload($("button[value=" + projectId + "][name=declineProject]"), "#pendingProjectsAccordion");
         $("#activeProjectSelect").load(document.URL + " #activeProjectSelect > option");
         $("#activeTaskSelect").load(document.URL + " #activeTaskSelect > option");
+        updateNavsTab("navTab");
     }).fail(function () {
         alert("Some server internal error occurred! Please try again later, or contact support.");
     });
@@ -232,6 +247,7 @@ function acceptProjectAjax(button) {
         return removeAndReload(button, "#pendingProjectsAccordion", function () {
             displayAlertBox(data, "pendingProjectsAlertBox", "pendingProjectsAccordionParent", true);
             calculateRegisteredProjectsChecks();
+            updateNavsTab("navTab");
         });
     }).fail(function (jqXHR) {
         if (jqXHR.status === 422) {
@@ -243,10 +259,10 @@ function acceptProjectAjax(button) {
 }
 
 function declineTechnicalTaskAjax() {
-    var technicalTaskId = $("#declineTechnicalTaskId").text();
+    var technicalTaskId = $("#declineId").text();
     var data = {
         technicalTaskId: technicalTaskId,
-        managerCommentary: $("#declineTechnicalTaskManagerCommentary").val()
+        managerCommentary: $("#declineManagerCommentary").val()
     };
 
     $.ajax({
@@ -256,23 +272,30 @@ function declineTechnicalTaskAjax() {
     }).done(function () {
         removeAndReload($("button[value=" + technicalTaskId + "][name=declineTechnicalTaskButton]"),
             "#technicalTasksAccordion");
-        $("#declineTechnicalTaskManagerCommentary").val("");
+        $("#declineManagerCommentary").val("");
+        updateNavsTab("navTab");
     }).fail(function () {
         alert("Some server internal error occurred! Please try again later, or contact support.");
     });
 }
 
 function formTechnicalTaskAsProjectAjax(button) {
+    var data = {
+        technicalTaskId: $(button).attr("value"),
+        managerId: $("#userId").text()
+    };
+
     $.ajax({
         method: "POST",
         url: "/manage/formAsProject",
-        data: JSON.stringify($(button).attr("value"))
+        data: JSON.stringify(data)
     }).done(function () {
         removeAndReload(button, "#technicalTasksAccordion");
         $("#pendingProjectsAccordion").parent().load(document.URL + " #pendingProjectsAccordion");
         $("#activeProjectSelect").load(document.URL + " #activeProjectSelect > option");
         $("#activeTaskSelect").load(document.URL + " #activeTaskSelect > option");
         calculateRegisteredProjectsChecks();
+        updateNavsTab("navTab");
     }).fail(function () {
         alert("Some server internal error occurred! Please try again later, or contact support.");
     });

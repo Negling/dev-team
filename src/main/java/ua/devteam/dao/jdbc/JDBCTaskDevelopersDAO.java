@@ -56,6 +56,11 @@ public class JDBCTaskDevelopersDAO extends JDBCGenericDAO<TaskDeveloper> impleme
     }
 
     @Override
+    public void setStatusByProject(Status status, Long projectId) {
+        jdbcOperations.update(sqlBundle.getString("taskDevelopers.updateStatusByProject"), status.toString(), projectId);
+    }
+
+    @Override
     public void deleteAllByProject(Long projectId) {
         jdbcOperations.update(sqlBundle.getString("taskDevelopers.deleteAllByProject"), projectId);
     }
@@ -63,8 +68,13 @@ public class JDBCTaskDevelopersDAO extends JDBCGenericDAO<TaskDeveloper> impleme
     @Override
     public TaskDeveloper getByTaskAndDeveloper(Long taskId, Long developerId) {
         return jdbcOperations.queryForObject(sqlBundle.getString("taskDevelopers.selectByTaskAndDeveloper"), this::mapEntity,
-                taskId,
-                developerId);
+                taskId, developerId);
+    }
+
+    @Override
+    public TaskDeveloper getByDeveloperAndStatus(Long developerId, Status status) {
+        return jdbcOperations.queryForObject(sqlBundle.getString("taskDevelopers.selectByDeveloperAndStatus"), this::mapEntity,
+                developerId, status.toString());
     }
 
     @Override

@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <security:authorize access="isAuthenticated()" var="loggedIn"/>
-<core:choose>
-    <core:when test="${loggedIn}">
+<c:choose>
+    <c:when test="${loggedIn}">
         <security:authentication property="principal.firstName" var="username"/>
-    </core:when>
-    <core:otherwise>
+    </c:when>
+    <c:otherwise>
         <spring:message code="general.guest" var="username"/>
-    </core:otherwise>
-</core:choose>
+    </c:otherwise>
+</c:choose>
 
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">

@@ -143,7 +143,7 @@ CREATE TABLE task_developers (
   task_id      BIGINT UNSIGNED NOT NULL,
   developer_id BIGINT UNSIGNED NOT NULL,
   hours_spent  INT             NOT NULL DEFAULT 0,
-  status       VARCHAR(20)     NOT NULL DEFAULT 'Running',
+  status       VARCHAR(20)     NOT NULL DEFAULT 'New',
   FOREIGN KEY (task_id)
   REFERENCES project_tasks (id)
     ON DELETE CASCADE

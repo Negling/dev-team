@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 <head>
-<%@include file="fragments/head.jspf" %>
-<link href="<spring:url value="/resources/css/management.css" />" rel="stylesheet">
-<title>Management</title>
+    <%@include file="fragments/head.jspf" %>
+    <link href="<spring:url value="/resources/css/management.css" />" rel="stylesheet">
+    <title>Management</title>
 </head>
 <body>
 <%@include file="fragments/navbar.jspf" %>
@@ -12,12 +12,23 @@
     <h2><spring:message code="customersCabinet.cabinet"/></h2>
     <p>Here you can manage your personal information, create technical tasks, etc.</p>
 
-    <ul class="nav nav-tabs nav-justified">
-        <li class="active"><a data-toggle="tab" href="#technicalTasks">Technical Tasks</a></li>
+    <ul id="navTab" class="nav nav-tabs nav-justified">
+        <li class="active"><a data-toggle="tab" href="#technicalTasks">
+            <span class="badge"><c:out value="${empty technicalTasks ? '' : technicalTasks.size()}"/></span>
+            Technical Tasks
+        </a>
+        </li>
         <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">My Projects <span class="caret"></span></a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <span class="badge"><c:out value="${empty pendingProjects ? '' : pendingProjects.size()}"/></span>
+                My Projects <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li><a href="#formProjects" role="tab" data-toggle="tab">Form Project</a></li>
+                <li>
+                    <a href="#formProjects" role="tab" data-toggle="tab">
+                        Form Project
+                        <span class="badge"><c:out value="${empty pendingProjects ? '' : pendingProjects.size()}"/></span>
+                    </a>
+                </li>
                 <li><a href="#completeProjects" role="tab" data-toggle="tab">Complete Projects</a></li>
             </ul>
         </li>
@@ -39,13 +50,13 @@
         <%--Complete Projects--%>
         <div id="completeProjects" class="tab-pane fade">
             <div class="row">
-                <core:choose>
-                    <core:when test="${empty completeProjects}">
+                <c:choose>
+                    <c:when test="${empty completeProjects}">
                         <div class="text-vertical-center col-lg-12">
                             <h3>No Complete Projects!</h3>
                         </div>
-                    </core:when>
-                    <core:otherwise>
+                    </c:when>
+                    <c:otherwise>
                         <h3 class="page-header lead">Complete Projects</h3>
                         <div class="table-responsive">
                             <table class="table table-condensed">
@@ -59,7 +70,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <core:forEach items="${completeProjects }" var="project">
+                                <c:forEach items="${completeProjects }" var="project">
                                     <tr>
                                         <td><a href="#">${project.name}</a></td>
                                         <td><fmt:formatDate value="${project.startDate}" pattern="d MMMM, yyyy"/></td>
@@ -67,12 +78,12 @@
                                         <td>${project.status}</td>
                                         <td>$ ${project.price}</td>
                                     </tr>
-                                </core:forEach>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>
-                    </core:otherwise>
-                </core:choose>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
         <%--end Complete Projects--%>
@@ -143,14 +154,37 @@
 
 </div>
 
+<!-- Decline Technical Task Modal -->
+<div class="modal fade" id="declineModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Reason:</h4>
+            </div>
+            <div class="modal-body">
+                <textarea id="declineManagerCommentary" class="form-control" placeholder="Can be empty."
+                          rows="6"></textarea>
+                <p id="declineId" class="no-display"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                <button id="declineButton" type="button" class="btn btn-success pull-right"
+                        data-dismiss="modal">Continue
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <p id="bind" class="no-display">Bind to task</p>
 <p id="unbind" class="no-display">Unbind</p>
 
 <script src="<spring:url value="/resources/js/jquery-3.1.1.min.js" />"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
-<script src="<spring:url value="/resources/js/managers.js" />"></script>
+<script src="<spring:url value="/resources/js/bootstrap.min.js" />"></script>
 <script src="<spring:url value="/resources/js/utils.js" />"></script>
+<script src="<spring:url value="/resources/js/managers.js" />"></script>
 </body>
 </html>

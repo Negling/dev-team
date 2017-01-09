@@ -12,50 +12,50 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import ua.devteam.entity.enums.DeveloperRank;
 import ua.devteam.entity.enums.DeveloperSpecialization;
 import ua.devteam.entity.projects.Project;
+import ua.devteam.entity.tasks.TaskDeveloper;
 import ua.devteam.entity.users.Check;
 import ua.devteam.entity.users.Developer;
 import ua.devteam.entity.users.User;
-import ua.devteam.service.DevelopersService;
-import ua.devteam.service.ProjectsService;
-import ua.devteam.service.TechnicalTasksService;
+import ua.devteam.service.*;
 
 import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/manage")
 public class ManagersCabinetController extends AbstractEntityProcessingController {
 
-    private ProjectsService projectsService;
     private TechnicalTasksService technicalTasksService;
+    private ProjectsService projectsService;
+    private ChecksService checksService;
     private DevelopersService developersService;
-    private Validator checkValidator;
+    private TaskDevelopersService taskDevelopersService;
     private Validator projectValidator;
 
     @Autowired
-    public ManagersCabinetController(ResourceBundleMessageSource messageSource, ProjectsService projectsService,
-                                     TechnicalTasksService technicalTasksService, DevelopersService developersService,
-                                     Validator checkValidator, Validator projectValidator) {
+    public ManagersCabinetController(ResourceBundleMessageSource messageSource, TechnicalTasksService technicalTasksService,
+                                     ProjectsService projectsService, ChecksService checksService,
+                                     DevelopersService developersService, TaskDevelopersService taskDevelopersService,
+                                     Validator projectValidator) {
         super(messageSource);
-        this.projectsService = projectsService;
         this.technicalTasksService = technicalTasksService;
+        this.projectsService = projectsService;
+        this.checksService = checksService;
         this.developersService = developersService;
-        this.checkValidator = checkValidator;
+        this.taskDevelopersService = taskDevelopersService;
         this.projectValidator = projectValidator;
     }
 
     @RequestMapping
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
-    public String managersParlor() {
+    public String cabinet() {
         return "management";
     }
 
@@ -72,8 +72,8 @@ public class ManagersCabinetController extends AbstractEntityProcessingControlle
     @ResponseBody
     @RequestMapping(value = "/bind", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
-    public Developer bindDeveloper(@RequestBody Map<String, Long> params) {
-        return developersService.bind(params.get("devId"), params.get("taskId"));
+    public TaskDeveloper bindDeveloper(@RequestBody Map<String, Long> params) {
+        return taskDevelopersService.bindDeveloper(params.get("devId"), params.get("taskId"));
     }
 
 
@@ -81,7 +81,9 @@ public class ManagersCabinetController extends AbstractEntityProcessingControlle
     @RequestMapping(value = "/unbind", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
     public ResponseEntity unbindDeveloper(@RequestBody Long developerId) throws Exception {
-        developersService.unbind(developerId);
+
+        taskDevelopersService.unbindDeveloper(developerId);
+
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -89,24 +91,29 @@ public class ManagersCabinetController extends AbstractEntityProcessingControlle
     @RequestMapping(value = "/declineTechnicalTask", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
     public ResponseEntity declineTechnicalTask(@RequestBody Map<String, String> params) throws Exception {
+
         technicalTasksService.decline(Long.parseLong(params.get("technicalTaskId")), params.get("managerCommentary"));
+
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @ResponseBody
     @RequestMapping(value = "/formAsProject", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
-    public ResponseEntity formTechnicalTaskAsProject(@RequestBody Long technicalTaskId, Authentication auth) throws Exception {
-        projectsService.createProject(technicalTaskId, ((User) auth.getPrincipal()).getId());
+    public ResponseEntity formTechnicalTaskAsProject(@RequestBody Map<String, String> params) throws Exception {
+        technicalTasksService.accept(Long.parseLong(params.get("technicalTaskId")),
+                Long.parseLong(params.get("managerId")));
+
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/decline", method = RequestMethod.POST)
+    @RequestMapping(value = "/declineProject", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
-    public ResponseEntity declineProject(@RequestBody Long projectId) {
+    public ResponseEntity declineProject(@RequestBody Map<String, String> params) {
 
-        projectsService.decline(projectId);
+        projectsService.decline(Long.parseLong(params.get("projectId")), params.get("managerCommentary"));
+
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -129,7 +136,7 @@ public class ManagersCabinetController extends AbstractEntityProcessingControlle
         projectValidator.validate(project, projectErrors);
 
         if (!projectErrors.hasErrors()) {
-            projectsService.confirmProject(check);
+            checksService.registerCheck(check);
         }
 
         return generateDefaultResponse(new LinkedList<>(), projectErrors, locale);
@@ -143,10 +150,5 @@ public class ManagersCabinetController extends AbstractEntityProcessingControlle
         model.addAttribute("technicalTasks", technicalTasksService.getAllUnassigned());
         model.addAttribute("specializations", DeveloperSpecialization.values());
         model.addAttribute("ranks", DeveloperRank.values());
-    }
-
-    @InitBinder("check")
-    public void dataBinding(WebDataBinder binder) {
-        binder.addValidators(checkValidator);
     }
 }

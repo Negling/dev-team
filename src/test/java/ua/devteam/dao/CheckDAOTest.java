@@ -100,7 +100,7 @@ public class CheckDAOTest {
 
     @Test
     public void getByCustomerTest() {
-        List<Check> data = checkDAO.getByCustomer((long) 1);
+        List<Check> data = checkDAO.getAllByCustomer((long) 1);
 
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
@@ -108,6 +108,6 @@ public class CheckDAOTest {
 
     @Test
     public void getByCustomerWrongIdTest() {
-        assertThat(checkDAO.getByCustomer((long) 0).size(), is(0));
+        assertThat(checkDAO.getAllByCustomer((long) 0).size(), is(0));
     }
 }

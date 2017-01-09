@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 <head>
-<%@include file="fragments/head.jspf" %>
-<link href="<spring:url value="/resources/css/customers-cabinet.css" />" rel="stylesheet">
-<title><spring:message code="customersCabinet.cabinet"/></title>
+    <%@include file="fragments/head.jspf" %>
+    <link href="<spring:url value="/resources/css/customers-cabinet.css" />" rel="stylesheet">
+    <title><spring:message code="customersCabinet.cabinet"/></title>
 </head>
 <body>
 <%@include file="fragments/navbar.jspf" %>
@@ -14,7 +14,22 @@
 
     <ul class="nav nav-tabs nav-justified">
         <li class="active"><a data-toggle="tab" href="#createProject">
-            <spring:message code="customersCabinet.createProject"/></a></li>
+            <spring:message code="customersCabinet.createProject"/></a>
+        </li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <span class="badge"><c:out value="${empty newChecks ? '' : newChecks.size()}"/></span>
+                <spring:message code="customersCabinet.checks"/> <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="#newChecks" role="tab" data-toggle="tab">
+                    <spring:message code="customersCabinet.new"/></a>
+                    <span class="badge"><c:out value="${empty newChecks ? '' : newChecks.size()}"/></span>
+                </li>
+                <li><a href="#consideredChecks" role="tab" data-toggle="tab">
+                    <spring:message code="customersCabinet.considered"/></a>
+                </li>
+            </ul>
+        </li>
         <li><a data-toggle="tab" href="#activeProjects"><spring:message code="customersCabinet.activeProjects"/></a>
         </li>
         <li><a data-toggle="tab" href="#history"><spring:message code="customersCabinet.history"/></a></li>
@@ -22,6 +37,7 @@
     </ul>
 
     <div class="tab-content">
+
         <div id="createProject" class="tab-pane fade in active">
             <div id="formTechnicalTaskParent" class="row">
                 <div id="formTechnicalTask" class="new-project col-lg-8 col-lg-offset-2">
@@ -38,7 +54,7 @@
                         </label>
                         <spring:message code="entity.projectNamePlaceholder" var="projectNamePlaceholder"/>
                         <input id="technicalTaskName" name="projectName" type="text" class="form-control"
-                               placeholder="<core:out value="${projectNamePlaceholder}"/>">
+                               placeholder="<c:out value="${projectNamePlaceholder}"/>">
                     </div>
                     <%--technical task description--%>
                     <div class="form-group">
@@ -48,7 +64,7 @@
                         <spring:message code="entity.projectDescriptionPlaceholder"
                                         var="projectDescriptionPlaceholder"/>
                         <textarea id="technicalTaskDescription" name="projectDescription" class="form-control" rows="3"
-                                  placeholder="<core:out value="${projectDescriptionPlaceholder}"/>"></textarea>
+                                  placeholder="<c:out value="${projectDescriptionPlaceholder}"/>"></textarea>
                     </div>
 
                     <%--Tasks--%>
@@ -69,6 +85,80 @@
                 </div>
             </div>
         </div>
+
+        <%--New Checks--%>
+        <div id="newChecks" class="tab-pane">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="col-lg-12">
+                        <h3 class="page-header lead">New Checks</h3>
+                    </div>
+                </div>
+
+                <div id="newChecksAccordion" class="panel-group col-lg-6 col-lg-offset-3">
+                    <c:choose>
+                        <c:when test="${empty newChecks}">
+                            <h3 class="text-center">No New Checks!</h3>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach items="${newChecks}" var="newCheck" varStatus="loop">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#newChecksAccordion"
+                                               href="#check${newCheck.projectId}">${newCheck.projectName}</a>
+                                        </h4>
+                                    </div>
+
+                                        <%--Check Body--%>
+                                    <div id="check${newCheck.projectId}"
+                                         class="panel-collapse collapse${loop.index == 0 ? ' in' : ''}">
+                                        <div class="panel-body">
+                                            <p>${newCheck.developersCost}</p>
+                                            <p>${newCheck.servicesCost}</p>
+                                            <p>${newCheck.taxes}</p>
+                                            <p>${newCheck.totalProjectCost}</p>
+
+                                            <button name="declineCheckButton" class="btn btn-danger pull-left"
+                                                    type="button" value="${newCheck.projectId}">
+                                                Decline
+                                            </button>
+                                            <button name="confirmCheckButton" class="btn btn-success pull-right"
+                                                    value="${newCheck.projectId}" type="button">
+                                                Confirm Payment
+                                            </button>
+                                        </div>
+                                    </div>
+                                        <%--end Check Body--%>
+                                </div>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
+        </div>
+        <%--.end New Checks--%>
+
+        <%--Considered Checks--%>
+        <div id="consideredChecks" class="tab-pane">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="col-lg-12">
+                        <h3 class="page-header lead">Checks History:</h3>
+                    </div>
+                </div>
+
+                <c:choose>
+                    <c:when test="${empty completeChecks}">
+
+                    </c:when>
+                    <c:otherwise>
+
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </div>
+        <%--.end Considered Checks--%>
 
         <%--Active projects--%>
         <div id="activeProjects" class="tab-pane fade">
@@ -236,7 +326,7 @@
                     </strong>
                 </h4>
                 <input id="taskName" class="form-control" type="text"
-                       placeholder="<core:out value="${projectNamePlaceholder}"/>">
+                       placeholder="<c:out value="${projectNamePlaceholder}"/>">
             </div>
 
             <%--devs--%>
@@ -267,16 +357,16 @@
                     <tr>
                         <td>
                             <select class="form-control" title="Specialization">
-                                <core:forEach items="${specializations}" var="specialization">
+                                <c:forEach items="${specializations}" var="specialization">
                                     <option>${specialization}</option>
-                                </core:forEach>
+                                </c:forEach>
                             </select>
                         </td>
                         <td>
                             <select class="form-control" title="Rank">
-                                <core:forEach items="${ranks}" var="rank">
+                                <c:forEach items="${ranks}" var="rank">
                                     <option>${rank}</option>
-                                </core:forEach>
+                                </c:forEach>
                             </select>
                         </td>
                         <td>
@@ -299,7 +389,7 @@
                     </strong>
                 </h4>
                 <textarea id="taskDescription" class="form-control" rows="6"
-                          placeholder="<core:out value="${projectDescriptionPlaceholder}"/>"></textarea>
+                          placeholder="<c:out value="${projectDescriptionPlaceholder}"/>"></textarea>
                 <button id="taskBackButton" type="button" class="w-100 pull-left mt-10 btn btn-primary"
                         data-dismiss="modal">
                     <spring:message code="general.back"/>
@@ -347,7 +437,7 @@
         </div>
     </div>
 </div>
-<p id="deleteButtonText" class="no-display"> <spring:message code="general.delete"/></p>
+<p id="deleteButtonText" class="no-display"><spring:message code="general.delete"/></p>
 
 <%@include file="fragments/footer.jspf" %>
 

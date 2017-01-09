@@ -53,7 +53,17 @@ public class JDBCCheckDAO extends JDBCGenericDAO<Check> implements CheckDAO {
     }
 
     @Override
-    public List<Check> getByCustomer(Long customerId) {
+    public List<Check> getNewByCustomer(Long customerId) {
+        return jdbcOperations.query(sqlBundle.getString("check.selectNewByCustomer"), this::mapEntity, customerId);
+    }
+
+    @Override
+    public List<Check> getCompleteByCustomer(Long customerId) {
+        return jdbcOperations.query(sqlBundle.getString("check.selectCompleteByCustomer"), this::mapEntity, customerId);
+    }
+
+    @Override
+    public List<Check> getAllByCustomer(Long customerId) {
         return jdbcOperations.query(sqlBundle.getString("check.selectByCustomer"), this::mapEntity, customerId);
     }
 

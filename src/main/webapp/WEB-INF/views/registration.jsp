@@ -39,7 +39,7 @@
                         <spring:message code="registration.firstName"/>:
                     </label>
                     <input id="firstName" name="firstName" type="text" maxlength="20" class="form-control"
-                           value="<core:out value="${customerRegistrationForm.firstName}"/>">
+                           value="<c:out value="${customerRegistrationForm.firstName}"/>">
                     <sform:errors cssClass="errors-span" path="firstName"/>
                 </div>
                 <div class="form-group col-md-6">
@@ -47,7 +47,7 @@
                         <spring:message code="registration.lastName"/>:
                     </label>
                     <input id="lastName" name="lastName" type="text" maxlength="20" class="form-control"
-                           value="<core:out value="${customerRegistrationForm.lastName}"/>">
+                           value="<c:out value="${customerRegistrationForm.lastName}"/>">
                     <sform:errors cssClass="errors-span" path="lastName"/>
                 </div>
                 <div class="col-lg-12 hidden-sm hidden-xs">
@@ -59,7 +59,7 @@
                     </label>
                     <input id="phoneNumber" name="phoneNumber" type="text" maxlength="13" class="form-control"
                            placeholder="+388143783094"
-                           value="<core:out value="${customerRegistrationForm.phoneNumber}"/>"/>
+                           value="<c:out value="${customerRegistrationForm.phoneNumber}"/>"/>
                     <sform:errors cssClass="errors-span" path="phoneNumber"/>
                 </div>
                 <div class="form-group col-md-6">
@@ -68,7 +68,7 @@
                     </label>
                     <input id="confirmedPhoneNumber" name="confirmedPhoneNumber" type="text" maxlength="13"
                            class="form-control"
-                           value="<core:out value="${customerRegistrationForm.confirmedPhoneNumber}"/>">
+                           value="<c:out value="${customerRegistrationForm.confirmedPhoneNumber}"/>">
                     <sform:errors cssClass="errors-span" path="confirmedPhoneNumber"/>
                 </div>
                 <div class="col-lg-12 hidden-sm hidden-xs">
@@ -79,7 +79,7 @@
                         <spring:message code="general.email"/>:
                     </label>
                     <input id="email" name="email" type="email" maxlength="30" class="form-control"
-                           value="<core:out value="${customerRegistrationForm.email}"/>">
+                           value="<c:out value="${customerRegistrationForm.email}"/>">
                     <sform:errors cssClass="errors-span" path="email"/>
                 </div>
                 <div class="form-group col-md-6">
@@ -87,7 +87,7 @@
                         <spring:message code="registration.confirmEmail"/>:
                     </label>
                     <input id="confirmedEmail" name="confirmedEmail" type="email" maxlength="30" class="form-control"
-                           value="<core:out value="${customerRegistrationForm.confirmedEmail}"/>">
+                           value="<c:out value="${customerRegistrationForm.confirmedEmail}"/>">
                     <sform:errors cssClass="errors-span" path="confirmedEmail"/>
                 </div>
                 <div class="col-lg-12 hidden-sm hidden-xs">
@@ -99,7 +99,7 @@
                         <spring:message code="general.password"/>:
                     </label>
                     <input id="password" name="password" type="password" maxlength="18" class="form-control"
-                           placeholder="<core:out value="${passwordPlaceholder }"/>">
+                           placeholder="<c:out value="${passwordPlaceholder }"/>">
                     <sform:errors cssClass="errors-span" path="password"/>
                 </div>
                 <div class="form-group col-md-6">
@@ -123,7 +123,7 @@
                 </div>
                 <div class="col-lg-12">
                     <h4><spring:message code="registration.alreadyRegistered"/>
-                        <a href="<core:out value="${pageContext.request.contextPath}"/>/login">
+                        <a href="<c:out value="${pageContext.request.contextPath}"/>/login">
                             <spring:message code="general.login"/>
                         </a>
                     </h4>

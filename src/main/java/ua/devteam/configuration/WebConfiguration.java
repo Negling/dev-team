@@ -19,7 +19,7 @@ import java.util.Locale;
 @EnableWebMvc
 @Configuration
 @EnableAspectJAutoProxy
-@ComponentScan(basePackages = {"ua.devteam.controllers", "ua.devteam.validation"})
+@ComponentScan(basePackages = "ua.devteam.controllers")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebConfiguration extends WebMvcConfigurerAdapter {
 
