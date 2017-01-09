@@ -69,3 +69,10 @@ function displayAlertBox(data, alertBoxId, alertBoxParentId, isSuccessful) {
 function updateNavsTab(navTabId) {
     $("#" + navTabId).load(document.URL + " #" + navTabId + " > li");
 }
+
+function showErrorsModal(msg) {
+    var modal = $("#errorsModal");
+
+    modal.find("p").text(msg);
+    modal.modal("show");
+}

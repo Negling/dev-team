@@ -2,6 +2,7 @@ package ua.devteam.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -52,6 +53,24 @@ public class CustomersCabinetController extends AbstractEntityProcessingControll
         }
 
         return generateDefaultResponse(new LinkedList<>(), bindingResult, locale);
+    }
+
+    @ResponseBody
+    @PreAuthorize("hasAuthority('Customer')")
+    @RequestMapping(value = "/confirmCheck", method = RequestMethod.POST)
+    public ResponseEntity confirmCheck(@RequestBody Long projectId) {
+        checksService.accept(projectId);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @PreAuthorize("hasAuthority('Customer')")
+    @RequestMapping(value = "/declineCheck", method = RequestMethod.POST)
+    public ResponseEntity declineCheck(@RequestBody Long projectId) {
+        checksService.decline(projectId);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @ModelAttribute

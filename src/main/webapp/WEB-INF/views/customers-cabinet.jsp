@@ -12,7 +12,7 @@
     <h2><spring:message code="customersCabinet.cabinet"/></h2>
     <p><spring:message code="customersCabinet.description"/></p>
 
-    <ul class="nav nav-tabs nav-justified">
+    <ul id="navTab" class="nav nav-tabs nav-justified">
         <li class="active"><a data-toggle="tab" href="#createProject">
             <spring:message code="customersCabinet.createProject"/></a>
         </li>
@@ -21,9 +21,11 @@
                 <span class="badge"><c:out value="${empty newChecks ? '' : newChecks.size()}"/></span>
                 <spring:message code="customersCabinet.checks"/> <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li><a href="#newChecks" role="tab" data-toggle="tab">
-                    <spring:message code="customersCabinet.new"/></a>
-                    <span class="badge"><c:out value="${empty newChecks ? '' : newChecks.size()}"/></span>
+                <li>
+                    <a href="#newChecks" role="tab" data-toggle="tab">
+                        <spring:message code="customersCabinet.newChecks"/>
+                        <span class="badge"><c:out value="${empty newChecks ? '' : newChecks.size()}"/></span>
+                    </a>
                 </li>
                 <li><a href="#consideredChecks" role="tab" data-toggle="tab">
                     <spring:message code="customersCabinet.considered"/></a>
@@ -52,19 +54,17 @@
                         <label class="control-label" for="technicalTaskName">
                             <spring:message code="entity.projectName"/>:
                         </label>
-                        <spring:message code="entity.projectNamePlaceholder" var="projectNamePlaceholder"/>
+
                         <input id="technicalTaskName" name="projectName" type="text" class="form-control"
-                               placeholder="<c:out value="${projectNamePlaceholder}"/>">
+                               placeholder="<spring:message code="entity.projectNamePlaceholder"/>">
                     </div>
                     <%--technical task description--%>
                     <div class="form-group">
                         <label class="control-label" for="technicalTaskDescription">
                             <spring:message code="entity.projectDescription"/>:
                         </label>
-                        <spring:message code="entity.projectDescriptionPlaceholder"
-                                        var="projectDescriptionPlaceholder"/>
                         <textarea id="technicalTaskDescription" name="projectDescription" class="form-control" rows="3"
-                                  placeholder="<c:out value="${projectDescriptionPlaceholder}"/>"></textarea>
+                                  placeholder="<spring:message code="entity.projectDescriptionPlaceholder"/>"></textarea>
                     </div>
 
                     <%--Tasks--%>
@@ -95,45 +95,93 @@
                     </div>
                 </div>
 
-                <div id="newChecksAccordion" class="panel-group col-lg-6 col-lg-offset-3">
-                    <c:choose>
-                        <c:when test="${empty newChecks}">
-                            <h3 class="text-center">No New Checks!</h3>
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach items="${newChecks}" var="newCheck" varStatus="loop">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#newChecksAccordion"
-                                               href="#check${newCheck.projectId}">${newCheck.projectName}</a>
-                                        </h4>
-                                    </div>
-
-                                        <%--Check Body--%>
-                                    <div id="check${newCheck.projectId}"
-                                         class="panel-collapse collapse${loop.index == 0 ? ' in' : ''}">
-                                        <div class="panel-body">
-                                            <p>${newCheck.developersCost}</p>
-                                            <p>${newCheck.servicesCost}</p>
-                                            <p>${newCheck.taxes}</p>
-                                            <p>${newCheck.totalProjectCost}</p>
-
-                                            <button name="declineCheckButton" class="btn btn-danger pull-left"
-                                                    type="button" value="${newCheck.projectId}">
-                                                Decline
-                                            </button>
-                                            <button name="confirmCheckButton" class="btn btn-success pull-right"
-                                                    value="${newCheck.projectId}" type="button">
-                                                Confirm Payment
-                                            </button>
+                <div id="newChecksAccordionParent" class="col-lg-6 col-lg-offset-3">
+                    <div id="newChecksAccordion" class="panel-group">
+                        <c:choose>
+                            <c:when test="${empty newChecks}">
+                                <h3 class="text-center">No New Checks!</h3>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach items="${newChecks}" var="newCheck" varStatus="loop">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#newChecksAccordion"
+                                                   href="#check${newCheck.projectId}">
+                                                    <c:out value="${newCheck.projectName}"/>
+                                                </a>
+                                            </h4>
                                         </div>
+
+                                            <%--Check Body--%>
+                                        <div id="check${newCheck.projectId}"
+                                             class="panel-collapse collapse${loop.index == 0 ? ' in' : ''}">
+                                            <div class="panel-body">
+
+                                                    <%--devs hire cost--%>
+                                                <div class="col-lg-12 data-description" data-toggle="tooltip"
+                                                     title="<spring:message code="entity.checkDevHireCost"/>"
+                                                     data-placement="top" data-delay="0">
+                                                    <p class="pull-left">
+                                                        Developers cost:
+                                                    </p>
+                                                    <p class="pull-right">
+                                                        <c:out value="${newCheck.developersCost}"/>
+                                                    </p>
+                                                </div>
+
+                                                    <%--services cost--%>
+                                                <div class="col-lg-12 data-description" data-toggle="tooltip"
+                                                     title="<spring:message code="entity.checkServicesCost"/>"
+                                                     data-placement="top" data-delay="0">
+                                                    <p class="pull-left">
+                                                        Services cost:
+                                                    </p>
+                                                    <p class="pull-right">
+                                                        <c:out value="${newCheck.servicesCost}"/>
+                                                    </p>
+                                                </div>
+
+                                                    <%--taxes--%>
+                                                <div class="col-lg-12 data-description" data-toggle="tooltip"
+                                                     title="<spring:message code="entity.checkTaxesCost"/>"
+                                                     data-placement="top" data-delay="0">
+                                                    <p class="pull-left">
+                                                        Taxes cost:
+                                                    </p>
+                                                    <p class="pull-right">
+                                                        <c:out value="${newCheck.taxes}"/>
+                                                    </p>
+                                                </div>
+
+                                                    <%--total project cost--%>
+                                                <div class="col-lg-12 data-description" data-toggle="tooltip"
+                                                     title="<spring:message code="entity.checkTotalCost"/>"
+                                                     data-placement="top" data-delay="0">
+                                                    <p class="pull-left">
+                                                        Total:
+                                                    </p>
+                                                    <p class="pull-right">
+                                                        <c:out value="${newCheck.totalProjectCost}"/>
+                                                    </p>
+                                                </div>
+
+                                                <button name="declineCheckButton" class="btn btn-danger pull-left"
+                                                        type="button" value="${newCheck.projectId}">
+                                                    Decline
+                                                </button>
+                                                <button name="confirmCheckButton" class="btn btn-success pull-right"
+                                                        value="${newCheck.projectId}" type="button">
+                                                    Confirm Payment
+                                                </button>
+                                            </div>
+                                        </div>
+                                            <%--end Check Body--%>
                                     </div>
-                                        <%--end Check Body--%>
-                                </div>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
                 </div>
             </div>
         </div>
@@ -326,7 +374,7 @@
                     </strong>
                 </h4>
                 <input id="taskName" class="form-control" type="text"
-                       placeholder="<c:out value="${projectNamePlaceholder}"/>">
+                       placeholder="<spring:message code="entity.projectNamePlaceholder"/>">
             </div>
 
             <%--devs--%>
@@ -358,14 +406,18 @@
                         <td>
                             <select class="form-control" title="Specialization">
                                 <c:forEach items="${specializations}" var="specialization">
-                                    <option>${specialization}</option>
+                                    <option>
+                                        <c:out value="${specialization}"/>
+                                    </option>
                                 </c:forEach>
                             </select>
                         </td>
                         <td>
                             <select class="form-control" title="Rank">
                                 <c:forEach items="${ranks}" var="rank">
-                                    <option>${rank}</option>
+                                    <option>
+                                        <c:out value="${rank}"/>
+                                    </option>
                                 </c:forEach>
                             </select>
                         </td>
@@ -389,7 +441,7 @@
                     </strong>
                 </h4>
                 <textarea id="taskDescription" class="form-control" rows="6"
-                          placeholder="<c:out value="${projectDescriptionPlaceholder}"/>"></textarea>
+                          placeholder="<spring:message code="entity.projectDescriptionPlaceholder"/>"></textarea>
                 <button id="taskBackButton" type="button" class="w-100 pull-left mt-10 btn btn-primary"
                         data-dismiss="modal">
                     <spring:message code="general.back"/>

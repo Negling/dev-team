@@ -179,6 +179,8 @@
     </div>
 </div>
 
+<%@include file="fragments/errorsModal.jspf" %>
+
 <p id="bind" class="no-display">Bind to task</p>
 <p id="unbind" class="no-display">Unbind</p>
 

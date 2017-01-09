@@ -225,8 +225,8 @@ function declineProjectAjax() {
         $("#activeProjectSelect").load(document.URL + " #activeProjectSelect > option");
         $("#activeTaskSelect").load(document.URL + " #activeTaskSelect > option");
         updateNavsTab("navTab");
-    }).fail(function () {
-        alert("Some server internal error occurred! Please try again later, or contact support.");
+    }).fail(function (jqXHR) {
+        showErrorsModal(jqXHR.responseText);
     });
 }
 
@@ -253,7 +253,7 @@ function acceptProjectAjax(button) {
         if (jqXHR.status === 422) {
             displayAlertBox(JSON.parse(jqXHR.responseText), "pendingProjectsAlertBox", "pendingProjectsAccordionParent", false);
         } else {
-            alert("Some server internal error occurred! Please try again later, or contact support.");
+            showErrorsModal(jqXHR.responseText);
         }
     });
 }
@@ -274,8 +274,8 @@ function declineTechnicalTaskAjax() {
             "#technicalTasksAccordion");
         $("#declineManagerCommentary").val("");
         updateNavsTab("navTab");
-    }).fail(function () {
-        alert("Some server internal error occurred! Please try again later, or contact support.");
+    }).fail(function (jqXHR) {
+        showErrorsModal(jqXHR.responseText);
     });
 }
 
@@ -296,8 +296,8 @@ function formTechnicalTaskAsProjectAjax(button) {
         $("#activeTaskSelect").load(document.URL + " #activeTaskSelect > option");
         calculateRegisteredProjectsChecks();
         updateNavsTab("navTab");
-    }).fail(function () {
-        alert("Some server internal error occurred! Please try again later, or contact support.");
+    }).fail(function (jqXHR) {
+        showErrorsModal(jqXHR.responseText);
     });
 }
 
@@ -310,8 +310,8 @@ function searchForDevsAjax() {
 
     $.getJSON("/manage/getDevelopers", requestParams, function (data) {
         displayDevsSearchResults(data)
-    }).fail(function () {
-        alert("Some server internal error occurred! Please try again later, or contact support.");
+    }).fail(function (jqXHR) {
+        showErrorsModal(jqXHR.responseText);
     });
 }
 
@@ -327,8 +327,8 @@ function bindDeveloperAjax(button) {
         data: JSON.stringify(data)
     }).done(function (data) {
         return bindDeveloper(button, data);
-    }).fail(function () {
-        alert("Some server internal error occurred! Please try again later, or contact support.");
+    }).fail(function (jqXHR) {
+        showErrorsModal(jqXHR.responseText);
     });
 }
 
@@ -339,7 +339,7 @@ function unbindDeveloperAjax(button) {
         data: JSON.stringify($(button).attr("data-developer-id"))
     }).done(function (data) {
         return unbindDeveloper(button);
-    }).fail(function () {
-        alert("Some server internal error occurred! Please try again later, or contact support.");
+    }).fail(function (jqXHR) {
+        showErrorsModal(jqXHR.responseText);
     });
 }

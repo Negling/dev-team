@@ -1,0 +1,19 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<!-- Errors Modal -->
+<div class="modal fade" id="errorsModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">
+                    <spring:message code="general.error"/>!
+                </h4>
+            </div>
+            <p class="text-center"></p>
+        </div>
+    </div>
+
+</div>

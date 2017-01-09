@@ -11,7 +11,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 abstract class AbstractEntityProcessingController {
-    protected ResourceBundleMessageSource messageSource;
+    private ResourceBundleMessageSource messageSource;
 
     public AbstractEntityProcessingController(ResourceBundleMessageSource messageSource) {
         this.messageSource = messageSource;
@@ -25,7 +25,7 @@ abstract class AbstractEntityProcessingController {
         this.messageSource = messageSource;
     }
 
-    protected ResponseEntity<List<String>> generateDefaultResponse(List<String> responseMsg, Errors bindingResult, Locale locale) {
+    ResponseEntity<List<String>> generateDefaultResponse(List<String> responseMsg, Errors bindingResult, Locale locale) {
         if (!bindingResult.hasErrors()) {
 
             responseMsg.add(messageSource.getMessage("general.success", null, locale));

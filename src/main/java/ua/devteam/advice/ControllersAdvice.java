@@ -4,7 +4,12 @@ package ua.devteam.advice;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.ui.Model;
 import org.springframework.validation.Validator;
@@ -14,37 +19,40 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.util.UriUtils;
+import ua.devteam.controllers.exceptions.AjaxMethodInternalException;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Locale;
 
 @ControllerAdvice
 public class ControllersAdvice {
 
     private final static Logger logger = LogManager.getLogger("ExceptionsLogger");
-    private Validator checkValidator;
-    private Validator customerRegistrationFormValidator;
-    private Validator technicalTaskValidator;
+    private MessageSource messageSource;
+    private Validator compositeValidator;
 
-    @Autowired
-    public ControllersAdvice(Validator checkValidator, Validator customerRegistrationFormValidator,
-                             Validator technicalTaskValidator) {
-        this.checkValidator = checkValidator;
-        this.customerRegistrationFormValidator = customerRegistrationFormValidator;
-        this.technicalTaskValidator = technicalTaskValidator;
+
+    public ControllersAdvice(MessageSource messageSource, Validator compositeValidator) {
+        this.messageSource = messageSource;
+        this.compositeValidator = compositeValidator;
     }
 
     @ExceptionHandler(Exception.class)
     public String handleInternalError(Exception ex) {
-
-        if (ex instanceof NullPointerException) {
-            logger.warn(formExceptionMessage(ex));
-        } else if (ex instanceof DataAccessException) {
-            logger.error(formExceptionMessage(ex));
-        } else {
-            logger.fatal(formExceptionMessage(ex));
-        }
+        logException(ex);
 
         return "forward:/error-page-500";
+    }
+
+    @ExceptionHandler(AjaxMethodInternalException.class)
+    public ResponseEntity<String> handleAjaxMethodException(AjaxMethodInternalException ex, Locale locale) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "text/html;charset=UTF-8");
+
+        logException(ex.getCause());
+
+        return new ResponseEntity<>(messageSource.getMessage("errorPage.tryAgainLater", null, locale), headers,
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
@@ -70,10 +78,20 @@ public class ControllersAdvice {
 
     @InitBinder({"check", "customerRegistrationForm", "technicalTask"})
     public void dataBinding(WebDataBinder binder) {
-        binder.addValidators(checkValidator, customerRegistrationFormValidator, technicalTaskValidator);
+        binder.addValidators(compositeValidator);
     }
 
-    private String formExceptionMessage(Exception ex) {
+    private void logException(Throwable ex) {
+        if (ex instanceof NullPointerException) {
+            logger.warn(formExceptionMessage(ex));
+        } else if (ex instanceof DataAccessException) {
+            logger.error(formExceptionMessage(ex));
+        } else {
+            logger.fatal(formExceptionMessage(ex));
+        }
+    }
+
+    private String formExceptionMessage(Throwable ex) {
         StringBuilder builder = new StringBuilder();
         StackTraceElement stacktrace = ex.getStackTrace()[0];
 

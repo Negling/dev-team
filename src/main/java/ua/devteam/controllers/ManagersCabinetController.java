@@ -65,7 +65,6 @@ public class ManagersCabinetController extends AbstractEntityProcessingControlle
     public List<Developer> getDevelopers(@RequestParam DeveloperSpecialization specialization,
                                          @RequestParam DeveloperRank rank,
                                          @RequestParam String lastName) {
-
         return developersService.getAvailableDevelopers(specialization, rank, lastName);
     }
 
@@ -121,7 +120,7 @@ public class ManagersCabinetController extends AbstractEntityProcessingControlle
     @ResponseBody
     @RequestMapping(value = "/accept", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
-    public ResponseEntity<List<String>> formProject(@RequestBody @Valid Check check, BindingResult bindingResult,
+    public ResponseEntity<List<String>> formProject(@Valid @RequestBody Check check, BindingResult bindingResult,
                                                     Locale locale) {
         Project project;
         Errors projectErrors;

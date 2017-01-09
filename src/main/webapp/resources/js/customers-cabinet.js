@@ -41,6 +41,12 @@ $(function () {
             $(this).parentsUntil("div.panel-group").remove();
         });
     });
+
+    $("body").on("click", "button[name=declineCheckButton]", function () {
+        return declineCheckAjax($(this));
+    }).on("click", "button[name=confirmCheckButton]", function () {
+        return confirmCheckAjax($(this));
+    });
 });
 
 
@@ -215,5 +221,33 @@ function submitTechnicalTaskAjax(button) {
         } else {
             alert("Some server internal error occurred! Please try again later, or contact support.");
         }
+    });
+}
+
+function declineCheckAjax(button) {
+    $.ajax({
+        method: "POST",
+        url: "/cabinet/declineCheck",
+        data: JSON.stringify($(button).attr("value"))
+    }).done(function () {
+        return removeAndReload(button, "#newChecksAccordion", function () {
+            return updateNavsTab("navTab");
+        });
+    }).fail(function (jqXHR) {
+        alert("Some server internal error occurred! Please try again later, or contact support.");
+    });
+}
+
+function confirmCheckAjax(button) {
+    $.ajax({
+        method: "POST",
+        url: "/cabinet/confirmCheck",
+        data: JSON.stringify($(button).attr("value"))
+    }).done(function () {
+        return removeAndReload(button, "#newChecksAccordion", function () {
+            return updateNavsTab("navTab");
+        });
+    }).fail(function (jqXHR) {
+        alert("Some server internal error occurred! Please try again later, or contact support.");
     });
 }

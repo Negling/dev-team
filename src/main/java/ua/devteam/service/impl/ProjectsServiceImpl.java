@@ -41,7 +41,6 @@ public class ProjectsServiceImpl implements ProjectsService {
     @Override
     public void confirmProject(Long projectId) {
         Project project = projectDAO.getById(projectId);
-
         project.setStatus(Pending);
 
         projectDAO.update(project, project);
@@ -50,7 +49,6 @@ public class ProjectsServiceImpl implements ProjectsService {
     @Override
     public void runProject(Long projectId) {
         Project project = projectDAO.getById(projectId);
-
         project.setStatus(Running);
 
         taskDevelopersService.runByProject(projectId);
@@ -60,12 +58,11 @@ public class ProjectsServiceImpl implements ProjectsService {
     @Override
     public void decline(Long projectId, String managerCommentary) {
         Project project = projectDAO.getById(projectId);
+        project.setStatus(Declined);
 
         if (managerCommentary != null) {
-            project.setManagerCommentary(managerCommentary);
+            project.setManagerCommentary(managerCommentary.isEmpty() ? null : managerCommentary);
         }
-
-        project.setStatus(Declined);
 
         taskDevelopersService.dropByProject(projectId);
         projectDAO.update(project, project);

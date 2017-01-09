@@ -270,24 +270,23 @@
                     <div class="col-lg-12">
                         <label>Select Project:</label>
                         <select id="activeProjectSelect" class="form-control" title="Active Project">
-                            <c:forEach items="${pendingProjects}" var="project">
+                            <c:forEach items="${pendingProjects}" var="project" varStatus="status">
                                 <option value="${project.id}">
                                         ${project.name}
                                 </option>
+                                <c:if test="${status.last}">
+                                    <c:set var="projectTasks" value="${project.tasks}"/>
+                                </c:if>
                             </c:forEach>
                         </select>
                     </div>
                     <div class="col-lg-12">
                         <label>Select Task:</label>
                         <select id="activeTaskSelect" class="form-control" title="Active Task">
-                            <c:forEach items="${pendingProjects}" var="currentTask" varStatus="status">
-                                <c:if test="${status.last}">
-                                    <c:forEach items="${currentTask.tasks}" var="task">
-                                        <option value="${task.id}">
-                                                ${task.name}
-                                        </option>
-                                    </c:forEach>
-                                </c:if>
+                            <c:forEach items="${projectTasks}" var="task">
+                                <option value="${task.id}">
+                                        ${task.name}
+                                </option>
                             </c:forEach>
                         </select>
                     </div>

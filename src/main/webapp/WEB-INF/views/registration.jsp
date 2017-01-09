@@ -94,12 +94,11 @@
                     <hr class="hr">
                 </div>
                 <div class="form-group col-md-6">
-                    <spring:message code="registration.passwordPlaceholder" var="passwordPlaceholder"/>
                     <label class="control-label" for="password">
                         <spring:message code="general.password"/>:
                     </label>
                     <input id="password" name="password" type="password" maxlength="18" class="form-control"
-                           placeholder="<c:out value="${passwordPlaceholder }"/>">
+                           placeholder="<spring:message code="registration.passwordPlaceholder"/>">
                     <sform:errors cssClass="errors-span" path="password"/>
                 </div>
                 <div class="form-group col-md-6">
