@@ -1,7 +1,15 @@
 /*For proper work of all functions, this script must be loaded after Bootstrap and jQuery libraries.*/
 
-/*Global counter for tasks accordion in project. After project submitted it will be reset to 0.*/
+/*Global counter for tasks accordion in project. */
 var taskId = createIdCounter();
+
+function createIdCounter() {
+    var id = 0;
+
+    return function () {
+        return id++;
+    }
+}
 
 /*Function, which runs at document.ready(). It maps all event handlers. */
 $(function () {
@@ -65,8 +73,8 @@ function clearTaskModal() {
 
     // reset values
     tableRows.find("input[type=number]").val(1);
-    taskModal.find("#taskName").val("");
-    taskModal.find("#taskDescription").val("");
+    taskModal.find("#taskName").val('');
+    taskModal.find("#taskDescription").val('');
     taskModal.find("#addTaskButton").prop('disabled', true);
 }
 
@@ -199,14 +207,6 @@ function checkTaskModalNumberInput(input) {
     else if (input.val() < 1) input.val(1);
 }
 
-/*Simple counter.*/
-function createIdCounter() {
-    var id = 0;
-    return function () {
-        return id++;
-    }
-}
-
 function refreshTechnicalTask(callback) {
     $("#formTechnicalTask").fadeTo(800, 0.01, function () {
         $("#technicalTaskName, #technicalTaskDescription").val('');
@@ -233,12 +233,12 @@ function submitTechnicalTaskAjax(button) {
         data: JSON.stringify(createTechnicalTask())
     }).done(function (data) {
         refreshTechnicalTask(function () {
-            displayAlertBox(data, "#formTechnicalTaskAlertBox", "#formTechnicalTask", true);
-            taskId = createIdCounter();
+            return prependOrUpdate("#createProject > div.alert", "#createProject", formValidatingAlertBox(data, true));
         });
     }).fail(function (jqXHR) {
         if (jqXHR.status === 422) {
-            displayAlertBox(JSON.parse(jqXHR.responseText), "#formTechnicalTaskAlertBox", "#formTechnicalTask", false);
+            prependOrUpdate("#createProject > div.alert", "#createProject",
+                formValidatingAlertBox(JSON.parse(jqXHR.responseText), false));
         } else {
             showErrorsModal(jqXHR.responseText);
         }

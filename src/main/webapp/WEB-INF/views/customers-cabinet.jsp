@@ -42,7 +42,7 @@
     <div class="tab-content">
 
         <div id="createProject" class="tab-pane fade in active">
-            <div id="formTechnicalTaskParent" class="row">
+            <div class="row">
                 <div id="formTechnicalTask" class="new-project col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <h3 class="text-center page-header">
                         <strong>
@@ -122,9 +122,9 @@
                                         <div class="panel-body">
 
                                                 <%--devs hire cost--%>
-                                            <div class="data-description col-xs-12" data-toggle="tooltip"
-                                                 title="<spring:message code="entity.checkDevHireCost"/>"
-                                                 data-placement="top" data-delay="0">
+                                            <div class="data-description check-description col-xs-12"
+                                                 data-toggle="tooltip" data-placement="top" data-delay="0"
+                                                 title="<spring:message code="entity.checkDevHireCost"/>">
                                                 <p class="pull-left">
                                                     Developers cost:
                                                 </p>
@@ -134,9 +134,9 @@
                                             </div>
 
                                                 <%--services cost--%>
-                                            <div class="data-description col-xs-12" data-toggle="tooltip"
-                                                 title="<spring:message code="entity.checkServicesCost"/>"
-                                                 data-placement="top" data-delay="0">
+                                            <div class="data-description check-description col-xs-12"
+                                                 data-toggle="tooltip" data-placement="top" data-delay="0"
+                                                 title="<spring:message code="entity.checkServicesCost"/>">
                                                 <p class="pull-left">
                                                     Services cost:
                                                 </p>
@@ -146,9 +146,9 @@
                                             </div>
 
                                                 <%--taxes--%>
-                                            <div class="data-description col-xs-12" data-toggle="tooltip"
-                                                 title="<spring:message code="entity.checkTaxesCost"/>"
-                                                 data-placement="top" data-delay="0">
+                                            <div class="data-description check-description col-xs-12"
+                                                 data-toggle="tooltip" data-placement="top" data-delay="0"
+                                                 title="<spring:message code="entity.checkTaxesCost"/>">
                                                 <p class="pull-left">
                                                     Taxes cost:
                                                 </p>
@@ -158,9 +158,9 @@
                                             </div>
 
                                                 <%--total project cost--%>
-                                            <div class="data-description col-xs-12" data-toggle="tooltip"
-                                                 title="<spring:message code="entity.checkTotalCost"/>"
-                                                 data-placement="top" data-delay="0">
+                                            <div class="data-description check-description col-xs-12"
+                                                 data-toggle="tooltip" data-placement="top" data-delay="0"
+                                                 title="<spring:message code="entity.checkTotalCost"/>">
                                                 <p class="pull-left">
                                                     Total:
                                                 </p>
@@ -246,47 +246,54 @@
                 <div class="col-lg-12">
                     <h3 class="page-header lead">
                         <spring:message code="customersCabinet.activeProjectsLead"/>
-                        <button name="refresh" data-container-id="#newChecksAccordion"
+                        <button name="refresh" data-container-id="#activeProjectsTable"
                                 class="refresh-button pull-right">
                             <span class="glyphicon glyphicon-refresh"></span>
                         </button>
                     </h3>
                 </div>
-                <div class="col-lg-8 col-lg-offset-2">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Appointment</th>
-                            <th>Price</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Status</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Fix up site content layout</td>
-                            <td>100 $</td>
-                            <td>14.09.2014</td>
-                            <td>14.10.2014</td>
-                            <td>Completed</td>
-                        </tr>
-                        <tr>
-                            <td>Create time managing application</td>
-                            <td>30 000 $</td>
-                            <td>14.09.2014</td>
-                            <td>18.09.2014</td>
-                            <td>Canceled</td>
-                        </tr>
-                        <tr>
-                            <td>Do stuff</td>
-                            <td>19.99 $</td>
-                            <td>14.09.2016</td>
-                            <td>Unknown</td>
-                            <td>Pending</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div id="activeProjectsTable" class="col-xs-12 no-padding">
+                    <c:choose>
+                        <c:when test="${empty activeProjects}">
+                            <h3 class="text-center">None of your project is running in the moment.</h3>
+                        </c:when>
+                        <c:otherwise>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Appointment</th>
+                                    <th>Price</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Fix up site content layout</td>
+                                    <td>100 $</td>
+                                    <td>14.09.2014</td>
+                                    <td>14.10.2014</td>
+                                    <td>Completed</td>
+                                </tr>
+                                <tr>
+                                    <td>Create time managing application</td>
+                                    <td>30 000 $</td>
+                                    <td>14.09.2014</td>
+                                    <td>18.09.2014</td>
+                                    <td>Canceled</td>
+                                </tr>
+                                <tr>
+                                    <td>Do stuff</td>
+                                    <td>19.99 $</td>
+                                    <td>14.09.2016</td>
+                                    <td>Unknown</td>
+                                    <td>Pending</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>
@@ -298,90 +305,104 @@
                 <div class="col-lg-12">
                     <h3 class="page-header lead">
                         <spring:message code="customersCabinet.historyLead"/>
-                        <button name="refresh" data-container-id="#newChecksAccordion" type="button"
+                        <button name="refresh" data-container-id="#historyTable" type="button"
                                 class="refresh-button pull-right">
                             <span class="glyphicon glyphicon-refresh"></span>
                         </button>
                     </h3>
                 </div>
-                <div class="col-lg-8 col-lg-offset-2">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Appointment</th>
-                            <th>Price</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Status</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Fix up site content layout</td>
-                            <td>100 $</td>
-                            <td>14.09.2014</td>
-                            <td>14.10.2014</td>
-                            <td>Completed</td>
-                        </tr>
-                        <tr>
-                            <td>Create time managing application</td>
-                            <td>30 000 $</td>
-                            <td>14.09.2014</td>
-                            <td>18.09.2014</td>
-                            <td>Canceled</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div id="historyTable" class="col-xs-12 no-padding">
+                    <c:choose>
+                        <c:when test="${empty history}">
+                            <h3 class="text-center">You haven't submitted any projects yet.</h3>
+                        </c:when>
+                        <c:otherwise>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Appointment</th>
+                                    <th>Price</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Fix up site content layout</td>
+                                    <td>100 $</td>
+                                    <td>14.09.2014</td>
+                                    <td>14.10.2014</td>
+                                    <td>Completed</td>
+                                </tr>
+                                <tr>
+                                    <td>Create time managing application</td>
+                                    <td>30 000 $</td>
+                                    <td>14.09.2014</td>
+                                    <td>18.09.2014</td>
+                                    <td>Canceled</td>
+                                </tr>
+                                <tr>
+                                    <td>Do stuff</td>
+                                    <td>19.99 $</td>
+                                    <td>14.09.2016</td>
+                                    <td>Unknown</td>
+                                    <td>Pending</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
-            <%--History-End--%>
-
-            <%--Settings--%>
-            <div id="settings" class="tab-pane">
-                <p class="lead">Here you can edit your information. If you want to change some field directly, just
-                    leave others empty.</p>
-                <div class="row">
-                    <div class="col-lg-6">
-
-                        <form>
-                            <label for="email">E-mail</label>
-                            <div class="input-group">
-                                <span class="input-group-addon">user@email.com</span>
-                                <input id="email" type="email" class="form-control" placeholder="New mail">
-                            </div>
-                            <label for="phone">Phone number</label>
-                            <div class="input-group">
-                                <span class="input-group-addon">+3 8814-378-3094</span>
-                                <input id="phone" type="text" class="form-control" placeholder="New phone number">
-                            </div>
-                            <label for="password">Password</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                <input id="password" type="password" class="form-control" placeholder="New password">
-                            </div>
-                            <div class="input-group">
-                                <button type="button" class="btn btn-success w-200" data-toggle="modal"
-                                        data-target="#myModal">Confirm
-                                </button>
-                            </div>
-
-
-                        </form>
-                    </div>
-                    <%--.end column--%>
-                    <div class="col-lg-6">
-                        <div class="alert settings-alert alert-danger alert-dismissable fade in">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            <strong>Danger!</strong> This alert box could indicate a dangerous action.
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <%--.end Settings--%>
         </div>
-        <%--.end Tab content--%>
+        <%--History-End--%>
+
+        <%--Settings--%>
+        <div id="settings" class="tab-pane">
+            <p class="lead">Here you can edit your information. If you want to change some field directly, just
+                leave others empty.</p>
+            <div class="row">
+                <div class="col-lg-6">
+
+                    <form>
+                        <label for="email">E-mail</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">user@email.com</span>
+                            <input id="email" type="email" class="form-control" placeholder="New mail">
+                        </div>
+                        <label for="phone">Phone number</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">+3 8814-378-3094</span>
+                            <input id="phone" type="text" class="form-control" placeholder="New phone number">
+                        </div>
+                        <label for="password">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                            <input id="password" type="password" class="form-control" placeholder="New password">
+                        </div>
+                        <div class="input-group">
+                            <button type="button" class="btn btn-success w-200" data-toggle="modal"
+                                    data-target="#myModal">Confirm
+                            </button>
+                        </div>
+
+
+                    </form>
+                </div>
+                <%--.end column--%>
+                <div class="col-lg-6">
+                    <div class="alert settings-alert alert-danger alert-dismissable fade in">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Danger!</strong> This alert box could indicate a dangerous action.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%--.end Settings--%>
 
     </div>
+    <%--.end Tab content--%>
 </div>
 
 <%--Modals--%>

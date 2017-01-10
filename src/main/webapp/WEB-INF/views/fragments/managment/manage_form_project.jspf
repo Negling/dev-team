@@ -4,234 +4,236 @@
 <div id="formProjects" class="tab-pane fade">
     <div class="row">
         <div class="col-lg-12">
-            <div class="col-lg-12">
-                <h3 class="page-header lead">Form New Project</h3>
-            </div>
+            <h3 class="page-header lead">
+                Form Technical Task as Project
+                <button name="refresh" data-container-id="#pendingProjectsAccordion" type="button"
+                        class="refresh-button pull-right">
+                    <span class="glyphicon glyphicon-refresh"></span>
+                </button>
+            </h3>
         </div>
 
         <%--Projects--%>
-        <div id="pendingProjectsAccordionParent" class="col-lg-9">
-            <div id="pendingProjectsAccordion" class="panel-group">
-                <c:choose>
-                    <c:when test="${empty pendingProjects}">
-                        <h3 class="text-center">No New Requests!</h3>
-                    </c:when>
-                    <c:otherwise>
-                        <c:forEach items="${pendingProjects}" var="project" varStatus="loop">
-                            <div class="panel panel-default">
-                                <div class="project-heading panel-heading">
-                                    <h4 class="panel-title">
-                                        <a id="project${project.id}Link" data-toggle="collapse"
-                                           data-parent="#pendingProjectsAccordion"
-                                           href="#pendingProject${project.id}">${project.name}</a>
-                                    </h4>
-                                </div>
-                                    <%--Project Body--%>
-                                <div id="pendingProject${project.id}" data-project-id="${project.id}"
-                                     class="panel-collapse collapse">
-                                    <div class="panel-body">
+        <div id="pendingProjectsAccordion" class="panel-group col-lg-9">
+            <c:choose>
+                <c:when test="${empty pendingProjects}">
+                    <h3 class="text-center">No New Requests!</h3>
+                </c:when>
+                <c:otherwise>
+                    <c:forEach items="${pendingProjects}" var="project" varStatus="loop">
+                        <div class="panel panel-default">
+                            <div class="project-heading panel-heading">
+                                <h4 class="panel-title">
+                                    <a id="project${project.id}Link" data-toggle="collapse"
+                                       data-parent="#pendingProjectsAccordion"
+                                       href="#pendingProject${project.id}">${project.name}</a>
+                                </h4>
+                            </div>
+                                <%--Project Body--%>
+                            <div id="pendingProject${project.id}" data-project-id="${project.id}"
+                                 class="panel-collapse collapse">
+                                <div class="panel-body">
 
-                                        <div class="col-lg-12">
-                                            <h3 class="text-center page-header">
-                                                <strong>Tasks</strong>
-                                            </h3>
+                                    <div class="col-lg-12">
+                                        <h3 class="text-center page-header">
+                                            <strong>Tasks</strong>
+                                        </h3>
 
-                                                <%--Tasks--%>
-                                            <div id="tasksAccordion${project.id}" class="panel-group">
-                                                <c:forEach items="${project.tasks}" var="task">
-                                                    <div class="panel panel-default">
-                                                        <div class="task-heading panel-heading">
-                                                            <h4 class="panel-title">
-                                                                <a id="task${task.id}Link" data-toggle="collapse"
-                                                                   data-parent="#tasksAccordion${project.id}"
-                                                                   data-task-id="${task.id}"
-                                                                   href="#task${task.id}">${task.name}</a>
+                                            <%--Tasks--%>
+                                        <div id="tasksAccordion${project.id}" class="panel-group">
+                                            <c:forEach items="${project.tasks}" var="task">
+                                                <div class="panel panel-default">
+                                                    <div class="task-heading panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a id="task${task.id}Link" data-toggle="collapse"
+                                                               data-parent="#tasksAccordion${project.id}"
+                                                               data-task-id="${task.id}"
+                                                               href="#task${task.id}">${task.name}</a>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="task${task.id}" class="panel-collapse collapse">
+
+                                                            <%--Task Body--%>
+                                                        <div class="panel-body">
+                                                            <h4>
+                                                                <strong>Task Description</strong>
                                                             </h4>
-                                                        </div>
-                                                        <div id="task${task.id}" class="panel-collapse collapse">
+                                                            <p class="data-description">${task.description}</p>
 
-                                                                <%--Task Body--%>
-                                                            <div class="panel-body">
-                                                                <h4>
-                                                                    <strong>Task Description</strong>
+                                                                <%--developers Request--%>
+                                                            <div class="col-lg-12">
+                                                                <h4 class="text-center">
+                                                                    <strong>Requested Developers
+                                                                    </strong>
                                                                 </h4>
-                                                                <p class="data-description">${task.description}</p>
-
-                                                                    <%--developers Request--%>
-                                                                <div class="col-lg-12">
-                                                                    <h4 class="text-center">
-                                                                        <strong>Requested Developers
-                                                                        </strong>
-                                                                    </h4>
-                                                                    <hr>
-                                                                    <div class="table-responsive">
-                                                                        <table id="task${task.id}Requested"
-                                                                               class="text-center table table-condensed">
-                                                                            <thead>
+                                                                <hr>
+                                                                <div class="table-responsive">
+                                                                    <table id="task${task.id}Requested"
+                                                                           class="text-center table table-condensed">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th class="text-center">
+                                                                                Specialization
+                                                                            </th>
+                                                                            <th class="text-center">
+                                                                                Rank
+                                                                            </th>
+                                                                            <th class="text-center">
+                                                                                Quantity
+                                                                            </th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <c:forEach var="taskRequest"
+                                                                                   items="${task.requestsForDevelopers}">
                                                                             <tr>
-                                                                                <th class="text-center">
-                                                                                    Specialization
-                                                                                </th>
-                                                                                <th class="text-center">
-                                                                                    Rank
-                                                                                </th>
-                                                                                <th class="text-center">
-                                                                                    Quantity
-                                                                                </th>
+                                                                                <td>${taskRequest.specialization}</td>
+                                                                                <td>${taskRequest.rank}</td>
+                                                                                <td>${taskRequest.quantity}</td>
                                                                             </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                            <c:forEach var="taskRequest"
-                                                                                       items="${task.requestsForDevelopers}">
-                                                                                <tr>
-                                                                                    <td>${taskRequest.specialization}</td>
-                                                                                    <td>${taskRequest.rank}</td>
-                                                                                    <td>${taskRequest.quantity}</td>
-                                                                                </tr>
-                                                                            </c:forEach>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </div>
+                                                                        </c:forEach>
+                                                                        </tbody>
+                                                                    </table>
                                                                 </div>
-                                                                    <%--end developers Request--%>
+                                                            </div>
+                                                                <%--end developers Request--%>
 
-                                                                    <%--assigned Developers--%>
-                                                                <div class="col-lg-12">
-                                                                    <h4 class="text-center">
-                                                                        <strong>Assigned Developers</strong>
-                                                                    </h4>
-                                                                    <hr>
-                                                                    <div class="table-responsive">
-                                                                        <h5 class="${not empty task.taskDevelopers ?
+                                                                <%--assigned Developers--%>
+                                                            <div class="col-lg-12">
+                                                                <h4 class="text-center">
+                                                                    <strong>Assigned Developers</strong>
+                                                                </h4>
+                                                                <hr>
+                                                                <div class="table-responsive">
+                                                                    <h5 class="${not empty task.taskDevelopers ?
                                                                         'text-center no-display':'text-center'}">
-                                                                            <strong>
-                                                                                No developers assigned for this task!
-                                                                            </strong>
-                                                                        </h5>
-                                                                        <table id="task${task.id}Hired" class="table
+                                                                        <strong>
+                                                                            No developers assigned for this task!
+                                                                        </strong>
+                                                                    </h5>
+                                                                    <table id="task${task.id}Hired" class="table
                                                                         table-condensed
                                                                         ${not empty task.taskDevelopers ? '':'no-display'}">
-                                                                            <thead>
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th class="text-center">
+                                                                                Name
+                                                                            </th>
+                                                                            <th class="text-center">
+                                                                                Specialization
+                                                                            </th>
+                                                                            <th class="text-center">Rank
+                                                                            </th>
+                                                                            <th class="text-center">Hire Cost
+                                                                            </th>
+                                                                            <th class="text-center"></th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody class="text-center">
+                                                                        <c:forEach items="${task.taskDevelopers}"
+                                                                                   var="taskDeveloper">
                                                                             <tr>
-                                                                                <th class="text-center">
-                                                                                    Name
-                                                                                </th>
-                                                                                <th class="text-center">
-                                                                                    Specialization
-                                                                                </th>
-                                                                                <th class="text-center">Rank
-                                                                                </th>
-                                                                                <th class="text-center">Hire Cost
-                                                                                </th>
-                                                                                <th class="text-center"></th>
+                                                                                <td>
+                                                                                    <a href="#">${taskDeveloper.developerFirstName}
+                                                                                            ${taskDeveloper.developerLastName}
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td>${taskDeveloper.specialization}</td>
+                                                                                <td>${taskDeveloper.rank}</td>
+                                                                                <td><fmt:formatNumber
+                                                                                        type="number" pattern="#"
+                                                                                        value="${taskDeveloper.hireCost}"/>
+                                                                                    $
+                                                                                </td>
+                                                                                <td>
+                                                                                    <button class="btn btn-info btn-sm"
+                                                                                            name="unbindDeveloper"
+                                                                                            data-project-id="${project.id}"
+                                                                                            data-developer-id="${taskDeveloper.developerId}"
+                                                                                            data-developer-hire-cost="${taskDeveloper.hireCost}"
+                                                                                            type="button">
+                                                                                        Unbind
+                                                                                    </button>
+                                                                                </td>
                                                                             </tr>
-                                                                            </thead>
-                                                                            <tbody class="text-center">
-                                                                            <c:forEach items="${task.taskDevelopers}"
-                                                                                       var="taskDeveloper">
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <a href="#">${taskDeveloper.developerFirstName}
-                                                                                                ${taskDeveloper.developerLastName}
-                                                                                        </a>
-                                                                                    </td>
-                                                                                    <td>${taskDeveloper.specialization}</td>
-                                                                                    <td>${taskDeveloper.rank}</td>
-                                                                                    <td><fmt:formatNumber
-                                                                                            type="number" pattern="#"
-                                                                                            value="${taskDeveloper.hireCost}"/>
-                                                                                        $
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <button class="btn btn-info btn-sm"
-                                                                                                name="unbindDeveloper"
-                                                                                                data-project-id="${project.id}"
-                                                                                                data-developer-id="${taskDeveloper.developerId}"
-                                                                                                data-developer-hire-cost="${taskDeveloper.hireCost}"
-                                                                                                type="button">
-                                                                                            Unbind
-                                                                                        </button>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </c:forEach>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </div>
+                                                                        </c:forEach>
+                                                                        </tbody>
+                                                                    </table>
                                                                 </div>
-                                                                    <%--end assigned Developers--%>
                                                             </div>
+                                                                <%--end assigned Developers--%>
                                                         </div>
                                                     </div>
-                                                </c:forEach>
-                                            </div>
-                                                <%--end Tasks--%>
+                                                </div>
+                                            </c:forEach>
+                                        </div>
+                                            <%--end Tasks--%>
 
-                                            <h4 class="page-header">
-                                                <strong>Project Description</strong>
-                                            </h4>
-                                            <p class="data-description">${project.description}</p>
+                                        <h4 class="page-header">
+                                            <strong>Project Description</strong>
+                                        </h4>
+                                        <p class="data-description">${project.description}</p>
 
-                                                <%--Project check--%>
-                                            <h4 class="page-header text-center">
-                                                <strong>Project Check</strong>
-                                            </h4>
-                                            <div class="col-lg-12 no-padding">
-                                                <div class="col-lg-6 project-cost-input">
-                                                    <label>Devs Hire Cost:</label>
-                                                    <div class="input-group">
-                                                        <input id="project${project.id}DevsCost" type="number"
-                                                               class="form-control text-right" value="0" readonly>
-                                                        <span class="input-group-addon">.00 $</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 project-cost-input">
-                                                    <label>Services:</label>
-                                                    <div class="input-group">
-                                                        <input id="project${project.id}Services" type="number"
-                                                               title="servicesCost"
-                                                               class="form-control text-right" value="0"
-                                                               data-project-id="${project.id}">
-                                                        <span class="input-group-addon">.00 $</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 project-cost-input">
-                                                    <label>Taxes(+20%):</label>
-                                                    <div class="input-group">
-                                                        <input id="project${project.id}Taxes" type="number"
-                                                               class="form-control text-right" value="0" readonly>
-                                                        <span class="input-group-addon">.00 $</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 project-cost-input">
-                                                    <label>Total Project Cost:</label>
-                                                    <div class="input-group">
-                                                        <input id="project${project.id}TotalCost" type="number"
-                                                               class="form-control text-right" value="0" readonly>
-                                                        <span class="input-group-addon">.00 $</span>
-                                                    </div>
+                                            <%--Project check--%>
+                                        <h4 class="page-header text-center">
+                                            <strong>Project Check</strong>
+                                        </h4>
+                                        <div class="col-lg-12 no-padding">
+                                            <div class="col-lg-6 project-cost-input">
+                                                <label>Devs Hire Cost:</label>
+                                                <div class="input-group">
+                                                    <input id="project${project.id}DevsCost" type="number"
+                                                           class="form-control text-right" value="0" readonly>
+                                                    <span class="input-group-addon">.00 $</span>
                                                 </div>
                                             </div>
-
-                                                <%--Accept/Decline--%>
-                                            <div class="col-lg-12 no-padding mt-10">
-                                                <button type="button" name="declineProject" value="${project.id}"
-                                                        class="btn btn-danger w-200 mt-10">
-                                                    Decline
-                                                </button>
-                                                <button name="acceptProject" value="${project.id}"
-                                                        class="btn btn-success pull-right w-200 mt-10">
-                                                    Accept
-                                                </button>
+                                            <div class="col-lg-6 project-cost-input">
+                                                <label>Services:</label>
+                                                <div class="input-group">
+                                                    <input id="project${project.id}Services" type="number"
+                                                           title="servicesCost"
+                                                           class="form-control text-right" value="0"
+                                                           data-project-id="${project.id}">
+                                                    <span class="input-group-addon">.00 $</span>
+                                                </div>
                                             </div>
+                                            <div class="col-lg-6 project-cost-input">
+                                                <label>Taxes(+20%):</label>
+                                                <div class="input-group">
+                                                    <input id="project${project.id}Taxes" type="number"
+                                                           class="form-control text-right" value="0" readonly>
+                                                    <span class="input-group-addon">.00 $</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 project-cost-input">
+                                                <label>Total Project Cost:</label>
+                                                <div class="input-group">
+                                                    <input id="project${project.id}TotalCost" type="number"
+                                                           class="form-control text-right" value="0" readonly>
+                                                    <span class="input-group-addon">.00 $</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                            <%--Accept/Decline--%>
+                                        <div class="col-lg-12 no-padding mt-10">
+                                            <button type="button" name="declineProject" value="${project.id}"
+                                                    class="btn btn-danger w-200 mt-10">
+                                                Decline
+                                            </button>
+                                            <button name="acceptProject" value="${project.id}"
+                                                    class="btn btn-success pull-right w-200 mt-10">
+                                                Accept
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                                    <%--end Project Body--%>
                             </div>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
-            </div>
+                                <%--end Project Body--%>
+                        </div>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
         </div>
         <%--end Projects--%>
 

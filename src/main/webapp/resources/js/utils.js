@@ -4,9 +4,9 @@ $(function () {
     });
 })
 
-function refreshData(containerId, isFaded, callback) {
-    if (isFaded) {
-        $(containerId).children().animate({opacity: 0}, 800, function () {
+function refreshData(containerId, fadeOut, callback) {
+    if (fadeOut) {
+        $(containerId).children().fadeOut(800, function () {
             $(containerId).load(document.URL + " " + containerId + " > *", callback);
         });
     } else {
@@ -23,72 +23,42 @@ function updateActiveTab() {
     });
 }
 
-function removeUntilParent(element, parentId, isFaded, callback) {
-    if (isFaded) {
-        $(element).parentsUntil(parentId).animate({opacity: 0}, 800, function () {
-            $(this).remove();
+function prependOrUpdate(contentSelector, targetSelector, content) {
+    var expectedContent = $(contentSelector);
 
-            if (callback != undefined) {
-                callback.call();
-            }
-        });
-    } else {
-        $(element).parentsUntil(parentId).remove();
-
-        if (callback != undefined) {
-            callback.call();
-        }
+    if (expectedContent.length != 0) {
+        expectedContent.remove();
     }
+
+    $(targetSelector).prepend(content);
 }
 
-function displayAlertBox(data, alertBoxId, alertBoxParentId, isSuccessful) {
-    var alertBox, msgContainer, list;
+function formValidatingAlertBox(data, isSuccessful) {
+    var alertBox, msgContainer;
 
-    alertBox = $(alertBoxId);
+    alertBox = $("<div></div>").addClass("alert alert-dismissible fade in");
+    alertBox.addClass(isSuccessful ? "alert-success" : "alert-warning");
 
-    if (alertBox.length === 0) {
-        alertBox = $("<div></div>")
-            .attr("id", alertBoxId)
-            .addClass("alert alert-dismissible fade in");
+    $("<a>&times;</a>")
+        .addClass("close")
+        .attr("href", "#")
+        .attr("data-dismiss", "alert")
+        .attr("aria-label", "close")
+        .prependTo(alertBox);
 
-        if (isSuccessful) {
-            alertBox.addClass("alert-success");
-        } else {
-            alertBox.addClass("alert-warning");
-        }
-
-        $("<a>&times;</a>")
-            .addClass("close")
-            .attr("href", "#")
-            .attr("data-dismiss", "alert")
-            .attr("aria-label", "close")
-            .prependTo(alertBox);
-
-        msgContainer = $("<div></div>").append(data[1]).appendTo(alertBox);
-
-        alertBox.prependTo($(alertBoxParentId));
-    } else {
-        msgContainer = alertBox.find("div");
-
-        msgContainer.children().remove().append(data[1]);
-        alertBox.removeClass("alert-success alert-warning");
-
-        if (isSuccessful) {
-            alertBox.addClass("alert-success");
-        } else {
-            alertBox.addClass("alert-warning");
-        }
-    }
+    msgContainer = $("<div></div>").append(data[1]).appendTo(alertBox);
 
     $("<strong></strong>").append(data[0] + "! ").prependTo(msgContainer);
 
     if (data.length > 2) {
-        list = $("<ul></ul>").appendTo(msgContainer);
+        var list = $("<ul></ul>").appendTo(msgContainer);
 
         for (var i = 2; i < data.length; i++) {
             $("<li></li>").append(data[i]).appendTo(list);
         }
     }
+
+    return alertBox;
 }
 
 function showErrorsModal(msg) {
