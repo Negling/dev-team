@@ -13,8 +13,9 @@
     <p><spring:message code="customersCabinet.description"/></p>
 
     <ul id="navTab" class="nav nav-tabs nav-justified">
-        <li class="active"><a data-toggle="tab" href="#createProject">
-            <spring:message code="customersCabinet.createProject"/></a>
+        <li class="active">
+            <a data-toggle="tab" href="#createProject">
+                <spring:message code="customersCabinet.createProject"/></a>
         </li>
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -42,7 +43,7 @@
 
         <div id="createProject" class="tab-pane fade in active">
             <div id="formTechnicalTaskParent" class="row">
-                <div id="formTechnicalTask" class="new-project col-lg-8 col-lg-offset-2">
+                <div id="formTechnicalTask" class="new-project col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <h3 class="text-center page-header">
                         <strong>
                             <spring:message code="customersCabinet.projectData"/>
@@ -90,98 +91,99 @@
         <div id="newChecks" class="tab-pane">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="col-lg-12">
-                        <h3 class="page-header lead">New Checks</h3>
-                    </div>
+                    <h3 class="page-header lead">New Checks
+                        <button name="refresh" data-container-id="#newChecksAccordion" type="button"
+                                class="refresh-button pull-right">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </button>
+                    </h3>
                 </div>
 
-                <div id="newChecksAccordionParent" class="col-lg-6 col-lg-offset-3">
-                    <div id="newChecksAccordion" class="panel-group">
-                        <c:choose>
-                            <c:when test="${empty newChecks}">
-                                <h3 class="text-center">No New Checks!</h3>
-                            </c:when>
-                            <c:otherwise>
-                                <c:forEach items="${newChecks}" var="newCheck" varStatus="loop">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#newChecksAccordion"
-                                                   href="#check${newCheck.projectId}">
-                                                    <c:out value="${newCheck.projectName}"/>
-                                                </a>
-                                            </h4>
-                                        </div>
-
-                                            <%--Check Body--%>
-                                        <div id="check${newCheck.projectId}"
-                                             class="panel-collapse collapse${loop.index == 0 ? ' in' : ''}">
-                                            <div class="panel-body">
-
-                                                    <%--devs hire cost--%>
-                                                <div class="col-lg-12 data-description" data-toggle="tooltip"
-                                                     title="<spring:message code="entity.checkDevHireCost"/>"
-                                                     data-placement="top" data-delay="0">
-                                                    <p class="pull-left">
-                                                        Developers cost:
-                                                    </p>
-                                                    <p class="pull-right">
-                                                        <c:out value="${newCheck.developersCost}"/>
-                                                    </p>
-                                                </div>
-
-                                                    <%--services cost--%>
-                                                <div class="col-lg-12 data-description" data-toggle="tooltip"
-                                                     title="<spring:message code="entity.checkServicesCost"/>"
-                                                     data-placement="top" data-delay="0">
-                                                    <p class="pull-left">
-                                                        Services cost:
-                                                    </p>
-                                                    <p class="pull-right">
-                                                        <c:out value="${newCheck.servicesCost}"/>
-                                                    </p>
-                                                </div>
-
-                                                    <%--taxes--%>
-                                                <div class="col-lg-12 data-description" data-toggle="tooltip"
-                                                     title="<spring:message code="entity.checkTaxesCost"/>"
-                                                     data-placement="top" data-delay="0">
-                                                    <p class="pull-left">
-                                                        Taxes cost:
-                                                    </p>
-                                                    <p class="pull-right">
-                                                        <c:out value="${newCheck.taxes}"/>
-                                                    </p>
-                                                </div>
-
-                                                    <%--total project cost--%>
-                                                <div class="col-lg-12 data-description" data-toggle="tooltip"
-                                                     title="<spring:message code="entity.checkTotalCost"/>"
-                                                     data-placement="top" data-delay="0">
-                                                    <p class="pull-left">
-                                                        Total:
-                                                    </p>
-                                                    <p class="pull-right">
-                                                        <c:out value="${newCheck.totalProjectCost}"/>
-                                                    </p>
-                                                </div>
-
-                                                <button name="declineCheckButton" class="btn btn-danger pull-left"
-                                                        type="button" value="${newCheck.projectId}">
-                                                    Decline
-                                                </button>
-                                                <button name="confirmCheckButton" class="btn btn-success pull-right"
-                                                        value="${newCheck.projectId}" type="button">
-                                                    Confirm Payment
-                                                </button>
-                                            </div>
-                                        </div>
-                                            <%--end Check Body--%>
+                <div id="newChecksAccordion" class="panel-group col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
+                    <c:choose>
+                        <c:when test="${empty newChecks}">
+                            <h3 class="text-center">No New Checks!</h3>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach items="${newChecks}" var="newCheck" varStatus="loop">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#newChecksAccordion"
+                                               href="#check${newCheck.projectId}">
+                                                <c:out value="${newCheck.projectName}"/>
+                                            </a>
+                                        </h4>
                                     </div>
-                                </c:forEach>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
+
+                                        <%--Check Body--%>
+                                    <div id="check${newCheck.projectId}"
+                                         class="panel-collapse collapse${loop.index == 0 ? ' in' : ''}">
+                                        <div class="panel-body">
+
+                                                <%--devs hire cost--%>
+                                            <div class="data-description col-xs-12" data-toggle="tooltip"
+                                                 title="<spring:message code="entity.checkDevHireCost"/>"
+                                                 data-placement="top" data-delay="0">
+                                                <p class="pull-left">
+                                                    Developers cost:
+                                                </p>
+                                                <p class="pull-right">
+                                                    <c:out value="${newCheck.developersCost}"/> $
+                                                </p>
+                                            </div>
+
+                                                <%--services cost--%>
+                                            <div class="data-description col-xs-12" data-toggle="tooltip"
+                                                 title="<spring:message code="entity.checkServicesCost"/>"
+                                                 data-placement="top" data-delay="0">
+                                                <p class="pull-left">
+                                                    Services cost:
+                                                </p>
+                                                <p class="pull-right">
+                                                    <c:out value="${newCheck.servicesCost}"/> $
+                                                </p>
+                                            </div>
+
+                                                <%--taxes--%>
+                                            <div class="data-description col-xs-12" data-toggle="tooltip"
+                                                 title="<spring:message code="entity.checkTaxesCost"/>"
+                                                 data-placement="top" data-delay="0">
+                                                <p class="pull-left">
+                                                    Taxes cost:
+                                                </p>
+                                                <p class="pull-right">
+                                                    <c:out value="${newCheck.taxes}"/> $
+                                                </p>
+                                            </div>
+
+                                                <%--total project cost--%>
+                                            <div class="data-description col-xs-12" data-toggle="tooltip"
+                                                 title="<spring:message code="entity.checkTotalCost"/>"
+                                                 data-placement="top" data-delay="0">
+                                                <p class="pull-left">
+                                                    Total:
+                                                </p>
+                                                <p class="pull-right">
+                                                    <c:out value="${newCheck.totalProjectCost}"/> $
+                                                </p>
+                                            </div>
+
+                                            <button name="declineCheckButton" class="btn btn-danger pull-left"
+                                                    type="button" value="${newCheck.projectId}">
+                                                Decline
+                                            </button>
+                                            <button name="confirmCheckButton" class="btn btn-success pull-right"
+                                                    value="${newCheck.projectId}" type="button">
+                                                Confirm Payment
+                                            </button>
+                                        </div>
+                                    </div>
+                                        <%--end Check Body--%>
+                                </div>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>
@@ -191,17 +193,47 @@
         <div id="consideredChecks" class="tab-pane">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="col-lg-12">
-                        <h3 class="page-header lead">Checks History:</h3>
-                    </div>
+                    <h3 class="page-header lead">Checks History
+                        <button name="refresh" data-container-id="#completeChecksTable" type="button"
+                                class="refresh-button pull-right">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </button>
+                    </h3>
                 </div>
+            </div>
 
+            <div id="completeChecksTable" class="col-xs-12 no-padding">
                 <c:choose>
                     <c:when test="${empty completeChecks}">
-
+                        <h3 class="text-center">Your checks history is empty!</h3>
                     </c:when>
                     <c:otherwise>
-
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Devs Cost</th>
+                                <th>Services Cost</th>
+                                <th>Taxes</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${completeChecks}" var="completeCheck">
+                                <tr>
+                                    <td><c:out value="${completeCheck.projectName}"/></td>
+                                    <td><c:out value="${completeCheck.developersCost}"/> $</td>
+                                    <td><c:out value="${completeCheck.servicesCost}"/> $</td>
+                                    <td><c:out value="${completeCheck.taxes}"/> $</td>
+                                    <td><c:out value="${completeCheck.totalProjectCost}"/> $</td>
+                                    <td class="${completeCheck.status == 'Paid' ? 'lime' : 'red'}">
+                                        <c:out value="${completeCheck.status}"/>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -210,10 +242,16 @@
 
         <%--Active projects--%>
         <div id="activeProjects" class="tab-pane fade">
-            <p class="lead">
-                <spring:message code="customersCabinet.activeProjectsLead"/>
-            </p>
             <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header lead">
+                        <spring:message code="customersCabinet.activeProjectsLead"/>
+                        <button name="refresh" data-container-id="#newChecksAccordion"
+                                class="refresh-button pull-right">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </button>
+                    </h3>
+                </div>
                 <div class="col-lg-8 col-lg-offset-2">
                     <table class="table table-striped">
                         <thead>
@@ -256,10 +294,16 @@
 
         <%--History--%>
         <div id="history" class="tab-pane fade">
-            <p class="lead">
-                <spring:message code="customersCabinet.historyLead"/>
-            </p>
             <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header lead">
+                        <spring:message code="customersCabinet.historyLead"/>
+                        <button name="refresh" data-container-id="#newChecksAccordion" type="button"
+                                class="refresh-button pull-right">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </button>
+                    </h3>
+                </div>
                 <div class="col-lg-8 col-lg-offset-2">
                     <table class="table table-striped">
                         <thead>
@@ -290,53 +334,54 @@
                     </table>
                 </div>
             </div>
-        </div>
-        <%--History-End--%>
+            <%--History-End--%>
 
-        <%--Settings--%>
-        <div id="settings" class="tab-pane">
-            <p class="lead">Here you can edit your information. If you want to change some field directly, just
-                leave others empty.</p>
-            <div class="row">
-                <div class="col-lg-6">
+            <%--Settings--%>
+            <div id="settings" class="tab-pane">
+                <p class="lead">Here you can edit your information. If you want to change some field directly, just
+                    leave others empty.</p>
+                <div class="row">
+                    <div class="col-lg-6">
 
-                    <form>
-                        <label for="email">E-mail</label>
-                        <div class="input-group">
-                            <span class="input-group-addon">user@email.com</span>
-                            <input id="email" type="email" class="form-control" placeholder="New mail">
-                        </div>
-                        <label for="phone">Phone number</label>
-                        <div class="input-group">
-                            <span class="input-group-addon">+3 8814-378-3094</span>
-                            <input id="phone" type="text" class="form-control" placeholder="New phone number">
-                        </div>
-                        <label for="password">Password</label>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                            <input id="password" type="password" class="form-control" placeholder="New password">
-                        </div>
-                        <div class="input-group">
-                            <button type="button" class="btn btn-success w-200" data-toggle="modal"
-                                    data-target="#myModal">Confirm
-                            </button>
-                        </div>
+                        <form>
+                            <label for="email">E-mail</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">user@email.com</span>
+                                <input id="email" type="email" class="form-control" placeholder="New mail">
+                            </div>
+                            <label for="phone">Phone number</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">+3 8814-378-3094</span>
+                                <input id="phone" type="text" class="form-control" placeholder="New phone number">
+                            </div>
+                            <label for="password">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                <input id="password" type="password" class="form-control" placeholder="New password">
+                            </div>
+                            <div class="input-group">
+                                <button type="button" class="btn btn-success w-200" data-toggle="modal"
+                                        data-target="#myModal">Confirm
+                                </button>
+                            </div>
 
 
-                    </form>
-                </div>
-                <%--.end column--%>
-                <div class="col-lg-6">
-                    <div class="alert settings-alert alert-danger alert-dismissable fade in">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>Danger!</strong> This alert box could indicate a dangerous action.
+                        </form>
+                    </div>
+                    <%--.end column--%>
+                    <div class="col-lg-6">
+                        <div class="alert settings-alert alert-danger alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Danger!</strong> This alert box could indicate a dangerous action.
+                        </div>
                     </div>
                 </div>
             </div>
+            <%--.end Settings--%>
         </div>
-        <%--.end Settings--%>
+        <%--.end Tab content--%>
+
     </div>
-    <%--.end Tab content--%>
 </div>
 
 <%--Modals--%>
@@ -453,6 +498,8 @@
         </div>
     </div>
 </div>
+
+<%@include file="fragments/errorsModal.jspf" %>
 
 <%--Hidden task prototype--%>
 <div id="taskPrototype" class="no-display panel panel-default">

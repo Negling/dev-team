@@ -37,7 +37,7 @@ $(function () {
     })
 
     $("#taskPrototype").find("button").click(function () {
-        $(this).parentsUntil("div.panel-group").animate({opacity: 0}, 500, function () {
+        $(this).parentsUntil("div.panel-group").fadeOut(500, function () {
             $(this).parentsUntil("div.panel-group").remove();
         });
     });
@@ -46,6 +46,8 @@ $(function () {
         return declineCheckAjax($(this));
     }).on("click", "button[name=confirmCheckButton]", function () {
         return confirmCheckAjax($(this));
+    }).on("click", "button[name=refresh]", function () {
+        return refreshData($(this).attr("data-container-id"), true, updateActiveTab);
     });
 });
 
@@ -87,8 +89,8 @@ function addTaskModalDevRow() {
         .text($("#deleteButtonText").text())
         .addClass("btn btn-default")
         .click(function () {
-            newRow.animate({opacity: 0}, 300, function () {
-                newRow.remove();
+            newRow.fadeOut(300, function () {
+                $(this).remove();
             });
         })
         .appendTo(newRow.children().last());
@@ -205,21 +207,40 @@ function createIdCounter() {
     }
 }
 
+function refreshTechnicalTask(callback) {
+    $("#formTechnicalTask").fadeTo(800, 0.01, function () {
+        $("#technicalTaskName, #technicalTaskDescription").val('');
+        $("#tasks").children().remove();
+
+        if (callback != undefined) {
+            callback.call();
+        }
+    }).delay(800).fadeTo(800, 1);
+}
+
+function removeAndRefreshIfEmpty(element, parentId) {
+    return removeUntilParent(element, parentId, true, function () {
+        if ($(parentId).children().length == 0) {
+            refreshData(parentId, false, updateActiveTab);
+        }
+    });
+}
+
 function submitTechnicalTaskAjax(button) {
     $.ajax({
         method: "POST",
         url: "/cabinet/submit",
         data: JSON.stringify(createTechnicalTask())
     }).done(function (data) {
-        return removeAndReload(button, "#formTechnicalTaskParent", function () {
-            displayAlertBox(data, "formTechnicalTaskAlertBox", "formTechnicalTask", true);
+        refreshTechnicalTask(function () {
+            displayAlertBox(data, "#formTechnicalTaskAlertBox", "#formTechnicalTask", true);
             taskId = createIdCounter();
         });
     }).fail(function (jqXHR) {
         if (jqXHR.status === 422) {
-            displayAlertBox(JSON.parse(jqXHR.responseText), "formTechnicalTaskAlertBox", "formTechnicalTask", false);
+            displayAlertBox(JSON.parse(jqXHR.responseText), "#formTechnicalTaskAlertBox", "#formTechnicalTask", false);
         } else {
-            alert("Some server internal error occurred! Please try again later, or contact support.");
+            showErrorsModal(jqXHR.responseText);
         }
     });
 }
@@ -230,11 +251,9 @@ function declineCheckAjax(button) {
         url: "/cabinet/declineCheck",
         data: JSON.stringify($(button).attr("value"))
     }).done(function () {
-        return removeAndReload(button, "#newChecksAccordion", function () {
-            return updateNavsTab("navTab");
-        });
+        return removeAndRefreshIfEmpty(button, "#newChecksAccordion");
     }).fail(function (jqXHR) {
-        alert("Some server internal error occurred! Please try again later, or contact support.");
+        showErrorsModal(jqXHR.responseText);
     });
 }
 
@@ -244,10 +263,8 @@ function confirmCheckAjax(button) {
         url: "/cabinet/confirmCheck",
         data: JSON.stringify($(button).attr("value"))
     }).done(function () {
-        return removeAndReload(button, "#newChecksAccordion", function () {
-            return updateNavsTab("navTab");
-        });
+        return removeAndRefreshIfEmpty(button, "#newChecksAccordion");
     }).fail(function (jqXHR) {
-        alert("Some server internal error occurred! Please try again later, or contact support.");
+        showErrorsModal(jqXHR.responseText);
     });
 }

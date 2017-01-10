@@ -18,5 +18,7 @@ public interface ProjectsService {
 
     void decline(Long projectId, String managerCommentary);
 
+    void cancel(Long projectId);
+
     Project getById(Long projectId);
 }

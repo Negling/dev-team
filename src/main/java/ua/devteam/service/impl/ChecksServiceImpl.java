@@ -47,7 +47,7 @@ public class ChecksServiceImpl implements ChecksService {
 
         check.setStatus(Cancelled);
 
-        projectsService.decline(projectId, null);
+        projectsService.cancel(projectId);
         checkDAO.update(check, check);
     }
 

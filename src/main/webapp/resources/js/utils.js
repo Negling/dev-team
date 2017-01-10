@@ -4,22 +4,47 @@ $(function () {
     });
 })
 
-function removeAndReload(button, containerId, functionAfterDone) {
-    $(button).parentsUntil(containerId).animate({opacity: 0}, 500, function () {
-        $(this).remove();
+function refreshData(containerId, isFaded, callback) {
+    if (isFaded) {
+        $(containerId).children().animate({opacity: 0}, 800, function () {
+            $(containerId).load(document.URL + " " + containerId + " > *", callback);
+        });
+    } else {
+        $(containerId).load(document.URL + " " + containerId + " > *", callback);
+    }
+}
 
-        if ($(containerId).children().length == 0) {
-            $(containerId).parent().load(document.URL + " " + containerId, functionAfterDone);
-        } else if (functionAfterDone != undefined) {
-            functionAfterDone.call();
+function updateActiveTab() {
+    $("#navTab > li").each(function (index, element) {
+        if ($(element).hasClass("active")) {
+            $(element).load(document.URL + " #navTab > li:eq(" + index + ") > *");
+            return;
         }
     });
+}
+
+function removeUntilParent(element, parentId, isFaded, callback) {
+    if (isFaded) {
+        $(element).parentsUntil(parentId).animate({opacity: 0}, 800, function () {
+            $(this).remove();
+
+            if (callback != undefined) {
+                callback.call();
+            }
+        });
+    } else {
+        $(element).parentsUntil(parentId).remove();
+
+        if (callback != undefined) {
+            callback.call();
+        }
+    }
 }
 
 function displayAlertBox(data, alertBoxId, alertBoxParentId, isSuccessful) {
     var alertBox, msgContainer, list;
 
-    alertBox = $("#" + alertBoxId);
+    alertBox = $(alertBoxId);
 
     if (alertBox.length === 0) {
         alertBox = $("<div></div>")
@@ -41,7 +66,7 @@ function displayAlertBox(data, alertBoxId, alertBoxParentId, isSuccessful) {
 
         msgContainer = $("<div></div>").append(data[1]).appendTo(alertBox);
 
-        alertBox.prependTo($("#" + alertBoxParentId));
+        alertBox.prependTo($(alertBoxParentId));
     } else {
         msgContainer = alertBox.find("div");
 
@@ -64,10 +89,6 @@ function displayAlertBox(data, alertBoxId, alertBoxParentId, isSuccessful) {
             $("<li></li>").append(data[i]).appendTo(list);
         }
     }
-}
-
-function updateNavsTab(navTabId) {
-    $("#" + navTabId).load(document.URL + " #" + navTabId + " > li");
 }
 
 function showErrorsModal(msg) {

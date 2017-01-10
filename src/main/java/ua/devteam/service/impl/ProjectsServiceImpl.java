@@ -69,6 +69,15 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
+    public void cancel(Long projectId) {
+        Project project = projectDAO.getById(projectId);
+        project.setStatus(Canceled);
+
+        taskDevelopersService.dropByProject(projectId);
+        projectDAO.update(project, project);
+    }
+
+    @Override
     public Project getById(Long projectId) {
         Project project = projectDAO.getById(projectId);
         project.setTasks(projectTasksService.getAllByProject(project.getId()));
