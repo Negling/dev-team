@@ -58,19 +58,27 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
     }
 
     @Override
-    public List<TechnicalTask> getAllUnassigned() {
-        return formTask(technicalTaskDAO.getAllNew());
+    public List<TechnicalTask> getAllUnassigned(boolean loadNested) {
+        if (loadNested) {
+            return formTask(technicalTaskDAO.getAllNew());
+        }
+
+        return technicalTaskDAO.getAllNew();
     }
 
     @Override
-    public List<TechnicalTask> getAllTechnicalTasks() {
-        return formTask(technicalTaskDAO.getAll());
+    public List<TechnicalTask> getAllTechnicalTasks(boolean loadNested) {
+        if (loadNested) {
+            return formTask(technicalTaskDAO.getAll());
+        }
+
+        return technicalTaskDAO.getAll();
     }
 
 
     private List<TechnicalTask> formTask(List<TechnicalTask> tasks) {
         tasks.forEach(technicalTask ->
-                technicalTask.setOperations(operationsService.getByTechnicalTask(technicalTask.getId())));
+                technicalTask.setOperations(operationsService.getByTechnicalTask(technicalTask.getId(), true)));
 
         return tasks;
     }

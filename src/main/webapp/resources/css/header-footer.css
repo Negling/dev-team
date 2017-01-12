@@ -112,7 +112,7 @@ body {
 }
 
 .errors-span {
-    font-size: 13px;
+    font-size: 0.72em;
     color: red;
 }
 

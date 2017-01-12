@@ -34,10 +34,13 @@ public class OperationsServiceImpl implements OperationsService {
     }
 
     @Override
-    public List<Operation> getByTechnicalTask(Long technicalTaskId) {
+    public List<Operation> getByTechnicalTask(Long technicalTaskId, boolean loadNested) {
         List<Operation> operations = operationDAO.getByTechnicalTask(technicalTaskId);
-        operations.forEach(operation ->
-                operation.setRequestsForDevelopers(requestsForDevelopersDAO.getByOperation(operation.getId())));
+
+        if (loadNested) {
+            operations.forEach(operation ->
+                    operation.setRequestsForDevelopers(requestsForDevelopersDAO.getByOperation(operation.getId())));
+        }
 
         return operations;
     }

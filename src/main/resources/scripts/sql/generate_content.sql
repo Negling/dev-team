@@ -102,4 +102,4 @@ VALUES (1, 1, 12, 'Complete');
 INSERT INTO task_developers (task_id, developer_id, hours_spent, status)
 VALUES (2, 1, 0, 'Running');
 
-INSERT INTO checks (project_id, developers_cost, services, taxes) VALUES (1, 700.00, 1000.00, 340.00);
+INSERT INTO checks (project_id, developers_cost, services, taxes, status) VALUES (1, 700.00, 1000.00, 340.00, 'Paid');

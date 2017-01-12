@@ -4,6 +4,7 @@ package ua.devteam.entity.projects;
 import ua.devteam.entity.enums.Status;
 import ua.devteam.entity.tasks.ProjectTask;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,6 +17,7 @@ public class Project extends AbstractTechnicalTask {
     private Long technicalTaskId;
     private Date startDate;
     private Date endDate;
+    private BigDecimal totalProjectCost;
     private List<ProjectTask> tasks;
 
     public Project() {
@@ -23,25 +25,28 @@ public class Project extends AbstractTechnicalTask {
 
     public Project(Long managerId, TechnicalTask technicalTask) {
         this(technicalTask.getName(), technicalTask.getDescription(), technicalTask.getCustomerId(), managerId, null,
-                technicalTask.getId(), new Date(), null, Status.New);
+                technicalTask.getId(), null, new Date(), null, Status.New);
     }
 
     public Project(String name, String description, Long customerId, Long managerId, String managerCommentary,
-                   Long technicalTaskId, Date startDate, Date endDate, Status status) {
-        this(null, name, description, customerId, managerId, managerCommentary, technicalTaskId, startDate, endDate, status);
+                   Long technicalTaskId, BigDecimal totalProjectCost, Date startDate, Date endDate, Status status) {
+        this(null, name, description, customerId, managerId, managerCommentary, technicalTaskId, totalProjectCost,
+                startDate, endDate, status);
     }
 
     public Project(Long id, String name, String description, Long customerId, Long managerId, String managerCommentary,
-                   Long technicalTaskId, Date startDate, Date endDate, Status status) {
-        this(id, name, description, customerId, managerId, managerCommentary, technicalTaskId, startDate, endDate, status, null);
+                   Long technicalTaskId, BigDecimal totalProjectCost, Date startDate, Date endDate, Status status) {
+        this(id, name, description, customerId, managerId, managerCommentary, technicalTaskId, totalProjectCost,
+                startDate, endDate, status, null);
     }
 
     public Project(Long id, String name, String description, Long customerId, Long managerId, String managerCommentary,
-                   Long technicalTaskId, Date startDate, Date endDate, Status status, List<ProjectTask> tasks) {
-
+                   Long technicalTaskId, BigDecimal totalProjectCost, Date startDate, Date endDate, Status status,
+                   List<ProjectTask> tasks) {
         super(id, name, description, customerId, status, managerCommentary);
         this.managerId = managerId;
         this.technicalTaskId = technicalTaskId;
+        this.totalProjectCost = totalProjectCost;
         this.startDate = formatDate(startDate);
         this.endDate = formatDate(endDate);
         this.tasks = tasks;
@@ -61,6 +66,14 @@ public class Project extends AbstractTechnicalTask {
 
     public void setTechnicalTaskId(Long technicalTaskId) {
         this.technicalTaskId = technicalTaskId;
+    }
+
+    public BigDecimal getTotalProjectCost() {
+        return totalProjectCost;
+    }
+
+    public void setTotalProjectCost(BigDecimal totalProjectCost) {
+        this.totalProjectCost = totalProjectCost;
     }
 
     public Date getStartDate() {
@@ -107,6 +120,8 @@ public class Project extends AbstractTechnicalTask {
             return false;
         if (startDate != null ? !startDate.equals(project.startDate) : project.startDate != null) return false;
         if (endDate != null ? !endDate.equals(project.endDate) : project.endDate != null) return false;
+        if (totalProjectCost != null ? !totalProjectCost.equals(project.totalProjectCost) : project.totalProjectCost != null)
+            return false;
 
         return tasks != null ? tasks.equals(project.tasks) : project.tasks == null;
     }
@@ -118,8 +133,8 @@ public class Project extends AbstractTechnicalTask {
         result = 31 * result + (technicalTaskId != null ? technicalTaskId.hashCode() : 0);
         result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
         result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+        result = 31 * result + (totalProjectCost != null ? totalProjectCost.hashCode() : 0);
         result = 31 * result + (tasks != null ? tasks.hashCode() : 0);
-
         return result;
     }
 
@@ -135,6 +150,7 @@ public class Project extends AbstractTechnicalTask {
         sb.append(", technicalTaskId=").append(technicalTaskId);
         sb.append(", startDate=").append(startDate);
         sb.append(", endDate=").append(endDate);
+        sb.append(", totalProjectCost").append(totalProjectCost);
         sb.append(", status=").append(getStatus().toString());
         sb.append(", tasks=").append(tasks);
         sb.append('}');

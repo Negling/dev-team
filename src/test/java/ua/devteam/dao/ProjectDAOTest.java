@@ -19,9 +19,11 @@ import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 import static ua.devteam.dao.DAOTestUtils.*;
+import static ua.devteam.entity.enums.Status.Running;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DataAccessConfiguration.class)
@@ -40,7 +42,7 @@ public class ProjectDAOTest {
     @Before
     public void before() {
         testId = countRowsInTable(jdbcTemplate, tableName);
-        testData = new Project("test", "test", (long) 1, (long) 1, null, (long) 1, new Date(), new Date(), Status.Running);
+        testData = new Project("test", "test", (long) 1, (long) 1, null, (long) 1, null, new Date(), new Date(), Running);
     }
 
     @Test
@@ -119,7 +121,7 @@ public class ProjectDAOTest {
         Status status = project.getStatus();
         long managerId = project.getManagerId();
 
-        List<Project> data = projectDAO.getAllByManagerAndStatus(managerId, status);
+        List<Project> data = projectDAO.getByManagerAndStatus(managerId, status);
 
         assertThat(data.size(), is(greaterThan(0)));
         assertThat(data.get(0).getManagerId(), is(managerId));

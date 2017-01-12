@@ -11,12 +11,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <meta name="_csrf" content="<c:out value="${_csrf.token}"/>"/>
-<!-- default header name is X-CSRF-TOKEN -->
 <meta name="_csrf_header" content="<c:out value="${_csrf.headerName}"/>"/>
-
-<security:authorize access="isAuthenticated()">
-    <p id="userId" class="no-display"><security:authentication property="principal.id"/></p>
-</security:authorize>
 
 <!-- Bootstrap Core CSS -->
 <link href="<spring:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">

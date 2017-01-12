@@ -24,24 +24,12 @@ $(function () {
 
     // in open "decline" modal by clicking on continue - send ajax POST request
     $("#declineButton").click(function () {
-        if ($(this).attr("data-entity-type") === "project") {
-            declineProjectAjax();
-        } else {
-            declineTechnicalTaskAjax();
-        }
+        $(this).attr("data-entity-type") === "project" ? declineProjectAjax.call() : declineTechnicalTaskAjax.call();
     });
 
-    $("body").on("click", "button[name=declineTechnicalTaskButton]", function () {
-
+    $("body").on("click", "button[name^=decline]", function () {
         // on click change tt ID in "declineModal"
-        $("#declineId").text($(this).attr("value"));
-        $("#declineButton").attr("data-entity-type", "technicalTask");
-        $("#declineModal").modal("show");
-    }).on("click", "button[name=declineProject]", function () {
-
-        $("#declineId").text($(this).attr("value"));
-        $("#declineButton").attr("data-entity-type", "project");
-        $("#declineModal").modal("show");
+        showDeclineModal($(this).attr("value"), $(this).attr("data-entity-type"));
     }).on("click", "button[name=acceptTechnicalTask]", function () {
         // send accept tt and form it as project request
         return formTechnicalTaskAsProjectAjax($(this));
@@ -53,13 +41,27 @@ $(function () {
         return unbindDeveloperAjax($(this));
     }).on("change", "input[title=servicesCost]", function () {
         return calculateProjectCheck($(this).attr("data-project-id"));
+    }).on("click", "button[name=refresh]", function () {
+        return refreshData($(this).attr("data-container-id"), true, updateActiveTab);
+    }).on("click", "button[name=refreshProjects]", function () {
+        return refreshData($(this).attr("data-container-id"), true, function () {
+            calculateRegisteredProjectsChecks();
+            updateBindSelectOptions();
+            updateActiveTab();
+        });
     });
 });
 
 
+function showDeclineModal(entityId, entityType) {
+    $("#declineId").text(entityId);
+    $("#declineButton").attr("data-entity-type", entityType);
+    $("#declineModal").modal("show");
+}
+
 function changeActiveTaskSelectOptions() {
     var activeTaskSelect = $("#activeTaskSelect");
-    var activeProjectId = $("#activeProjectSelect").find("option:selected").val();
+    var activeProjectId = $("#activeProjectSelect > option:selected").val();
     var selectValue;
 
     activeTaskSelect.children().remove();
@@ -77,21 +79,22 @@ function changeActiveTaskSelectOptions() {
 }
 
 function displayDevsSearchResults(data) {
-    var resultTableBody = $("#devsResultTable").find("tbody");
+    var resultTableBody = $("#devsResultTable > tbody");
     var newRow, newColumn;
 
     if (data.length == 0) {
-        resultTableBody.parent().animate({opacity: 0}, 300, function () {
+        resultTableBody.parent().fadeOut(300, function () {
             resultTableBody.parent().addClass("no-display");
-            $("#noResults").removeClass("no-display").css("opacity", "");
+            $("#noResults").removeClass("no-display").fadeTo(0, 1);
             resultTableBody.children().remove();
         });
 
     } else {
         resultTableBody.children().remove();
-        $("#noResults").animate({opacity: 0}, 300, function () {
+        $("#noResults").fadeOut(300, function () {
             $(this).addClass("no-display");
-            resultTableBody.parent().removeClass("no-display").css("opacity", "");
+            resultTableBody.parent().removeClass("no-display").fadeTo(0, 1);
+            ;
         });
 
         for (var i = 0; i < data.length; i++) {
@@ -146,14 +149,19 @@ function calculateProjectCheck(projectId) {
     totalCost.val(parseFloat(devsHireCost.val()) + parseFloat(servicesCost.val()) + parseFloat(taxes.val()));
 }
 
+function updateBindSelectOptions() {
+    $("#activeProjectSelect").load(document.URL + " #activeProjectSelect > option");
+    $("#activeTaskSelect").load(document.URL + " #activeTaskSelect > option");
+}
+
 function bindDeveloper(button, data) {
     var link, unbindButton, newRow, tableBody, resultTableBody, projectId, projectDevsCost, currentTaskId;
 
-    currentTaskId = $("#activeTaskSelect").find("option:selected").attr("value");
-    projectId = $("#activeProjectSelect").find("option:selected").attr("value");
+    currentTaskId = $("#activeTaskSelect > option:selected").attr("value");
+    projectId = $("#activeProjectSelect > option:selected").attr("value");
     tableBody = $("#task" + currentTaskId + "Hired").find("tbody");
     projectDevsCost = $("#project" + projectId + "DevsCost");
-    resultTableBody = $("#devsResultTable").find("tbody");
+    resultTableBody = $("#devsResultTable > tbody");
 
     projectDevsCost.val(parseFloat(projectDevsCost.val()) + parseFloat(data.hireCost));
 
@@ -161,7 +169,7 @@ function bindDeveloper(button, data) {
 
     if (resultTableBody.children().length == 0) {
         resultTableBody.parent().addClass("no-display");
-        $("#noResults").removeClass("no-display").css("opacity", "");
+        $("#noResults").removeClass("no-display").fadeTo(0, 1);
     }
 
     if (tableBody.children().length == 0) {
@@ -221,10 +229,12 @@ function declineProjectAjax() {
         url: "/manage/declineProject",
         data: JSON.stringify(data)
     }).done(function () {
-        removeAndReload($("button[value=" + projectId + "][name=declineProject]"), "#pendingProjectsAccordion");
-        $("#activeProjectSelect").load(document.URL + " #activeProjectSelect > option");
-        $("#activeTaskSelect").load(document.URL + " #activeTaskSelect > option");
-        updateNavsTab("navTab");
+        return removeAndRefreshIfEmpty($("button[value=" + projectId + "][name=declineProject]"),
+            "#pendingProjectsAccordion", function () {
+                updateBindSelectOptions();
+                updateActiveTab();
+                $("#declineManagerCommentary").val("");
+            });
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
     });
@@ -244,14 +254,16 @@ function acceptProjectAjax(button) {
         url: "/manage/accept",
         data: JSON.stringify(check)
     }).done(function (data) {
-        return removeAndReload(button, "#pendingProjectsAccordion", function () {
-            displayAlertBox(data, "pendingProjectsAlertBox", "pendingProjectsAccordionParent", true);
-            calculateRegisteredProjectsChecks();
-            updateNavsTab("navTab");
+        return removeAndRefreshIfEmpty(button, "#pendingProjectsAccordion", function () {
+            prependOrUpdate("#pendingProjectsAccordion > div.alert", "#pendingProjectsAccordion",
+                formValidatingAlertBox(data, true));
+            updateBindSelectOptions();
+            updateActiveTab();
         });
     }).fail(function (jqXHR) {
         if (jqXHR.status === 422) {
-            displayAlertBox(JSON.parse(jqXHR.responseText), "pendingProjectsAlertBox", "pendingProjectsAccordionParent", false);
+            prependOrUpdate("#pendingProjectsAccordion > div.alert", "#pendingProjectsAccordion",
+                formValidatingAlertBox(JSON.parse(jqXHR.responseText), false));
         } else {
             showErrorsModal(jqXHR.responseText);
         }
@@ -270,32 +282,23 @@ function declineTechnicalTaskAjax() {
         url: "/manage/declineTechnicalTask",
         data: JSON.stringify(data)
     }).done(function () {
-        removeAndReload($("button[value=" + technicalTaskId + "][name=declineTechnicalTaskButton]"),
-            "#technicalTasksAccordion");
-        $("#declineManagerCommentary").val("");
-        updateNavsTab("navTab");
+        return removeAndRefreshIfEmpty($("button[value=" + technicalTaskId + "][name=declineTechnicalTask]"),
+            "#technicalTasksAccordion", function () {
+                updateActiveTab();
+                $("#declineManagerCommentary").val("");
+            });
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
     });
 }
 
 function formTechnicalTaskAsProjectAjax(button) {
-    var data = {
-        technicalTaskId: $(button).attr("value"),
-        managerId: $("#userId").text()
-    };
-
     $.ajax({
         method: "POST",
         url: "/manage/formAsProject",
-        data: JSON.stringify(data)
+        data: JSON.stringify($(button).attr("value"))
     }).done(function () {
-        removeAndReload(button, "#technicalTasksAccordion");
-        $("#pendingProjectsAccordion").parent().load(document.URL + " #pendingProjectsAccordion");
-        $("#activeProjectSelect").load(document.URL + " #activeProjectSelect > option");
-        $("#activeTaskSelect").load(document.URL + " #activeTaskSelect > option");
-        calculateRegisteredProjectsChecks();
-        updateNavsTab("navTab");
+        return removeAndRefreshIfEmpty(button, "#technicalTasksAccordion", updateActiveTab);
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
     });
@@ -316,15 +319,16 @@ function searchForDevsAjax() {
 }
 
 function bindDeveloperAjax(button) {
-    var data = {
-        devId: $(button).attr("value"),
-        taskId: $("#activeTaskSelect").find("option:selected").attr("value")
-    };
+    var activeTask = $("#activeTaskSelect > option:selected").attr("value");
+
+    if (activeTask === undefined) {
+        return;
+    }
 
     $.ajax({
         method: "POST",
         url: "/manage/bind",
-        data: JSON.stringify(data)
+        data: JSON.stringify({devId: $(button).attr("value"), taskId: activeTask})
     }).done(function (data) {
         return bindDeveloper(button, data);
     }).fail(function (jqXHR) {

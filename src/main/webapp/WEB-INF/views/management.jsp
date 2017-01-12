@@ -21,70 +21,56 @@
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 <span class="badge"><c:out value="${empty pendingProjects ? '' : pendingProjects.size()}"/></span>
-                My Projects <span class="caret"></span></a>
+                Projects <span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li>
                     <a href="#formProjects" role="tab" data-toggle="tab">
                         Form Project
-                        <span class="badge"><c:out value="${empty pendingProjects ? '' : pendingProjects.size()}"/></span>
+                        <span class="badge"><c:out
+                                value="${empty pendingProjects ? '' : pendingProjects.size()}"/></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#runningProjects" role="tab" data-toggle="tab">
+                        Running Project
+                        <span class="badge"><c:out
+                                value="${empty runningProjects ? '' : runningProjects.size()}"/></span>
                     </a>
                 </li>
                 <li><a href="#completeProjects" role="tab" data-toggle="tab">Complete Projects</a></li>
             </ul>
         </li>
         <li><a data-toggle="tab" href="#users">Users</a></li>
-        <li><a data-toggle="tab" href="#developers">Developers</a></li>
-        <li><a data-toggle="tab" href="#managers">Managers</a></li>
+        <security:authorize access="hasAnyAuthority('Ultramanager', 'Admin')">
+            <li><a data-toggle="tab" href="#developers">Developers</a></li>
+        </security:authorize>
+        <security:authorize access="hasAuthority('Admin')">
+            <li><a data-toggle="tab" href="#managers">Managers</a></li>
+        </security:authorize>
         <li><a data-toggle="tab" href="#settings">Settings</a></li>
     </ul>
 
     <div class="tab-content">
         <%--Manage Tehnical --%>
-        <%@include file="fragments/managment/manage_technical_tasks.jspf" %>
+        <div id="technicalTasks" class="tab-pane fade in active">
+            <%@include file="fragments/managment/manage_technical_tasks.jspf" %>
+        </div>
         <%--.end Manage new Projects--%>
 
         <%--Form Projects--%>
-        <%@include file="fragments/managment/manage_form_project.jspf" %>
+        <div id="formProjects" class="tab-pane fade">
+            <%@include file="fragments/managment/manage_form_project.jspf" %>
+        </div>
         <%--end Form Projects--%>
+
+        <%--Running Projects--%>
+        <div id="runningProjects" class="tab-pane fade">
+        </div>
+        <%--end Running Projects--%>
 
         <%--Complete Projects--%>
         <div id="completeProjects" class="tab-pane fade">
-            <div class="row">
-                <c:choose>
-                    <c:when test="${empty completeProjects}">
-                        <div class="text-vertical-center col-lg-12">
-                            <h3>No Complete Projects!</h3>
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <h3 class="page-header lead">Complete Projects</h3>
-                        <div class="table-responsive">
-                            <table class="table table-condensed">
-                                <thead>
-                                <tr>
-                                    <th>Project Name</th>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
-                                    <th>Status</th>
-                                    <th>Price</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach items="${completeProjects }" var="project">
-                                    <tr>
-                                        <td><a href="#">${project.name}</a></td>
-                                        <td><fmt:formatDate value="${project.startDate}" pattern="d MMMM, yyyy"/></td>
-                                        <td><fmt:formatDate value="${project.endDate}" pattern="d MMMM, yyyy"/></td>
-                                        <td>${project.status}</td>
-                                        <td>$ ${project.price}</td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
-            </div>
+            <%@include file="fragments/managment/manage_complete_projects.jspf" %>
         </div>
         <%--end Complete Projects--%>
 
@@ -131,16 +117,21 @@
         </div>
         <%--end Users--%>
 
-        <%--Developers--%>
-        <div id="developers" class="tab-pane fade">
 
-        </div>
+        <%--Developers--%>
+        <security:authorize access="hasAnyAuthority('Ultramanager', 'Admin')">
+            <div id="developers" class="tab-pane fade">
+
+            </div>
+        </security:authorize>
         <%--end Developers--%>
 
         <%--Managers--%>
-        <div id="managers" class="tab-pane fade">
+        <security:authorize access="hasAuthority('Admin')">
+            <div id="managers" class="tab-pane fade">
 
-        </div>
+            </div>
+        </security:authorize>
         <%--end Managers--%>
 
         <%--Settings--%>
@@ -178,6 +169,98 @@
 
     </div>
 </div>
+
+<!-- Bind Developer to Task Modal -->
+<div class="modal fade" id="bindDeveloperModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Developers Binding Settings: </h4>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label>Select Project:</label>
+                        <select id="activeProjectSelect" class="form-control" title="Active Project">
+                            <c:forEach items="${pendingProjects}" var="project" varStatus="status">
+                                <option value="<c:out value="${project.id}"/>">
+                                    <c:out value="${project.name}"/>
+                                </option>
+                                <c:if test="${status.last}">
+                                    <c:set var="projectTasks" value="${project.tasks}"/>
+                                </c:if>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-lg-12">
+                        <label>Select Task:</label>
+                        <select id="activeTaskSelect" class="form-control" title="Active Task">
+                            <c:forEach items="${projectTasks}" var="task">
+                                <option value="<c:out value="${task.id}"/>">
+                                    <c:out value="${task.name}"/>
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <%--Modal body--%>
+            <div class="modal-body">
+                <h4>Search results:</h4>
+                <h3 id="noResults" class="text-center">No results found!</h3>
+                <table id="devsResultTable" class="table no-display">
+                    <thead>
+                    <tr>
+                        <th>First Name and Last Name</th>
+                        <th>Cost</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label>Specialization:</label>
+                        <select class="form-control" title="specialization" id="developerSpecialization">
+                            <c:forEach items="${specializations}" var="specialization">
+                                <option><c:out value="${specialization}"/></option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Rank:</label>
+                        <select class="form-control" title="rank" id="developerRank">
+                            <c:forEach items="${ranks}" var="rank">
+                                <option><c:out value="${rank}"/></option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Last name:</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-search"></span>
+                            </span>
+                            <input type="text" class="form-control" title="lastName" id="developerLastName">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%--end Modal body--%>
+
+            <div class="modal-footer">
+                <button type="button" id="searchDevsBtn" class="btn btn-primary">
+                    Search
+                </button>
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<%--end Modal--%>
 
 <%@include file="fragments/errorsModal.jspf" %>
 

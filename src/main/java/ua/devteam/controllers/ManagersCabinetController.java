@@ -99,9 +99,8 @@ public class ManagersCabinetController extends AbstractEntityProcessingControlle
     @ResponseBody
     @RequestMapping(value = "/formAsProject", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
-    public ResponseEntity formTechnicalTaskAsProject(@RequestBody Map<String, String> params) throws Exception {
-        technicalTasksService.accept(Long.parseLong(params.get("technicalTaskId")),
-                Long.parseLong(params.get("managerId")));
+    public ResponseEntity formTechnicalTaskAsProject(@RequestBody Long technicalTaskId, Authentication auth) throws Exception {
+        technicalTasksService.accept(technicalTaskId, ((User) auth.getPrincipal()).getId());
 
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -129,7 +128,7 @@ public class ManagersCabinetController extends AbstractEntityProcessingControlle
             return generateDefaultResponse(new LinkedList<>(), bindingResult, locale);
         }
 
-        project = projectsService.getById(check.getProjectId());
+        project = projectsService.getById(check.getProjectId(), true);
         projectErrors = new BeanPropertyBindingResult(project, "project");
 
         projectValidator.validate(project, projectErrors);
@@ -145,9 +144,13 @@ public class ManagersCabinetController extends AbstractEntityProcessingControlle
     @ModelAttribute
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
     public void addAttributes(Model model, Authentication auth) {
-        model.addAttribute("pendingProjects", projectsService.getNewByManager(((User) auth.getPrincipal()).getId()));
-        model.addAttribute("technicalTasks", technicalTasksService.getAllUnassigned());
-        model.addAttribute("specializations", DeveloperSpecialization.values());
+        long managerId = ((User) auth.getPrincipal()).getId();
+
         model.addAttribute("ranks", DeveloperRank.values());
+        model.addAttribute("specializations", DeveloperSpecialization.values());
+        model.addAttribute("technicalTasks", technicalTasksService.getAllUnassigned(true));
+        model.addAttribute("pendingProjects", projectsService.getNewByManager(managerId, true));
+        model.addAttribute("completeProjects", projectsService.getCompleteByManager(managerId, false));
+        // TODO: fix activeTab refresh bug
     }
 }

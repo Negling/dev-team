@@ -46,7 +46,7 @@ $(function () {
 
     $("#taskPrototype").find("button").click(function () {
         $(this).parentsUntil("div.panel-group").fadeOut(500, function () {
-            $(this).parentsUntil("div.panel-group").remove();
+            $(this).remove();
         });
     });
 
@@ -155,7 +155,6 @@ function createTechnicalTask() {
     technicalTask = {
         name: $("#technicalTaskName").val(),
         description: $("#technicalTaskDescription").val(),
-        customerId: $("#userId").text(),
         status: 'New',
         operations: operations
     };
@@ -194,7 +193,6 @@ function validateTaskModal() {
     submitTaskButton = modal.find("#addTaskButton");
 
     if (modal.find("#taskName").val().length >= 10 && modal.find("#taskDescription").val().length >= 30) {
-
         submitTaskButton.prop('disabled', false);
     } else {
         submitTaskButton.prop('disabled', true);
@@ -216,14 +214,6 @@ function refreshTechnicalTask(callback) {
             callback.call();
         }
     }).delay(800).fadeTo(800, 1);
-}
-
-function removeAndRefreshIfEmpty(element, parentId) {
-    return removeUntilParent(element, parentId, true, function () {
-        if ($(parentId).children().length == 0) {
-            refreshData(parentId, false, updateActiveTab);
-        }
-    });
 }
 
 function submitTechnicalTaskAjax(button) {
@@ -251,7 +241,7 @@ function declineCheckAjax(button) {
         url: "/cabinet/declineCheck",
         data: JSON.stringify($(button).attr("value"))
     }).done(function () {
-        return removeAndRefreshIfEmpty(button, "#newChecksAccordion");
+        return removeAndRefreshIfEmpty(button, "#newChecksAccordion", updateActiveTab);
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
     });
@@ -263,7 +253,7 @@ function confirmCheckAjax(button) {
         url: "/cabinet/confirmCheck",
         data: JSON.stringify($(button).attr("value"))
     }).done(function () {
-        return removeAndRefreshIfEmpty(button, "#newChecksAccordion");
+        return removeAndRefreshIfEmpty(button, "#newChecksAccordion", updateActiveTab);
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
     });

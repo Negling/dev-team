@@ -5,13 +5,39 @@ $(function () {
 })
 
 function refreshData(containerId, fadeOut, callback) {
-    if (fadeOut) {
+    if (fadeOut && $(containerId).children().length > 0) {
         $(containerId).children().fadeOut(800, function () {
             $(containerId).load(document.URL + " " + containerId + " > *", callback);
         });
     } else {
         $(containerId).load(document.URL + " " + containerId + " > *", callback);
     }
+}
+
+function removeUntilParent(element, parentId, isFaded, callback) {
+    if (isFaded) {
+        $(element).parentsUntil(parentId).fadeOut(800, function () {
+            $(this).remove();
+
+            if (callback != undefined) {
+                callback.call();
+            }
+        });
+    } else {
+        $(element).parentsUntil(parentId).remove();
+
+        if (callback != undefined) {
+            callback.call();
+        }
+    }
+}
+
+function removeAndRefreshIfEmpty(element, parentId, callback) {
+    return removeUntilParent(element, parentId, true, function () {
+        if ($(parentId).children().length == 0) {
+            refreshData(parentId, false, callback);
+        }
+    });
 }
 
 function updateActiveTab() {

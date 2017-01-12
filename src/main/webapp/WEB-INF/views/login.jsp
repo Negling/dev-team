@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 <head>
-<%@include file="fragments/head.jspf" %>
-<link href="<spring:url value="/resources/css/login.css" />" rel="stylesheet">
-<title><spring:message code="general.login"/></title>
+    <%@include file="fragments/head.jspf" %>
+    <link href="<spring:url value="/resources/css/login.css" />" rel="stylesheet">
+    <title><spring:message code="general.login"/></title>
 </head>
 <body>
 <%@include file="fragments/navbar.jspf" %>
@@ -58,19 +58,17 @@
                     </div>
                     <div class="form-group col-md-12">
                         <div class="input-group">
-                            <spring:message code="general.email" var="emailPlaceholder"/>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                            <input type="text" class="form-control" name="email" placeholder="${emailPlaceholder}"
-                                   maxlength="20">
+                            <input placeholder="<spring:message code="general.email"/>" type="text" class="form-control"
+                                   name="email" maxlength="30">
                         </div>
                     </div>
                     <div class="form-group col-md-12">
                         <div class="input-group">
-                            <spring:message code="general.password" var="passwordPlaceholder"/>
+
                             <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                            <input type="password" class="form-control" name="password"
-                                   placeholder="${passwordPlaceholder}"
-                                   maxlength="25">
+                            <input placeholder="<spring:message code="general.password"/>" type="password"
+                                   class="form-control" name="password" maxlength="18">
                         </div>
                     </div>
                     <div class="col-md-12 hidden-sm hidden-xs">
@@ -86,7 +84,7 @@
                     </div>
                     <div class="col-lg-12">
                         <h4><spring:message code="login.newMember"/>?
-                            <a href="${pageContext.request.contextPath}/registration">
+                            <a href="<c:out value="${pageContext.request.contextPath}"/>/registration">
                                 <spring:message code="general.register"/>
                             </a>
                         </h4>

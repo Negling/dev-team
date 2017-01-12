@@ -10,9 +10,9 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">
                     <spring:message code="general.error"/>!
+                    <p class="text-center"></p>
                 </h4>
             </div>
-            <p class="text-center"></p>
         </div>
     </div>
 

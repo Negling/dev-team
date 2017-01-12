@@ -10,12 +10,6 @@
     margin-top: 15px;
 }
 
-.hr-first {
-    margin-bottom: 15px;
-}
-
-.alert {
-    display: none;
-    padding-top: 7px;
-    padding-bottom: 7px;
+.form-group {
+    margin-bottom: 5px;
 }

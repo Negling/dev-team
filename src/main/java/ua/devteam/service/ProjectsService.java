@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface ProjectsService {
 
-    List<Project> getNewByManager(Long managerId);
-
     long createProject(TechnicalTask technicalTask, Long managerId);
 
     void confirmProject(Long projectId);
@@ -20,5 +18,11 @@ public interface ProjectsService {
 
     void cancel(Long projectId);
 
-    Project getById(Long projectId);
+    Project getById(Long projectId, boolean loadNested);
+
+    List<Project> getNewByManager(Long managerId, boolean loadNested);
+
+    List<Project> getActiveByManager(Long managerId, boolean loadNested);
+
+    List<Project> getCompleteByManager(Long managerId, boolean loadNested);
 }

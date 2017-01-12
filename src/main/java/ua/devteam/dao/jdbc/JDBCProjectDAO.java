@@ -51,9 +51,13 @@ public class JDBCProjectDAO extends JDBCGenericIdentifiedDAO<Project> implements
     }
 
     @Override
-    public List<Project> getAllByManagerAndStatus(Long managerId, Status status) {
-        return jdbcOperations.query(sqlBundle.getString("project.selectByManagerAndStatus"), this::mapEntity,
-                managerId, status.toString());
+    public List<Project> getByManagerAndStatus(Long managerId, Status status) {
+        return jdbcOperations.query(sqlBundle.getString("project.selectByManagerAndStatus"), this::mapEntity, managerId, status.toString());
+    }
+
+    @Override
+    public List<Project> getCompleteByManager(Long managerId) {
+        return jdbcOperations.query(sqlBundle.getString("project.selectCompleteByManager"), this::mapEntity, managerId);
     }
 
     @Override
@@ -65,6 +69,7 @@ public class JDBCProjectDAO extends JDBCGenericIdentifiedDAO<Project> implements
                 rs.getLong("manager_id"),
                 rs.getString("manager_commentary"),
                 rs.getLong("technical_task_id"),
+                rs.getBigDecimal("totalCost"),
                 rs.getDate("start_date"),
                 rs.getDate("end_date"),
                 Status.valueOf(rs.getString("status")));

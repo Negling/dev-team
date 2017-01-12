@@ -36,18 +36,20 @@ public class ProjectTasksServiceImpl implements ProjectTasksService {
     }
 
     @Override
-    public List<ProjectTask> getAllByProject(Long projectId) {
+    public List<ProjectTask> getAllByProject(Long projectId, boolean loadNested) {
         List<ProjectTask> projectTasks = projectTaskDAO.getByProject(projectId);
 
-        projectTasks.forEach(projectTask -> {
-            projectTask.setRequestsForDevelopers(requestsForDevelopersDAO.getByOperation(projectTask.getOperationId()));
+        if (loadNested) {
+            projectTasks.forEach(projectTask -> {
+                projectTask.setRequestsForDevelopers(requestsForDevelopersDAO.getByOperation(projectTask.getOperationId()));
 
-            try {
-                projectTask.setTaskDevelopers(taskDevelopersDAO.getAllByTask(projectTask.getId()));
-            } catch (EmptyResultDataAccessException ex) {
-                projectTask.setTaskDevelopers(null);
-            }
-        });
+                try {
+                    projectTask.setTaskDevelopers(taskDevelopersDAO.getAllByTask(projectTask.getId()));
+                } catch (EmptyResultDataAccessException ex) {
+                    projectTask.setTaskDevelopers(null);
+                }
+            });
+        }
 
         return projectTasks;
     }

@@ -11,5 +11,5 @@ public interface OperationsService {
 
     void registerOperations(List<Operation> operations);
 
-    List<Operation> getByTechnicalTask(Long technicalTaskId);
+    List<Operation> getByTechnicalTask(Long technicalTaskId, boolean loadNested);
 }

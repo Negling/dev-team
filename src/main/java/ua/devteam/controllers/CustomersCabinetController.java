@@ -46,9 +46,11 @@ public class CustomersCabinetController extends AbstractEntityProcessingControll
     @ResponseBody
     @PreAuthorize("hasAuthority('Customer')")
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
-    public ResponseEntity<List<String>> createProject(@RequestBody @Valid TechnicalTask technicalTask,
-                                                      BindingResult bindingResult, Locale locale) {
+    public ResponseEntity<List<String>> registerTechnicalTask(@RequestBody @Valid TechnicalTask technicalTask,
+                                                              BindingResult bindingResult, Locale locale,
+                                                              Authentication auth) {
         if (!bindingResult.hasErrors()) {
+            technicalTask.setCustomerId(((User) auth.getPrincipal()).getId());
             technicalTasksService.registerTechnicalTask(technicalTask);
         }
 

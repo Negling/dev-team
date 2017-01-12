@@ -11,5 +11,7 @@ public interface ProjectDAO extends GenericDAO<Project>, Identified<Project> {
 
     List<Project> getAllByManager(Long managerId);
 
-    List<Project> getAllByManagerAndStatus(Long managerId, Status status);
+    List<Project> getByManagerAndStatus(Long managerId, Status status);
+
+    List<Project> getCompleteByManager(Long managerId);
 }
