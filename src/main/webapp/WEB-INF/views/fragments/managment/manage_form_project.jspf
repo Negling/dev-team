@@ -118,7 +118,7 @@
                                                             </h4>
                                                             <hr>
                                                             <div class="table-responsive">
-                                                                <h5 class="${not empty task.taskDevelopers ?
+                                                                <h5 class="${not empty task.tasksDevelopmentData ?
                                                                         'text-center no-display':'text-center'}">
                                                                     <strong>
                                                                         No developers assigned for this task!
@@ -126,7 +126,7 @@
                                                                 </h5>
                                                                 <table id="task<c:out value="${task.id}"/>Hired"
                                                                        class="table table-condensed
-                                                                        ${not empty task.taskDevelopers ? '':' no-display'}">
+                                                                        ${not empty task.tasksDevelopmentData ? '':' no-display'}">
                                                                     <thead>
                                                                     <tr>
                                                                         <th class="text-center">
@@ -143,30 +143,30 @@
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody class="text-center">
-                                                                    <c:forEach items="${task.taskDevelopers}"
-                                                                               var="taskDeveloper">
+                                                                    <c:forEach items="${task.tasksDevelopmentData}"
+                                                                               var="taskDevelopmentData">
                                                                         <tr>
                                                                             <td>
                                                                                 <a href="#">
-                                                                                    <c:out value="${taskDeveloper.developerFirstName}"/>
-                                                                                    <c:out value="${taskDeveloper.developerLastName}"/>
+                                                                                    <c:out value="${taskDevelopmentData.developerFirstName}"/>
+                                                                                    <c:out value="${taskDevelopmentData.developerLastName}"/>
                                                                                 </a>
                                                                             </td>
                                                                             <td><c:out
-                                                                                    value="${taskDeveloper.specialization}"/></td>
+                                                                                    value="${taskDevelopmentData.specialization}"/></td>
                                                                             <td><c:out
-                                                                                    value="${taskDeveloper.rank}"/></td>
+                                                                                    value="${taskDevelopmentData.rank}"/></td>
                                                                             <td><fmt:formatNumber type="number"
                                                                                                   pattern="#"
-                                                                                                  value="${taskDeveloper.hireCost}"/>
+                                                                                                  value="${taskDevelopmentData.hireCost}"/>
                                                                                 $
                                                                             </td>
                                                                             <td>
                                                                                 <button class="btn btn-info btn-sm"
                                                                                         name="unbindDeveloper"
                                                                                         data-project-id="<c:out value="${project.id}"/>"
-                                                                                        data-developer-id="<c:out value="${taskDeveloper.developerId}"/>"
-                                                                                        data-developer-hire-cost="<c:out value="${taskDeveloper.hireCost}"/>"
+                                                                                        data-developer-id="<c:out value="${taskDevelopmentData.developerId}"/>"
+                                                                                        data-developer-hire-cost="<c:out value="${taskDevelopmentData.hireCost}"/>"
                                                                                         type="button">
                                                                                     Unbind
                                                                                 </button>

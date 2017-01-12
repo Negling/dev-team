@@ -45,7 +45,7 @@
 
         <div id="createProject" class="tab-pane fade in active">
             <div class="row">
-                <div id="formTechnicalTask" class="new-project col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div id="formTechnicalTask" class="bordered-container col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <h3 class="text-center page-header">
                         <strong>
                             <spring:message code="customersCabinet.projectData"/>

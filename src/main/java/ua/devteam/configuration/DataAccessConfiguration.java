@@ -74,6 +74,7 @@ public class DataAccessConfiguration {
                 .ignoreFailedDrops(true)
                 .setScriptEncoding("UTF-8")
                 .addScript("scripts/sql/create_database.sql")
+                .addScript("scripts/sql/create_procedures.sql")
                 .addScript("scripts/sql/generate_content.sql")
                 .build();
     }

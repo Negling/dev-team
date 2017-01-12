@@ -139,7 +139,7 @@ CREATE TABLE project_tasks (
     ON UPDATE CASCADE
 );
 
-CREATE TABLE task_developers (
+CREATE TABLE task_development_data (
   task_id      BIGINT UNSIGNED NOT NULL,
   developer_id BIGINT UNSIGNED NOT NULL,
   hours_spent  INT             NOT NULL DEFAULT 0,

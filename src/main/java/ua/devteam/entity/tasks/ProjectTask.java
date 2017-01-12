@@ -11,7 +11,7 @@ public class ProjectTask extends AbstractTask {
     private Long operationId;
     private Status taskStatus;
     private Integer totalHoursSpent;
-    private List<TaskDeveloper> taskDevelopers;
+    private List<TaskDevelopmentData> tasksDevelopmentData;
     private List<RequestForDevelopers> requestsForDevelopers;
 
     public ProjectTask() {
@@ -33,13 +33,13 @@ public class ProjectTask extends AbstractTask {
     }
 
     public ProjectTask(Long id, Long projectId, Long operationId, String name, String description, Status taskStatus,
-                       Integer totalHoursSpent, List<TaskDeveloper> taskDevelopers, List<RequestForDevelopers> requestsForDevelopers) {
+                       Integer totalHoursSpent, List<TaskDevelopmentData> tasksDevelopmentData, List<RequestForDevelopers> requestsForDevelopers) {
         super(id, name, description);
         this.projectId = projectId;
         this.operationId = operationId;
         this.taskStatus = taskStatus;
         this.totalHoursSpent = totalHoursSpent;
-        this.taskDevelopers = taskDevelopers;
+        this.tasksDevelopmentData = tasksDevelopmentData;
         this.requestsForDevelopers = requestsForDevelopers;
     }
 
@@ -75,12 +75,12 @@ public class ProjectTask extends AbstractTask {
         this.totalHoursSpent = totalHoursSpent;
     }
 
-    public List<TaskDeveloper> getTaskDevelopers() {
-        return taskDevelopers;
+    public List<TaskDevelopmentData> getTasksDevelopmentData() {
+        return tasksDevelopmentData;
     }
 
-    public void setTaskDevelopers(List<TaskDeveloper> taskDevelopers) {
-        this.taskDevelopers = taskDevelopers;
+    public void setTasksDevelopmentData(List<TaskDevelopmentData> tasksDevelopmentData) {
+        this.tasksDevelopmentData = tasksDevelopmentData;
     }
 
     public List<RequestForDevelopers> getRequestsForDevelopers() {
@@ -95,7 +95,7 @@ public class ProjectTask extends AbstractTask {
     public void setDeepId(Long id) {
         setId(id);
 
-        taskDevelopers.forEach(taskDeveloper -> taskDeveloper.setProjectTaskId(id));
+        tasksDevelopmentData.forEach(taskDeveloper -> taskDeveloper.setProjectTaskId(id));
     }
 
     @Override
@@ -111,7 +111,7 @@ public class ProjectTask extends AbstractTask {
         if (taskStatus != that.taskStatus) return false;
         if (totalHoursSpent != null ? !totalHoursSpent.equals(that.totalHoursSpent) : that.totalHoursSpent != null)
             return false;
-        if (taskDevelopers != null ? !taskDevelopers.equals(that.taskDevelopers) : that.taskDevelopers != null)
+        if (tasksDevelopmentData != null ? !tasksDevelopmentData.equals(that.tasksDevelopmentData) : that.tasksDevelopmentData != null)
             return false;
 
         return requestsForDevelopers != null ? requestsForDevelopers.equals(that.requestsForDevelopers)
@@ -125,7 +125,7 @@ public class ProjectTask extends AbstractTask {
         result = 31 * result + (operationId != null ? operationId.hashCode() : 0);
         result = 31 * result + (taskStatus != null ? taskStatus.hashCode() : 0);
         result = 31 * result + (totalHoursSpent != null ? totalHoursSpent.hashCode() : 0);
-        result = 31 * result + (taskDevelopers != null ? taskDevelopers.hashCode() : 0);
+        result = 31 * result + (tasksDevelopmentData != null ? tasksDevelopmentData.hashCode() : 0);
         result = 31 * result + (requestsForDevelopers != null ? requestsForDevelopers.hashCode() : 0);
 
         return result;
@@ -138,7 +138,7 @@ public class ProjectTask extends AbstractTask {
         sb.append(", operationId=").append(operationId);
         sb.append(", taskStatus=").append(taskStatus);
         sb.append(", totalHoursSpent=").append(totalHoursSpent);
-        sb.append(", taskDevelopers=").append(taskDevelopers);
+        sb.append(", taskDevelopers=").append(tasksDevelopmentData);
         sb.append(", requestsForDevelopers=").append(requestsForDevelopers);
         sb.append('}');
         return sb.toString();

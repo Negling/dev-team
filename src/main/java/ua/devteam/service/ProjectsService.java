@@ -22,7 +22,7 @@ public interface ProjectsService {
 
     List<Project> getNewByManager(Long managerId, boolean loadNested);
 
-    List<Project> getActiveByManager(Long managerId, boolean loadNested);
+    List<Project> getRunningByManager(Long managerId, boolean loadNested);
 
     List<Project> getCompleteByManager(Long managerId, boolean loadNested);
 }

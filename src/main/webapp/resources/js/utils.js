@@ -6,9 +6,9 @@ $(function () {
 
 function refreshData(containerId, fadeOut, callback) {
     if (fadeOut && $(containerId).children().length > 0) {
-        $(containerId).children().fadeOut(800, function () {
+        $(containerId).fadeTo(600, 0.01, function () {
             $(containerId).load(document.URL + " " + containerId + " > *", callback);
-        });
+        }).delay(600).fadeTo(600, 1);
     } else {
         $(containerId).load(document.URL + " " + containerId + " > *", callback);
     }

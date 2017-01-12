@@ -21,7 +21,7 @@ public class ProjectTaskValidator implements Validator {
 
         projectTask.getRequestsForDevelopers().forEach(rfd -> {
 
-            long devsCounter = projectTask.getTaskDevelopers().stream().filter(taskDeveloper ->
+            long devsCounter = projectTask.getTasksDevelopmentData().stream().filter(taskDeveloper ->
 
                     taskDeveloper.getSpecialization().equals(rfd.getSpecialization()) &&
                             taskDeveloper.getRank().equals(rfd.getRank())

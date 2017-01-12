@@ -17,6 +17,12 @@ body {
     padding-top: 16px;
 }
 
+.bordered-container {
+    border: 2px solid #777;
+    border-radius: 8px;
+    padding: 15px;
+}
+
 .login-icon {
     padding-right: 5px;
 }
@@ -79,6 +85,10 @@ body {
 
 .mt-10 {
     margin-top: 10px;
+}
+
+.mt-25 {
+    margin-top: 25px;
 }
 
 .mt-7 {

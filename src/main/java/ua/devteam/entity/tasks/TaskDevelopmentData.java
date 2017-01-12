@@ -7,8 +7,10 @@ import ua.devteam.entity.enums.Status;
 
 import java.math.BigDecimal;
 
-public class TaskDeveloper {
+public class TaskDevelopmentData {
     private Long projectTaskId;
+    private String taskName;
+    private String taskDescription;
     private Long developerId;
     private String developerFirstName;
     private String developerLastName;
@@ -18,18 +20,20 @@ public class TaskDeveloper {
     private Integer hoursSpent;
     private Status status;
 
-    public TaskDeveloper() {
+    public TaskDevelopmentData() {
     }
 
-    public TaskDeveloper(Long projectTaskId, Long developerId) {
+    public TaskDevelopmentData(Long projectTaskId, Long developerId) {
         this.projectTaskId = projectTaskId;
         this.developerId = developerId;
     }
 
-    public TaskDeveloper(Long projectTaskId, Long developerId, String developerFirstName, String developerLastName,
-                         DeveloperSpecialization specialization, DeveloperRank rank, BigDecimal hireCost,
-                         Integer hoursSpent, Status status) {
+    public TaskDevelopmentData(Long projectTaskId, String taskName, String taskDescription, Long developerId,
+                               String developerFirstName, String developerLastName, DeveloperSpecialization specialization,
+                               DeveloperRank rank, BigDecimal hireCost, Integer hoursSpent, Status status) {
         this.projectTaskId = projectTaskId;
+        this.taskName = taskName;
+        this.taskDescription = taskDescription;
         this.developerId = developerId;
         this.developerFirstName = developerFirstName;
         this.developerLastName = developerLastName;
@@ -46,6 +50,22 @@ public class TaskDeveloper {
 
     public void setProjectTaskId(Long projectTaskId) {
         this.projectTaskId = projectTaskId;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public String getTaskDescription() {
+        return taskDescription;
+    }
+
+    public void setTaskDescription(String taskDescription) {
+        this.taskDescription = taskDescription;
     }
 
     public Long getDeveloperId() {
@@ -115,11 +135,14 @@ public class TaskDeveloper {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TaskDeveloper)) return false;
+        if (!(o instanceof TaskDevelopmentData)) return false;
 
-        TaskDeveloper that = (TaskDeveloper) o;
+        TaskDevelopmentData that = (TaskDevelopmentData) o;
 
         if (projectTaskId != null ? !projectTaskId.equals(that.projectTaskId) : that.projectTaskId != null)
+            return false;
+        if (taskName != null ? !taskName.equals(that.taskName) : that.taskName != null) return false;
+        if (taskDescription != null ? !taskDescription.equals(that.taskDescription) : that.taskDescription != null)
             return false;
         if (developerId != null ? !developerId.equals(that.developerId) : that.developerId != null) return false;
         if (developerFirstName != null ? !developerFirstName.equals(that.developerFirstName) : that.developerFirstName != null)
@@ -137,6 +160,8 @@ public class TaskDeveloper {
     @Override
     public int hashCode() {
         int result = projectTaskId != null ? projectTaskId.hashCode() : 0;
+        result = 31 * result + (taskName != null ? taskName.hashCode() : 0);
+        result = 31 * result + (taskDescription != null ? taskDescription.hashCode() : 0);
         result = 31 * result + (developerId != null ? developerId.hashCode() : 0);
         result = 31 * result + (developerFirstName != null ? developerFirstName.hashCode() : 0);
         result = 31 * result + (developerLastName != null ? developerLastName.hashCode() : 0);
@@ -153,6 +178,8 @@ public class TaskDeveloper {
     public String toString() {
         final StringBuilder sb = new StringBuilder("TaskDeveloper{");
         sb.append("projectTaskId=").append(projectTaskId);
+        sb.append(", taskName=").append(taskName);
+        sb.append(", taskDescription=").append(taskDescription);
         sb.append(", developerId=").append(developerId);
         sb.append(", developerFirstName='").append(developerFirstName).append('\'');
         sb.append(", developerLastName='").append(developerLastName).append('\'');

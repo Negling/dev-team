@@ -1,0 +1,22 @@
+@import "header-footer.css";
+
+body {
+    margin-bottom: 0;
+}
+
+.content-container {
+    padding: 0 25px 25px 25px;
+}
+
+.tab-content > .tab-pane {
+    padding-top: 15px;
+}
+
+.page-header {
+    margin: 0 0 10px 0;
+    padding-bottom: 10px;
+}
+
+.custom-tab-content > .tab-pane {
+    padding-top: 0 !important;
+}

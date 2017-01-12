@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import ua.devteam.entity.enums.DeveloperRank;
 import ua.devteam.entity.enums.DeveloperSpecialization;
 import ua.devteam.entity.projects.Project;
-import ua.devteam.entity.tasks.TaskDeveloper;
+import ua.devteam.entity.tasks.TaskDevelopmentData;
 import ua.devteam.entity.users.Check;
 import ua.devteam.entity.users.Developer;
 import ua.devteam.entity.users.User;
@@ -36,13 +36,13 @@ public class ManagersCabinetController extends AbstractEntityProcessingControlle
     private ProjectsService projectsService;
     private ChecksService checksService;
     private DevelopersService developersService;
-    private TaskDevelopersService taskDevelopersService;
+    private TaskDevelopmentDataService taskDevelopersService;
     private Validator projectValidator;
 
     @Autowired
     public ManagersCabinetController(ResourceBundleMessageSource messageSource, TechnicalTasksService technicalTasksService,
                                      ProjectsService projectsService, ChecksService checksService,
-                                     DevelopersService developersService, TaskDevelopersService taskDevelopersService,
+                                     DevelopersService developersService, TaskDevelopmentDataService taskDevelopersService,
                                      Validator projectValidator) {
         super(messageSource);
         this.technicalTasksService = technicalTasksService;
@@ -71,7 +71,7 @@ public class ManagersCabinetController extends AbstractEntityProcessingControlle
     @ResponseBody
     @RequestMapping(value = "/bind", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
-    public TaskDeveloper bindDeveloper(@RequestBody Map<String, Long> params) {
+    public TaskDevelopmentData bindDeveloper(@RequestBody Map<String, Long> params) {
         return taskDevelopersService.bindDeveloper(params.get("devId"), params.get("taskId"));
     }
 
@@ -150,7 +150,7 @@ public class ManagersCabinetController extends AbstractEntityProcessingControlle
         model.addAttribute("specializations", DeveloperSpecialization.values());
         model.addAttribute("technicalTasks", technicalTasksService.getAllUnassigned(true));
         model.addAttribute("pendingProjects", projectsService.getNewByManager(managerId, true));
+        /*model.addAttribute("runningProjects", projectsService.getRunningByManager(managerId, true));*/
         model.addAttribute("completeProjects", projectsService.getCompleteByManager(managerId, false));
-        // TODO: fix activeTab refresh bug
     }
 }

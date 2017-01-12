@@ -13,6 +13,7 @@ function createIdCounter() {
 
 /*Function, which runs at document.ready(). It maps all event handlers. */
 $(function () {
+    var modal = $("#addTaskModal");
 
     $.ajaxSetup({
         // we need to add csrf header to every ajax request accordingly to Spring Security settings
@@ -23,8 +24,6 @@ $(function () {
         contentType: "application/json",
         timeout: 10000
     });
-
-    var modal = $("#addTaskModal");
 
     // task modal events
     modal.find("#taskName, #taskDescription").keyup(validateTaskModal);

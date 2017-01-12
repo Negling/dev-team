@@ -42,4 +42,18 @@ abstract class AbstractEntityProcessingController {
             return new ResponseEntity<>(responseMsg, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
+
+    ResponseEntity<List<String>> getDefaultErrorResponse(List<String> responseMsg, Locale locale) {
+        responseMsg.add(messageSource.getMessage("general.error", null, locale));
+        responseMsg.add(messageSource.getMessage("validationErrors.requestHasErrors", null, locale));
+
+        return new ResponseEntity<>(responseMsg, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    ResponseEntity<List<String>> getDefaultSuccessResponse(List<String> responseMsg, Locale locale) {
+        responseMsg.add(messageSource.getMessage("general.success", null, locale));
+        responseMsg.add(messageSource.getMessage("validationErrors.requestIsOk", null, locale));
+
+        return new ResponseEntity<>(responseMsg, HttpStatus.OK);
+    }
 }

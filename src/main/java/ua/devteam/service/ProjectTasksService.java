@@ -10,4 +10,6 @@ public interface ProjectTasksService {
     void registerFromTechnicalTask(Long technicalTaskId, Long projectId);
 
     List<ProjectTask> getAllByProject(Long projectId, boolean loadNested);
+
+    void checkStatus(Long taskId);
 }

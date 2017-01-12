@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ua.devteam.dao.OperationDAO;
 import ua.devteam.dao.ProjectTaskDAO;
 import ua.devteam.dao.RequestsForDevelopersDAO;
-import ua.devteam.dao.TaskDevelopersDAO;
+import ua.devteam.dao.TaskDevelopmentDataDAO;
 import ua.devteam.entity.tasks.ProjectTask;
 import ua.devteam.service.ProjectTasksService;
 
@@ -16,15 +16,15 @@ import java.util.List;
 public class ProjectTasksServiceImpl implements ProjectTasksService {
 
     private ProjectTaskDAO projectTaskDAO;
-    private TaskDevelopersDAO taskDevelopersDAO;
+    private TaskDevelopmentDataDAO taskDevelopmentDataDAO;
     private OperationDAO operationDAO;
     private RequestsForDevelopersDAO requestsForDevelopersDAO;
 
     @Autowired
-    public ProjectTasksServiceImpl(ProjectTaskDAO projectTaskDAO, TaskDevelopersDAO taskDevelopersDAO,
+    public ProjectTasksServiceImpl(ProjectTaskDAO projectTaskDAO, TaskDevelopmentDataDAO taskDevelopmentDataDAO,
                                    OperationDAO operationDAO, RequestsForDevelopersDAO requestsForDevelopersDAO) {
         this.projectTaskDAO = projectTaskDAO;
-        this.taskDevelopersDAO = taskDevelopersDAO;
+        this.taskDevelopmentDataDAO = taskDevelopmentDataDAO;
         this.operationDAO = operationDAO;
         this.requestsForDevelopersDAO = requestsForDevelopersDAO;
     }
@@ -36,6 +36,11 @@ public class ProjectTasksServiceImpl implements ProjectTasksService {
     }
 
     @Override
+    public void checkStatus(Long taskId) {
+        projectTaskDAO.checkStatus(taskId);
+    }
+
+    @Override
     public List<ProjectTask> getAllByProject(Long projectId, boolean loadNested) {
         List<ProjectTask> projectTasks = projectTaskDAO.getByProject(projectId);
 
@@ -44,9 +49,9 @@ public class ProjectTasksServiceImpl implements ProjectTasksService {
                 projectTask.setRequestsForDevelopers(requestsForDevelopersDAO.getByOperation(projectTask.getOperationId()));
 
                 try {
-                    projectTask.setTaskDevelopers(taskDevelopersDAO.getAllByTask(projectTask.getId()));
+                    projectTask.setTasksDevelopmentData(taskDevelopmentDataDAO.getAllByTask(projectTask.getId()));
                 } catch (EmptyResultDataAccessException ex) {
-                    projectTask.setTaskDevelopers(null);
+                    projectTask.setTasksDevelopmentData(null);
                 }
             });
         }

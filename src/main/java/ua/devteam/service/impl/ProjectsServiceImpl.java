@@ -8,7 +8,7 @@ import ua.devteam.entity.projects.Project;
 import ua.devteam.entity.projects.TechnicalTask;
 import ua.devteam.service.ProjectTasksService;
 import ua.devteam.service.ProjectsService;
-import ua.devteam.service.TaskDevelopersService;
+import ua.devteam.service.TaskDevelopmentDataService;
 
 import java.util.Date;
 import java.util.List;
@@ -20,11 +20,11 @@ public class ProjectsServiceImpl implements ProjectsService {
 
     private ProjectDAO projectDAO;
     private ProjectTasksService projectTasksService;
-    private TaskDevelopersService taskDevelopersService;
+    private TaskDevelopmentDataService taskDevelopersService;
 
     @Autowired
     public ProjectsServiceImpl(ProjectDAO projectDAO, ProjectTasksService projectTasksService,
-                               TaskDevelopersService taskDevelopersService) {
+                               TaskDevelopmentDataService taskDevelopersService) {
         this.projectDAO = projectDAO;
         this.projectTasksService = projectTasksService;
         this.taskDevelopersService = taskDevelopersService;
@@ -103,7 +103,7 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
-    public List<Project> getActiveByManager(Long managerId, boolean loadNested) {
+    public List<Project> getRunningByManager(Long managerId, boolean loadNested) {
         List<Project> projects = projectDAO.getByManagerAndStatus(managerId, Running);
 
         if (loadNested) {
