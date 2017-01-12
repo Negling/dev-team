@@ -29,6 +29,7 @@ $(function () {
 
     $("body").on("click", "button[name^=decline]", function () {
         // on click change tt ID in "declineModal"
+        $("#declineManagerCommentary").val('');
         showDeclineModal($(this).attr("value"), $(this).attr("data-entity-type"));
     }).on("click", "button[name=acceptTechnicalTask]", function () {
         // send accept tt and form it as project request
@@ -42,12 +43,12 @@ $(function () {
     }).on("change", "input[title=servicesCost]", function () {
         return calculateProjectCheck($(this).attr("data-project-id"));
     }).on("click", "button[name=refresh]", function () {
-        return refreshData($(this).attr("data-container-id"), true, updateActiveTab);
+        return refreshData($(this).attr("data-container-id"), true, reloadActiveTab);
     }).on("click", "button[name=refreshProjects]", function () {
         return refreshData($(this).attr("data-container-id"), true, function () {
             calculateRegisteredProjectsChecks();
             updateBindSelectOptions();
-            updateActiveTab();
+            reloadActiveTab();
         });
     });
 });
@@ -230,10 +231,9 @@ function declineProjectAjax() {
         data: JSON.stringify(data)
     }).done(function () {
         return removeAndRefreshIfEmpty($("button[value=" + projectId + "][name=declineProject]"),
-            "#pendingProjectsAccordion", function () {
+            "#pendingProjectsAccordion", reloadActiveTab, function () {
                 updateBindSelectOptions();
-                updateActiveTab();
-                $("#declineManagerCommentary").val("");
+                decrementActiveTab();
             });
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
@@ -254,11 +254,11 @@ function acceptProjectAjax(button) {
         url: "/manage/accept",
         data: JSON.stringify(check)
     }).done(function (data) {
-        return removeAndRefreshIfEmpty(button, "#pendingProjectsAccordion", function () {
+        return removeAndRefreshIfEmpty(button, "#pendingProjectsAccordion", reloadActiveTab, function () {
             prependOrUpdate("#pendingProjectsAccordion > div.alert", "#pendingProjectsAccordion",
                 formValidatingAlertBox(data, true));
             updateBindSelectOptions();
-            updateActiveTab();
+            decrementActiveTab();
         });
     }).fail(function (jqXHR) {
         if (jqXHR.status === 422) {
@@ -283,10 +283,7 @@ function declineTechnicalTaskAjax() {
         data: JSON.stringify(data)
     }).done(function () {
         return removeAndRefreshIfEmpty($("button[value=" + technicalTaskId + "][name=declineTechnicalTask]"),
-            "#technicalTasksAccordion", function () {
-                updateActiveTab();
-                $("#declineManagerCommentary").val("");
-            });
+            "#technicalTasksAccordion", reloadActiveTab, decrementActiveTab);
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
     });
@@ -298,7 +295,7 @@ function formTechnicalTaskAsProjectAjax(button) {
         url: "/manage/formAsProject",
         data: JSON.stringify($(button).attr("value"))
     }).done(function () {
-        return removeAndRefreshIfEmpty(button, "#technicalTasksAccordion", updateActiveTab);
+        return removeAndRefreshIfEmpty(button, "#technicalTasksAccordion", reloadActiveTab, decrementActiveTab);
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
     });

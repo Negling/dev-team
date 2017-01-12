@@ -55,7 +55,7 @@ $(function () {
     }).on("click", "button[name=confirmCheckButton]", function () {
         return confirmCheckAjax($(this));
     }).on("click", "button[name=refresh]", function () {
-        return refreshData($(this).attr("data-container-id"), true, updateActiveTab);
+        return refreshData($(this).attr("data-container-id"), true, reloadActiveTab);
     });
 });
 
@@ -241,7 +241,7 @@ function declineCheckAjax(button) {
         url: "/cabinet/declineCheck",
         data: JSON.stringify($(button).attr("value"))
     }).done(function () {
-        return removeAndRefreshIfEmpty(button, "#newChecksAccordion", updateActiveTab);
+        return removeAndRefreshIfEmpty(button, "#newChecksAccordion", reloadActiveTab, decrementActiveTab);
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
     });
@@ -253,7 +253,7 @@ function confirmCheckAjax(button) {
         url: "/cabinet/confirmCheck",
         data: JSON.stringify($(button).attr("value"))
     }).done(function () {
-        return removeAndRefreshIfEmpty(button, "#newChecksAccordion", updateActiveTab);
+        return removeAndRefreshIfEmpty(button, "#newChecksAccordion", reloadActiveTab, decrementActiveTab);
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
     });

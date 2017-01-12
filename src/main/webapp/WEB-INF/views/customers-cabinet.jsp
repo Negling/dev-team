@@ -25,7 +25,9 @@
                 <li>
                     <a href="#newChecks" role="tab" data-toggle="tab">
                         <spring:message code="customersCabinet.newChecks"/>
-                        <span class="badge"><c:out value="${empty newChecks ? '' : newChecks.size()}"/></span>
+                        <c:if test="${not empty newChecks}">
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        </c:if>
                     </a>
                 </li>
                 <li><a href="#consideredChecks" role="tab" data-toggle="tab">
@@ -439,7 +441,7 @@
                         <spring:message code="entity.taskName"/>
                     </strong>
                 </h4>
-                <input id="taskName" class="form-control" type="text"
+                <input id="taskName" class="form-control" type="text" maxlength="50"
                        placeholder="<spring:message code="entity.projectNamePlaceholder"/>">
             </div>
 

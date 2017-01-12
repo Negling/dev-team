@@ -31,11 +31,22 @@
                     <tbody>
                     <c:forEach items="${completeProjects }" var="project">
                         <tr>
-                            <td><a href="#">${project.name}</a></td>
+                            <td><a href="#"><c:out value="${project.name}"/></a></td>
                             <td><fmt:formatDate value="${project.startDate}" pattern="d MMMM, yyyy"/></td>
                             <td><fmt:formatDate value="${project.endDate}" pattern="d MMMM, yyyy"/></td>
-                            <td>${project.status}</td>
-                            <td>${project.totalProjectCost}</td>
+                            <td class="${project.status == 'Complete' ? 'lime' : 'red'}">
+                                <c:out value="${project.status}"/>
+                            </td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${empty project.totalProjectCost}">
+                                        Not Assigned
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:out value="${project.totalProjectCost}"/> $
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                         </tr>
                     </c:forEach>
                     </tbody>

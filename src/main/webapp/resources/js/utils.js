@@ -16,7 +16,7 @@ function refreshData(containerId, fadeOut, callback) {
 
 function removeUntilParent(element, parentId, isFaded, callback) {
     if (isFaded) {
-        $(element).parentsUntil(parentId).fadeOut(800, function () {
+        $(element).parentsUntil(parentId).last().fadeOut(800, function () {
             $(this).remove();
 
             if (callback != undefined) {
@@ -32,15 +32,19 @@ function removeUntilParent(element, parentId, isFaded, callback) {
     }
 }
 
-function removeAndRefreshIfEmpty(element, parentId, callback) {
-    return removeUntilParent(element, parentId, true, function () {
+function removeAndRefreshIfEmpty(element, parentId, refreshCallback, removeCallback) {
+    removeUntilParent(element, parentId, true, function () {
+        if (removeCallback != undefined) {
+            removeCallback.call();
+        }
+
         if ($(parentId).children().length == 0) {
-            refreshData(parentId, false, callback);
+            refreshData(parentId, false, refreshCallback);
         }
     });
 }
 
-function updateActiveTab() {
+function reloadActiveTab() {
     $("#navTab > li").each(function (index, element) {
         if ($(element).hasClass("active")) {
             $(element).load(document.URL + " #navTab > li:eq(" + index + ") > *");
@@ -48,6 +52,23 @@ function updateActiveTab() {
         }
     });
 }
+
+function decrementActiveTab() {
+    var activeTab, activeTabBadge;
+
+    activeTab = $("#navTab > li.active");
+    activeTabBadge = activeTab.children("a").find("span.badge");
+
+
+    if (activeTab.length === 1 && $.isNumeric(activeTabBadge.text())) {
+        if (parseInt(activeTabBadge.text()) === 1) {
+            activeTabBadge.text('');
+        } else {
+            activeTabBadge.text(parseInt(activeTabBadge.text()) - 1);
+        }
+    }
+}
+
 
 function prependOrUpdate(contentSelector, targetSelector, content) {
     var expectedContent = $(contentSelector);

@@ -26,15 +26,14 @@
                 <li>
                     <a href="#formProjects" role="tab" data-toggle="tab">
                         Form Project
-                        <span class="badge"><c:out
-                                value="${empty pendingProjects ? '' : pendingProjects.size()}"/></span>
+                        <c:if test="${not empty pendingProjects}">
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        </c:if>
                     </a>
                 </li>
                 <li>
                     <a href="#runningProjects" role="tab" data-toggle="tab">
                         Running Project
-                        <span class="badge"><c:out
-                                value="${empty runningProjects ? '' : runningProjects.size()}"/></span>
                     </a>
                 </li>
                 <li><a href="#completeProjects" role="tab" data-toggle="tab">Complete Projects</a></li>
@@ -42,12 +41,18 @@
         </li>
         <li><a data-toggle="tab" href="#users">Users</a></li>
         <security:authorize access="hasAnyAuthority('Ultramanager', 'Admin')">
-            <li><a data-toggle="tab" href="#developers">Developers</a></li>
+            <li><a data-toggle="tab" href="#developers">
+                Developers
+            </a></li>
         </security:authorize>
         <security:authorize access="hasAuthority('Admin')">
-            <li><a data-toggle="tab" href="#managers">Managers</a></li>
+            <li><a data-toggle="tab" href="#managers">
+                Managers
+            </a></li>
         </security:authorize>
-        <li><a data-toggle="tab" href="#settings">Settings</a></li>
+        <li><a data-toggle="tab" href="#settings">
+            Settings
+        </a></li>
     </ul>
 
     <div class="tab-content">
