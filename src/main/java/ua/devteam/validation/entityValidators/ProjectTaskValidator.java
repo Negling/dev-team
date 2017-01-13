@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ua.devteam.entity.tasks.ProjectTask;
+import ua.devteam.entity.tasks.RequestForDevelopers;
+
+import java.util.stream.Collectors;
 
 import static ua.devteam.validation.ValidationUtils.formatStringOverflow;
 
@@ -33,5 +36,14 @@ public class ProjectTaskValidator implements Validator {
                                 rfd.getSpecialization(), rfd.getRank(), devsCounter}, null);
             }
         });
+
+        long totalQuantity = projectTask.getRequestsForDevelopers()
+                .stream().collect(Collectors.summingLong(RequestForDevelopers::getQuantity));
+
+        if (totalQuantity != projectTask.getTasksDevelopmentData().size()) {
+            errors.reject("validationErrors.devsTaskQuantityMismatch",
+                    new Object[]{formatStringOverflow(projectTask.getName()), totalQuantity,
+                            projectTask.getTasksDevelopmentData().size()}, null);
+        }
     }
 }

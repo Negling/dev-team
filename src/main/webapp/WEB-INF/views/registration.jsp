@@ -122,7 +122,7 @@
                 </div>
                 <div class="col-lg-12">
                     <h4><spring:message code="registration.alreadyRegistered"/>
-                        <a href="<c:out value="${pageContext.request.contextPath}"/>/login">
+                        <a href="<spring:url value="/login"/>">
                             <spring:message code="general.login"/>
                         </a>
                     </h4>

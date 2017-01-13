@@ -1,0 +1,201 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%--Running Projects--%>
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header lead">
+            Running Projects
+            <button name="refresh" data-container-id="#runningProjectsAccordion" type="button"
+                    class="refresh-button pull-right">
+                <span class="glyphicon glyphicon-refresh"></span>
+            </button>
+        </h3>
+    </div>
+    <div id="runningProjectsAccordion" class="panel-group col-lg-12">
+        <c:choose>
+            <c:when test="${empty runningProjects}">
+                <div class="text-center">
+                    <h3>No Running Projects!</h3>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <c:forEach items="${runningProjects}" var="runningProject" varStatus="loop">
+                    <div class="panel panel-default">
+                        <div class="project-heading panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#runningProjectsAccordion"
+                                   href="#project<c:out value="${runningProject.id}"/>">
+                                    <c:out value="${runningProject.name}"/>
+                                </a>
+                            </h4>
+                        </div>
+                            <%--Project Body--%>
+                        <div id="project<c:out value="${runningProject.id}"/>"
+                             class="panel-collapse collapse${loop.index == 0 ? ' in' : ''}">
+                            <div class="panel-body">
+
+                                <div class="col-md-12">
+                                    <h4 class="page-header text-center">
+                                        <strong>Project Information</strong>
+                                    </h4>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h4>
+                                        <strong>Start Date</strong>
+                                    </h4>
+                                    <p class="data-description">
+                                        <fmt:formatDate value="${runningProject.startDate}" pattern="d MMMM, yyyy"/>
+                                    </p>
+                                    <h4>
+                                        <strong>Current Status</strong>
+                                    </h4>
+                                    <p class="${runningProject.status == 'Running' ? 'blue ' : ''}data-description">
+                                        <c:out value="${runningProject.status}"/>
+                                    </p>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h4>
+                                        <strong>Project Price</strong>
+                                    </h4>
+                                    <p class="data-description">
+                                        <fmt:formatNumber type="number" pattern="#" value="${runningProject.totalProjectCost}"/> $
+                                    </p>
+                                    <h4>
+                                        <strong>Tasks Amount</strong>
+                                    </h4>
+                                    <p class="data-description">
+                                        <c:out value="${runningProject.tasks.size()}"/>
+                                    </p>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <h4 class="page-header">
+                                        <strong>Project Description</strong>
+                                    </h4>
+                                    <p class="data-description">
+                                        <c:out value="${runningProject.description}"/>
+                                    </p>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <h3 class="text-center page-header">
+                                        <strong>Tasks</strong>
+                                    </h3>
+
+                                        <%--Tasks--%>
+                                    <div id="tasksAccordion<c:out value="${runningProject.id}"/>" class="panel-group">
+                                        <c:forEach items="${runningProject.tasks}" var="rTask">
+                                            <div class="panel panel-default">
+                                                <div class="task-heading panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse"
+                                                           href="#task<c:out value="${rTask.id}"/>"
+                                                           data-parent="#tasksAccordion<c:out value="${runningProject.id}"/>">
+                                                            <c:out value="${rTask.name}"/>
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="task<c:out value="${rTask.id}"/>"
+                                                     class="panel-collapse collapse">
+
+                                                        <%--Task Body--%>
+                                                    <div class="panel-body">
+
+                                                        <div class="col-md-6">
+                                                            <h4>
+                                                                <strong>Task Status</strong>
+                                                            </h4>
+                                                            <c:choose>
+                                                                <c:when test="${rTask.taskStatus=='Running'}">
+                                                                    <c:set value="${'blue '}" var="taskStatus"/>
+                                                                </c:when>
+                                                                <c:when test="${rTask.taskStatus=='Complete'}">
+                                                                    <c:set value="${'lime '}" var="taskStatus"/>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <c:set value="${''}" var="taskStatus"/>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                            <p class="<c:out value="${taskStatus}"/>data-description">
+                                                                <c:out value="${rTask.taskStatus}"/>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <h4>
+                                                                <strong>Developers Assigned</strong>
+                                                            </h4>
+                                                            <p class="data-description">
+                                                                <c:out value="${rTask.tasksDevelopmentData.size()}"/>
+                                                            </p>
+                                                        </div>
+
+                                                        <div class="col-md-6">
+                                                            <h4>
+                                                                <strong>Hours Spent on Task</strong>
+                                                            </h4>
+                                                            <p class="data-description">
+                                                                <c:out value="${rTask.totalHoursSpent}"/>
+                                                            </p>
+                                                        </div>
+
+                                                        <div class="col-md-12">
+                                                            <h4 class="page-header">
+                                                                <strong>
+                                                                    Task Description
+                                                                </strong>
+                                                            </h4>
+                                                            <p class="data-description">
+                                                                <c:out value="${rTask.description}"/>
+                                                            </p>
+
+                                                                <%--assigned Developers--%>
+                                                            <h4 class="page-header text-center">
+                                                                <strong>Assigned Developers</strong>
+                                                            </h4>
+                                                            <table class="table">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>Name</th>
+                                                                    <th>Specialization</th>
+                                                                    <th>Rank</th>
+                                                                    <th>Cost</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <c:forEach items="${rTask.tasksDevelopmentData}" var="taskData">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="<spring:url value="/developer?id=${taskData.developerId}"/>">
+                                                                                <c:out value="${taskData.developerFirstName}"/>
+                                                                                <c:out value="${taskData.developerLastName}"/>
+                                                                            </a>
+                                                                        </td>
+                                                                        <td><c:out value="${taskData.specialization}"/></td>
+                                                                        <td><c:out value="${taskData.rank}"/></td>
+                                                                        <td><fmt:formatNumber type="number" pattern="#" value="${taskData.hireCost}"/> $
+                                                                        </td>
+                                                                    </tr>
+                                                                </c:forEach>
+                                                                </tbody>
+                                                            </table>
+                                                                <%--end assigned Developers--%>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                        <%--end Tasks--%>
+                                </div>
+                            </div>
+                        </div>
+                            <%--end Project Body--%>
+                    </div>
+                </c:forEach>
+            </c:otherwise>
+        </c:choose>
+    </div>
+</div>
+<%--end Running Projects--%>

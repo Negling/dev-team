@@ -44,6 +44,8 @@ public class ProjectsServiceImpl implements ProjectsService {
         Project project = projectDAO.getById(projectId);
         project.setStatus(Pending);
 
+        projectTasksService.confirmByProject(projectId);
+        taskDevelopersService.confirmByProject(projectId);
         projectDAO.update(project, project);
     }
 
@@ -52,6 +54,7 @@ public class ProjectsServiceImpl implements ProjectsService {
         Project project = projectDAO.getById(projectId);
         project.setStatus(Running);
 
+        projectTasksService.runByProject(projectId);
         taskDevelopersService.runByProject(projectId);
         projectDAO.update(project, project);
     }
@@ -104,7 +107,7 @@ public class ProjectsServiceImpl implements ProjectsService {
 
     @Override
     public List<Project> getRunningByManager(Long managerId, boolean loadNested) {
-        List<Project> projects = projectDAO.getByManagerAndStatus(managerId, Running);
+        List<Project> projects = projectDAO.getRunningByManager(managerId);
 
         if (loadNested) {
             projects.forEach(project -> project.setTasks(projectTasksService.getAllByProject(project.getId(), true)));
@@ -116,6 +119,28 @@ public class ProjectsServiceImpl implements ProjectsService {
     @Override
     public List<Project> getCompleteByManager(Long managerId, boolean loadNested) {
         List<Project> projects = projectDAO.getCompleteByManager(managerId);
+
+        if (loadNested) {
+            projects.forEach(project -> project.setTasks(projectTasksService.getAllByProject(project.getId(), true)));
+        }
+
+        return projects;
+    }
+
+    @Override
+    public List<Project> getRunningByCustomer(Long customerId, boolean loadNested) {
+        List<Project> projects = projectDAO.getRunningByCustomer(customerId);
+
+        if (loadNested) {
+            projects.forEach(project -> project.setTasks(projectTasksService.getAllByProject(project.getId(), true)));
+        }
+
+        return projects;
+    }
+
+    @Override
+    public List<Project> getCompleteByCustomer(Long customerId, boolean loadNested) {
+        List<Project> projects = projectDAO.getCompleteByCustomer(customerId);
 
         if (loadNested) {
             projects.forEach(project -> project.setTasks(projectTasksService.getAllByProject(project.getId(), true)));

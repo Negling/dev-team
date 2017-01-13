@@ -12,4 +12,8 @@ public interface ProjectTasksService {
     List<ProjectTask> getAllByProject(Long projectId, boolean loadNested);
 
     void checkStatus(Long taskId);
+
+    void runByProject(Long projectId);
+
+    void confirmByProject(Long projectId);
 }

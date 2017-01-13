@@ -12,6 +12,9 @@ import ua.devteam.service.ProjectTasksService;
 
 import java.util.List;
 
+import static ua.devteam.entity.enums.Status.Pending;
+import static ua.devteam.entity.enums.Status.Running;
+
 @Service("projectTasksService")
 public class ProjectTasksServiceImpl implements ProjectTasksService {
 
@@ -33,6 +36,16 @@ public class ProjectTasksServiceImpl implements ProjectTasksService {
     public void registerFromTechnicalTask(Long technicalTaskId, Long projectId) {
         operationDAO.getByTechnicalTask(technicalTaskId).forEach(operation ->
                 projectTaskDAO.create(new ProjectTask(projectId, operation)));
+    }
+
+    @Override
+    public void runByProject(Long projectId) {
+        projectTaskDAO.setStatusByProject(Running, projectId);
+    }
+
+    @Override
+    public void confirmByProject(Long projectId) {
+        projectTaskDAO.setStatusByProject(Pending, projectId);
     }
 
     @Override

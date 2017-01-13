@@ -21,6 +21,11 @@ public class CustomersServiceImpl implements CustomersService {
     }
 
     @Override
+    public Customer getById(Long customerId) {
+        return customerDAO.getById(customerId);
+    }
+
+    @Override
     public long registerCustomer(Customer customer) {
         customer.setPassword(encoder.encode(customer.getPassword()));
 

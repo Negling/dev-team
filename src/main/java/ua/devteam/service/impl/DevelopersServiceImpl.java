@@ -44,6 +44,11 @@ public class DevelopersServiceImpl implements DevelopersService {
     }
 
     @Override
+    public Developer getById(Long developerId) {
+        return developerDAO.getById(developerId);
+    }
+
+    @Override
     public List<Developer> getAvailableDevelopers(DeveloperSpecialization specialization, DeveloperRank rank, String lastName) {
         if (lastName == null || lastName.isEmpty()) {
             return developerDAO.getAvailableByParams(specialization, rank);

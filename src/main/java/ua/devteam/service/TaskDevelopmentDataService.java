@@ -20,4 +20,6 @@ public interface TaskDevelopmentDataService {
     TaskDevelopmentData getActive(Long developerId);
 
     List<TaskDevelopmentData> getComplete(Long developerId);
+
+    void confirmByProject(Long projectId);
 }

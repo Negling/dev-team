@@ -42,6 +42,11 @@ public class JDBCProjectTaskDAO extends JDBCGenericIdentifiedDAO<ProjectTask> im
     }
 
     @Override
+    public void setStatusByProject(Status status, Long projectId) {
+        jdbcOperations.update(sqlBundle.getString("projectTask.updateStatusByProject"), status.toString(), projectId);
+    }
+
+    @Override
     public ProjectTask getById(Long id) {
         return jdbcOperations.queryForObject(sqlBundle.getString("projectTask.selectById"), this::mapEntity, id);
     }

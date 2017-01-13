@@ -70,6 +70,7 @@
 
         <%--Running Projects--%>
         <div id="runningProjects" class="tab-pane fade">
+            <%@include file="fragments/managment/manage_running_projects.jspf" %>
         </div>
         <%--end Running Projects--%>
 
@@ -201,9 +202,9 @@
                     <div class="col-lg-12">
                         <label>Select Task:</label>
                         <select id="activeTaskSelect" class="form-control" title="Active Task">
-                            <c:forEach items="${projectTasks}" var="task">
-                                <option value="<c:out value="${task.id}"/>">
-                                    <c:out value="${task.name}"/>
+                            <c:forEach items="${projectTasks}" var="rTask">
+                                <option value="<c:out value="${rTask.id}"/>">
+                                    <c:out value="${rTask.name}"/>
                                 </option>
                             </c:forEach>
                         </select>
@@ -271,6 +272,7 @@
 
 <p id="bind" class="no-display">Bind to task</p>
 <p id="unbind" class="no-display">Unbind</p>
+<p id="devPath" class="no-display"><spring:url value="/developer?id="/></p>
 
 <script src="<spring:url value="/resources/js/jquery-3.1.1.min.js" />"></script>
 <script src="<spring:url value="/resources/js/bootstrap.min.js" />"></script>

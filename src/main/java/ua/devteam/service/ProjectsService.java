@@ -25,4 +25,8 @@ public interface ProjectsService {
     List<Project> getRunningByManager(Long managerId, boolean loadNested);
 
     List<Project> getCompleteByManager(Long managerId, boolean loadNested);
+
+    List<Project> getRunningByCustomer(Long customerId, boolean loadNested);
+
+    List<Project> getCompleteByCustomer(Long customerId, boolean loadNested);
 }

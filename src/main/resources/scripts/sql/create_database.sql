@@ -126,7 +126,7 @@ CREATE TABLE project_tasks (
   operation_id BIGINT UNSIGNED NOT NULL,
   name         VARCHAR(50)     NOT NULL,
   description  TEXT            NOT NULL,
-  status       VARCHAR(20)     NOT NULL,
+  status       VARCHAR(20)     NOT NULL DEFAULT 'New',
   UNIQUE (operation_id),
   PRIMARY KEY (id),
   FOREIGN KEY (project_id)

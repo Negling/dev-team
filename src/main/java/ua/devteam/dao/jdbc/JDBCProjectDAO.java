@@ -56,8 +56,28 @@ public class JDBCProjectDAO extends JDBCGenericIdentifiedDAO<Project> implements
     }
 
     @Override
+    public List<Project> getByCustomerAndStatus(Long customerId, Status status) {
+        return jdbcOperations.query(sqlBundle.getString("project.selectByCustomerAndStatus"), this::mapEntity, customerId, status.toString());
+    }
+
+    @Override
     public List<Project> getCompleteByManager(Long managerId) {
         return jdbcOperations.query(sqlBundle.getString("project.selectCompleteByManager"), this::mapEntity, managerId);
+    }
+
+    @Override
+    public List<Project> getRunningByManager(Long managerId) {
+        return jdbcOperations.query(sqlBundle.getString("project.selectRunningByManager"), this::mapEntity, managerId);
+    }
+
+    @Override
+    public List<Project> getCompleteByCustomer(Long customerId) {
+        return jdbcOperations.query(sqlBundle.getString("project.selectCompleteByCustomer"), this::mapEntity, customerId);
+    }
+
+    @Override
+    public List<Project> getRunningByCustomer(Long customerId) {
+        return jdbcOperations.query(sqlBundle.getString("project.selectRunningByCustomer"), this::mapEntity, customerId);
     }
 
     @Override

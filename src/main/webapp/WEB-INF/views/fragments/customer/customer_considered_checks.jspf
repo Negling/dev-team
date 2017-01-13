@@ -1,0 +1,65 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%--Considered Checks--%>
+<div class="row">
+    <div class="col-lg-12">
+        <h3 class="page-header lead"><spring:message code="customersCabinet.checksHistoryLead"/>
+            <button name="refresh" data-container-id="#completeChecksTable" type="button"
+                    class="refresh-button pull-right">
+                <span class="glyphicon glyphicon-refresh"></span>
+            </button>
+        </h3>
+    </div>
+
+    <div id="completeChecksTable" class="col-xs-12 no-padding">
+        <c:choose>
+            <c:when test="${empty completeChecks}">
+                <h3 class="text-center">
+                    <spring:message code="customersCabinet.noChecks"/>
+                </h3>
+            </c:when>
+            <c:otherwise>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th><spring:message code="tables.projectName"/></th>
+                        <th class="text-center"><spring:message code="tables.devsCost"/></th>
+                        <th class="text-center"><spring:message code="tables.servicesCost"/></th>
+                        <th class="text-center"><spring:message code="tables.taxesCost"/></th>
+                        <th class="text-center"><spring:message code="tables.totalCost"/></th>
+                        <th><spring:message code="tables.status"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${completeChecks}" var="completeCheck">
+                        <tr>
+                            <td><a href="<spring:url value="/project?id=${completeCheck.projectId}"/>">
+                                <c:out value="${completeCheck.projectName}"/>
+                            </a>
+                            </td>
+                            <td class="text-center">
+                                <fmt:formatNumber type="number" pattern="#"
+                                                  value="${completeCheck.developersCost}"/> $
+                            </td>
+                            <td class="text-center">
+                                <fmt:formatNumber type="number" pattern="#"
+                                                  value="${completeCheck.servicesCost}"/> $
+                            </td>
+                            <td class="text-center">
+                                    <fmt:formatNumber type="number" pattern="#" value="${completeCheck.taxes}"/>
+                                $
+                            <td class="text-center">
+                                <fmt:formatNumber type="number" pattern="#"
+                                                  value="${completeCheck.totalProjectCost}"/> $
+                            </td>
+                            <td class="${completeCheck.status == 'Paid' ? 'lime' : 'red'}">
+                                <c:out value="${completeCheck.status}"/>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </c:otherwise>
+        </c:choose>
+    </div>
+</div>
+<%--.end Considered Checks--%>

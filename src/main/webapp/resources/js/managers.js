@@ -103,7 +103,7 @@ function displayDevsSearchResults(data) {
 
             newColumn = $("<td></td>").appendTo(newRow);
             $("<a></a>")
-                .attr("href", "#")
+                .attr("href", $("#devPath").text() + data[i].id)
                 .text(data[i].firstName + " " + data[i].lastName)
                 .appendTo(newColumn);
 
@@ -180,7 +180,7 @@ function bindDeveloper(button, data) {
 
     newRow = $("<tr></tr>").appendTo(tableBody);
     link = $("<a></a>")
-        .attr("href", "#")
+        .attr("href", $("#devPath").text() + data.developerId)
         .text(data.developerFirstName + " " + data.developerLastName);
     unbindButton = $("<button></button>")
         .addClass("btn btn-info btn-sm")

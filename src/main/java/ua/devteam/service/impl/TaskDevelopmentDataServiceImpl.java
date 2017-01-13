@@ -55,6 +55,11 @@ public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataServic
     }
 
     @Override
+    public void confirmByProject(Long projectId) {
+        taskDevelopmentDataDAO.setStatusByProject(Pending, projectId);
+    }
+
+    @Override
     public void complete(Long taskId, Long developerId, Integer hoursSpent) {
         TaskDevelopmentData data = taskDevelopmentDataDAO.getByTaskAndDeveloper(taskId, developerId);
         data.setHoursSpent(hoursSpent);

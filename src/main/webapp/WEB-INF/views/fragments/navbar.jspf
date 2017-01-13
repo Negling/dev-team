@@ -23,7 +23,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/">Dev-Team</a>
+            <a class="navbar-brand" href="<spring:url value="/"/>">Dev-Team</a>
             <p class="navbar-text"><spring:message code="general.greetings" arguments="${username}"/></p>
         </div>
 
@@ -32,9 +32,21 @@
             <ul class="nav navbar-nav navbar-right">
                 <security:authorize access="isAuthenticated()">
                     <li>
-                        <a href="${pageContext.request.contextPath}/toCabinet">
-                            <spring:message code="general.cabinet"/>
-                        </a>
+                        <security:authorize url="/manage">
+                            <a href="<spring:url value="/manage"/>">
+                                <spring:message code="general.cabinet"/>
+                            </a>
+                        </security:authorize>
+                        <security:authorize url="/development">
+                            <a href="<spring:url value="/development"/>">
+                                <spring:message code="general.cabinet"/>
+                            </a>
+                        </security:authorize>
+                        <security:authorize url="/cabinet">
+                            <a href="<spring:url value="/cabinet"/>">
+                                <spring:message code="general.cabinet"/>
+                            </a>
+                        </security:authorize>
                     </li>
                 </security:authorize>
                 <li class="dropdown">
@@ -46,11 +58,13 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="${pageContext.request.contextPath}/about"><spring:message code="general.about"/></a>
+                    <a href="<spring:url value="/about"/>">
+                        <spring:message code="general.about"/>
+                    </a>
                 </li>
                 <li>
                     <security:authorize access="isAnonymous()">
-                        <a href="${pageContext.request.contextPath}/login">
+                        <a href="<spring:url value="/login"/>">
                             <span class="login-icon glyphicon glyphicon-log-in"></span>
                             <spring:message code="general.login"/>
                         </a>

@@ -1,0 +1,47 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%--Create Project--%>
+<div class="row">
+    <div id="formTechnicalTask"
+         class="bordered-container col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <h3 class="text-center page-header">
+            <strong>
+                <spring:message code="customersCabinet.projectData"/>
+            </strong>
+        </h3>
+
+        <%--technical task name--%>
+        <div class="form-group">
+            <label class="control-label" for="technicalTaskName">
+                <spring:message code="entity.projectName"/>:
+            </label>
+
+            <input id="technicalTaskName" name="projectName" type="text" class="form-control"
+                   placeholder="<spring:message code="entity.projectNamePlaceholder"/>">
+        </div>
+        <%--technical task description--%>
+        <div class="form-group">
+            <label class="control-label" for="technicalTaskDescription">
+                <spring:message code="entity.projectDescription"/>:
+            </label>
+            <textarea id="technicalTaskDescription" name="projectDescription" class="form-control" rows="3"
+                      placeholder="<spring:message code="entity.projectDescriptionPlaceholder"/>"></textarea>
+        </div>
+
+        <%--Tasks--%>
+        <h3 class="text-center page-header">
+            <strong><spring:message code="entity.tasks"/></strong>
+        </h3>
+        <div id="tasks" class="panel-group">
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary btn-sm add-task-btn" type="button" data-toggle="modal"
+                    data-target="#addTaskModal">
+                <spring:message code="customersCabinet.addTask"/>
+            </button>
+        </div>
+        <button id="submitTechnicalTask" class="btn btn-success submit-project-btn" type="submit">
+            <spring:message code="general.submit"/>
+        </button>
+    </div>
+</div>
+<%--end Create Project--%>

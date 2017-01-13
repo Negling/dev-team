@@ -15,6 +15,8 @@ import ua.devteam.entity.enums.DeveloperSpecialization;
 import ua.devteam.entity.projects.TechnicalTask;
 import ua.devteam.entity.users.User;
 import ua.devteam.service.ChecksService;
+import ua.devteam.service.CustomersService;
+import ua.devteam.service.ProjectsService;
 import ua.devteam.service.TechnicalTasksService;
 
 import javax.validation.Valid;
@@ -26,14 +28,18 @@ import java.util.Locale;
 @RequestMapping("/cabinet")
 public class CustomersCabinetController extends AbstractEntityProcessingController {
 
+    private CustomersService customersService;
     private ChecksService checksService;
+    private ProjectsService projectsService;
     private TechnicalTasksService technicalTasksService;
 
     @Autowired
-    public CustomersCabinetController(ResourceBundleMessageSource messageSource, ChecksService checksService,
-                                      TechnicalTasksService technicalTasksService) {
+    public CustomersCabinetController(ResourceBundleMessageSource messageSource, CustomersService customersService,
+                                      ChecksService checksService, ProjectsService projectsService, TechnicalTasksService technicalTasksService) {
         super(messageSource);
+        this.customersService = customersService;
         this.checksService = checksService;
+        this.projectsService = projectsService;
         this.technicalTasksService = technicalTasksService;
     }
 
@@ -80,6 +86,10 @@ public class CustomersCabinetController extends AbstractEntityProcessingControll
     public void addAttributes(Model model, Authentication auth) {
         long currentCustomerId = ((User) auth.getPrincipal()).getId();
 
+        model.addAttribute("customer", customersService.getById(currentCustomerId));
+        model.addAttribute("runningProjects", projectsService.getRunningByCustomer(currentCustomerId, false));
+        model.addAttribute("completeProjects", projectsService.getCompleteByCustomer(currentCustomerId, false));
+        model.addAttribute("technicalTasks", technicalTasksService.getAllByCustomer(currentCustomerId, false));
         model.addAttribute("newChecks", checksService.getNewByCustomer(currentCustomerId));
         model.addAttribute("completeChecks", checksService.getCompleteByCustomer(currentCustomerId));
         model.addAttribute("specializations", DeveloperSpecialization.values());

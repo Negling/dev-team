@@ -150,7 +150,7 @@ public class ManagersCabinetController extends AbstractEntityProcessingControlle
         model.addAttribute("specializations", DeveloperSpecialization.values());
         model.addAttribute("technicalTasks", technicalTasksService.getAllUnassigned(true));
         model.addAttribute("pendingProjects", projectsService.getNewByManager(managerId, true));
-        /*model.addAttribute("runningProjects", projectsService.getRunningByManager(managerId, true));*/
+        model.addAttribute("runningProjects", projectsService.getRunningByManager(managerId, true));
         model.addAttribute("completeProjects", projectsService.getCompleteByManager(managerId, false));
     }
 }

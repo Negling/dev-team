@@ -58,12 +58,30 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
     }
 
     @Override
+    public TechnicalTask getById(Long technicalTaskId, boolean loadNested) {
+        if (loadNested) {
+            return formTask(technicalTaskDAO.getById(technicalTaskId));
+        }
+
+        return technicalTaskDAO.getById(technicalTaskId);
+    }
+
+    @Override
     public List<TechnicalTask> getAllUnassigned(boolean loadNested) {
         if (loadNested) {
             return formTask(technicalTaskDAO.getAllNew());
         }
 
         return technicalTaskDAO.getAllNew();
+    }
+
+    @Override
+    public List<TechnicalTask> getAllByCustomer(Long customerId, boolean loadNested) {
+        if (loadNested) {
+            return formTask(technicalTaskDAO.getAllByCustomer(customerId));
+        }
+
+        return technicalTaskDAO.getAllByCustomer(customerId);
     }
 
     @Override
@@ -75,10 +93,14 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
         return technicalTaskDAO.getAll();
     }
 
+    private TechnicalTask formTask(TechnicalTask technicalTask) {
+        technicalTask.setOperations(operationsService.getByTechnicalTask(technicalTask.getId(), true));
+
+        return technicalTask;
+    }
 
     private List<TechnicalTask> formTask(List<TechnicalTask> tasks) {
-        tasks.forEach(technicalTask ->
-                technicalTask.setOperations(operationsService.getByTechnicalTask(technicalTask.getId(), true)));
+        tasks.forEach(this::formTask);
 
         return tasks;
     }

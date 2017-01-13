@@ -103,6 +103,10 @@ body {
     padding-right: 15px;
 }
 
+.pt-10 {
+    padding-top: 10px;
+}
+
 .no-borders {
     border: none;
 }
@@ -127,19 +131,23 @@ body {
 }
 
 .green {
-    color: #006400;
+    color: #006400 !important;
 }
 
 .black {
-    color: #000000;
+    color: #000000 !important;
+}
+
+.blue {
+    color: blue !important;
 }
 
 .red {
-    color: #DC143C;
+    color: #DC143C !important;
 }
 
 .lime {
-    color: #449d44;
+    color: #449d44 !important;
 }
 
 .refresh-button {
@@ -153,9 +161,8 @@ body {
     outline: 0 none;
 }
 
-
 .refresh-button:active,
-.refresh-button.active{
+.refresh-button.active {
     transform: translateY(4px);
     box-shadow: none;
     outline: 0 none;

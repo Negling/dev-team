@@ -12,10 +12,11 @@
     margin-bottom: 15px;
 }
 
-.settings-alert {
-    margin-top: 25px;
-    text-align: center;
-    height: 160px;
+.settings-container {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 10px;
+    border: 2px solid;
 }
 
 .check-description {

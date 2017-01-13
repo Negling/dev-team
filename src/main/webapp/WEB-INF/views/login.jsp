@@ -84,7 +84,7 @@
                     </div>
                     <div class="col-lg-12">
                         <h4><spring:message code="login.newMember"/>?
-                            <a href="<c:out value="${pageContext.request.contextPath}"/>/registration">
+                            <a href="<spring:url value="/registration"/>">
                                 <spring:message code="general.register"/>
                             </a>
                         </h4>
