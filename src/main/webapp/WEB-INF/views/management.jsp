@@ -12,23 +12,18 @@
     <h2><spring:message code="customersCabinet.cabinet"/></h2>
     <p>Here you can manage your personal information, create technical tasks, etc.</p>
 
-    <ul id="navTab" class="nav nav-tabs nav-justified">
+    <ul class="nav nav-tabs nav-justified">
         <li class="active"><a data-toggle="tab" href="#technicalTasks">
-            <span class="badge"><c:out value="${empty technicalTasks ? '' : technicalTasks.size()}"/></span>
             Technical Tasks
         </a>
         </li>
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <span class="badge"><c:out value="${empty pendingProjects ? '' : pendingProjects.size()}"/></span>
                 Projects <span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li>
                     <a href="#formProjects" role="tab" data-toggle="tab">
                         Form Project
-                        <c:if test="${not empty pendingProjects}">
-                            <span class="glyphicon glyphicon-exclamation-sign"></span>
-                        </c:if>
                     </a>
                 </li>
                 <li>
@@ -58,25 +53,25 @@
     <div class="tab-content">
         <%--Manage Tehnical --%>
         <div id="technicalTasks" class="tab-pane fade in active">
-            <%@include file="fragments/managment/manage_technical_tasks.jspf" %>
+            <%@include file="fragments/management/manage_technical_tasks.jsp" %>
         </div>
         <%--.end Manage new Projects--%>
 
         <%--Form Projects--%>
         <div id="formProjects" class="tab-pane fade">
-            <%@include file="fragments/managment/manage_form_project.jspf" %>
+            <%@include file="fragments/management/manage_form_project.jsp" %>
         </div>
         <%--end Form Projects--%>
 
         <%--Running Projects--%>
         <div id="runningProjects" class="tab-pane fade">
-            <%@include file="fragments/managment/manage_running_projects.jspf" %>
+            <%@include file="fragments/management/manage_running_projects.jsp" %>
         </div>
         <%--end Running Projects--%>
 
         <%--Complete Projects--%>
         <div id="completeProjects" class="tab-pane fade">
-            <%@include file="fragments/managment/manage_complete_projects.jspf" %>
+            <%@include file="fragments/management/manage_complete_projects.jsp" %>
         </div>
         <%--end Complete Projects--%>
 
@@ -176,96 +171,6 @@
     </div>
 </div>
 
-<!-- Bind Developer to Task Modal -->
-<div class="modal fade" id="bindDeveloperModal" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Developers Binding Settings: </h4>
-                <hr>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <label>Select Project:</label>
-                        <select id="activeProjectSelect" class="form-control" title="Active Project">
-                            <c:forEach items="${pendingProjects}" var="project" varStatus="status">
-                                <option value="<c:out value="${project.id}"/>">
-                                    <c:out value="${project.name}"/>
-                                </option>
-                                <c:if test="${status.last}">
-                                    <c:set var="projectTasks" value="${project.tasks}"/>
-                                </c:if>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <div class="col-lg-12">
-                        <label>Select Task:</label>
-                        <select id="activeTaskSelect" class="form-control" title="Active Task">
-                            <c:forEach items="${projectTasks}" var="rTask">
-                                <option value="<c:out value="${rTask.id}"/>">
-                                    <c:out value="${rTask.name}"/>
-                                </option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <%--Modal body--%>
-            <div class="modal-body">
-                <h4>Search results:</h4>
-                <h3 id="noResults" class="text-center">No results found!</h3>
-                <table id="devsResultTable" class="table no-display">
-                    <thead>
-                    <tr>
-                        <th>First Name and Last Name</th>
-                        <th>Cost</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-                <hr>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <label>Specialization:</label>
-                        <select class="form-control" title="specialization" id="developerSpecialization">
-                            <c:forEach items="${specializations}" var="specialization">
-                                <option><c:out value="${specialization}"/></option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <div class="col-lg-4">
-                        <label>Rank:</label>
-                        <select class="form-control" title="rank" id="developerRank">
-                            <c:forEach items="${ranks}" var="rank">
-                                <option><c:out value="${rank}"/></option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <div class="col-lg-4">
-                        <label>Last name:</label>
-                        <div class="input-group">
-                            <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-search"></span>
-                            </span>
-                            <input type="text" class="form-control" title="lastName" id="developerLastName">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <%--end Modal body--%>
-
-            <div class="modal-footer">
-                <button type="button" id="searchDevsBtn" class="btn btn-primary">
-                    Search
-                </button>
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 <%--end Modal--%>
 
 <%@include file="fragments/errorsModal.jspf" %>

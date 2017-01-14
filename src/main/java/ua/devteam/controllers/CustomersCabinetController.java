@@ -1,32 +1,23 @@
 package ua.devteam.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ua.devteam.entity.enums.DeveloperRank;
 import ua.devteam.entity.enums.DeveloperSpecialization;
-import ua.devteam.entity.projects.TechnicalTask;
 import ua.devteam.entity.users.User;
 import ua.devteam.service.ChecksService;
 import ua.devteam.service.CustomersService;
 import ua.devteam.service.ProjectsService;
 import ua.devteam.service.TechnicalTasksService;
 
-import javax.validation.Valid;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-
 @Controller
 @RequestMapping("/cabinet")
-public class CustomersCabinetController extends AbstractEntityProcessingController {
+public class CustomersCabinetController {
 
     private CustomersService customersService;
     private ChecksService checksService;
@@ -34,9 +25,8 @@ public class CustomersCabinetController extends AbstractEntityProcessingControll
     private TechnicalTasksService technicalTasksService;
 
     @Autowired
-    public CustomersCabinetController(ResourceBundleMessageSource messageSource, CustomersService customersService,
-                                      ChecksService checksService, ProjectsService projectsService, TechnicalTasksService technicalTasksService) {
-        super(messageSource);
+    public CustomersCabinetController(CustomersService customersService, ChecksService checksService,
+                                      ProjectsService projectsService, TechnicalTasksService technicalTasksService) {
         this.customersService = customersService;
         this.checksService = checksService;
         this.projectsService = projectsService;
@@ -49,49 +39,55 @@ public class CustomersCabinetController extends AbstractEntityProcessingControll
         return "customers-cabinet";
     }
 
-    @ResponseBody
-    @PreAuthorize("hasAuthority('Customer')")
-    @RequestMapping(value = "/submit", method = RequestMethod.POST)
-    public ResponseEntity<List<String>> registerTechnicalTask(@RequestBody @Valid TechnicalTask technicalTask,
-                                                              BindingResult bindingResult, Locale locale,
-                                                              Authentication auth) {
-        if (!bindingResult.hasErrors()) {
-            technicalTask.setCustomerId(((User) auth.getPrincipal()).getId());
-            technicalTasksService.registerTechnicalTask(technicalTask);
-        }
 
-        return generateDefaultResponse(new LinkedList<>(), bindingResult, locale);
+    @PreAuthorize("hasAuthority('Customer')")
+    @RequestMapping("/fragments/customer_new_checks")
+    public String cabinetNewChecks(Model model, Authentication auth) {
+        model.addAttribute("newChecks", checksService.getNewByCustomer(((User) auth.getPrincipal()).getId()));
+
+        return "/fragments/customer/customer_new_checks";
     }
 
-    @ResponseBody
     @PreAuthorize("hasAuthority('Customer')")
-    @RequestMapping(value = "/confirmCheck", method = RequestMethod.POST)
-    public ResponseEntity confirmCheck(@RequestBody Long projectId) {
-        checksService.accept(projectId);
+    @RequestMapping("/fragments/customer_considered_checks")
+    public String cabinetConsideredChecks(Model model, Authentication auth) {
+        model.addAttribute("completeChecks", checksService.getCompleteByCustomer(((User) auth.getPrincipal()).getId()));
 
-        return new ResponseEntity(HttpStatus.OK);
+        return "/fragments/customer/customer_considered_checks";
     }
 
-    @ResponseBody
     @PreAuthorize("hasAuthority('Customer')")
-    @RequestMapping(value = "/declineCheck", method = RequestMethod.POST)
-    public ResponseEntity declineCheck(@RequestBody Long projectId) {
-        checksService.decline(projectId);
+    @RequestMapping("/fragments/customer_running_projects")
+    public String cabinetRunningProjects(Model model, Authentication auth) {
+        model.addAttribute("runningProjects",
+                projectsService.getRunningByCustomer(((User) auth.getPrincipal()).getId(), false));
 
-        return new ResponseEntity(HttpStatus.OK);
+        return "/fragments/customer/customer_running_projects";
+    }
+
+    @PreAuthorize("hasAuthority('Customer')")
+    @RequestMapping("/fragments/customer_technical_tasks")
+    public String cabinetTechnicalTasks(Model model, Authentication auth) {
+        model.addAttribute("technicalTasks",
+                technicalTasksService.getAllByCustomer(((User) auth.getPrincipal()).getId(), false));
+
+        return "/fragments/customer/customer_technical_tasks";
+    }
+
+    @PreAuthorize("hasAuthority('Customer')")
+    @RequestMapping("/fragments/customer_complete_projects")
+    public String cabinetCompleteProjects(Model model, Authentication auth) {
+        model.addAttribute("completeProjects",
+                projectsService.getCompleteByCustomer(((User) auth.getPrincipal()).getId(), false));
+
+        return "fragments/customer/customer_complete_projects";
     }
 
     @ModelAttribute
     @PreAuthorize("hasAuthority('Customer')")
     public void addAttributes(Model model, Authentication auth) {
-        long currentCustomerId = ((User) auth.getPrincipal()).getId();
 
-        model.addAttribute("customer", customersService.getById(currentCustomerId));
-        model.addAttribute("runningProjects", projectsService.getRunningByCustomer(currentCustomerId, false));
-        model.addAttribute("completeProjects", projectsService.getCompleteByCustomer(currentCustomerId, false));
-        model.addAttribute("technicalTasks", technicalTasksService.getAllByCustomer(currentCustomerId, false));
-        model.addAttribute("newChecks", checksService.getNewByCustomer(currentCustomerId));
-        model.addAttribute("completeChecks", checksService.getCompleteByCustomer(currentCustomerId));
+        model.addAttribute("customer", customersService.getById(((User) auth.getPrincipal()).getId()));
         model.addAttribute("specializations", DeveloperSpecialization.values());
         model.addAttribute("ranks", DeveloperRank.values());
     }

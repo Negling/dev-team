@@ -53,8 +53,8 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false"><spring:message code="general.language"/> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="?language=en">English</a></li>
-                        <li><a href="?language=ru">Русский</a></li>
+                        <li><a href="#" data-locale="en">English</a></li>
+                        <li><a href="#" data-locale="ru">Русский</a></li>
                     </ul>
                 </li>
                 <li>

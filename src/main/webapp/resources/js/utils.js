@@ -2,15 +2,32 @@ $(function () {
     $("#logoutLink").click(function () {
         $("#logoutForm").submit();
     });
-})
 
-function refreshData(containerId, fadeOut, callback) {
-    if (fadeOut && $(containerId).children().length > 0) {
+    $("a[data-locale]").click(function () {
+        changeLocale($(this));
+    });
+});
+
+function changeLocale(link) {
+
+    if (location.search.length > 0 && location.search.indexOf("language=") > 0) {
+        link.attr("href", location.search.replace(/language=\w+(?=&?)/, "language=" + link.attr("data-locale")));
+    } else if (location.search.length > 0) {
+        link.attr("href", location.search + "&language=" + link.attr("data-locale"));
+    } else {
+        link.attr("href", "?language=" + link.attr("data-locale"));
+    }
+}
+
+function refreshData(containerId, fadeOut, source, callback) {
+    var URL = source === undefined ? document.URL + " " : document.URL + source + " ";
+
+    if (fadeOut) {
         $(containerId).fadeTo(600, 0.01, function () {
-            $(containerId).load(document.URL + " " + containerId + " > *", callback);
+            $(containerId).load(URL + containerId + " > *", callback);
         }).delay(600).fadeTo(600, 1);
     } else {
-        $(containerId).load(document.URL + " " + containerId + " > *", callback);
+        $(containerId).load(URL + containerId + " > *", callback);
     }
 }
 
@@ -32,43 +49,15 @@ function removeUntilParent(element, parentId, isFaded, callback) {
     }
 }
 
-function removeAndRefreshIfEmpty(element, parentId, refreshCallback, removeCallback) {
+function removeAndRefreshIfEmpty(element, parentId, source, callback) {
     removeUntilParent(element, parentId, true, function () {
-        if (removeCallback != undefined) {
-            removeCallback.call();
-        }
-
         if ($(parentId).children().length == 0) {
-            refreshData(parentId, false, refreshCallback);
+            refreshData(parentId, true, source, callback);
+        }else if(callback != undefined){
+            callback.call()
         }
     });
 }
-
-function reloadActiveTab() {
-    $("#navTab > li").each(function (index, element) {
-        if ($(element).hasClass("active")) {
-            $(element).load(document.URL + " #navTab > li:eq(" + index + ") > *");
-            return;
-        }
-    });
-}
-
-function decrementActiveTab() {
-    var activeTab, activeTabBadge;
-
-    activeTab = $("#navTab > li.active");
-    activeTabBadge = activeTab.children("a").find("span.badge");
-
-
-    if (activeTab.length === 1 && $.isNumeric(activeTabBadge.text())) {
-        if (parseInt(activeTabBadge.text()) === 1) {
-            activeTabBadge.text('');
-        } else {
-            activeTabBadge.text(parseInt(activeTabBadge.text()) - 1);
-        }
-    }
-}
-
 
 function prependOrUpdate(contentSelector, targetSelector, content) {
     var expectedContent = $(contentSelector);

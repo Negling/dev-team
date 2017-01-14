@@ -19,7 +19,7 @@ public interface TaskDevelopmentDataDAO extends GenericDAO<TaskDevelopmentData> 
 
     List<TaskDevelopmentData> getAllByTask(Long taskId);
 
-    List<TaskDevelopmentData> getAllByProject(Long projectId);
+    List<TaskDevelopmentData> getAllByDeveloper(Long developerId);
 
     List<TaskDevelopmentData> getByDeveloperAndStatus(Long developerId, Status status);
 }

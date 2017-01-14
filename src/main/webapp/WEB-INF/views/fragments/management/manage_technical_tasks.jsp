@@ -1,12 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%--Manage Tehnical Tasks--%>
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header lead">
             Here you can grab new requests.
-            <button name="refresh" data-container-id="#technicalTasksAccordion" type="button"
-                    class="refresh-button pull-right">
+            <button name="refresh" data-container-id="#technicalTasksAccordion" class="refresh-button pull-right"
+                    type="button" data-path="/fragments/manage_technical_tasks">
                 <span class="glyphicon glyphicon-refresh"></span>
             </button>
         </h3>
@@ -47,18 +50,18 @@
                                         <%--Operations--%>
                                     <div id="operationsAccordion<c:out value="${technicalTask.id}"/>"
                                          class="panel-group">
-                                        <c:forEach items="${technicalTask.operations}" var="rTask">
+                                        <c:forEach items="${technicalTask.operations}" var="operation">
                                             <div class="panel panel-default">
                                                 <div class="task-heading panel-heading">
                                                     <h4 class="panel-title">
                                                         <a data-toggle="collapse"
                                                            data-parent="#operationsAccordion<c:out value="${technicalTask.id}"/>"
-                                                           href="#operation<c:out value="${rTask.id}"/>">
-                                                            <c:out value="${rTask.name}"/>
+                                                           href="#operation<c:out value="${operation.id}"/>">
+                                                            <c:out value="${operation.name}"/>
                                                         </a>
                                                     </h4>
                                                 </div>
-                                                <div id="operation<c:out value="${rTask.id}"/>"
+                                                <div id="operation<c:out value="${operation.id}"/>"
                                                      class="panel-collapse collapse">
                                                     <div class="panel-body">
                                                         <div class="table-responsive">
@@ -72,7 +75,7 @@
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                <c:forEach items="${rTask.requestsForDevelopers}"
+                                                                <c:forEach items="${operation.requestsForDevelopers}"
                                                                            var="requestForDevelopers">
                                                                     <tr>
                                                                         <td>
@@ -93,7 +96,7 @@
                                                         <h4>
                                                             <strong>Operation Description</strong></h4>
                                                         <p class="data-description">
-                                                            <c:out value="${rTask.description}"/>
+                                                            <c:out value="${operation.description}"/>
                                                         </p>
                                                     </div>
                                                 </div>

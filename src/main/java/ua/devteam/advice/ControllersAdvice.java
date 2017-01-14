@@ -15,11 +15,15 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.util.UriUtils;
 import ua.devteam.controllers.exceptions.AjaxMethodInternalException;
+import ua.devteam.controllers.exceptions.ResourceNotFoundException;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.Locale;
 
 @ControllerAdvice
@@ -62,9 +66,23 @@ public class ControllersAdvice {
         return "forward:/error-page-403";
     }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public String handleNoHandlerFound(NoHandlerFoundException ex, Model model) throws UnsupportedEncodingException {
-        String requestedURL = UriUtils.decode(ex.getRequestURL(), "UTF-8");
+    @ExceptionHandler({NoHandlerFoundException.class, MethodArgumentTypeMismatchException.class, ResourceNotFoundException.class})
+    public String handleNoHandlerFound(Exception ex, Model model) throws UnsupportedEncodingException {
+        String requestedURL;
+
+        if (ex instanceof NoHandlerFoundException) {
+            requestedURL = UriUtils.decode(((NoHandlerFoundException) ex).getRequestURL(), "UTF-8");
+        } else if (ex instanceof ResourceNotFoundException) {
+            requestedURL = ((ResourceNotFoundException) ex).getRequestedURL();
+        } else {
+            MethodArgumentTypeMismatchException ex1 = (MethodArgumentTypeMismatchException) ex;
+            RequestMapping requestMapping = (RequestMapping) Arrays.stream(ex1.getParameter().getMethodAnnotations()).
+                    filter(annotation -> (annotation instanceof RequestMapping)).findAny().get();
+
+            requestedURL = requestMapping.value()[0].concat("?").concat(ex1.getName()).concat("=")
+                    .concat(ex1.getValue().toString());
+        }
+
         model.addAttribute("requestURL", requestedURL);
 
         if (logger.isTraceEnabled()) {

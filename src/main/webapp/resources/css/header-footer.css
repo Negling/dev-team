@@ -119,6 +119,10 @@ body {
     padding: 0;
 }
 
+.no-margin {
+    margin: 0;
+}
+
 .text-vertical-center {
     display: table-cell;
     text-align: center;
@@ -148,6 +152,11 @@ body {
 
 .lime {
     color: #449d44 !important;
+}
+
+.task-heading {
+    background-color: #5d6e89 !important;
+    color: white !important;
 }
 
 .refresh-button {

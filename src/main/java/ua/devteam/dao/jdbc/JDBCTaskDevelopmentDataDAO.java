@@ -28,6 +28,8 @@ public class JDBCTaskDevelopmentDataDAO extends JDBCGenericDAO<TaskDevelopmentDa
         super.jdbcUpdate(sqlBundle.getString("taskDevelopmentData.insertSQL"),
                 entity.getProjectTaskId(),
                 entity.getDeveloperId(),
+                entity.getSpecialization().toString(),
+                entity.getRank().toString(),
                 entity.getHoursSpent(),
                 entity.getStatus().toString());
     }
@@ -35,7 +37,7 @@ public class JDBCTaskDevelopmentDataDAO extends JDBCGenericDAO<TaskDevelopmentDa
     @Override
     public void createDefault(TaskDevelopmentData entity) {
         super.jdbcUpdate(sqlBundle.getString("taskDevelopmentData.insertDefault"), entity.getProjectTaskId(),
-                entity.getDeveloperId());
+                entity.getDeveloperId(), entity.getSpecialization().toString(), entity.getRank().toString());
     }
 
     @Override
@@ -43,6 +45,8 @@ public class JDBCTaskDevelopmentDataDAO extends JDBCGenericDAO<TaskDevelopmentDa
         super.jdbcUpdate(sqlBundle.getString("taskDevelopmentData.update"),
                 newEntity.getProjectTaskId(),
                 newEntity.getDeveloperId(),
+                newEntity.getSpecialization().toString(),
+                newEntity.getRank().toString(),
                 newEntity.getHoursSpent(),
                 newEntity.getStatus().toString(),
                 oldEntity.getProjectTaskId(),
@@ -83,8 +87,8 @@ public class JDBCTaskDevelopmentDataDAO extends JDBCGenericDAO<TaskDevelopmentDa
     }
 
     @Override
-    public List<TaskDevelopmentData> getAllByProject(Long projectId) {
-        return jdbcOperations.query(sqlBundle.getString("taskDevelopmentData.selectByProject"), this::mapEntity, projectId);
+    public List<TaskDevelopmentData> getAllByDeveloper(Long developerId) {
+        return jdbcOperations.query(sqlBundle.getString("taskDevelopmentData.selectByDeveloper"), this::mapEntity, developerId);
     }
 
     @Override
@@ -95,8 +99,8 @@ public class JDBCTaskDevelopmentDataDAO extends JDBCGenericDAO<TaskDevelopmentDa
                 rs.getLong("developer_id"),
                 rs.getString("first_name"),
                 rs.getString("last_name"),
-                DeveloperSpecialization.valueOf(rs.getString("specialization")),
-                DeveloperRank.valueOf(rs.getString("rank")),
+                DeveloperSpecialization.valueOf(rs.getString("developer_specialization")),
+                DeveloperRank.valueOf(rs.getString("developer_rank")),
                 rs.getBigDecimal("hire_cost"),
                 rs.getInt("hours_spent"),
                 Status.valueOf(rs.getString("status")));

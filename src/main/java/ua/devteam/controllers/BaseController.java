@@ -9,11 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import ua.devteam.controllers.exceptions.ResourceNotFoundException;
 import ua.devteam.entity.projects.Project;
 import ua.devteam.entity.projects.TechnicalTask;
 import ua.devteam.entity.users.User;
 import ua.devteam.service.DevelopersService;
 import ua.devteam.service.ProjectsService;
+import ua.devteam.service.TaskDevelopmentDataService;
 import ua.devteam.service.TechnicalTasksService;
 
 import java.nio.file.AccessDeniedException;
@@ -27,18 +29,20 @@ public class BaseController {
     private TechnicalTasksService technicalTasksService;
     private ProjectsService projectsService;
     private DevelopersService developersService;
+    private TaskDevelopmentDataService taskDevelopmentDataService;
 
     @Autowired
     public BaseController(TechnicalTasksService technicalTasksService, ProjectsService projectsService,
-                          DevelopersService developersService) {
+                          DevelopersService developersService, TaskDevelopmentDataService taskDevelopmentDataService) {
         this.technicalTasksService = technicalTasksService;
         this.projectsService = projectsService;
         this.developersService = developersService;
+        this.taskDevelopmentDataService = taskDevelopmentDataService;
     }
 
     @RequestMapping("/technicalTask")
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin', 'Customer')")
-    public String showTechnicalTask(@RequestParam Long id, Model model, Authentication auth) {
+    public String showTechnicalTask(@RequestParam Long id, Model model, Authentication auth) throws AccessDeniedException {
         try {
             TechnicalTask technicalTask = technicalTasksService.getById(id, true);
 
@@ -50,16 +54,14 @@ public class BaseController {
 
             model.addAttribute("technicalTask", technicalTask);
             return "technicalTask";
-        } catch (AccessDeniedException | EmptyResultDataAccessException ex) {
-
-            model.addAttribute("requestURL", "/technicalTask?id=" + id);
-            return "forward:/error-page-404";
+        } catch (EmptyResultDataAccessException ex) {
+            throw new ResourceNotFoundException("/technicalTask?id=" + id);
         }
     }
 
     @RequestMapping("/project")
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin', 'Customer')")
-    public String showProject(@RequestParam Long id, Model model, Authentication auth) {
+    public String showProject(@RequestParam Long id, Model model, Authentication auth) throws AccessDeniedException {
         try {
             Project project = projectsService.getById(id, true);
 
@@ -71,10 +73,8 @@ public class BaseController {
 
             model.addAttribute("project", project);
             return "project";
-        } catch (AccessDeniedException | EmptyResultDataAccessException ex) {
-
-            model.addAttribute("requestURL", "/project?id=" + id);
-            return "forward:/error-page-404";
+        } catch (EmptyResultDataAccessException ex) {
+            throw new ResourceNotFoundException("/project?id=" + id);
         }
     }
 
@@ -82,13 +82,13 @@ public class BaseController {
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
     public String showDeveloper(@RequestParam Long id, Model model) {
         try {
-
             model.addAttribute("developer", developersService.getById(id));
+            model.addAttribute("developersBackground", taskDevelopmentDataService.getComplete(id));
+            model.addAttribute("currentTask", taskDevelopmentDataService.getActive(id));
+
             return "developer";
         } catch (EmptyResultDataAccessException ex) {
-
-            model.addAttribute("requestURL", "/developer?id=" + id);
-            return "forward:/error-page-404";
+            throw new ResourceNotFoundException("/developer?id=" + id);
         }
     }
 

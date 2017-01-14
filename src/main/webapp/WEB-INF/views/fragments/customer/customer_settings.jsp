@@ -1,4 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%--Settings--%>
 <div class="row">
     <div class="col-lg-12">
@@ -30,8 +34,7 @@
             <label for="email"><spring:message code="general.email"/>:</label>
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                <input id="email" type="email" class="form-control" maxlength="30"
-                       value="<c:out value="${customer.email}"/>">
+                <input id="email" type="email" class="form-control" maxlength="30" value="<c:out value="${customer.email}"/>">
             </div>
         </div>
 
@@ -63,6 +66,29 @@
         <button type="button" class="btn btn-success pull-right" data-toggle="modal"
                 data-target="#passwordModal"><spring:message code="general.continue"/>
         </button>
+    </div>
+</div>
+
+<!-- Password modal -->
+<div id="passwordModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><spring:message code="general.passwordRequired"/></h4>
+            </div>
+            <div class="modal-body">
+                <input id="currentPassword" type="password" class="form-control"
+                       placeholder="<spring:message code="general.currentPassword"/>">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">
+                    <spring:message code="general.submit"/>
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 <%--.end Settings--%>

@@ -23,9 +23,11 @@ public class TaskDevelopmentData {
     public TaskDevelopmentData() {
     }
 
-    public TaskDevelopmentData(Long projectTaskId, Long developerId) {
+    public TaskDevelopmentData(Long projectTaskId, Long developerId, DeveloperSpecialization specialization, DeveloperRank rank) {
         this.projectTaskId = projectTaskId;
         this.developerId = developerId;
+        this.specialization = specialization;
+        this.rank = rank;
     }
 
     public TaskDevelopmentData(Long projectTaskId, String taskName, String taskDescription, Long developerId,

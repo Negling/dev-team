@@ -15,11 +15,13 @@ public interface TaskDevelopmentDataService {
 
     void unbindDeveloper(Long developerId);
 
+    void confirmByProject(Long projectId);
+
     TaskDevelopmentData bindDeveloper(Long developerId, Long taskId);
 
     TaskDevelopmentData getActive(Long developerId);
 
     List<TaskDevelopmentData> getComplete(Long developerId);
 
-    void confirmByProject(Long projectId);
+    List<TaskDevelopmentData> getAllByDeveloper(Long developerId);
 }

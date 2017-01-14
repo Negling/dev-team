@@ -43,14 +43,15 @@ $(function () {
     }).on("change", "input[title=servicesCost]", function () {
         return calculateProjectCheck($(this).attr("data-project-id"));
     }).on("click", "button[name=refresh]", function () {
-        return refreshData($(this).attr("data-container-id"), true, reloadActiveTab);
+        return refreshData($(this).attr("data-container-id"), true, $(this).attr("data-path"));
     }).on("click", "button[name=refreshProjects]", function () {
-        return refreshData($(this).attr("data-container-id"), true, function () {
+        return refreshData($(this).attr("data-container-id"), true, $(this).attr("data-path"), function () {
             calculateRegisteredProjectsChecks();
             updateBindSelectOptions();
-            reloadActiveTab();
         });
     });
+
+    $("button[name~=refresh]").trigger("click");
 });
 
 
@@ -151,8 +152,10 @@ function calculateProjectCheck(projectId) {
 }
 
 function updateBindSelectOptions() {
-    $("#activeProjectSelect").load(document.URL + " #activeProjectSelect > option");
-    $("#activeTaskSelect").load(document.URL + " #activeTaskSelect > option");
+    var URL = document.URL + "/fragments/manage_form_project";
+
+    $("#activeProjectSelect").load(URL + " #activeProjectSelect > option");
+    $("#activeTaskSelect").load(URL + " #activeTaskSelect > option");
 }
 
 function bindDeveloper(button, data) {
@@ -226,15 +229,12 @@ function declineProjectAjax() {
     };
 
     $.ajax({
-        method: "POST",
+        method: "PUT",
         url: "/manage/declineProject",
         data: JSON.stringify(data)
     }).done(function () {
         return removeAndRefreshIfEmpty($("button[value=" + projectId + "][name=declineProject]"),
-            "#pendingProjectsAccordion", reloadActiveTab, function () {
-                updateBindSelectOptions();
-                decrementActiveTab();
-            });
+            "#pendingProjectsAccordion", "/fragments/manage_form_project", updateBindSelectOptions);
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
     });
@@ -250,16 +250,15 @@ function acceptProjectAjax(button) {
     };
 
     $.ajax({
-        method: "POST",
+        method: "PUT",
         url: "/manage/accept",
         data: JSON.stringify(check)
     }).done(function (data) {
-        return removeAndRefreshIfEmpty(button, "#pendingProjectsAccordion", reloadActiveTab, function () {
-            prependOrUpdate("#pendingProjectsAccordion > div.alert", "#pendingProjectsAccordion",
-                formValidatingAlertBox(data, true));
-            updateBindSelectOptions();
-            decrementActiveTab();
-        });
+        return removeAndRefreshIfEmpty(button, "#pendingProjectsAccordion", "/fragments/manage_form_project", function () {
+                prependOrUpdate("#pendingProjectsAccordion > div.alert", "#pendingProjectsAccordion",
+                    formValidatingAlertBox(data, true));
+                updateBindSelectOptions();
+            });
     }).fail(function (jqXHR) {
         if (jqXHR.status === 422) {
             prependOrUpdate("#pendingProjectsAccordion > div.alert", "#pendingProjectsAccordion",
@@ -278,12 +277,12 @@ function declineTechnicalTaskAjax() {
     };
 
     $.ajax({
-        method: "POST",
+        method: "PUT",
         url: "/manage/declineTechnicalTask",
         data: JSON.stringify(data)
     }).done(function () {
         return removeAndRefreshIfEmpty($("button[value=" + technicalTaskId + "][name=declineTechnicalTask]"),
-            "#technicalTasksAccordion", reloadActiveTab, decrementActiveTab);
+            "#technicalTasksAccordion", "/fragments/manage_technical_tasks");
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
     });
@@ -295,7 +294,7 @@ function formTechnicalTaskAsProjectAjax(button) {
         url: "/manage/formAsProject",
         data: JSON.stringify($(button).attr("value"))
     }).done(function () {
-        return removeAndRefreshIfEmpty(button, "#technicalTasksAccordion", reloadActiveTab, decrementActiveTab);
+        return removeAndRefreshIfEmpty(button, "#technicalTasksAccordion", "/fragments/manage_technical_tasks");
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
     });
@@ -335,7 +334,7 @@ function bindDeveloperAjax(button) {
 
 function unbindDeveloperAjax(button) {
     $.ajax({
-        method: "POST",
+        method: "DELETE",
         url: "/manage/unbind",
         data: JSON.stringify($(button).attr("data-developer-id"))
     }).done(function (data) {

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.devteam.dao.TaskDevelopmentDataDAO;
 import ua.devteam.entity.tasks.TaskDevelopmentData;
+import ua.devteam.entity.users.Developer;
 import ua.devteam.service.DevelopersService;
 import ua.devteam.service.ProjectTasksService;
 import ua.devteam.service.TaskDevelopmentDataService;
@@ -29,7 +30,10 @@ public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataServic
 
     @Override
     public TaskDevelopmentData bindDeveloper(Long developerId, Long taskId) {
-        taskDevelopmentDataDAO.createDefault(new TaskDevelopmentData(taskId, developerId));
+        Developer dev = developersService.getById(developerId);
+
+        taskDevelopmentDataDAO.createDefault(
+                new TaskDevelopmentData(taskId, developerId, dev.getSpecialization(), dev.getRank()));
         developersService.lockDeveloper(developerId);
 
         return taskDevelopmentDataDAO.getByTaskAndDeveloper(taskId, developerId);
@@ -78,5 +82,10 @@ public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataServic
     @Override
     public List<TaskDevelopmentData> getComplete(Long developerId) {
         return taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, Complete);
+    }
+
+    @Override
+    public List<TaskDevelopmentData> getAllByDeveloper(Long developerId) {
+        return taskDevelopmentDataDAO.getAllByDeveloper(developerId);
     }
 }

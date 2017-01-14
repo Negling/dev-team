@@ -140,10 +140,12 @@ CREATE TABLE project_tasks (
 );
 
 CREATE TABLE task_development_data (
-  task_id      BIGINT UNSIGNED NOT NULL,
-  developer_id BIGINT UNSIGNED NOT NULL,
-  hours_spent  INT             NOT NULL DEFAULT 0,
-  status       VARCHAR(20)     NOT NULL DEFAULT 'New',
+  task_id                  BIGINT UNSIGNED NOT NULL,
+  developer_id             BIGINT UNSIGNED NOT NULL,
+  developer_specialization VARCHAR(20)     NOT NULL,
+  developer_rank           VARCHAR(20)     NOT NULL,
+  hours_spent              INT             NOT NULL DEFAULT 0,
+  status                   VARCHAR(20)     NOT NULL DEFAULT 'New',
   FOREIGN KEY (task_id)
   REFERENCES project_tasks (id)
     ON DELETE CASCADE

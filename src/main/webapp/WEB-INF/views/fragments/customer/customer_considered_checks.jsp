@@ -1,10 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%--Considered Checks--%>
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header lead"><spring:message code="customersCabinet.checksHistoryLead"/>
-            <button name="refresh" data-container-id="#completeChecksTable" type="button"
-                    class="refresh-button pull-right">
+            <button name="refresh" data-container-id="#completeChecksTable" class="refresh-button pull-right"
+                    data-path="/fragments/customer_considered_checks" type="button">
                 <span class="glyphicon glyphicon-refresh"></span>
             </button>
         </h3>
@@ -37,19 +41,17 @@
                             </a>
                             </td>
                             <td class="text-center">
-                                <fmt:formatNumber type="number" pattern="#"
-                                                  value="${completeCheck.developersCost}"/> $
+                                <fmt:formatNumber type="number" pattern="#" value="${completeCheck.developersCost}"/> $
                             </td>
                             <td class="text-center">
-                                <fmt:formatNumber type="number" pattern="#"
-                                                  value="${completeCheck.servicesCost}"/> $
+                                <fmt:formatNumber type="number" pattern="#" value="${completeCheck.servicesCost}"/> $
                             </td>
                             <td class="text-center">
                                     <fmt:formatNumber type="number" pattern="#" value="${completeCheck.taxes}"/>
                                 $
                             <td class="text-center">
-                                <fmt:formatNumber type="number" pattern="#"
-                                                  value="${completeCheck.totalProjectCost}"/> $
+                                <fmt:formatNumber type="number" pattern="#" value="${completeCheck.totalProjectCost}"/>
+                                $
                             </td>
                             <td class="${completeCheck.status == 'Paid' ? 'lime' : 'red'}">
                                 <c:out value="${completeCheck.status}"/>

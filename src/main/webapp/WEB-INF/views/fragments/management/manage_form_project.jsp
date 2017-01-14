@@ -1,12 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%--Form Projects--%>
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header lead">
             Form Technical Task as Project
-            <button name="refreshProjects" data-container-id="#pendingProjectsAccordion" type="button"
-                    class="refresh-button pull-right">
+            <button name="refreshProjects" data-container-id="#pendingProjectsAccordion" class="refresh-button pull-right"
+                    type="button" data-path="/fragments/manage_form_project">
                 <span class="glyphicon glyphicon-refresh"></span>
             </button>
         </h3>
@@ -42,20 +45,20 @@
 
                                         <%--Tasks--%>
                                     <div id="tasksAccordion<c:out value="${project.id}"/>" class="panel-group">
-                                        <c:forEach items="${project.tasks}" var="rTask">
+                                        <c:forEach items="${project.tasks}" var="operation">
                                             <div class="panel panel-default">
                                                 <div class="task-heading panel-heading">
                                                     <h4 class="panel-title">
-                                                        <a id="task<c:out value="${rTask.id}"/>Link"
+                                                        <a id="task<c:out value="${operation.id}"/>Link"
                                                            data-toggle="collapse"
                                                            data-parent="#tasksAccordion<c:out value="${project.id}"/>"
-                                                           data-task-id="<c:out value="${rTask.id}"/>"
-                                                           href="#task<c:out value="${rTask.id}"/>">
-                                                            <c:out value="${rTask.name}"/>
+                                                           data-task-id="<c:out value="${operation.id}"/>"
+                                                           href="#task<c:out value="${operation.id}"/>">
+                                                            <c:out value="${operation.name}"/>
                                                         </a>
                                                     </h4>
                                                 </div>
-                                                <div id="task<c:out value="${rTask.id}"/>"
+                                                <div id="task<c:out value="${operation.id}"/>"
                                                      class="panel-collapse collapse">
 
                                                         <%--Task Body--%>
@@ -66,7 +69,7 @@
                                                             </strong>
                                                         </h4>
                                                         <p class="data-description">
-                                                            <c:out value="${rTask.description}"/>
+                                                            <c:out value="${operation.description}"/>
                                                         </p>
 
                                                             <%--developers Request--%>
@@ -78,7 +81,7 @@
                                                             </h4>
                                                             <hr>
                                                             <div class="table-responsive">
-                                                                <table id="task<c:out value="${rTask.id}"/>Requested"
+                                                                <table id="task<c:out value="${operation.id}"/>Requested"
                                                                        class="text-center table table-condensed">
                                                                     <thead>
                                                                     <tr>
@@ -95,7 +98,7 @@
                                                                     </thead>
                                                                     <tbody>
                                                                     <c:forEach var="taskRequest"
-                                                                               items="${rTask.requestsForDevelopers}">
+                                                                               items="${operation.requestsForDevelopers}">
                                                                         <tr>
                                                                             <td><c:out
                                                                                     value="${taskRequest.specialization}"/></td>
@@ -118,15 +121,15 @@
                                                             </h4>
                                                             <hr>
                                                             <div class="table-responsive">
-                                                                <h5 class="${not empty rTask.tasksDevelopmentData ?
+                                                                <h5 class="${not empty operation.tasksDevelopmentData ?
                                                                         'text-center no-display':'text-center'}">
                                                                     <strong>
                                                                         No developers assigned for this task!
                                                                     </strong>
                                                                 </h5>
-                                                                <table id="task<c:out value="${rTask.id}"/>Hired"
+                                                                <table id="task<c:out value="${operation.id}"/>Hired"
                                                                        class="table table-condensed
-                                                                        ${not empty rTask.tasksDevelopmentData ? '':' no-display'}">
+                                                                        ${not empty operation.tasksDevelopmentData ? '':' no-display'}">
                                                                     <thead>
                                                                     <tr>
                                                                         <th class="text-center">
@@ -143,7 +146,7 @@
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody class="text-center">
-                                                                    <c:forEach items="${rTask.tasksDevelopmentData}"
+                                                                    <c:forEach items="${operation.tasksDevelopmentData}"
                                                                                var="taskData">
                                                                         <tr>
                                                                             <td>
@@ -274,5 +277,96 @@
         </p>
     </div>
     <%--end Developers Modal button--%>
+</div>
+
+<!-- Bind Developer to Task Modal -->
+<div class="modal fade" id="bindDeveloperModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Developers Binding Settings: </h4>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label>Select Project:</label>
+                        <select id="activeProjectSelect" class="form-control" title="Active Project">
+                            <c:forEach items="${pendingProjects}" var="project" varStatus="status">
+                                <option value="<c:out value="${project.id}"/>">
+                                    <c:out value="${project.name}"/>
+                                </option>
+                                <c:if test="${status.last}">
+                                    <c:set var="projectTasks" value="${project.tasks}"/>
+                                </c:if>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-lg-12">
+                        <label>Select Task:</label>
+                        <select id="activeTaskSelect" class="form-control" title="Active Task">
+                            <c:forEach items="${projectTasks}" var="operation">
+                                <option value="<c:out value="${operation.id}"/>">
+                                    <c:out value="${operation.name}"/>
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <%--Modal body--%>
+            <div class="modal-body">
+                <h4>Search results:</h4>
+                <h3 id="noResults" class="text-center">No results found!</h3>
+                <table id="devsResultTable" class="table no-display">
+                    <thead>
+                    <tr>
+                        <th>First Name and Last Name</th>
+                        <th>Cost</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label>Specialization:</label>
+                        <select class="form-control" title="specialization" id="developerSpecialization">
+                            <c:forEach items="${specializations}" var="specialization">
+                                <option><c:out value="${specialization}"/></option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Rank:</label>
+                        <select class="form-control" title="rank" id="developerRank">
+                            <c:forEach items="${ranks}" var="rank">
+                                <option><c:out value="${rank}"/></option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Last name:</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-search"></span>
+                            </span>
+                            <input type="text" class="form-control" title="lastName" id="developerLastName">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%--end Modal body--%>
+
+            <div class="modal-footer">
+                <button type="button" id="searchDevsBtn" class="btn btn-primary">
+                    Search
+                </button>
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 <%--end Form Projects--%>

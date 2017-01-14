@@ -54,10 +54,11 @@ $(function () {
     }).on("click", "button[name=confirmCheckButton]", function () {
         return confirmCheckAjax($(this));
     }).on("click", "button[name=refresh]", function () {
-        return refreshData($(this).attr("data-container-id"), true, reloadActiveTab);
+        return refreshData($(this).attr("data-container-id"), true, $(this).attr("data-path"));
     });
-});
 
+    $("button[name=refresh]").trigger("click");
+});
 
 /*Clears all inputs and text-areas in task modal.
  Text variables is set to "" and numbers to 1.*/
@@ -236,11 +237,11 @@ function submitTechnicalTaskAjax(button) {
 
 function declineCheckAjax(button) {
     $.ajax({
-        method: "POST",
+        method: "PUT",
         url: "/cabinet/declineCheck",
         data: JSON.stringify($(button).attr("value"))
     }).done(function () {
-        return removeAndRefreshIfEmpty(button, "#newChecksAccordion", reloadActiveTab, decrementActiveTab);
+        return removeAndRefreshIfEmpty(button, "#newChecksAccordion", "/fragments/customer_new_checks");
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
     });
@@ -248,11 +249,11 @@ function declineCheckAjax(button) {
 
 function confirmCheckAjax(button) {
     $.ajax({
-        method: "POST",
+        method: "PUT",
         url: "/cabinet/confirmCheck",
         data: JSON.stringify($(button).attr("value"))
     }).done(function () {
-        return removeAndRefreshIfEmpty(button, "#newChecksAccordion", reloadActiveTab, decrementActiveTab);
+        return removeAndRefreshIfEmpty(button, "#newChecksAccordion", "/fragments/customer_new_checks");
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
     });
