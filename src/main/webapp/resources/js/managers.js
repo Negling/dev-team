@@ -152,7 +152,7 @@ function calculateProjectCheck(projectId) {
 }
 
 function updateBindSelectOptions() {
-    var URL = document.URL + "/fragments/manage_form_project";
+    var URL = location.href.split('?')[0] + "/fragments/manage_form_project";
 
     $("#activeProjectSelect").load(URL + " #activeProjectSelect > option");
     $("#activeTaskSelect").load(URL + " #activeTaskSelect > option");

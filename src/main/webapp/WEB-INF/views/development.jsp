@@ -103,7 +103,9 @@
                                     <tr>
                                         <td><c:out value="${completeTask.taskName}"/></td>
                                         <td><c:out value="${completeTask.hoursSpent}"/></td>
-                                        <td><c:out value="${completeTask.status}"/></td>
+                                        <td class="<myTags:statusStyle status="${completeTask.status}"/>">
+                                            <c:out value="${completeTask.status}"/>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>

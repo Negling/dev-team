@@ -35,7 +35,7 @@
                 <h4>
                     <strong><spring:message code="tables.currentStatus"/></strong>
                 </h4>
-                <p class="${technicalTask.status == 'Running' ? 'blue ' : technicalTask.status == 'Declined' ? 'red ' : 'lime '}data-description">
+                <p class="<myTags:statusStyle status="${technicalTask.status}"/> data-description">
                     <c:out value="${technicalTask.status}"/>
                 </p>
             </div>
@@ -76,17 +76,17 @@
 
                 <%--Tasks--%>
                 <div id="tasksAccordion" class="panel-group">
-                    <c:forEach items="${technicalTask.operations}" var="operation">
+                    <c:forEach items="${technicalTask.operations}" var="task">
                         <div class="panel panel-default">
                             <div class="task-heading panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" href="#task<c:out value="${operation.id}"/>"
+                                    <a data-toggle="collapse" href="#task<c:out value="${task.id}"/>"
                                        data-parent="#tasksAccordion">
-                                        <c:out value="${operation.name}"/>
+                                        <c:out value="${task.name}"/>
                                     </a>
                                 </h4>
                             </div>
-                            <div id="task<c:out value="${operation.id}"/>" class="panel-collapse collapse">
+                            <div id="task<c:out value="${task.id}"/>" class="panel-collapse collapse">
 
                                     <%--Task Body--%>
                                 <div class="panel-body">
@@ -98,7 +98,7 @@
                                             </strong>
                                         </h4>
                                         <p class="data-description">
-                                            <c:out value="${operation.description}"/>
+                                            <c:out value="${task.description}"/>
                                         </p>
                                     </div>
 
@@ -117,7 +117,7 @@
                                         </tr>
                                         </thead>
                                         <tbody class="text-center">
-                                        <c:forEach items="${operation.requestsForDevelopers}" var="requestForDevs">
+                                        <c:forEach items="${task.requestsForDevelopers}" var="requestForDevs">
                                             <tr>
                                                 <td><c:out value="${requestForDevs.specialization}"/></td>
                                                 <td><c:out value="${requestForDevs.rank}"/></td>

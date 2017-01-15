@@ -150,6 +150,14 @@ body {
     color: #DC143C !important;
 }
 
+.cyan {
+    color: darkcyan !important;
+}
+
+.purple {
+    color: purple !important;
+}
+
 .lime {
     color: #449d44 !important;
 }

@@ -3,24 +3,28 @@ $(function () {
         $("#logoutForm").submit();
     });
 
-    $("a[data-locale]").click(function () {
+    $("a[data-locale]").click(function (event) {
+        event.preventDefault();
         changeLocale($(this));
     });
 });
 
 function changeLocale(link) {
+    var URL;
 
     if (location.search.length > 0 && location.search.indexOf("language=") > 0) {
-        link.attr("href", location.search.replace(/language=\w+(?=&?)/, "language=" + link.attr("data-locale")));
+        URL = location.href.replace(/language=\w+(?=&?)/, "language=" + link.attr("data-locale"));
     } else if (location.search.length > 0) {
-        link.attr("href", location.search + "&language=" + link.attr("data-locale"));
+        URL = location.href + "&language=" + link.attr("data-locale");
     } else {
-        link.attr("href", "?language=" + link.attr("data-locale"));
+        URL = location.href + "?language=" + link.attr("data-locale");
     }
+
+    window.open(URL, "_self");
 }
 
 function refreshData(containerId, fadeOut, source, callback) {
-    var URL = source === undefined ? document.URL + " " : document.URL + source + " ";
+    var URL = source === undefined ? location.href.split('?')[0] + " " : location.href.split('?')[0] + source + " ";
 
     if (fadeOut) {
         $(containerId).fadeTo(600, 0.01, function () {
@@ -53,7 +57,7 @@ function removeAndRefreshIfEmpty(element, parentId, source, callback) {
     removeUntilParent(element, parentId, true, function () {
         if ($(parentId).children().length == 0) {
             refreshData(parentId, true, source, callback);
-        }else if(callback != undefined){
+        } else if (callback != undefined) {
             callback.call()
         }
     });

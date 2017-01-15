@@ -41,7 +41,7 @@
                 <h4>
                     <strong><spring:message code="tables.currentStatus"/></strong>
                 </h4>
-                <p class="${project.status == 'Running' ? 'blue ' : project.status == 'Complete' ? 'lime ' : ''}data-description">
+                <p class="<myTags:statusStyle status="${project.status}"/> data-description">
                     <c:out value="${project.status}"/>
                 </p>
             </div>
@@ -111,17 +111,17 @@
 
                 <%--Tasks--%>
                 <div id="tasksAccordion" class="panel-group">
-                    <c:forEach items="${project.tasks}" var="operation">
+                    <c:forEach items="${project.tasks}" var="task">
                         <div class="panel panel-default">
                             <div class="task-heading panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" href="#task<c:out value="${operation.id}"/>"
+                                    <a data-toggle="collapse" href="#task<c:out value="${task.id}"/>"
                                        data-parent="#tasksAccordion">
-                                        <c:out value="${operation.name}"/>
+                                        <c:out value="${task.name}"/>
                                     </a>
                                 </h4>
                             </div>
-                            <div id="task<c:out value="${operation.id}"/>" class="panel-collapse collapse">
+                            <div id="task<c:out value="${task.id}"/>" class="panel-collapse collapse">
 
                                     <%--Task Body--%>
                                 <div class="panel-body">
@@ -130,22 +130,8 @@
                                         <h4>
                                             <strong><spring:message code="tables.taskStatus"/></strong>
                                         </h4>
-                                        <c:choose>
-                                            <c:when test="${operation.taskStatus == 'Running'}">
-                                                <c:set value="${'blue '}" var="taskStatus"/>
-                                            </c:when>
-                                            <c:when test="${operation.taskStatus == 'Complete'}">
-                                                <c:set value="${'lime '}" var="taskStatus"/>
-                                            </c:when>
-                                            <c:when test="${operation.taskStatus == 'Declined' || operation.taskStatus == 'Canceled'}">
-                                                <c:set value="${'red '}" var="taskStatus"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <c:set value="${''}" var="taskStatus"/>
-                                            </c:otherwise>
-                                        </c:choose>
-                                        <p class="<c:out value="${taskStatus}"/>data-description">
-                                            <c:out value="${operation.taskStatus}"/>
+                                        <p class="<myTags:statusStyle status="${task.taskStatus}"/> data-description">
+                                            <c:out value="${task.taskStatus}"/>
                                         </p>
                                     </div>
                                     <div class="col-md-6">
@@ -153,7 +139,7 @@
                                             <strong><spring:message code="tables.developersInvolved"/></strong>
                                         </h4>
                                         <p class="data-description">
-                                            <c:out value="${operation.tasksDevelopmentData.size()}"/>
+                                            <c:out value="${task.tasksDevelopmentData.size()}"/>
                                         </p>
                                     </div>
 
@@ -162,7 +148,7 @@
                                             <strong><spring:message code="development.hoursSpent"/></strong>
                                         </h4>
                                         <p class="data-description">
-                                            <c:out value="${operation.totalHoursSpent}"/>
+                                            <c:out value="${task.totalHoursSpent}"/>
                                         </p>
                                     </div>
 
@@ -173,7 +159,7 @@
                                             </strong>
                                         </h4>
                                         <p class="data-description">
-                                            <c:out value="${operation.description}"/>
+                                            <c:out value="${task.description}"/>
                                         </p>
 
                                         <security:authorize url="/manage">
@@ -195,7 +181,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <c:forEach items="${operation.tasksDevelopmentData}" var="taskData">
+                                                <c:forEach items="${task.tasksDevelopmentData}" var="taskData">
                                                     <tr>
                                                         <td>
                                                             <a href="<spring:url value="/developer?id=${taskData.developerId}"/>">
@@ -203,15 +189,14 @@
                                                                 <c:out value="${taskData.developerLastName}"/>
                                                             </a>
                                                         </td>
-                                                        <td class="text-center"><c:out
-                                                                value="${taskData.specialization}"/></td>
+                                                        <td class="text-center"><c:out value="${taskData.specialization}"/></td>
                                                         <td class="text-center"><c:out value="${taskData.rank}"/></td>
-                                                        <td class="text-center"><fmt:formatNumber type="number"
-                                                                                                  pattern="#"
-                                                                                                  value="${taskData.hireCost}"/>$
-                                                        </td class="text-center">
-                                                        <td class="${project.status == 'Running' ? 'blue' : project.status == 'Complete' ? 'lime' : ''}">
-                                                            <c:out value="${taskData.status}"/></td>
+                                                        <td class="text-center">
+                                                            <fmt:formatNumber type="number" pattern="#" value="${taskData.hireCost}"/> $
+                                                        </td>
+                                                        <td class="<myTags:statusStyle status="${taskData.status}"/>">
+                                                            <c:out value="${taskData.status}"/>
+                                                        </td>
                                                     </tr>
                                                 </c:forEach>
                                                 </tbody>

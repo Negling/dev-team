@@ -50,18 +50,18 @@
                                         <%--Operations--%>
                                     <div id="operationsAccordion<c:out value="${technicalTask.id}"/>"
                                          class="panel-group">
-                                        <c:forEach items="${technicalTask.operations}" var="operation">
+                                        <c:forEach items="${technicalTask.operations}" var="task">
                                             <div class="panel panel-default">
                                                 <div class="task-heading panel-heading">
                                                     <h4 class="panel-title">
                                                         <a data-toggle="collapse"
                                                            data-parent="#operationsAccordion<c:out value="${technicalTask.id}"/>"
-                                                           href="#operation<c:out value="${operation.id}"/>">
-                                                            <c:out value="${operation.name}"/>
+                                                           href="#operation<c:out value="${task.id}"/>">
+                                                            <c:out value="${task.name}"/>
                                                         </a>
                                                     </h4>
                                                 </div>
-                                                <div id="operation<c:out value="${operation.id}"/>"
+                                                <div id="operation<c:out value="${task.id}"/>"
                                                      class="panel-collapse collapse">
                                                     <div class="panel-body">
                                                         <div class="table-responsive">
@@ -75,7 +75,7 @@
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                <c:forEach items="${operation.requestsForDevelopers}"
+                                                                <c:forEach items="${task.requestsForDevelopers}"
                                                                            var="requestForDevelopers">
                                                                     <tr>
                                                                         <td>
@@ -96,7 +96,7 @@
                                                         <h4>
                                                             <strong>Operation Description</strong></h4>
                                                         <p class="data-description">
-                                                            <c:out value="${operation.description}"/>
+                                                            <c:out value="${task.description}"/>
                                                         </p>
                                                     </div>
                                                 </div>

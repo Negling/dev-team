@@ -45,7 +45,7 @@ public class ChecksServiceImpl implements ChecksService {
     public void decline(Long projectId) {
         Check check = checkDAO.getByProject(projectId);
 
-        check.setStatus(Cancelled);
+        check.setStatus(Declined);
 
         projectsService.cancel(projectId);
         checkDAO.update(check, check);

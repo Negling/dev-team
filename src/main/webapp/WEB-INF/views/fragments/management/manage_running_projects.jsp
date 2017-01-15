@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="myTags" uri="http://dev-team.com/jsp/jstl" %>
 
 <%--Running Projects--%>
 <div class="row">
@@ -38,7 +39,7 @@
                                 <c:out value="${project.name}"/></a>
                             </td>
                             <td><fmt:formatDate value="${project.startDate}" pattern="d MMMM, yyyy"/></td>
-                            <td class="${project.status == 'Pending' ? 'blue' : 'lime'}">
+                            <td class="<myTags:statusStyle status="${project.status}"/>">
                                 <c:out value="${project.status}"/>
                             </td>
                             <td>

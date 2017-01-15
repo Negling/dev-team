@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="myTags" uri="http://dev-team.com/jsp/jstl" %>
 
 <%--Tehcnical Tasks History--%>
 <div class="row">
@@ -35,7 +36,7 @@
                             <td><a href="<spring:url value="/technicalTask?id=${technicalTask.id}"/>">
                                 <c:out value="${technicalTask.name}"/></a>
                             </td>
-                            <td class="${technicalTask.status == 'Complete' ? 'lime' : technicalTask.status == 'Declined' ? 'red' : ''}">
+                            <td class="<myTags:statusStyle status="${technicalTask.status}"/>">
                                 <c:out value="${technicalTask.status}"/></td>
                         </tr>
                     </c:forEach>
