@@ -35,7 +35,9 @@
                     <tbody>
                     <c:forEach items="${runningProjects}" var="project">
                         <tr>
-                            <td><a href="#"><c:out value="${project.name}"/></a></td>
+                            <td><a href="<spring:url value="/project?id=${project.id}"/>">
+                                <c:out value="${project.name}"/></a>
+                            </td>
                             <td><fmt:formatDate value="${project.startDate}" pattern="d MMMM, yyyy"/></td>
                             <td><fmt:formatNumber type="number" pattern="#" value="${project.totalProjectCost}"/> $
                             </td>

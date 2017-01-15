@@ -2,6 +2,8 @@ package ua.devteam.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.dao.OperationDAO;
 import ua.devteam.dao.RequestsForDevelopersDAO;
 import ua.devteam.entity.tasks.Operation;
@@ -10,6 +12,7 @@ import ua.devteam.service.OperationsService;
 import java.util.List;
 
 @Service("operationsService")
+@Transactional(isolation = Isolation.READ_COMMITTED)
 public class OperationsServiceImpl implements OperationsService {
 
     private OperationDAO operationDAO;
@@ -34,6 +37,7 @@ public class OperationsServiceImpl implements OperationsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Operation> getByTechnicalTask(Long technicalTaskId, boolean loadNested) {
         List<Operation> operations = operationDAO.getByTechnicalTask(technicalTaskId);
 

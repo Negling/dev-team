@@ -29,7 +29,7 @@ VALUES ('Sergio', 'Smith', 'kole@mail.ru', '+380454345493',
 
 INSERT INTO developers (first_name, last_name, email, phone, password, specialization, rank, hire_cost, status, role_id)
 VALUES ('John', 'Smith', 'dev1@gmail.com', '+380454345493',
-        '$2a$12$kOP7FU36h/9HjLzXAoyuC.cZd8bHk5wtXc3hA4RtR60Q24Q2ii02W', 'DBA', 'Junior', 500.00, 'Available', 2);
+        '$2a$12$kOP7FU36h/9HjLzXAoyuC.cZd8bHk5wtXc3hA4RtR60Q24Q2ii02W', 'DBA', 'Junior', 500.00, 'Hired', 2);
 INSERT INTO developers (first_name, last_name, email, phone, password, specialization, rank, hire_cost, status, role_id)
 VALUES ('John', 'Karlos', 'dev2@gmail.com', '+380454345493',
         '$2a$12$kOP7FU36h/9HjLzXAoyuC.cZd8bHk5wtXc3hA4RtR60Q24Q2ii02W', 'DBA', 'Middle', 2500.00, 'Available', 2);

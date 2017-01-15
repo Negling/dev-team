@@ -3,6 +3,8 @@ package ua.devteam.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.dao.ProjectDAO;
 import ua.devteam.entity.projects.Project;
 import ua.devteam.entity.projects.TechnicalTask;
@@ -16,6 +18,7 @@ import java.util.List;
 import static ua.devteam.entity.enums.Status.*;
 
 @Service("projectsService")
+@Transactional(isolation = Isolation.READ_COMMITTED)
 public class ProjectsServiceImpl implements ProjectsService {
 
     private ProjectDAO projectDAO;
@@ -41,28 +44,21 @@ public class ProjectsServiceImpl implements ProjectsService {
 
     @Override
     public void confirmProject(Long projectId) {
-        Project project = projectDAO.getById(projectId);
-        project.setStatus(Pending);
-
         projectTasksService.confirmByProject(projectId);
         taskDevelopersService.confirmByProject(projectId);
-        projectDAO.update(project, project);
+        projectDAO.updateStatus(projectId, Pending);
     }
 
     @Override
     public void runProject(Long projectId) {
-        Project project = projectDAO.getById(projectId);
-        project.setStatus(Running);
-
         projectTasksService.runByProject(projectId);
         taskDevelopersService.runByProject(projectId);
-        projectDAO.update(project, project);
+        projectDAO.updateStatus(projectId, Running);
     }
 
     @Override
     public void decline(Long projectId, String managerCommentary) {
         Project project = projectDAO.getById(projectId);
-        project.setStatus(Declined);
         project.setEndDate(new Date());
 
         if (managerCommentary != null) {
@@ -70,20 +66,22 @@ public class ProjectsServiceImpl implements ProjectsService {
         }
 
         taskDevelopersService.dropByProject(projectId);
+        projectDAO.updateStatus(projectId, Declined);
         projectDAO.update(project, project);
     }
 
     @Override
     public void cancel(Long projectId) {
         Project project = projectDAO.getById(projectId);
-        project.setStatus(Canceled);
         project.setEndDate(new Date());
 
         taskDevelopersService.dropByProject(projectId);
+        projectDAO.updateStatus(projectId, Canceled);
         projectDAO.update(project, project);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Project getById(Long projectId, boolean loadNested) {
         Project project = projectDAO.getById(projectId);
 
@@ -95,6 +93,7 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Project> getNewByManager(Long managerId, boolean loadNested) {
         List<Project> projects = projectDAO.getByManagerAndStatus(managerId, New);
 
@@ -106,6 +105,7 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Project> getRunningByManager(Long managerId, boolean loadNested) {
         List<Project> projects = projectDAO.getRunningByManager(managerId);
 
@@ -117,6 +117,7 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Project> getCompleteByManager(Long managerId, boolean loadNested) {
         List<Project> projects = projectDAO.getCompleteByManager(managerId);
 
@@ -128,6 +129,7 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Project> getRunningByCustomer(Long customerId, boolean loadNested) {
         List<Project> projects = projectDAO.getRunningByCustomer(customerId);
 
@@ -139,6 +141,7 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Project> getCompleteByCustomer(Long customerId, boolean loadNested) {
         List<Project> projects = projectDAO.getCompleteByCustomer(customerId);
 

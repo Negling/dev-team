@@ -37,7 +37,7 @@ function refreshData(containerId, fadeOut, source, callback) {
 
 function removeUntilParent(element, parentId, isFaded, callback) {
     if (isFaded) {
-        $(element).parentsUntil(parentId).last().fadeOut(800, function () {
+        $(element).parentsUntil(parentId).last().fadeOut(600, function () {
             $(this).remove();
 
             if (callback != undefined) {
@@ -103,6 +103,8 @@ function formValidatingAlertBox(data, isSuccessful) {
 
 function showErrorsModal(msg) {
     var modal = $("#errorsModal");
+
+    $("div.modal[role=dialog]").modal("hide");
 
     modal.find("p").text(msg);
     modal.modal("show");

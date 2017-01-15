@@ -1,7 +1,6 @@
 package ua.devteam.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -9,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import ua.devteam.controllers.exceptions.ResourceNotFoundException;
 import ua.devteam.entity.projects.Project;
 import ua.devteam.entity.projects.TechnicalTask;
 import ua.devteam.entity.users.User;
@@ -40,56 +38,44 @@ public class BaseController {
         this.taskDevelopmentDataService = taskDevelopmentDataService;
     }
 
-    @RequestMapping("/technicalTask")
+    @RequestMapping(value = "/technicalTask", params = {"id"})
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin', 'Customer')")
     public String showTechnicalTask(@RequestParam Long id, Model model, Authentication auth) throws AccessDeniedException {
-        try {
-            TechnicalTask technicalTask = technicalTasksService.getById(id, true);
+        TechnicalTask technicalTask = technicalTasksService.getById(id, true);
 
-            if (auth.getAuthorities().stream().findAny().get().equals(Customer)
-                    && !Objects.equals(((User) auth.getPrincipal()).getId(), technicalTask.getCustomerId())) {
+        if (auth.getAuthorities().stream().findAny().get().equals(Customer)
+                && !Objects.equals(((User) auth.getPrincipal()).getId(), technicalTask.getCustomerId())) {
 
-                throw new AccessDeniedException("Customer with this id not allowed to view this document!");
-            }
-
-            model.addAttribute("technicalTask", technicalTask);
-            return "technicalTask";
-        } catch (EmptyResultDataAccessException ex) {
-            throw new ResourceNotFoundException("/technicalTask?id=" + id);
+            throw new AccessDeniedException("Customer with this id not allowed to view this document!");
         }
+
+        model.addAttribute("technicalTask", technicalTask);
+        return "technicalTask";
     }
 
-    @RequestMapping("/project")
+    @RequestMapping(value = "/project", params = {"id"})
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin', 'Customer')")
     public String showProject(@RequestParam Long id, Model model, Authentication auth) throws AccessDeniedException {
-        try {
-            Project project = projectsService.getById(id, true);
+        Project project = projectsService.getById(id, true);
 
-            if (auth.getAuthorities().stream().findAny().get().equals(Customer)
-                    && !Objects.equals(((User) auth.getPrincipal()).getId(), project.getCustomerId())) {
+        if (auth.getAuthorities().stream().findAny().get().equals(Customer)
+                && !Objects.equals(((User) auth.getPrincipal()).getId(), project.getCustomerId())) {
 
-                throw new AccessDeniedException("Customer with this id not allowed to view this document!");
-            }
-
-            model.addAttribute("project", project);
-            return "project";
-        } catch (EmptyResultDataAccessException ex) {
-            throw new ResourceNotFoundException("/project?id=" + id);
+            throw new AccessDeniedException("Customer with this id not allowed to view this document!");
         }
+
+        model.addAttribute("project", project);
+        return "project";
     }
 
-    @RequestMapping("/developer")
+    @RequestMapping(value = "/developer", params = {"id"})
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
     public String showDeveloper(@RequestParam Long id, Model model) {
-        try {
-            model.addAttribute("developer", developersService.getById(id));
-            model.addAttribute("developersBackground", taskDevelopmentDataService.getComplete(id));
-            model.addAttribute("currentTask", taskDevelopmentDataService.getActive(id));
+        model.addAttribute("developer", developersService.getById(id));
+        model.addAttribute("developersBackground", taskDevelopmentDataService.getComplete(id));
+        model.addAttribute("currentTask", taskDevelopmentDataService.getActive(id));
 
-            return "developer";
-        } catch (EmptyResultDataAccessException ex) {
-            throw new ResourceNotFoundException("/developer?id=" + id);
-        }
+        return "developer";
     }
 
     @RequestMapping("/")

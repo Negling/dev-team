@@ -2,6 +2,8 @@ package ua.devteam.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.dao.CheckDAO;
 import ua.devteam.entity.users.Check;
 import ua.devteam.service.ChecksService;
@@ -12,6 +14,7 @@ import java.util.List;
 import static ua.devteam.entity.enums.CheckStatus.*;
 
 @Service("checksService")
+@Transactional(isolation = Isolation.READ_COMMITTED)
 public class ChecksServiceImpl implements ChecksService {
 
     private CheckDAO checkDAO;
@@ -52,11 +55,13 @@ public class ChecksServiceImpl implements ChecksService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Check> getNewByCustomer(Long customerId) {
         return checkDAO.getNewByCustomer(customerId);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Check> getCompleteByCustomer(Long customerId) {
         return checkDAO.getCompleteByCustomer(customerId);
     }

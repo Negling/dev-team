@@ -6,10 +6,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.dao.UsersDAO;
 import ua.devteam.service.UsersService;
 
 @Service("usersService")
+@Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
 public class UsersServiceImpl implements UserDetailsService, UsersService {
 
     private UsersDAO usersDAO;

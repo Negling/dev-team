@@ -2,6 +2,8 @@ package ua.devteam.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.dao.TaskDevelopmentDataDAO;
 import ua.devteam.entity.tasks.TaskDevelopmentData;
 import ua.devteam.entity.users.Developer;
@@ -14,6 +16,7 @@ import java.util.List;
 import static ua.devteam.entity.enums.Status.*;
 
 @Service("taskDevelopersService")
+@Transactional(isolation = Isolation.READ_COMMITTED)
 public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataService {
 
     private TaskDevelopmentDataDAO taskDevelopmentDataDAO;
@@ -75,16 +78,19 @@ public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataServic
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TaskDevelopmentData getActive(Long developerId) {
         return taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, Running).stream().findAny().orElse(null);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<TaskDevelopmentData> getComplete(Long developerId) {
         return taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, Complete);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<TaskDevelopmentData> getAllByDeveloper(Long developerId) {
         return taskDevelopmentDataDAO.getAllByDeveloper(developerId);
     }

@@ -2,11 +2,14 @@ package ua.devteam.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.dao.DeveloperDAO;
 import ua.devteam.entity.enums.DeveloperRank;
 import ua.devteam.entity.enums.DeveloperSpecialization;
 import ua.devteam.entity.enums.DeveloperStatus;
 import ua.devteam.entity.users.Developer;
+import ua.devteam.exceptions.InvalidObjectStateException;
 import ua.devteam.service.DevelopersService;
 
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.List;
 import static ua.devteam.entity.enums.DeveloperStatus.*;
 
 @Service("developersService")
+@Transactional(isolation = Isolation.READ_COMMITTED)
 public class DevelopersServiceImpl implements DevelopersService {
 
     private DeveloperDAO developerDAO;
@@ -24,8 +28,13 @@ public class DevelopersServiceImpl implements DevelopersService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void lockDeveloper(Long developerId) {
-        updateDeveloperStatus(developerId, Locked);
+        if (developerDAO.getById(developerId).getStatus().equals(Available)) {
+            updateDeveloperStatus(developerId, Locked);
+        } else {
+            throw new InvalidObjectStateException("errorPage.alreadyLocked", null);
+        }
     }
 
     @Override
@@ -44,11 +53,13 @@ public class DevelopersServiceImpl implements DevelopersService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Developer getById(Long developerId) {
         return developerDAO.getById(developerId);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Developer> getAvailableDevelopers(DeveloperSpecialization specialization, DeveloperRank rank, String lastName) {
         if (lastName == null || lastName.isEmpty()) {
             return developerDAO.getAvailableByParams(specialization, rank);

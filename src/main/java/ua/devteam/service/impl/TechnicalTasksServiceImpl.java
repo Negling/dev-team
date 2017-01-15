@@ -3,18 +3,23 @@ package ua.devteam.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.dao.TechnicalTaskDAO;
 import ua.devteam.entity.enums.Status;
 import ua.devteam.entity.projects.TechnicalTask;
+import ua.devteam.exceptions.InvalidObjectStateException;
 import ua.devteam.service.OperationsService;
 import ua.devteam.service.ProjectsService;
 import ua.devteam.service.TechnicalTasksService;
 
 import java.util.List;
 
-import static ua.devteam.entity.enums.Status.Running;
+import static ua.devteam.entity.enums.Status.New;
+import static ua.devteam.entity.enums.Status.Pending;
 
 @Service("technicalTasksService")
+@Transactional(isolation = Isolation.READ_COMMITTED)
 public class TechnicalTasksServiceImpl implements TechnicalTasksService {
 
     private TechnicalTaskDAO technicalTaskDAO;
@@ -30,21 +35,36 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void accept(Long technicalTaskId, Long managerId) {
         TechnicalTask technicalTask = technicalTaskDAO.getById(technicalTaskId);
-        technicalTask.setStatus(Running);
 
-        technicalTaskDAO.update(technicalTask, technicalTask);
-        projectsService.createProject(technicalTask, managerId);
+        if (technicalTask.getStatus().equals(New)) {
+            technicalTask.setStatus(Pending);
+
+            technicalTaskDAO.update(technicalTask, technicalTask);
+            projectsService.createProject(technicalTask, managerId);
+        } else {
+            throw new InvalidObjectStateException("errorPage.alreadyAccepted", null);
+        }
     }
 
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void decline(Long technicalTaskId, String managerCommentary) {
         TechnicalTask technicalTask = technicalTaskDAO.getById(technicalTaskId);
-        technicalTask.setStatus(Status.Declined);
-        technicalTask.setManagerCommentary(managerCommentary.isEmpty() ? null : managerCommentary);
 
-        technicalTaskDAO.update(technicalTask, technicalTask);
+        if (technicalTask.getStatus().equals(New)) {
+            technicalTask.setStatus(Status.Declined);
+
+            if (managerCommentary != null && !managerCommentary.isEmpty()) {
+                technicalTask.setManagerCommentary(managerCommentary);
+            }
+
+            technicalTaskDAO.update(technicalTask, technicalTask);
+        } else {
+            throw new InvalidObjectStateException("errorPage.alreadyDeclined", null);
+        }
     }
 
     @Override
@@ -58,6 +78,7 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TechnicalTask getById(Long technicalTaskId, boolean loadNested) {
         if (loadNested) {
             return formTask(technicalTaskDAO.getById(technicalTaskId));
@@ -67,6 +88,7 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<TechnicalTask> getAllUnassigned(boolean loadNested) {
         if (loadNested) {
             return formTask(technicalTaskDAO.getAllNew());
@@ -76,21 +98,13 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<TechnicalTask> getAllByCustomer(Long customerId, boolean loadNested) {
         if (loadNested) {
             return formTask(technicalTaskDAO.getAllByCustomer(customerId));
         }
 
         return technicalTaskDAO.getAllByCustomer(customerId);
-    }
-
-    @Override
-    public List<TechnicalTask> getAllTechnicalTasks(boolean loadNested) {
-        if (loadNested) {
-            return formTask(technicalTaskDAO.getAll());
-        }
-
-        return technicalTaskDAO.getAll();
     }
 
     private TechnicalTask formTask(TechnicalTask technicalTask) {

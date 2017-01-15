@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ProjectDAO extends GenericDAO<Project>, Identified<Project> {
 
+    void updateStatus(Long projectId, Status status);
+
     Project getById(Long projectId);
 
     List<Project> getAllByManager(Long managerId);

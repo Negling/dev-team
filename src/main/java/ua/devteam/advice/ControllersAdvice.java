@@ -19,8 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.util.UriUtils;
-import ua.devteam.controllers.exceptions.AjaxMethodInternalException;
-import ua.devteam.controllers.exceptions.ResourceNotFoundException;
+import ua.devteam.exceptions.AjaxMethodInternalException;
+import ua.devteam.exceptions.InvalidObjectStateException;
+import ua.devteam.exceptions.ResourceNotFoundException;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
@@ -48,13 +49,21 @@ public class ControllersAdvice {
 
     @ExceptionHandler(AjaxMethodInternalException.class)
     public ResponseEntity<String> handleAjaxMethodException(AjaxMethodInternalException ex, Locale locale) {
+        HttpStatus status;
         HttpHeaders headers = new HttpHeaders();
+
         headers.add("Content-type", "text/html;charset=UTF-8");
 
         logException(ex.getCause());
 
-        return new ResponseEntity<>(messageSource.getMessage("errorPage.tryAgainLater", null, locale), headers,
-                HttpStatus.INTERNAL_SERVER_ERROR);
+        if (ex.getCause() instanceof InvalidObjectStateException) {
+            status = HttpStatus.CONFLICT;
+        } else {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<String>(
+                messageSource.getMessage(ex.getLocalizedErrorCode(), ex.getErrorParams(), locale), headers, status);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
@@ -102,13 +111,14 @@ public class ControllersAdvice {
             logger.warn(formExceptionMessage(ex));
         } else if (ex instanceof DataAccessException) {
             logger.error(formExceptionMessage(ex));
-        } else {
+        } else if (!(ex instanceof InvalidObjectStateException)) {
             logger.fatal(formExceptionMessage(ex));
         }
     }
 
     private String formExceptionMessage(Throwable ex) {
         StringBuilder builder = new StringBuilder();
+
         StackTraceElement stacktrace = ex.getStackTrace()[0];
 
         builder.append("An exception has occurred in : ").append(stacktrace.getClassName());
@@ -116,6 +126,7 @@ public class ControllersAdvice {
         builder.append(", line: ").append(stacktrace.getLineNumber()).append(". \n");
         builder.append("Exception class: ").append(ex.getClass()).append("\n");
         builder.append("Message: ").append(ex.getMessage());
+
 
         return builder.toString();
     }

@@ -2,10 +2,17 @@ package ua.devteam.advice;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Aspect
 public class SystemArchitecture {
+
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
+    public void inControllerMethods() {
+    }
+
+    @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")
+    public void inRestControllers() {
+    }
 
     @Pointcut("within(ua.devteam.controllers..*)")
     public void inWebLayer() {

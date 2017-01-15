@@ -16,7 +16,5 @@ public interface TechnicalTasksService {
 
     List<TechnicalTask> getAllByCustomer(Long customerId, boolean loadNested);
 
-    List<TechnicalTask> getAllTechnicalTasks(boolean loadNested);
-
     TechnicalTask getById(Long technicalTaskId, boolean loadNested);
 }

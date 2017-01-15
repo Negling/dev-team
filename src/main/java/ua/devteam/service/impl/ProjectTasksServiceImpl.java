@@ -3,6 +3,8 @@ package ua.devteam.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.dao.OperationDAO;
 import ua.devteam.dao.ProjectTaskDAO;
 import ua.devteam.dao.RequestsForDevelopersDAO;
@@ -16,6 +18,7 @@ import static ua.devteam.entity.enums.Status.Pending;
 import static ua.devteam.entity.enums.Status.Running;
 
 @Service("projectTasksService")
+@Transactional(isolation = Isolation.READ_COMMITTED)
 public class ProjectTasksServiceImpl implements ProjectTasksService {
 
     private ProjectTaskDAO projectTaskDAO;
@@ -54,6 +57,7 @@ public class ProjectTasksServiceImpl implements ProjectTasksService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ProjectTask> getAllByProject(Long projectId, boolean loadNested) {
         List<ProjectTask> projectTasks = projectTaskDAO.getByProject(projectId);
 

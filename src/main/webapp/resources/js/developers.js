@@ -11,8 +11,10 @@ $(function () {
     });
 
     $("body").on("click", "button[name=refresh]", function () {
-        return refreshData($(this).attr("data-container-id"), true);
+        return refreshData($(this).attr("data-container-id"), true, $(this).attr("data-path"));
     }).on("click", "#markComplete", completeTaskAjax);
+
+    $("button[name=refresh]").trigger("click");
 });
 
 function completeTaskAjax() {
@@ -21,7 +23,7 @@ function completeTaskAjax() {
         url: "/development/completeTask",
         data: JSON.stringify({id: $("#markComplete").attr("value"), hoursSpent: $("#hoursSpent").val()})
     }).done(function (data) {
-        refreshData("#currentTask", true, function () {
+        refreshData("#currentTask", true, "/fragments/development_active_task", function () {
             return prependOrUpdate("#currentTask > div.alert", "#currentTask", formValidatingAlertBox(data, true));
         });
     }).fail(function (jqXHR) {

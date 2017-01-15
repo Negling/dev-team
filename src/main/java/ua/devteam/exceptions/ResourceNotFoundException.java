@@ -1,4 +1,4 @@
-package ua.devteam.controllers.exceptions;
+package ua.devteam.exceptions;
 
 
 public class ResourceNotFoundException extends RuntimeException {
@@ -9,7 +9,8 @@ public class ResourceNotFoundException extends RuntimeException {
         this.requestedURL = requestedURL;
     }
 
-    public ResourceNotFoundException(String requestedURL) {
+    public ResourceNotFoundException(String requestedURL, Throwable cause) {
+        super(cause);
         this.requestedURL = requestedURL;
     }
 

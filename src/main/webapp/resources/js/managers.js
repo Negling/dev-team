@@ -152,6 +152,9 @@ function calculateProjectCheck(projectId) {
 }
 
 function updateBindSelectOptions() {
+
+    //TODO: find a solution to upload bind options without load request
+
     var URL = location.href.split('?')[0] + "/fragments/manage_form_project";
 
     $("#activeProjectSelect").load(URL + " #activeProjectSelect > option");
