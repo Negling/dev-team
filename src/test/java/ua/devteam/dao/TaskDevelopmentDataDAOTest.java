@@ -23,6 +23,7 @@ import static ua.devteam.dao.DAOTestUtils.deleteEntityTest;
 import static ua.devteam.dao.DAOTestUtils.updateEntityTest;
 import static ua.devteam.entity.enums.DeveloperRank.Junior;
 import static ua.devteam.entity.enums.DeveloperSpecialization.Backend;
+import static ua.devteam.entity.enums.Status.Complete;
 import static ua.devteam.entity.enums.Status.Running;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,7 +31,7 @@ import static ua.devteam.entity.enums.Status.Running;
 @Transactional
 @ActiveProfiles("test")
 public class TaskDevelopmentDataDAOTest {
-    private final String tableName = "task_developers";
+    private final String tableName = "task_development_data";
     private TaskDevelopmentData testData;
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -66,7 +67,7 @@ public class TaskDevelopmentDataDAOTest {
         assertThat(++beforeOperation, is(countRowsInTable(jdbcTemplate, tableName)));
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
+    @Test(expected = NullPointerException.class)
     public void createDefaultEmptyTest() {
         taskDevelopmentDataDAO.createDefault(new TaskDevelopmentData());
     }
@@ -116,6 +117,59 @@ public class TaskDevelopmentDataDAOTest {
 
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(greaterThan(0)));
-        assertThat(result.get(0).getProjectTaskId(), is((long) 1));
+        assertThat(result.stream()
+                        .filter(tdd -> tdd.getProjectTaskId() == (long) 1)
+                        .count(),
+                is((long) result.size()));
+    }
+
+    @Test
+    public void setStatusByProjectTest() {
+        taskDevelopmentDataDAO.setStatusByProject(Complete, (long) 2);
+
+        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getAllByTask((long) 2);
+
+        assertThat(result, is(notNullValue()));
+        assertThat(result.size(), is(greaterThan(0)));
+        assertThat(result.stream()
+                        .filter(tdd -> tdd.getStatus().equals(Complete))
+                        .count(),
+                is((long) result.size()));
+    }
+
+    @Test
+    public void deleteAllByProjectTest() {
+        taskDevelopmentDataDAO.deleteAllByProject((long) 2);
+
+        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getAllByTask((long) 2);
+
+        assertThat(result, is(notNullValue()));
+        assertThat(result.size(), is(0));
+    }
+
+    @Test
+    public void getAllByDeveloperTest() {
+        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getAllByDeveloper((long) 1);
+
+        assertThat(result, is(notNullValue()));
+        assertThat(result.size(), is(2));
+        assertThat(result.stream()
+                        .filter(taskDD -> taskDD.getDeveloperId() == (long) 1)
+                        .count(),
+                is((long) result.size()));
+    }
+
+    @Test
+    public void getAllByDeveloperAndStatusTest() {
+        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getByDeveloperAndStatus((long) 1, Complete);
+
+        assertThat(result, is(notNullValue()));
+        assertThat(result.size(), is(greaterThan(0)));
+        assertThat(result.stream()
+                        .filter(taskDD -> taskDD.getDeveloperId() == (long) 1
+                                && taskDD.getStatus().equals(Complete))
+                        .count(),
+                is((long) result.size()));
+
     }
 }

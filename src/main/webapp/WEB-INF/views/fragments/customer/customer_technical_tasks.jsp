@@ -36,7 +36,7 @@
                             <td><a href="<spring:url value="/technicalTask?id=${technicalTask.id}"/>">
                                 <c:out value="${technicalTask.name}"/></a>
                             </td>
-                            <td class="<myTags:statusStyle status="${technicalTask.status}"/>">
+                            <td style="<myTags:statusStyle status="${technicalTask.status}"/>">
                                 <c:out value="${technicalTask.status}"/></td>
                         </tr>
                     </c:forEach>

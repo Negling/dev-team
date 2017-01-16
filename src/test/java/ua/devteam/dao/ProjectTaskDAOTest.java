@@ -18,9 +18,11 @@ import ua.devteam.entity.tasks.ProjectTask;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 import static ua.devteam.dao.DAOTestUtils.*;
+import static ua.devteam.entity.enums.Status.Complete;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -84,6 +86,27 @@ public class ProjectTaskDAOTest {
     }
 
     @Test
+    public void checkStatusTest() {
+        /*Because of stored procedures is kind of unable to implement by right way on H2 engine -
+        just test for no exceptions*/
+
+        projectTaskDAO.checkStatus((long) 1);
+    }
+
+    @Test
+    public void setStatusByProjectTest() {
+        projectTaskDAO.setStatusByProject(Complete, (long) 2);
+
+        List<ProjectTask> result = projectTaskDAO.getByProject((long) 2);
+        assertThat(result, is(notNullValue()));
+        assertThat(result.size(), is(greaterThan(0)));
+        assertThat(result.stream()
+                        .filter(task -> task.getTaskStatus().equals(Complete))
+                        .count(),
+                is((long) result.size()));
+    }
+
+    @Test
     public void getByIdTest() {
         ProjectTask data = getEntityByIdTest(projectTaskDAO, testId);
 
@@ -101,6 +124,9 @@ public class ProjectTaskDAOTest {
 
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
-        assertThat(data.get(0).getProjectId(), is((long) 1));
+        assertThat(data.stream()
+                        .filter(task -> task.getProjectId() == (long) 1)
+                        .count(),
+                is((long) data.size()));
     }
 }

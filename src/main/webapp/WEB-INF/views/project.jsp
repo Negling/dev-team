@@ -41,7 +41,7 @@
                 <h4>
                     <strong><spring:message code="tables.currentStatus"/></strong>
                 </h4>
-                <p class="<myTags:statusStyle status="${project.status}"/> data-description">
+                <p class="data-description" style="<myTags:statusStyle status="${project.status}"/>">
                     <c:out value="${project.status}"/>
                 </p>
             </div>
@@ -130,7 +130,7 @@
                                         <h4>
                                             <strong><spring:message code="tables.taskStatus"/></strong>
                                         </h4>
-                                        <p class="<myTags:statusStyle status="${task.taskStatus}"/> data-description">
+                                        <p class="data-description" style="<myTags:statusStyle status="${task.taskStatus}"/>">
                                             <c:out value="${task.taskStatus}"/>
                                         </p>
                                     </div>
@@ -194,7 +194,7 @@
                                                         <td class="text-center">
                                                             <fmt:formatNumber type="number" pattern="#" value="${taskData.hireCost}"/> $
                                                         </td>
-                                                        <td class="<myTags:statusStyle status="${taskData.status}"/>">
+                                                        <td style="<myTags:statusStyle status="${taskData.status}"/>">
                                                             <c:out value="${taskData.status}"/>
                                                         </td>
                                                     </tr>

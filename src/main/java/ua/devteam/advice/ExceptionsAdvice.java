@@ -22,9 +22,9 @@ public class ExceptionsAdvice {
     public void afterThrowingExceptionInAjaxMethod(Exception ex) {
 
         if (ex instanceof LocalizedException) {
-            LocalizedException lEx = (LocalizedException) ex;
+            LocalizedException lex = (LocalizedException) ex;
 
-            throw new AjaxMethodInternalException(lEx, lEx.getLocalizedErrorCode(), lEx.getErrorParams());
+            throw new AjaxMethodInternalException(lex, lex.getLocalizedErrorCode(), lex.getErrorParams());
         } else {
             throw new AjaxMethodInternalException(ex, "errorPage.tryAgainLater", null);
         }

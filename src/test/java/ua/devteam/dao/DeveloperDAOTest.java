@@ -18,13 +18,15 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 import static ua.devteam.dao.DAOTestUtils.*;
 import static ua.devteam.entity.enums.DeveloperRank.Senior;
-import static ua.devteam.entity.enums.DeveloperSpecialization.*;
-import static ua.devteam.entity.enums.DeveloperStatus.*;
-import static ua.devteam.entity.enums.Role.*;
+import static ua.devteam.entity.enums.DeveloperSpecialization.Backend;
+import static ua.devteam.entity.enums.DeveloperStatus.Available;
+import static ua.devteam.entity.enums.DeveloperStatus.Locked;
+import static ua.devteam.entity.enums.Role.Developer;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DataAccessConfiguration.class)
@@ -34,7 +36,7 @@ public class DeveloperDAOTest {
 
     private final String tableName = "developers";
     private long testId;
-    private  Developer testData;
+    private Developer testData;
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
@@ -119,6 +121,52 @@ public class DeveloperDAOTest {
         developerDAO.getByEmail("notAnEmailAtAll");
     }
 
+    @Test(expected = NullPointerException.class)
+    public void getByNullParamsTest() {
+        developerDAO.getByParams(null, null);
+    }
+
+    @Test
+    public void updateStatusByProjectTest() {
+        developerDAO.updateStatusByProject(Locked, (long) 2);
+
+        assertThat(developerDAO.getById((long) 1).getStatus(), is(Locked));
+    }
+
+    @Test
+    public void getAvailableByParamsTest() {
+        Developer data = developerDAO.getById(testId);
+        assertThat(data.getStatus(), is(Available));
+
+        List<Developer> result = developerDAO.getAvailableByParams(data.getSpecialization(), data.getRank());
+
+        assertThat(result.size(), is(greaterThan(0)));
+        assertThat(result.stream()
+                        .filter(dev -> dev.getStatus().equals(Available)
+                                && dev.getSpecialization().equals(data.getSpecialization())
+                                && dev.getRank().equals(data.getRank()))
+                        .count(),
+                is((long) result.size()));
+    }
+
+    @Test
+    public void getAvailableByParamsWithLastnameTest() {
+        Developer data = developerDAO.getById(testId);
+
+        assertThat(data.getStatus(), is(Available));
+
+        List<Developer> result = developerDAO.getAvailableByParams(data.getSpecialization(), data.getRank(),
+                data.getLastName().substring(0, 1));
+
+        assertThat(result.size(), is(greaterThan(0)));
+        assertThat(result.stream()
+                        .filter(dev -> dev.getStatus().equals(Available) && dev.getSpecialization().equals(data.getSpecialization())
+                                && dev.getRank().equals(data.getRank())
+                                && dev.getLastName().charAt(0) == data.getLastName().charAt(0))
+                        .count(),
+                is((long) result.size()));
+    }
+
     @Test
     public void getByParamsTest() {
         Developer data = developerDAO.getById(testId);
@@ -126,13 +174,11 @@ public class DeveloperDAOTest {
         List<Developer> result = developerDAO.getByParams(data.getSpecialization(), data.getRank());
 
         assertThat(result.size(), is(greaterThan(0)));
-        assertThat(result.get(0).getSpecialization(), is(data.getSpecialization()));
-        assertThat(result.get(0).getRank(), is(data.getRank()));
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void getByNullParamsTest() {
-        developerDAO.getByParams(null, null);
+        assertThat(result.stream()
+                        .filter(dev -> dev.getSpecialization().equals(data.getSpecialization())
+                                && dev.getRank().equals(data.getRank()))
+                        .count(),
+                is((long) result.size()));
     }
 
     @Test
@@ -143,9 +189,12 @@ public class DeveloperDAOTest {
                 data.getLastName().substring(0, 1));
 
         assertThat(result.size(), is(greaterThan(0)));
-        assertThat(result.get(0).getSpecialization(), is(data.getSpecialization()));
-        assertThat(result.get(0).getRank(), is(data.getRank()));
-        assertThat(result.get(0).getLastName().charAt(0), is(data.getLastName().charAt(0)));
+        assertThat(result.stream()
+                        .filter(dev -> dev.getSpecialization().equals(data.getSpecialization())
+                                && dev.getRank().equals(data.getRank())
+                                && dev.getLastName().charAt(0) == data.getLastName().charAt(0))
+                        .count(),
+                is((long) result.size()));
     }
 
     @Test(expected = NullPointerException.class)

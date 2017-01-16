@@ -7,7 +7,7 @@ public interface UsersDAO {
 
     User getUser(String email);
 
-    boolean persists(String email);
+    boolean persistsByEmail(String email);
 
     boolean persistsByPhone(String phoneNumber);
 }

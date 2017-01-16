@@ -25,7 +25,7 @@ public class JDBCUsersDAO implements UsersDAO {
     }
 
     @Override
-    public boolean persists(String email) {
+    public boolean persistsByEmail(String email) {
         try {
             return jdbcOperations.queryForObject(sqlBundle.getString("users.persistsByEmail"),
                     (ResultSet rs, int rowNum) -> rs.getString("email"), email) != null;

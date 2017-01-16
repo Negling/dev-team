@@ -19,9 +19,11 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
-import static ua.devteam.dao.DAOTestUtils.*;
+import static ua.devteam.dao.DAOTestUtils.deleteEntityTest;
+import static ua.devteam.dao.DAOTestUtils.updateEntityTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DataAccessConfiguration.class)
@@ -96,6 +98,24 @@ public class CheckDAOTest {
     @Test(expected = EmptyResultDataAccessException.class)
     public void getByProjectWrongIdTest() {
         checkDAO.getByProject((long) 0);
+    }
+
+    @Test
+    public void getNewByCustomerTest() {
+        checkDAO.create(testData);
+
+        List<Check> data = checkDAO.getNewByCustomer((long) 1);
+
+        assertThat(data, is(notNullValue()));
+        assertThat(data.size(), is(greaterThan(0)));
+    }
+
+    @Test
+    public void getCompleteByCustomerTest() {
+        List<Check> data = checkDAO.getCompleteByCustomer((long) 1);
+
+        assertThat(data, is(notNullValue()));
+        assertThat(data.size(), is(greaterThan(0)));
     }
 
     @Test

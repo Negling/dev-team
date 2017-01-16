@@ -16,9 +16,11 @@ import ua.devteam.entity.tasks.RequestForDevelopers;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
-import static ua.devteam.dao.DAOTestUtils.*;
+import static ua.devteam.dao.DAOTestUtils.deleteEntityTest;
+import static ua.devteam.dao.DAOTestUtils.updateEntityTest;
 import static ua.devteam.entity.enums.DeveloperRank.Junior;
 import static ua.devteam.entity.enums.DeveloperSpecialization.Backend;
 
@@ -85,6 +87,9 @@ public class RequestsForDevelopersDAOTest {
 
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
-        assertThat(data.get(0).getOperation_id(), is((long) 1));
+        assertThat(data.stream()
+                        .filter(rfd -> rfd.getOperation_id() == (long) 1)
+                        .count(),
+                is((long) data.size()));
     }
 }

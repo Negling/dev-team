@@ -41,7 +41,7 @@
                             </td>
                             <td><fmt:formatDate value="${project.startDate}" pattern="d MMMM, yyyy"/></td>
                             <td><fmt:formatDate value="${project.endDate}" pattern="d MMMM, yyyy"/></td>
-                            <td class="<myTags:statusStyle status="${project.status}"/>">
+                            <td style="<myTags:statusStyle status="${project.status}"/>">
                                 <c:out value="${project.status}"/>
                             </td>
                             <td>

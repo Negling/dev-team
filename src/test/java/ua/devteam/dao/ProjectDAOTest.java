@@ -23,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 import static ua.devteam.dao.DAOTestUtils.*;
+import static ua.devteam.entity.enums.Status.Complete;
 import static ua.devteam.entity.enums.Status.Running;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,11 +43,31 @@ public class ProjectDAOTest {
     @Before
     public void before() {
         testId = countRowsInTable(jdbcTemplate, tableName);
-        testData = new Project("test", "test", (long) 1, (long) 1, null, (long) 1, null, new Date(), new Date(), Running);
+        testData = new Project("test", "test", (long) 1, (long) 1, null, (long) 1, null, new Date(), null, Running);
     }
 
     @Test
     public void createTest() {
+        long id = createEntityWithIdTest(projectDAO, testData, jdbcTemplate, tableName);
+        testData.setId(id);
+
+        assertEquals(testData, projectDAO.getById(id));
+    }
+
+    @Test
+    public void createWithCommentaryTest() {
+        testData.setManagerCommentary("test");
+
+        long id = createEntityWithIdTest(projectDAO, testData, jdbcTemplate, tableName);
+        testData.setId(id);
+
+        assertEquals(testData, projectDAO.getById(id));
+    }
+
+    @Test
+    public void createWithEndDateTest() {
+        testData.setEndDate(new Date());
+
         long id = createEntityWithIdTest(projectDAO, testData, jdbcTemplate, tableName);
         testData.setId(id);
 
@@ -97,13 +118,76 @@ public class ProjectDAOTest {
     }
 
     @Test
+    public void updateStatusTest() {
+        /*Because of stored procedures is kind of unable to implement by right way on H2 engine -
+        just test for no exceptions*/
+
+        projectDAO.updateStatus((long) 1, Running);
+    }
+
+    @Test
+    public void getCompleteByManagerTest() {
+        List<Project> data = projectDAO.getCompleteByManager((long) 1);
+
+        assertThat(data, is(notNullValue()));
+        assertThat(data.size(), is(greaterThan(0)));
+        assertThat(data.stream()
+                        .filter(project -> project.getStatus().equals(Complete)
+                                && project.getManagerId() == (long) 1)
+                        .count(),
+                is((long) data.size()));
+    }
+
+    @Test
+    public void getRunningByManagerTest() {
+        List<Project> data = projectDAO.getRunningByManager((long) 2);
+
+        assertThat(data, is(notNullValue()));
+        assertThat(data.size(), is(greaterThan(0)));
+        assertThat(data.stream()
+                        .filter(project -> project.getStatus().equals(Running)
+                                && project.getManagerId() == (long) 2)
+                        .count(),
+                is((long) data.size()));
+    }
+
+    @Test
+    public void getCompleteByCustomerTest() {
+        List<Project> data = projectDAO.getCompleteByCustomer((long) 1);
+
+        assertThat(data, is(notNullValue()));
+        assertThat(data.size(), is(greaterThan(0)));
+        assertThat(data.stream()
+                        .filter(project -> project.getStatus().equals(Complete)
+                                && project.getCustomerId() == (long) 1)
+                        .count(),
+                is((long) data.size()));
+    }
+
+    @Test
+    public void getRunningByCustomerTest() {
+        List<Project> data = projectDAO.getRunningByCustomer((long) 2);
+
+        assertThat(data, is(notNullValue()));
+        assertThat(data.size(), is(greaterThan(0)));
+        assertThat(data.stream()
+                        .filter(project -> project.getStatus().equals(Running)
+                                && project.getCustomerId() == (long) 2)
+                        .count(),
+                is((long) data.size()));
+    }
+
+    @Test
     public void getByManagerIDTest() {
         Long managerId = projectDAO.getById(testId).getManagerId();
         List<Project> data = projectDAO.getAllByManager(managerId);
 
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
-        assertThat(data.get(0).getManagerId(), is(managerId));
+        assertThat(data.stream()
+                        .filter(project -> project.getManagerId().equals(managerId))
+                        .count(),
+                is((long) data.size()));
     }
 
     @Test
@@ -124,7 +208,10 @@ public class ProjectDAOTest {
         List<Project> data = projectDAO.getByManagerAndStatus(managerId, status);
 
         assertThat(data.size(), is(greaterThan(0)));
-        assertThat(data.get(0).getManagerId(), is(managerId));
-        assertThat(data.get(0).getStatus(), is(status));
+        assertThat(data.stream()
+                        .filter(proj -> project.getStatus().equals(status)
+                                && project.getManagerId().equals(managerId))
+                        .count(),
+                is((long) data.size()));
     }
 }

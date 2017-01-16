@@ -38,6 +38,6 @@ public class UsersServiceImpl implements UserDetailsService, UsersService {
 
     @Override
     public boolean isEmailAvailable(String email) {
-        return !usersDAO.persists(email);
+        return !usersDAO.persistsByEmail(email);
     }
 }

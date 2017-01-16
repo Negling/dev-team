@@ -50,7 +50,7 @@
                 <h4>
                     <strong><spring:message code="tables.status"/></strong>
                 </h4>
-                <p class="data-description <myTags:statusStyle status="${developer.status}"/>">
+                <p class="data-description" style="<myTags:statusStyle status="${developer.status}"/>">
                     <c:out value="${developer.status}"/>
                 </p>
             </div>
@@ -73,7 +73,7 @@
                         <h4>
                             <strong><spring:message code="tables.status"/></strong>
                         </h4>
-                        <p class="data-description <myTags:statusStyle status="${currentTask.status}"/>">
+                        <p class="data-description" style="<myTags:statusStyle status="${currentTask.status}"/>">
                             <c:out value="${currentTask.status}"/>
                         </p>
                     </div>
@@ -109,7 +109,7 @@
                                     <td><c:out value="${taskData.specialization}"/></td>
                                     <td><c:out value="${taskData.rank}"/></td>
                                     <td><c:out value="${taskData.hoursSpent}"/></td>
-                                    <td class="<myTags:statusStyle status="${taskData.status}"/>">
+                                    <td style="<myTags:statusStyle status="${taskData.status}"/>">
                                         <c:out value="${taskData.status}"/>
                                     </td>
                                 </tr>

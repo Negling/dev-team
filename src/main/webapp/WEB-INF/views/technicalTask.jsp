@@ -35,7 +35,7 @@
                 <h4>
                     <strong><spring:message code="tables.currentStatus"/></strong>
                 </h4>
-                <p class="<myTags:statusStyle status="${technicalTask.status}"/> data-description">
+                <p class="data-description" style="<myTags:statusStyle status="${technicalTask.status}"/>">
                     <c:out value="${technicalTask.status}"/>
                 </p>
             </div>

@@ -54,7 +54,7 @@
                                 <fmt:formatNumber type="number" pattern="#" value="${completeCheck.totalProjectCost}"/>
                                 $
                             </td>
-                            <td class="<myTags:statusStyle status="${completeCheck.status}"/>">
+                            <td style="<myTags:statusStyle status="${completeCheck.status}"/>">
                                 <c:out value="${completeCheck.status}"/>
                             </td>
                         </tr>

@@ -34,15 +34,15 @@ public class StatusStyleTag extends SimpleTagSupport {
     private String evaluateStatus(Status status) {
         switch (status) {
             case Pending:
-                return "blue";
+                return "color: blue !important;";// blue
             case Declined:
-                return "red";
+                return "color: #DC143C !important;";// red
             case Canceled:
-                return "purple";
+                return "color: purple !important;";// purple
             case Running:
-                return "cyan";
+                return "color: darkcyan !important;";// cyan
             case Complete:
-                return "lime";
+                return "color: #449d44 !important;";// lime
             default:
                 return "";
         }
@@ -51,11 +51,11 @@ public class StatusStyleTag extends SimpleTagSupport {
     private String evaluateCheckStatus(CheckStatus status) {
         switch (status) {
             case Awaiting:
-                return "blue";
+                return "color: blue !important;";
             case Declined:
-                return "red";
+                return "color: #DC143C !important;";
             case Paid:
-                return "lime";
+                return "color: #449d44 !important;";
             default:
                 return "";
         }
@@ -64,13 +64,13 @@ public class StatusStyleTag extends SimpleTagSupport {
     private String evaluateDeveloperStatus(DeveloperStatus status) {
         switch (status) {
             case Available:
-                return "lime";
+                return "color: #449d44 !important;";
             case Holiday:
-                return "cyan";
+                return "color: darkcyan !important;";
             case Locked:
-                return "red";
+                return "color: #DC143C !important;";
             case Hired:
-                return "blue";
+                return "color: blue !important;";
             default:
                 return "";
         }

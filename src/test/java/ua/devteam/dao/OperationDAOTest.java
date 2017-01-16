@@ -98,6 +98,9 @@ public class OperationDAOTest {
 
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
-        assertThat(data.get(0).getTechnicalTaskId(), is((long) 1));
+        assertThat(data.stream()
+                        .filter(operation -> operation.getTechnicalTaskId() == (long) 1)
+                        .count(),
+                is((long) data.size()));
     }
 }
