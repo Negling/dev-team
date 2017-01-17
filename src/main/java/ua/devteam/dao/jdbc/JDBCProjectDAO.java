@@ -11,6 +11,22 @@ import java.sql.*;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Maps {@link Project} entity to table named "projects".
+ * <p>
+ * Fields which belongs to table is:
+ * <p>
+ * id(id),
+ * name(name),
+ * description(description),
+ * customerId(customer_id),
+ * status(status),
+ * managerCommentary(manager_commentary),
+ * managerId(manager_id),
+ * technicalTaskId(technical_task_id),
+ * startDate(start_date),
+ * endDate(end_date).
+ */
 @Repository("projectDAO")
 public class JDBCProjectDAO extends JDBCGenericIdentifiedDAO<Project> implements ProjectDAO {
 
@@ -21,7 +37,7 @@ public class JDBCProjectDAO extends JDBCGenericIdentifiedDAO<Project> implements
 
     @Override
     public void update(Project oldEntity, Project newEntity) {
-        super.jdbcUpdate(sqlBundle.getString("project.update"),
+        jdbcOperations.update(sqlBundle.getString("project.update"),
                 newEntity.getId(),
                 newEntity.getTechnicalTaskId(),
                 newEntity.getCustomerId(),
@@ -37,7 +53,7 @@ public class JDBCProjectDAO extends JDBCGenericIdentifiedDAO<Project> implements
 
     @Override
     public void delete(Project entity) {
-        super.jdbcUpdate(sqlBundle.getString("project.delete"), entity.getId());
+        jdbcOperations.update(sqlBundle.getString("project.delete"), entity.getId());
     }
 
     @Override

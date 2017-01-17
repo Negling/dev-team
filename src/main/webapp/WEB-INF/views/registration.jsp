@@ -11,22 +11,21 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <h2 class="dark-grey">Terms and Conditions</h2>
+            <h2><spring:message code="general.termsAndConditions"/></h2>
             <p>
-                By clicking on "Register" you agree to The Company's' Terms and Conditions
+                <spring:message code="general.termsAndConditionsHead"/>
             </p>
             <p>
-                While rare, prices are subject to change based on exchange rate fluctuations -
-                should such a fluctuation happen, we may request an additional payment. You have the option to request a
-                full refund or to pay the new price. (Paragraph 13.5.8)
+                1. <spring:message code="general.termsAndConditionsCredentials"/>
             </p>
             <p>
-                Should there be an error in the description or pricing of a product, we will provide you with a full
-                refund (Paragraph 13.5.6)
+                2. <spring:message code="general.termsAndConditionsPhone"/>
             </p>
             <p>
-                Acceptance of an order by us is dependent on our suppliers ability to provide the product. (Paragraph
-                13.5.6)
+                3. <spring:message code="general.termsAndConditionsEmail"/>
+            </p>
+            <p>
+                4. <spring:message code="general.termsAndConditionsPassword"/>
             </p>
         </div>
         <div class="col-md-6">
@@ -39,7 +38,7 @@
                         <spring:message code="registration.firstName"/>:
                     </label>
                     <input id="firstName" name="firstName" type="text" maxlength="20" class="form-control"
-                           value="<c:out value="${customerRegistrationForm.firstName}"/>">
+                           value="<c:out value="${customerRegistrationForm.firstName}"/>" placeholder="John">
                     <sform:errors cssClass="errors-span" path="firstName"/>
                 </div>
                 <div class="form-group col-md-6">
@@ -47,7 +46,7 @@
                         <spring:message code="registration.lastName"/>:
                     </label>
                     <input id="lastName" name="lastName" type="text" maxlength="20" class="form-control"
-                           value="<c:out value="${customerRegistrationForm.lastName}"/>">
+                           value="<c:out value="${customerRegistrationForm.lastName}"/>" placeholder="Cena">
                     <sform:errors cssClass="errors-span" path="lastName"/>
                 </div>
                 <div class="col-lg-12 hidden-sm hidden-xs">
@@ -79,7 +78,7 @@
                         <spring:message code="general.email"/>:
                     </label>
                     <input id="email" name="email" type="email" maxlength="30" class="form-control"
-                           value="<c:out value="${customerRegistrationForm.email}"/>">
+                           value="<c:out value="${customerRegistrationForm.email}"/>" placeholder="email@gmail.com">
                     <sform:errors cssClass="errors-span" path="email"/>
                 </div>
                 <div class="form-group col-md-6">

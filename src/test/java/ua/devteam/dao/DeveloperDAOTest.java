@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
@@ -71,10 +70,6 @@ public class DeveloperDAOTest {
         assertEquals(testData, developerDAO.getById(testData.getId()));
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
-    public void updateNullIDTest() {
-        developerDAO.update(testData, testData);
-    }
 
     @Test(expected = NullPointerException.class)
     public void updateNullFieldsTest() {
@@ -90,10 +85,6 @@ public class DeveloperDAOTest {
         deleteEntityTest(developerDAO, testData, jdbcTemplate, tableName);
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
-    public void deleteNullIDTest() {
-        developerDAO.delete(testData);
-    }
 
     @Test
     public void getByIdTest() {

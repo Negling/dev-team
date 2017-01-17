@@ -3,9 +3,10 @@ package ua.devteam.entity.users;
 
 import ua.devteam.entity.enums.CheckStatus;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Check {
+public class Check implements Serializable{
     private Long projectId;
     private String projectName;
     private BigDecimal developersCost;

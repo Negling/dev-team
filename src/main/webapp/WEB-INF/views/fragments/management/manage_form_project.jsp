@@ -7,8 +7,9 @@
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header lead">
-            Form Technical Task as Project
-            <button name="refreshProjects" data-container-id="#pendingProjectsAccordion" class="refresh-button pull-right"
+            <spring:message code="managersCabinet.formProjectLead"/>
+            <button name="refreshProjects" data-container-id="#pendingProjectsAccordion"
+                    class="refresh-button pull-right"
                     type="button" data-path="/fragments/manage_form_project">
                 <span class="glyphicon glyphicon-refresh"></span>
             </button>
@@ -19,7 +20,9 @@
     <div id="pendingProjectsAccordion" class="panel-group col-lg-9">
         <c:choose>
             <c:when test="${empty pendingProjects}">
-                <h3 class="text-center">No New Requests!</h3>
+                <h3 class="text-center">
+                    <spring:message code="managersCabinet.noUnformedProjects"/>
+                </h3>
             </c:when>
             <c:otherwise>
                 <c:forEach items="${pendingProjects}" var="project">
@@ -40,7 +43,7 @@
 
                                 <div class="col-lg-12">
                                     <h3 class="text-center page-header">
-                                        <strong>Tasks</strong>
+                                        <strong><spring:message code="entity.tasks"/></strong>
                                     </h3>
 
                                         <%--Tasks--%>
@@ -65,7 +68,7 @@
                                                     <div class="panel-body">
                                                         <h4>
                                                             <strong>
-                                                                Task Description
+                                                                <spring:message code="entity.taskDescription"/>
                                                             </strong>
                                                         </h4>
                                                         <p class="data-description">
@@ -76,7 +79,7 @@
                                                         <div class="col-lg-12">
                                                             <h4 class="text-center">
                                                                 <strong>
-                                                                    Requested Developers
+                                                                    <spring:message code="entity.requestedDevelopers"/>
                                                                 </strong>
                                                             </h4>
                                                             <hr>
@@ -86,13 +89,14 @@
                                                                     <thead>
                                                                     <tr>
                                                                         <th class="text-center">
-                                                                            Specialization
+                                                                            <spring:message
+                                                                                    code="entity.specialization"/>
                                                                         </th>
                                                                         <th class="text-center">
-                                                                            Rank
+                                                                            <spring:message code="entity.rank"/>
                                                                         </th>
                                                                         <th class="text-center">
-                                                                            Quantity
+                                                                            <spring:message code="entity.quantity"/>
                                                                         </th>
                                                                     </tr>
                                                                     </thead>
@@ -100,12 +104,15 @@
                                                                     <c:forEach var="taskRequest"
                                                                                items="${task.requestsForDevelopers}">
                                                                         <tr>
-                                                                            <td><c:out
-                                                                                    value="${taskRequest.specialization}"/></td>
-                                                                            <td><c:out
-                                                                                    value="${taskRequest.rank}"/></td>
-                                                                            <td><c:out
-                                                                                    value="${taskRequest.quantity}"/></td>
+                                                                            <td>
+                                                                                <c:out value="${taskRequest.specialization}"/>
+                                                                            </td>
+                                                                            <td>
+                                                                                <c:out value="${taskRequest.rank}"/>
+                                                                            </td>
+                                                                            <td>
+                                                                                <c:out value="${taskRequest.quantity}"/>
+                                                                            </td>
                                                                         </tr>
                                                                     </c:forEach>
                                                                     </tbody>
@@ -117,14 +124,17 @@
                                                             <%--assigned Developers--%>
                                                         <div class="col-lg-12">
                                                             <h4 class="text-center">
-                                                                <strong>Assigned Developers</strong>
+                                                                <strong>
+                                                                    <spring:message code="tables.assignedDevelopers"/>
+                                                                </strong>
                                                             </h4>
                                                             <hr>
                                                             <div class="table-responsive">
                                                                 <h5 class="${not empty task.tasksDevelopmentData ?
                                                                         'text-center no-display':'text-center'}">
                                                                     <strong>
-                                                                        No developers assigned for this task!
+                                                                        <spring:message
+                                                                                code="managersCabinet.noAssignedDevs"/>
                                                                     </strong>
                                                                 </h5>
                                                                 <table id="task<c:out value="${task.id}"/>Hired"
@@ -133,14 +143,17 @@
                                                                     <thead>
                                                                     <tr>
                                                                         <th class="text-center">
-                                                                            Name
+                                                                            <spring:message code="tables.name"/>
                                                                         </th>
                                                                         <th class="text-center">
-                                                                            Specialization
+                                                                            <spring:message
+                                                                                    code="entity.specialization"/>
                                                                         </th>
-                                                                        <th class="text-center">Rank
+                                                                        <th class="text-center">
+                                                                            <spring:message code="entity.rank"/>
                                                                         </th>
-                                                                        <th class="text-center">Hire Cost
+                                                                        <th class="text-center">
+                                                                            <spring:message code="tables.hireCost"/>
                                                                         </th>
                                                                         <th class="text-center"></th>
                                                                     </tr>
@@ -155,11 +168,14 @@
                                                                                     <c:out value="${taskData.developerLastName}"/>
                                                                                 </a>
                                                                             </td>
-                                                                            <td><c:out
-                                                                                    value="${taskData.specialization}"/></td>
-                                                                            <td><c:out
-                                                                                    value="${taskData.rank}"/></td>
-                                                                            <td><fmt:formatNumber type="number"
+                                                                            <td>
+                                                                                <c:out value="${taskData.specialization}"/>
+                                                                            </td>
+                                                                            <td>
+                                                                                <c:out value="${taskData.rank}"/>
+                                                                            </td>
+                                                                            <td>
+                                                                                <fmt:formatNumber type="number"
                                                                                                   pattern="#"
                                                                                                   value="${taskData.hireCost}"/>
                                                                                 $
@@ -171,7 +187,8 @@
                                                                                         data-developer-id="<c:out value="${taskData.developerId}"/>"
                                                                                         data-developer-hire-cost="<c:out value="${taskData.hireCost}"/>"
                                                                                         type="button">
-                                                                                    Unbind
+                                                                                    <spring:message
+                                                                                            code="managersCabinet.unbind"/>
                                                                                 </button>
                                                                             </td>
                                                                         </tr>
@@ -189,7 +206,7 @@
                                         <%--end Tasks--%>
 
                                     <h4 class="page-header">
-                                        <strong>Project Description</strong>
+                                        <strong><spring:message code="entity.projectDescription"/></strong>
                                     </h4>
                                     <p class="data-description">
                                         <c:out value="${project.description}"/>
@@ -197,19 +214,20 @@
 
                                         <%--Project check--%>
                                     <h4 class="page-header text-center">
-                                        <strong>Project Check</strong>
+                                        <strong><spring:message code="tables.projectCheck"/></strong>
                                     </h4>
                                     <div class="col-lg-12 no-padding">
                                         <div class="col-lg-6 project-cost-input">
-                                            <label>Devs Hire Cost:</label>
+                                            <label><spring:message code="tables.devsCost"/>:</label>
                                             <div class="input-group">
                                                 <input id="project<c:out value="${project.id}"/>DevsCost" type="number"
-                                                       class="form-control text-right" value="0" readonly>
+                                                       class="form-control text-right" value="0" title="devsCost"
+                                                       readonly>
                                                 <span class="input-group-addon">.00 $</span>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 project-cost-input">
-                                            <label>Services:</label>
+                                            <label><spring:message code="tables.servicesCost"/>:</label>
                                             <div class="input-group">
                                                 <input id="project<c:out value="${project.id}"/>Services" type="number"
                                                        title="servicesCost"
@@ -219,18 +237,19 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-6 project-cost-input">
-                                            <label>Taxes(+20%):</label>
+                                            <label><spring:message code="tables.taxesCost"/>(+20%):</label>
                                             <div class="input-group">
                                                 <input id="project<c:out value="${project.id}"/>Taxes" type="number"
-                                                       class="form-control text-right" value="0" readonly>
+                                                       class="form-control text-right" value="0" title="taxes" readonly>
                                                 <span class="input-group-addon">.00 $</span>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 project-cost-input">
-                                            <label>Total Project Cost:</label>
+                                            <label><spring:message code="tables.totalCost"/>:</label>
                                             <div class="input-group">
                                                 <input id="project<c:out value="${project.id}"/>TotalCost" type="number"
-                                                       class="form-control text-right" value="0" readonly>
+                                                       class="form-control text-right" value="0" title="totalCost"
+                                                       readonly>
                                                 <span class="input-group-addon">.00 $</span>
                                             </div>
                                         </div>
@@ -241,11 +260,11 @@
                                         <button type="button" name="declineProject"
                                                 value="<c:out value="${project.id}"/>"
                                                 data-entity-type="project" class="btn btn-danger w-200 mt-10">
-                                            Decline
+                                            <spring:message code="general.decline"/>
                                         </button>
                                         <button name="acceptProject" value="<c:out value="${project.id}"/>"
                                                 class="btn btn-success pull-right w-200 mt-10">
-                                            Accept
+                                            <spring:message code="general.accept"/>
                                         </button>
                                     </div>
                                 </div>
@@ -263,17 +282,10 @@
     <div class="col-lg-3">
         <button type="button" class="btn btn-success pull-left mb-10" data-toggle="modal"
                 data-target="#bindDeveloperModal">
-            Search for Available Developers
+            <spring:message code="managersCabinet.searchForAvailableDevs"/>
         </button>
-        <h4 class="dark-grey"><strong>Terms and Conditions:</strong></h4>
         <p>
-            By clicking on "Register" you agree to The Company's' Terms and Conditions
-        </p>
-        <p>
-            While rare, prices are subject to change based on exchange rate fluctuations -
-            should such a fluctuation happen, we may request an additional payment. You have the option to
-            request a
-            full refund or to pay the new price. (Paragraph 13.5.8)
+            <spring:message code="managersCabinet.searchForAvailableDevsDecs"/>
         </p>
     </div>
     <%--end Developers Modal button--%>
@@ -286,11 +298,13 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Developers Binding Settings: </h4>
+                <h4 class="modal-title">
+                    <spring:message code="managersCabinet.devsBindingSettings"/>:
+                </h4>
                 <hr>
                 <div class="row">
                     <div class="col-lg-12">
-                        <label>Select Project:</label>
+                        <label><spring:message code="managersCabinet.selectProject"/>:</label>
                         <select id="activeProjectSelect" class="form-control" title="Active Project">
                             <c:forEach items="${pendingProjects}" var="project" varStatus="status">
                                 <option value="<c:out value="${project.id}"/>">
@@ -303,7 +317,7 @@
                         </select>
                     </div>
                     <div class="col-lg-12">
-                        <label>Select Task:</label>
+                        <label><spring:message code="managersCabinet.selectTask"/>:</label>
                         <select id="activeTaskSelect" class="form-control" title="Active Task">
                             <c:forEach items="${projectTasks}" var="task">
                                 <option value="<c:out value="${task.id}"/>">
@@ -317,13 +331,13 @@
 
             <%--Modal body--%>
             <div class="modal-body">
-                <h4>Search results:</h4>
-                <h3 id="noResults" class="text-center">No results found!</h3>
+                <h4><spring:message code="general.searchResults"/>:</h4>
+                <h3 id="noResults" class="text-center"><spring:message code="general.noResults"/></h3>
                 <table id="devsResultTable" class="table no-display">
                     <thead>
                     <tr>
-                        <th>First Name and Last Name</th>
-                        <th>Cost</th>
+                        <th><spring:message code="tables.name"/></th>
+                        <th><spring:message code="tables.hireCost"/></th>
                         <th></th>
                     </tr>
                     </thead>
@@ -332,7 +346,7 @@
                 <hr>
                 <div class="row">
                     <div class="col-lg-4">
-                        <label>Specialization:</label>
+                        <label><spring:message code="entity.specialization"/>:</label>
                         <select class="form-control" title="specialization" id="developerSpecialization">
                             <c:forEach items="${specializations}" var="specialization">
                                 <option><c:out value="${specialization}"/></option>
@@ -340,7 +354,7 @@
                         </select>
                     </div>
                     <div class="col-lg-4">
-                        <label>Rank:</label>
+                        <label><spring:message code="entity.rank"/>:</label>
                         <select class="form-control" title="rank" id="developerRank">
                             <c:forEach items="${ranks}" var="rank">
                                 <option><c:out value="${rank}"/></option>
@@ -348,7 +362,7 @@
                         </select>
                     </div>
                     <div class="col-lg-4">
-                        <label>Last name:</label>
+                        <label><spring:message code="registration.lastName"/>:</label>
                         <div class="input-group">
                             <span class="input-group-addon">
                             <span class="glyphicon glyphicon-search"></span>
@@ -362,9 +376,11 @@
 
             <div class="modal-footer">
                 <button type="button" id="searchDevsBtn" class="btn btn-primary">
-                    Search
+                    <spring:message code="general.search"/>
                 </button>
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">
+                    <spring:message code="general.back"/>
+                </button>
             </div>
         </div>
     </div>

@@ -4,9 +4,10 @@ package ua.devteam.entity.tasks;
 import ua.devteam.entity.AbstractTask;
 import ua.devteam.entity.enums.Status;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ProjectTask extends AbstractTask {
+public class ProjectTask extends AbstractTask implements Serializable{
     private Long projectId;
     private Long operationId;
     private Status taskStatus;

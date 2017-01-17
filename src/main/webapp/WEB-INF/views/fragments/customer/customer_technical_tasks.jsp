@@ -15,7 +15,7 @@
             </button>
         </h3>
     </div>
-    <div id="technicalTasksHistoryTable" class="col-md-8">
+    <div id="technicalTasksHistoryTable" class="col-xs-12 no-padding">
         <c:choose>
             <c:when test="${empty technicalTasks}">
                 <h3 class="text-center">
@@ -23,32 +23,34 @@
                 </h3>
             </c:when>
             <c:otherwise>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th><spring:message code="tables.projectName"/></th>
-                        <th><spring:message code="tables.status"/></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="${technicalTasks}" var="technicalTask">
+                <div class="col-md-8">
+                    <table class="table">
+                        <thead>
                         <tr>
-                            <td><a href="<spring:url value="/technicalTask?id=${technicalTask.id}"/>">
-                                <c:out value="${technicalTask.name}"/></a>
-                            </td>
-                            <td style="<myTags:statusStyle status="${technicalTask.status}"/>">
-                                <c:out value="${technicalTask.status}"/></td>
+                            <th><spring:message code="tables.projectName"/></th>
+                            <th><spring:message code="tables.status"/></th>
                         </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${technicalTasks}" var="technicalTask">
+                            <tr>
+                                <td><a href="<spring:url value="/technicalTask?id=${technicalTask.id}"/>">
+                                    <c:out value="${technicalTask.name}"/></a>
+                                </td>
+                                <td style="<myTags:statusStyle status="${technicalTask.status}"/>">
+                                    <c:out value="${technicalTask.status}"/></td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4 pt-10">
+                    <h3>
+                        <spring:message code="customersCabinet.moreDetails"/>
+                    </h3>
+                </div>
             </c:otherwise>
         </c:choose>
-    </div>
-    <div class="col-md-4 pt-10">
-        <h3>
-            <spring:message code="customersCabinet.moreDetails"/>
-        </h3>
     </div>
 </div>
 <%--Tehcnical Tasks History-End--%>

@@ -5,6 +5,7 @@ import ua.devteam.entity.enums.DeveloperStatus;
 import ua.devteam.entity.enums.Status;
 
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.SkipPageException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 
@@ -24,8 +25,10 @@ public class StatusStyleTag extends SimpleTagSupport {
             style = evaluateStatus((Status) status);
         } else if (status instanceof CheckStatus) {
             style = evaluateCheckStatus((CheckStatus) status);
-        } else {
+        } else if (status instanceof  DeveloperStatus){
             style = evaluateDeveloperStatus((DeveloperStatus) status);
+        }else {
+            throw new SkipPageException();
         }
 
         getJspContext().getOut().write(style);

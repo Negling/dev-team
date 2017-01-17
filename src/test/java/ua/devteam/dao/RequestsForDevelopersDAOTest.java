@@ -57,7 +57,7 @@ public class RequestsForDevelopersDAOTest {
     @Test
     public void updateTest() {
         RequestForDevelopers oldData = requestsForDevelopersDAO.getByOperation((long) 1).get(0);
-        testData.setOperation_id((long) 2);
+        testData.setOperationId((long) 2);
 
         updateEntityTest(requestsForDevelopersDAO, oldData, testData, jdbcTemplate, tableName);
 
@@ -88,7 +88,7 @@ public class RequestsForDevelopersDAOTest {
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
         assertThat(data.stream()
-                        .filter(rfd -> rfd.getOperation_id() == (long) 1)
+                        .filter(rfd -> rfd.getOperationId() == (long) 1)
                         .count(),
                 is((long) data.size()));
     }

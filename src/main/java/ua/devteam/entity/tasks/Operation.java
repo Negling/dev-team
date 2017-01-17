@@ -3,9 +3,10 @@ package ua.devteam.entity.tasks;
 
 import ua.devteam.entity.AbstractTask;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Operation extends AbstractTask {
+public class Operation extends AbstractTask implements Serializable{
     private Long technicalTaskId;
     private List<RequestForDevelopers> requestsForDevelopers;
 
@@ -46,7 +47,7 @@ public class Operation extends AbstractTask {
     public void setDeepId(Long id) {
         setId(id);
 
-        requestsForDevelopers.forEach(requestForDevelopers -> requestForDevelopers.setOperation_id(id));
+        requestsForDevelopers.forEach(requestForDevelopers -> requestForDevelopers.setOperationId(id));
     }
 
     @Override

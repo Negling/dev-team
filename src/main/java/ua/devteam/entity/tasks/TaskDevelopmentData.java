@@ -5,9 +5,10 @@ import ua.devteam.entity.enums.DeveloperRank;
 import ua.devteam.entity.enums.DeveloperSpecialization;
 import ua.devteam.entity.enums.Status;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class TaskDevelopmentData {
+public class TaskDevelopmentData implements Serializable{
     private Long projectTaskId;
     private String taskName;
     private String taskDescription;

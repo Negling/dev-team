@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header lead">
-            Current Task
+            <spring:message code="developersCabinet.activeTaskLead"/>
             <button name="refresh" data-container-id="#currentTask" type="button" class="refresh-button pull-right"
                     data-path="/fragments/development_active_task">
                 <span class="glyphicon glyphicon-refresh"></span>
@@ -20,29 +20,35 @@
         <c:choose>
             <c:when test="${empty activeTaskData}">
                 <div class="text-center">
-                    <h3>You aren't assigned on task!</h3>
+                    <h3>
+                        <spring:message code="developersCabinet.notAssigned"/>
+                    </h3>
                 </div>
             </c:when>
             <c:otherwise>
                 <div class="bordered-container col-lg-12">
-                    <h4><strong>Task Name:</strong></h4>
+                    <h4>
+                        <strong><spring:message code="entity.taskName"/>:</strong>
+                    </h4>
                     <p class="data-description"><c:out value="${activeTaskData.taskName}"/></p>
 
-                    <h4><strong>Task Description:</strong></h4>
+                    <h4>
+                        <strong><spring:message code="entity.taskDescription"/>:</strong>
+                    </h4>
                     <p class="data-description">
                         <c:out value="${activeTaskData.taskDescription}"/>
                     </p>
 
                     <div class="form-group col-xs-4 no-padding">
                         <label class="control-label" for="hoursSpent">
-                            Hours Spent:
+                            <spring:message code="development.hoursSpentShort"/>:
                         </label>
                         <input id="hoursSpent" type="number" class="form-control" value="0" min="1"
                                max="999">
                     </div>
                     <button id="markComplete" type="button" value="<c:out value="${activeTaskData.projectTaskId}"/>"
                             class="btn btn-success pull-right mt-25">
-                        Mark As Complete
+                        <spring:message code="developersCabinet.markTask"/>
                     </button>
                 </div>
             </c:otherwise>

@@ -4,9 +4,10 @@ package ua.devteam.entity.projects;
 import ua.devteam.entity.enums.Status;
 import ua.devteam.entity.tasks.Operation;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class TechnicalTask extends AbstractTechnicalTask {
+public class TechnicalTask extends AbstractTechnicalTask implements Serializable{
     private List<Operation> operations;
 
     public TechnicalTask() {

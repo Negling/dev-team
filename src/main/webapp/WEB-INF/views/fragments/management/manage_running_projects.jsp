@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header lead">
-            Running Projects
+            <spring:message code="managersCabinet.runningProjectsLead"/>
             <button name="refresh" data-container-id="#runningProjectsTable" class="refresh-button pull-right"
                     type="button" data-path="/fragments/manage_running_projects">
                 <span class="glyphicon glyphicon-refresh"></span>
@@ -19,17 +19,17 @@
         <c:choose>
             <c:when test="${empty runningProjects}">
                 <div class="text-vertical-center col-lg-12">
-                    <h3>No Complete Projects!</h3>
+                    <h3><spring:message code="customersCabinet.noRunningProjects"/></h3>
                 </div>
             </c:when>
             <c:otherwise>
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Project Name</th>
-                        <th>Start Date</th>
-                        <th>Status</th>
-                        <th>Price</th>
+                        <th><spring:message code="tables.projectName"/></th>
+                        <th><spring:message code="tables.startDate"/></th>
+                        <th><spring:message code="tables.status"/></th>
+                        <th><spring:message code="tables.cost"/></th>
                     </tr>
                     </thead>
                     <tbody>

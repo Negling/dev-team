@@ -3,50 +3,56 @@
 <head>
     <%@include file="fragments/head.jspf" %>
     <link href="<spring:url value="/resources/css/management.css" />" rel="stylesheet">
-    <title>Management</title>
+    <title><spring:message code="managersCabinet.title"/></title>
 </head>
 <body>
 <%@include file="fragments/navbar.jspf" %>
 
 <div class="container content-container">
-    <h2><spring:message code="customersCabinet.cabinet"/></h2>
-    <p>Here you can manage your personal information, create technical tasks, etc.</p>
+    <h2><spring:message code="managersCabinet.title"/></h2>
+    <p><spring:message code="managersCabinet.description"/>.</p>
 
     <ul class="nav nav-tabs nav-justified">
         <li class="active"><a data-toggle="tab" href="#technicalTasks">
-            Technical Tasks
+            <spring:message code="customer.technicalTasks"/>
         </a>
         </li>
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                Projects <span class="caret"></span></a>
+                <spring:message code="customer.Projects"/> <span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li>
                     <a href="#formProjects" role="tab" data-toggle="tab">
-                        Form Project
+                        <spring:message code="managersCabinet.formProject"/>
                     </a>
                 </li>
                 <li>
                     <a href="#runningProjects" role="tab" data-toggle="tab">
-                        Running Project
+                        <spring:message code="cabinet.runningProjects"/>
                     </a>
                 </li>
-                <li><a href="#completeProjects" role="tab" data-toggle="tab">Complete Projects</a></li>
+                <li>
+                    <a href="#completeProjects" role="tab" data-toggle="tab">
+                        <spring:message code="managersCabinet.completeProjects"/>
+                    </a>
+                </li>
             </ul>
         </li>
-        <li><a data-toggle="tab" href="#users">Users</a></li>
+        <li><a data-toggle="tab" href="#users">
+            <spring:message code="managersCabinet.customers"/></a>
+        </li>
         <security:authorize access="hasAnyAuthority('Ultramanager', 'Admin')">
             <li><a data-toggle="tab" href="#developers">
-                Developers
+                <spring:message code="managersCabinet.developers"/>
             </a></li>
         </security:authorize>
         <security:authorize access="hasAuthority('Admin')">
             <li><a data-toggle="tab" href="#managers">
-                Managers
+                <spring:message code="managersCabinet.managers"/>
             </a></li>
         </security:authorize>
         <li><a data-toggle="tab" href="#settings">
-            Settings
+            <spring:message code="cabinet.settings"/>
         </a></li>
     </ul>
 
@@ -79,7 +85,7 @@
         <div id="users" class="tab-pane fade">
             <div class="row">
                 <%--Edit user--%>
-                <div class="col-lg-12">
+                <%--<div class="col-lg-12">
                     <h3 class="page-header lead">Manage Users</h3>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pharetra fringilla metus at
                         eleifend. Nunc elementum pellentesque elit. Phasellus vitae eros ac nibh aliquet tempor vitae
@@ -105,13 +111,13 @@
                         </div>
                     </div>
 
-                    <%--Users data--%>
+                    &lt;%&ndash;Users data&ndash;%&gt;
                     <div class="col-lg-12">
 
                     </div>
-                    <%--end Users data--%>
+                    &lt;%&ndash;end Users data&ndash;%&gt;
 
-                </div>
+                </div>--%>
                 <%--end edit User--%>
 
             </div>
@@ -153,17 +159,20 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Reason:</h4>
+                <h4 class="modal-title"><spring:message code="general.reason"/>:</h4>
             </div>
             <div class="modal-body">
-                <textarea id="declineManagerCommentary" class="form-control" placeholder="Can be empty."
-                          rows="6"></textarea>
+                <textarea id="declineManagerCommentary" class="form-control"
+                          placeholder="<spring:message code="general.canBeEmpty"/>" rows="6"></textarea>
                 <p id="declineId" class="no-display"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                <button id="declineButton" type="button" class="btn btn-success pull-right"
-                        data-dismiss="modal">Continue
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">
+                    <spring:message code="general.back"/>
+                </button>
+                <button id="declineButton" type="button" class="btn btn-warning pull-right"
+                        data-dismiss="modal">
+                    <spring:message code="general.continue"/>
                 </button>
             </div>
         </div>
@@ -175,8 +184,8 @@
 
 <%@include file="fragments/errorsModal.jspf" %>
 
-<p id="bind" class="no-display">Bind to task</p>
-<p id="unbind" class="no-display">Unbind</p>
+<p id="bind" class="no-display"><spring:message code="managersCabinet.bind"/></p>
+<p id="unbind" class="no-display"><spring:message code="managersCabinet.unbind"/></p>
 <p id="devPath" class="no-display"><spring:url value="/developer?id="/></p>
 
 <script src="<spring:url value="/resources/js/jquery-3.1.1.min.js" />"></script>

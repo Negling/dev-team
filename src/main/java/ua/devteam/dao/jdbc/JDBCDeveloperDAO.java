@@ -14,6 +14,23 @@ import java.sql.*;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Maps {@link Developer} entity to table named "developers".
+ * <p>
+ * Fields which belongs to table is:
+ * <p>
+ * id(id),
+ * firstName(first_name),
+ * lastName(last_name),
+ * email(email),
+ * phoneNumber(phone),
+ * password(password),
+ * hireCost(hire_cost),
+ * specialization(specialization),
+ * rank(rank),
+ * status(status),
+ * role(role_id).
+ */
 @Repository("developerDAO")
 public class JDBCDeveloperDAO extends JDBCGenericIdentifiedDAO<Developer> implements DeveloperDAO {
 
@@ -24,7 +41,7 @@ public class JDBCDeveloperDAO extends JDBCGenericIdentifiedDAO<Developer> implem
 
     @Override
     public void update(Developer oldEntity, Developer newEntity) {
-        super.jdbcUpdate(sqlBundle.getString("developer.update"),
+        jdbcOperations.update(sqlBundle.getString("developer.update"),
                 newEntity.getId(),
                 newEntity.getFirstName(),
                 newEntity.getLastName(),
@@ -41,7 +58,7 @@ public class JDBCDeveloperDAO extends JDBCGenericIdentifiedDAO<Developer> implem
 
     @Override
     public void delete(Developer entity) {
-        super.jdbcUpdate(sqlBundle.getString("developer.delete"), entity.getId());
+        jdbcOperations.update(sqlBundle.getString("developer.delete"), entity.getId());
     }
 
 

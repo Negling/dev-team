@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
@@ -14,11 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.configuration.DataAccessConfiguration;
 import ua.devteam.entity.users.Manager;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 import static ua.devteam.dao.DAOTestUtils.*;
-import static ua.devteam.entity.enums.Role.*;
+import static ua.devteam.entity.enums.Role.Manager;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DataAccessConfiguration.class)
@@ -63,11 +64,6 @@ public class ManagerDAOTest {
         assertEquals(testData, managerDAO.getById(testData.getId()));
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
-    public void updateNullIDTest() {
-        managerDAO.update(testData, testData);
-    }
-
     @Test(expected = NullPointerException.class)
     public void updateNullFieldsTest() {
         Manager data = new Manager();
@@ -80,11 +76,6 @@ public class ManagerDAOTest {
         testData.setId(testId);
 
         deleteEntityTest(managerDAO, testData, jdbcTemplate, tableName);
-    }
-
-    @Test(expected = DataIntegrityViolationException.class)
-    public void deleteNullIDTest() {
-        managerDAO.delete(new Manager());
     }
 
     @Test

@@ -3,13 +3,13 @@
 <head>
     <%@include file="fragments/head.jspf" %>
     <link href="<spring:url value="/resources/css/customers-cabinet.css" />" rel="stylesheet">
-    <title><spring:message code="customersCabinet.cabinet"/></title>
+    <title><spring:message code="customersCabinet.title"/></title>
 </head>
 <body>
 <%@include file="fragments/navbar.jspf" %>
 
 <div class="container content-container">
-    <h2><spring:message code="customersCabinet.cabinet"/></h2>
+    <h2><spring:message code="customersCabinet.title"/></h2>
     <p><spring:message code="customersCabinet.description"/></p>
 
     <ul class="nav nav-tabs nav-justified">
@@ -19,7 +19,7 @@
         </li>
         <li>
             <a data-toggle="tab" href="#runningProjects">
-                <spring:message code="customersCabinet.runningProjects"/>
+                <spring:message code="cabinet.runningProjects"/>
             </a>
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -51,7 +51,7 @@
                 </li>
             </ul>
         </li>
-        <li><a data-toggle="tab" href="#settings"><spring:message code="customersCabinet.settings"/></a></li>
+        <li><a data-toggle="tab" href="#settings"><spring:message code="cabinet.settings"/></a></li>
     </ul>
 
     <div class="tab-content">

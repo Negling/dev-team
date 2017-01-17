@@ -12,6 +12,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * Maps {@link User} entity from any of next tables: "customers", "managers", "developers".
+ * <p>
+ * Fields which belongs to table is:
+ * <p>
+ * id(id),
+ * firstName(first_name),
+ * lastName(last_name),
+ * email(email),
+ * phoneNumber(phone),
+ * password(password),
+ * role(role_id).
+ */
 @Repository("usersDAO")
 public class JDBCUsersDAO implements UsersDAO {
 

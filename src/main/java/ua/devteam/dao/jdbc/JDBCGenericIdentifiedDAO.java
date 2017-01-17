@@ -11,6 +11,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * For JDBC DAO objects which work with entities with unique id's its necessary to specify own procedure of recording
+ * into repository, to return generated ID.
+ *
+ * @param <T>
+ */
 abstract class JDBCGenericIdentifiedDAO<T> extends JDBCGenericDAO<T> implements Identified<T> {
 
     JDBCGenericIdentifiedDAO(JdbcOperations jdbcOperations, ResourceBundle sqlBundle) {

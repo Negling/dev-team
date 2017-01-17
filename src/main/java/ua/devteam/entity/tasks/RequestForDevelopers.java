@@ -6,7 +6,7 @@ import ua.devteam.entity.enums.DeveloperSpecialization;
 import java.io.Serializable;
 
 public class RequestForDevelopers implements Serializable {
-    private Long operation_id;
+    private Long operationId;
     private DeveloperSpecialization specialization;
     private DeveloperRank rank;
     private Integer quantity;
@@ -14,19 +14,19 @@ public class RequestForDevelopers implements Serializable {
     public RequestForDevelopers() {
     }
 
-    public RequestForDevelopers(Long operation_id, DeveloperSpecialization specialization, DeveloperRank rank, Integer quantity) {
-        this.operation_id = operation_id;
+    public RequestForDevelopers(Long operationId, DeveloperSpecialization specialization, DeveloperRank rank, Integer quantity) {
+        this.operationId = operationId;
         this.specialization = specialization;
         this.rank = rank;
         this.quantity = quantity;
     }
 
-    public Long getOperation_id() {
-        return operation_id;
+    public Long getOperationId() {
+        return operationId;
     }
 
-    public void setOperation_id(Long operation_id) {
-        this.operation_id = operation_id;
+    public void setOperationId(Long operationId) {
+        this.operationId = operationId;
     }
 
     public DeveloperSpecialization getSpecialization() {
@@ -60,7 +60,7 @@ public class RequestForDevelopers implements Serializable {
 
         RequestForDevelopers that = (RequestForDevelopers) o;
 
-        if (operation_id != null ? !operation_id.equals(that.operation_id) : that.operation_id != null) return false;
+        if (operationId != null ? !operationId.equals(that.operationId) : that.operationId != null) return false;
         if (specialization != that.specialization) return false;
         if (rank != that.rank) return false;
 
@@ -69,7 +69,7 @@ public class RequestForDevelopers implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = operation_id != null ? operation_id.hashCode() : 0;
+        int result = operationId != null ? operationId.hashCode() : 0;
         result = 31 * result + (specialization != null ? specialization.hashCode() : 0);
         result = 31 * result + (rank != null ? rank.hashCode() : 0);
         result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
@@ -80,7 +80,7 @@ public class RequestForDevelopers implements Serializable {
     @Override
     public String toString() {
         return "RequestForDevelopers{" +
-                "operation_id=" + operation_id +
+                "operationId=" + operationId +
                 ", specialization=" + specialization +
                 ", rank=" + rank +
                 ", quantity=" + quantity +

@@ -2,7 +2,6 @@ package ua.devteam.dao.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
-
 import org.springframework.stereotype.Repository;
 import ua.devteam.dao.ManagerDAO;
 import ua.devteam.entity.enums.Role;
@@ -11,6 +10,19 @@ import ua.devteam.entity.users.Manager;
 import java.sql.*;
 import java.util.ResourceBundle;
 
+/**
+ * Maps {@link Manager} entity to table named "managers".
+ * <p>
+ * Fields which belongs to table is:
+ * <p>
+ * id(id),
+ * firstName(first_name),
+ * lastName(last_name),
+ * email(email),
+ * phoneNumber(phone),
+ * password(password),
+ * role(role_id).
+ */
 @Repository("managerDAO")
 public class JDBCManagerDAO extends JDBCGenericIdentifiedDAO<Manager> implements ManagerDAO {
 
@@ -21,7 +33,7 @@ public class JDBCManagerDAO extends JDBCGenericIdentifiedDAO<Manager> implements
 
     @Override
     public void update(Manager oldEntity, Manager newEntity) {
-        super.jdbcUpdate(sqlBundle.getString("manager.update"),
+        jdbcOperations.update(sqlBundle.getString("manager.update"),
                 newEntity.getId(),
                 newEntity.getFirstName(),
                 newEntity.getLastName(),
@@ -34,7 +46,7 @@ public class JDBCManagerDAO extends JDBCGenericIdentifiedDAO<Manager> implements
 
     @Override
     public void delete(Manager entity) {
-        super.jdbcUpdate(sqlBundle.getString("manager.delete"), entity.getId());
+        jdbcOperations.update(sqlBundle.getString("manager.delete"), entity.getId());
     }
 
     @Override

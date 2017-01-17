@@ -3,19 +3,25 @@
 <head>
     <%@include file="fragments/head.jspf" %>
     <link href="<spring:url value="/resources/css/developers.css" />" rel="stylesheet">
-    <title>Development</title>
+    <title><spring:message code="developersCabinet.title"/></title>
 </head>
 <body>
 <%@include file="fragments/navbar.jspf" %>
 
 <div class="container content-container">
-    <h2><spring:message code="customersCabinet.cabinet"/></h2>
-    <p><spring:message code="customersCabinet.description"/></p>
+    <h2><spring:message code="developersCabinet.title"/></h2>
+    <p><spring:message code="developersCabinet.description"/>.</p>
 
     <ul class="nav nav-tabs nav-justified">
-        <li class="active"><a data-toggle="tab" href="#taskUnderProgress">Active Task</a></li>
-        <li><a data-toggle="tab" href="#history"><spring:message code="customersCabinet.history"/></a></li>
-        <li><a data-toggle="tab" href="#settings"><spring:message code="customersCabinet.settings"/></a></li>
+        <li class="active"><a data-toggle="tab" href="#taskUnderProgress">
+            <spring:message code="developersCabinet.activeTask"/></a>
+        </li>
+        <li><a data-toggle="tab" href="#history">
+            <spring:message code="developersCabinet.tasksHistory"/></a>
+        </li>
+        <li><a data-toggle="tab" href="#settings">
+            <spring:message code="cabinet.settings"/></a>
+        </li>
     </ul>
 
     <div class="tab-content">

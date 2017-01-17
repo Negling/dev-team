@@ -15,6 +15,18 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Maps {@link TaskDevelopmentData} entity to table named "task_development_data".
+ * <p>
+ * Fields which belongs to table is:
+ * <p>
+ * projectTaskId(task_id),
+ * developerId(developer_id),
+ * specialization(developer_specialization),
+ * rank(developer_rank),
+ * hoursSpent(hours_spent),
+ * status(status).
+ */
 @Repository("taskDevelopmentDataDAO")
 public class JDBCTaskDevelopmentDataDAO extends JDBCGenericDAO<TaskDevelopmentData> implements TaskDevelopmentDataDAO {
 
@@ -24,25 +36,25 @@ public class JDBCTaskDevelopmentDataDAO extends JDBCGenericDAO<TaskDevelopmentDa
     }
 
     @Override
-    public void create(TaskDevelopmentData entity) {
-        super.jdbcUpdate(sqlBundle.getString("taskDevelopmentData.insertSQL"),
-                entity.getProjectTaskId(),
-                entity.getDeveloperId(),
-                entity.getSpecialization().toString(),
-                entity.getRank().toString(),
-                entity.getHoursSpent(),
-                entity.getStatus().toString());
+    public void create(TaskDevelopmentData taskDevelopmentData) {
+        jdbcOperations.update(sqlBundle.getString("taskDevelopmentData.insertSQL"),
+                taskDevelopmentData.getProjectTaskId(),
+                taskDevelopmentData.getDeveloperId(),
+                taskDevelopmentData.getSpecialization().toString(),
+                taskDevelopmentData.getRank().toString(),
+                taskDevelopmentData.getHoursSpent(),
+                taskDevelopmentData.getStatus().toString());
     }
 
     @Override
-    public void createDefault(TaskDevelopmentData entity) {
-        super.jdbcUpdate(sqlBundle.getString("taskDevelopmentData.insertDefault"), entity.getProjectTaskId(),
-                entity.getDeveloperId(), entity.getSpecialization().toString(), entity.getRank().toString());
+    public void createDefault(TaskDevelopmentData taskDevelopmentData) {
+        jdbcOperations.update(sqlBundle.getString("taskDevelopmentData.insertDefault"), taskDevelopmentData.getProjectTaskId(),
+                taskDevelopmentData.getDeveloperId(), taskDevelopmentData.getSpecialization().toString(), taskDevelopmentData.getRank().toString());
     }
 
     @Override
     public void update(TaskDevelopmentData oldEntity, TaskDevelopmentData newEntity) {
-        super.jdbcUpdate(sqlBundle.getString("taskDevelopmentData.update"),
+        jdbcOperations.update(sqlBundle.getString("taskDevelopmentData.update"),
                 newEntity.getProjectTaskId(),
                 newEntity.getDeveloperId(),
                 newEntity.getSpecialization().toString(),
@@ -55,7 +67,7 @@ public class JDBCTaskDevelopmentDataDAO extends JDBCGenericDAO<TaskDevelopmentDa
 
     @Override
     public void delete(TaskDevelopmentData entity) {
-        super.jdbcUpdate(sqlBundle.getString("taskDevelopmentData.delete"), entity.getProjectTaskId(),
+        jdbcOperations.update(sqlBundle.getString("taskDevelopmentData.delete"), entity.getProjectTaskId(),
                 entity.getDeveloperId());
     }
 

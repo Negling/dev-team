@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header lead">
-            Development History
+            <spring:message code="developersCabinet.tasksHistoryLead"/>
             <button name="refresh" data-container-id="#historyTable" type="button" class="refresh-button pull-right"
                     data-path="/fragments/development_tasks_history">
                 <span class="glyphicon glyphicon-refresh"></span>
@@ -19,15 +19,17 @@
     <div id="historyTable" class="col-xs-12">
         <c:choose>
             <c:when test="${empty completeTasks}">
-                <h3 class="text-center">You haven't complete any task yet!</h3>
+                <h3 class="text-center">
+                    <spring:message code="developersCabinet.noBackground"/>
+                </h3>
             </c:when>
             <c:otherwise>
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Task Name</th>
-                        <th>Hours Spent</th>
-                        <th>Status</th>
+                        <th><spring:message code="entity.taskName"/></th>
+                        <th><spring:message code="development.hoursSpentShort"/></th>
+                        <th><spring:message code="tables.status"/></th>
                     </tr>
                     </thead>
                     <tbody>

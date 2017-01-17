@@ -13,6 +13,16 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Maps {@link RequestForDevelopers} entity to table named "requests_for_developers".
+ * <p>
+ * Fields which belongs to table is:
+ * <p>
+ * operationId(operation_id),
+ * specialization(specialization),
+ * rank(rank),
+ * quantity(quantity).
+ */
 @Repository("requestsForDevelopersDAO")
 public class JDBCRequestsForDevelopersDAO extends JDBCGenericDAO<RequestForDevelopers> implements RequestsForDevelopersDAO {
 
@@ -22,22 +32,22 @@ public class JDBCRequestsForDevelopersDAO extends JDBCGenericDAO<RequestForDevel
     }
 
     @Override
-    public void create(RequestForDevelopers entity) {
-        super.jdbcUpdate(sqlBundle.getString("developersRequest.insertSQL"),
-                entity.getOperation_id(),
-                entity.getSpecialization().toString(),
-                entity.getRank().toString(),
-                entity.getQuantity());
+    public void create(RequestForDevelopers requestForDevelopers) {
+        jdbcOperations.update(sqlBundle.getString("developersRequest.insertSQL"),
+                requestForDevelopers.getOperationId(),
+                requestForDevelopers.getSpecialization().toString(),
+                requestForDevelopers.getRank().toString(),
+                requestForDevelopers.getQuantity());
     }
 
     @Override
     public void update(RequestForDevelopers oldEntity, RequestForDevelopers newEntity) {
-        super.jdbcUpdate(sqlBundle.getString("developersRequest.update"),
-                newEntity.getOperation_id(),
+        jdbcOperations.update(sqlBundle.getString("developersRequest.update"),
+                newEntity.getOperationId(),
                 newEntity.getSpecialization().toString(),
                 newEntity.getRank().toString(),
                 newEntity.getQuantity(),
-                oldEntity.getOperation_id(),
+                oldEntity.getOperationId(),
                 oldEntity.getSpecialization().toString(),
                 oldEntity.getRank().toString(),
                 oldEntity.getQuantity());
@@ -45,8 +55,8 @@ public class JDBCRequestsForDevelopersDAO extends JDBCGenericDAO<RequestForDevel
 
     @Override
     public void delete(RequestForDevelopers entity) {
-        super.jdbcUpdate(sqlBundle.getString("developersRequest.delete"),
-                entity.getOperation_id(),
+        jdbcOperations.update(sqlBundle.getString("developersRequest.delete"),
+                entity.getOperationId(),
                 entity.getSpecialization().toString(),
                 entity.getRank().toString(),
                 entity.getQuantity());

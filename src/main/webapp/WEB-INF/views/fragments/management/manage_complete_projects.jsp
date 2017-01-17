@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header lead">
-            Complete Projects
+            <spring:message code="managersCabinet.completeProjectsLead"/>
             <button name="refresh" data-container-id="#completeProjectsTable" class="refresh-button pull-right"
                     type="button" data-path="/fragments/manage_complete_projects">
                 <span class="glyphicon glyphicon-refresh"></span>
@@ -19,18 +19,20 @@
         <c:choose>
             <c:when test="${empty completeProjects}">
                 <div class="text-vertical-center col-lg-12">
-                    <h3>No Complete Projects!</h3>
+                    <h3>
+                        <spring:message code="managersCabinet.noCompleteProjects"/>
+                    </h3>
                 </div>
             </c:when>
             <c:otherwise>
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Project Name</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Status</th>
-                        <th>Price</th>
+                        <th><spring:message code="tables.projectName"/></th>
+                        <th><spring:message code="tables.startDate"/></th>
+                        <th><spring:message code="tables.endDate"/></th>
+                        <th><spring:message code="tables.status"/></th>
+                        <th><spring:message code="tables.cost"/></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -47,7 +49,7 @@
                             <td>
                                 <c:choose>
                                     <c:when test="${empty project.totalProjectCost}">
-                                        Not Assigned
+                                        <spring:message code="tables.notAssigned"/>
                                     </c:when>
                                     <c:otherwise>
                                         <fmt:formatNumber type="number" pattern="#" value="${project.totalProjectCost}"/> $

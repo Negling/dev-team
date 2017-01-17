@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-lg-12">
         <h3 class="page-header lead">
-            Here you can grab new requests.
+            <spring:message code="managersCabinet.technicalTasksLead"/>
             <button name="refresh" data-container-id="#technicalTasksAccordion" class="refresh-button pull-right"
                     type="button" data-path="/fragments/manage_technical_tasks">
                 <span class="glyphicon glyphicon-refresh"></span>
@@ -20,7 +20,7 @@
         <c:choose>
             <c:when test="${empty technicalTasks}">
                 <div class="text-vertical-center col-lg-12">
-                    <h3>No new Technical Tasks!</h3>
+                    <h3><spring:message code="managersCabinet.noNewProjectRequests"/></h3>
                 </div>
             </c:when>
             <c:otherwise>
@@ -40,12 +40,15 @@
                             <div class="panel-body">
 
                                 <div class="col-lg-12">
-                                    <h4 class="page-header"><strong>Technical Task Description</strong>
+                                    <h4 class="page-header">
+                                        <strong><spring:message code="entity.technicalTaskDescription"/></strong>
                                     </h4>
                                     <p class="data-description">
                                         <c:out value="${technicalTask.description}"/>
                                     </p>
-                                    <h3 class="text-center page-header"><strong>Operations</strong></h3>
+                                    <h3 class="text-center page-header">
+                                        <strong><spring:message code="entity.operations"/></strong>
+                                    </h3>
 
                                         <%--Operations--%>
                                     <div id="operationsAccordion<c:out value="${technicalTask.id}"/>"
@@ -68,10 +71,15 @@
                                                             <table class="text-center table table-condensed">
                                                                 <thead>
                                                                 <tr>
-                                                                    <th class="text-center">Specialization
+                                                                    <th class="text-center">
+                                                                        <spring:message code="entity.specialization"/>
                                                                     </th>
-                                                                    <th class="text-center">Rank</th>
-                                                                    <th class="text-center">Quantity</th>
+                                                                    <th class="text-center">
+                                                                        <spring:message code="entity.rank"/>
+                                                                    </th>
+                                                                    <th class="text-center">
+                                                                        <spring:message code="entity.quantity"/>
+                                                                    </th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -94,7 +102,10 @@
                                                         </div>
                                                         <hr>
                                                         <h4>
-                                                            <strong>Operation Description</strong></h4>
+                                                            <strong>
+                                                                <spring:message code="entity.operationDescription"/>
+                                                            </strong>
+                                                        </h4>
                                                         <p class="data-description">
                                                             <c:out value="${task.description}"/>
                                                         </p>
@@ -109,11 +120,11 @@
                                     <button name="declineTechnicalTask" class="btn btn-danger pull-left w-200"
                                             type="button" data-entity-type="technicalTask"
                                             value="<c:out value="${technicalTask.id}"/>">
-                                        Decline
+                                        <spring:message code="general.decline"/>
                                     </button>
                                     <button class="btn btn-success pull-right w-200" name="acceptTechnicalTask"
                                             value="<c:out value="${technicalTask.id}"/>" type="button">
-                                        Form as Project
+                                        <spring:message code="managersCabinet.formAsProject"/>
                                     </button>
                                 </div>
                             </div>

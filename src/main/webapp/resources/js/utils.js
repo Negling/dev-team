@@ -106,6 +106,6 @@ function showErrorsModal(msg) {
 
     $("div.modal[role=dialog]").modal("hide");
 
-    modal.find("p").text(msg);
+    modal.find("h4").text(msg);
     modal.modal("show");
 }

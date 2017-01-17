@@ -11,6 +11,19 @@ import ua.devteam.entity.users.Customer;
 import java.sql.*;
 import java.util.ResourceBundle;
 
+/**
+ * Maps {@link Customer} entity to table named "customers".
+ * <p>
+ * Fields which belongs to table is:
+ * <p>
+ * id(id),
+ * firstName(first_name),
+ * lastName(last_name),
+ * email(email),
+ * phoneNumber(phone),
+ * password(password),
+ * role(role_id).
+ */
 @Repository("customerDAO")
 public class JDBCCustomerDAO extends JDBCGenericIdentifiedDAO<Customer> implements CustomerDAO {
 
@@ -19,27 +32,16 @@ public class JDBCCustomerDAO extends JDBCGenericIdentifiedDAO<Customer> implemen
         super(jdbcOperations, sqlBundle);
     }
 
-    /**
-     * Creates record in database for all customer fields, except totalProjectsCost, and returns generated ID.
-     *
-     * @param customer customer data
-     * @return generated ID as long value
-     */
+
     @Override
     public long create(Customer customer) {
         return super.create(customer);
     }
 
-    /**
-     * Update  overrides all fields except totalProjectsCost, because this field is calculated by aggregate function.
-     * To change that value - update all customer projects individually.
-     *
-     * @param oldData - new entity data
-     * @param newData - old data, only id is necessary.
-     */
+
     @Override
     public void update(Customer oldData, Customer newData) {
-        super.jdbcUpdate(sqlBundle.getString("customer.update"),
+        jdbcOperations.update(sqlBundle.getString("customer.update"),
                 newData.getId(),
                 newData.getFirstName(),
                 newData.getLastName(),
@@ -50,14 +52,10 @@ public class JDBCCustomerDAO extends JDBCGenericIdentifiedDAO<Customer> implemen
                 oldData.getId());
     }
 
-    /**
-     * Deletes customer from database, to perform operation - only customer ID is necessary.
-     *
-     * @param customer - customer data
-     */
+
     @Override
     public void delete(Customer customer) {
-        super.jdbcUpdate(sqlBundle.getString("customer.delete"), customer.getId());
+        jdbcOperations.update(sqlBundle.getString("customer.delete"), customer.getId());
     }
 
     @Override

@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
@@ -15,8 +14,10 @@ import ua.devteam.configuration.DataAccessConfiguration;
 import ua.devteam.entity.enums.Role;
 import ua.devteam.entity.users.Customer;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 import static ua.devteam.dao.DAOTestUtils.*;
 
@@ -63,10 +64,6 @@ public class CustomerDAOTest {
         assertEquals(testData, customerDAO.getById(testData.getId()));
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
-    public void updateNullIDTest() {
-        customerDAO.update(testData, testData);
-    }
 
     @Test
     public void deleteTest() {
@@ -75,10 +72,6 @@ public class CustomerDAOTest {
         deleteEntityTest(customerDAO, testData, jdbcTemplate, tableName);
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
-    public void deleteNullIDTest() {
-        customerDAO.delete(testData);
-    }
 
     @Test
     public void getByIdTest() {

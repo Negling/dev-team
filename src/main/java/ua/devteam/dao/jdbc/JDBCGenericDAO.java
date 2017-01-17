@@ -1,6 +1,5 @@
 package ua.devteam.dao.jdbc;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcOperations;
 import ua.devteam.dao.GenericDAO;
 
@@ -8,6 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * To work with repository - all JDBC DAO objects must have access to sql queries message bundle,
+ * and spring jdbcOperations object.
+ *
+ * @param <T>
+ */
 abstract class JDBCGenericDAO<T> implements GenericDAO<T> {
 
     protected JdbcOperations jdbcOperations;
@@ -18,10 +23,6 @@ abstract class JDBCGenericDAO<T> implements GenericDAO<T> {
         this.sqlBundle = sqlBundle;
     }
 
-    protected void jdbcUpdate(String sql, Object... args) {
-        if (jdbcOperations.update(sql, args) < 1)
-            throw new DataIntegrityViolationException("No rows were changed during update!");
-    }
 
     protected abstract T mapEntity(ResultSet rs, int row) throws SQLException;
 }

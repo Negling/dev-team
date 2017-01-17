@@ -4,7 +4,9 @@ package ua.devteam.entity.projects;
 import ua.devteam.entity.AbstractTask;
 import ua.devteam.entity.enums.Status;
 
-public abstract class AbstractTechnicalTask extends AbstractTask {
+import java.io.Serializable;
+
+public abstract class AbstractTechnicalTask extends AbstractTask implements Serializable{
     private Long customerId;
     private Status status;
     private String managerCommentary;

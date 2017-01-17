@@ -3,9 +3,11 @@ package ua.devteam.entity.formModels;
 import ua.devteam.entity.enums.Role;
 import ua.devteam.entity.users.Customer;
 
+import java.io.Serializable;
+
 import static ua.devteam.entity.enums.Role.Customer;
 
-public class CustomerRegistrationForm extends AbstractRegistrationForm<Customer> {
+public class CustomerRegistrationForm extends AbstractRegistrationForm<Customer> implements Serializable{
     private Role role = Customer;
 
     public Role getRole() {

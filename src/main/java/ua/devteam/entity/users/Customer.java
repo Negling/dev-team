@@ -2,9 +2,10 @@ package ua.devteam.entity.users;
 
 import ua.devteam.entity.enums.Role;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Customer extends User {
+public class Customer extends User implements Serializable{
     private List<Check> checks;
 
     public Customer() {

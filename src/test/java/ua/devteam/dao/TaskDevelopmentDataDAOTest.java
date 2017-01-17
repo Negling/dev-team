@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -95,11 +94,6 @@ public class TaskDevelopmentDataDAOTest {
     @Test
     public void deleteTest() {
         deleteEntityTest(taskDevelopmentDataDAO, testData, jdbcTemplate, tableName);
-    }
-
-    @Test(expected = DataIntegrityViolationException.class)
-    public void deleteEmptyTest() {
-        taskDevelopmentDataDAO.delete(new TaskDevelopmentData());
     }
 
     @Test

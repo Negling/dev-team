@@ -12,6 +12,19 @@ import java.sql.*;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Maps {@link TechnicalTask} entity to table named "technical_tasks".
+ * <p>
+ * Fields which belongs to table is:
+ * <p>
+ * id(id),
+ * name(name),
+ * description(description),
+ * customerId(customer_id),
+ * status(status),
+ * managerCommentary(manager_commentary),
+ * managerId(manager_id).
+ */
 @Repository("technicalTaskDAO")
 public class JDBCTechnicalTaskDAO extends JDBCGenericIdentifiedDAO<TechnicalTask> implements TechnicalTaskDAO {
 
@@ -22,7 +35,7 @@ public class JDBCTechnicalTaskDAO extends JDBCGenericIdentifiedDAO<TechnicalTask
 
     @Override
     public void update(TechnicalTask oldEntity, TechnicalTask newEntity) {
-        super.jdbcUpdate(sqlBundle.getString("technicalTask.update"),
+        jdbcOperations.update(sqlBundle.getString("technicalTask.update"),
                 newEntity.getId(),
                 newEntity.getCustomerId(),
                 newEntity.getName(),
@@ -34,7 +47,7 @@ public class JDBCTechnicalTaskDAO extends JDBCGenericIdentifiedDAO<TechnicalTask
 
     @Override
     public void delete(TechnicalTask entity) {
-        super.jdbcUpdate(sqlBundle.getString("technicalTask.delete"), entity.getId());
+        jdbcOperations.update(sqlBundle.getString("technicalTask.delete"), entity.getId());
     }
 
     @Override

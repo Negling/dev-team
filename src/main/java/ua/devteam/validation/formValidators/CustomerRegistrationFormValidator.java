@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ua.devteam.service.UsersService;
 import ua.devteam.entity.formModels.CustomerRegistrationForm;
+import ua.devteam.service.UsersService;
 
 import static ua.devteam.validation.ValidationUtils.*;
 
@@ -51,7 +51,7 @@ public class CustomerRegistrationFormValidator implements Validator {
                 "validationErrors.initialsPatternMismatch", null);
 
         // Check if phone number is empty
-        rejectIfEmptyOrWhitespace(errors, "phoneNumber", "validationErrors.emptyPhoneNumber", new Object[]{12});
+        rejectIfEmptyOrWhitespace(errors, "phoneNumber", "validationErrors.emptyPhoneNumber", new Object[]{13});
 
         // Check phone number max length
         checkStringMaxLength("phoneNumber", form.getPhoneNumber(), 13, errors, "validationErrors.fieldMaxLength",
@@ -78,7 +78,7 @@ public class CustomerRegistrationFormValidator implements Validator {
                 new Object[]{30});
 
         // Check if email match pattern
-        checkStringMatchPattern("email", form.getEmail(), "([A-Za-z]+@[A-Za-z\\.]+\\.[a-z]{1,15})",
+        checkStringMatchPattern("email", form.getEmail(), "([A-Za-z]+@([A-Za-z]+\\.)+[a-z]{1,15})",
                 errors, "validationErrors.emailPatternMismatch", null);
 
         // Check if email is available

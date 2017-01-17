@@ -4,6 +4,7 @@ package ua.devteam.entity.projects;
 import ua.devteam.entity.enums.Status;
 import ua.devteam.entity.tasks.ProjectTask;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -11,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class Project extends AbstractTechnicalTask {
+public class Project extends AbstractTechnicalTask implements Serializable{
     private final static DateFormat PROJECT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private Long managerId;
     private Long technicalTaskId;
