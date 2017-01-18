@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ua.devteam.entity.formModels.CustomerRegistrationForm;
+import ua.devteam.entity.forms.CustomerRegistrationForm;
 import ua.devteam.service.UsersService;
 
 import static ua.devteam.validation.ValidationUtils.*;

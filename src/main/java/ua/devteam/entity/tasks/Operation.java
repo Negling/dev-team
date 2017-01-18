@@ -6,8 +6,16 @@ import ua.devteam.entity.AbstractTask;
 import java.io.Serializable;
 import java.util.List;
 
-public class Operation extends AbstractTask implements Serializable{
+/**
+ * Low-tier realization of abstract task class. Used as nested technical task object to describe operations that
+ * needs to be done in technical task.
+ * {@link ua.devteam.entity.projects.TechnicalTask}
+ * {@link RequestForDevelopers}
+ */
+public class Operation extends AbstractTask implements Serializable {
+    /* Id of technical task that operation is bound to */
     private Long technicalTaskId;
+    /* Developers that customer is requested to perform this operation */
     private List<RequestForDevelopers> requestsForDevelopers;
 
     public Operation() {

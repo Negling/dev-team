@@ -9,6 +9,11 @@ import ua.devteam.entity.tasks.ProjectTask;
 
 import static org.springframework.validation.ValidationUtils.invokeValidator;
 
+/**
+ * In case that project objects to validate is came from repository -
+ * simply assume that developers is set correct on project tasks, and to do that -
+ * delegate validation to nested project tasks validator
+ */
 @Component
 public class ProjectValidator implements Validator {
 

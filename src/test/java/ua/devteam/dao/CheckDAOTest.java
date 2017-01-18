@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.configuration.DataAccessConfiguration;
 import ua.devteam.entity.enums.CheckStatus;
-import ua.devteam.entity.users.Check;
+import ua.devteam.entity.projects.Check;
 
 import java.math.BigDecimal;
 import java.util.List;

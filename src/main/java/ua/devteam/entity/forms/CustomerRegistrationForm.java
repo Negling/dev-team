@@ -1,4 +1,4 @@
-package ua.devteam.entity.formModels;
+package ua.devteam.entity.forms;
 
 import ua.devteam.entity.enums.Role;
 import ua.devteam.entity.users.Customer;
@@ -7,8 +7,29 @@ import java.io.Serializable;
 
 import static ua.devteam.entity.enums.Role.Customer;
 
-public class CustomerRegistrationForm extends AbstractRegistrationForm<Customer> implements Serializable{
+/**
+ * Form used to map all customer data for following registration.
+ */
+public class CustomerRegistrationForm extends AbstractRegistrationForm<Customer> implements Serializable {
+    private String confirmedEmail;
+    private String confirmedPhoneNumber;
     private Role role = Customer;
+
+    public String getConfirmedEmail() {
+        return confirmedEmail;
+    }
+
+    public String getConfirmedPhoneNumber() {
+        return confirmedPhoneNumber;
+    }
+
+    public void setConfirmedPhoneNumber(String confirmedPhoneNumber) {
+        this.confirmedPhoneNumber = confirmedPhoneNumber;
+    }
+
+    public void setConfirmedEmail(String confirmedEmail) {
+        this.confirmedEmail = confirmedEmail;
+    }
 
     public Role getRole() {
         return role;
@@ -31,12 +52,19 @@ public class CustomerRegistrationForm extends AbstractRegistrationForm<Customer>
 
         CustomerRegistrationForm that = (CustomerRegistrationForm) o;
 
+        if (confirmedEmail != null ? !confirmedEmail.equals(that.confirmedEmail) : that.confirmedEmail != null)
+            return false;
+        if (confirmedPhoneNumber != null ? !confirmedPhoneNumber.equals(that.confirmedPhoneNumber) : that.confirmedPhoneNumber != null)
+            return false;
+
         return role == that.role;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
+        result = 31 * result + (confirmedEmail != null ? confirmedEmail.hashCode() : 0);
+        result = 31 * result + (confirmedPhoneNumber != null ? confirmedPhoneNumber.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
 
         return result;

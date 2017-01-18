@@ -4,7 +4,13 @@ import ua.devteam.entity.enums.Role;
 
 import java.io.Serializable;
 
+/**
+ * User subclass. As additional field contains counter of total served projects.
+ * {@link User}
+ */
 public class Manager extends User implements Serializable {
+
+    /* Total amount of projects that this manager served */
     private Long totalProjectsServed;
 
     public Manager() {

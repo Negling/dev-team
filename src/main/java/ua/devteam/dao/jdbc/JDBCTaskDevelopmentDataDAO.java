@@ -19,13 +19,14 @@ import java.util.ResourceBundle;
  * Maps {@link TaskDevelopmentData} entity to table named "task_development_data".
  * <p>
  * Fields which belongs to table is:
- * <p>
- * projectTaskId(task_id),
- * developerId(developer_id),
- * specialization(developer_specialization),
- * rank(developer_rank),
- * hoursSpent(hours_spent),
- * status(status).
+ * <p><ul>
+ * <li> projectTaskId(task_id),
+ * <li> developerId(developer_id),
+ * <li> specialization(developer_specialization),
+ * <li> rank(developer_rank),
+ * <li> hoursSpent(hours_spent),
+ * <li> status(status).
+ * </ul>
  */
 @Repository("taskDevelopmentDataDAO")
 public class JDBCTaskDevelopmentDataDAO extends JDBCGenericDAO<TaskDevelopmentData> implements TaskDevelopmentDataDAO {

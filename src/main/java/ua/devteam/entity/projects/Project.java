@@ -12,13 +12,25 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Project is creating when manager accepts customers technical task. Contains technical task id that project is
+ * formed from, and when status of project is updated - status of technical task must be updated as well.
+ * {@link TechnicalTask}
+ */
 public class Project extends AbstractTechnicalTask implements Serializable{
+    /* General date format */
     private final static DateFormat PROJECT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    /* Manager id that assigned to this project */
     private Long managerId;
+    /* Technical task id that project is formed from */
     private Long technicalTaskId;
+    /* Date when project is started. Usually its time of creating project object  */
     private Date startDate;
+    /* Date when project is complete, declined or cancelled */
     private Date endDate;
+    /* Total cost of project. May be null if project was declined. */
     private BigDecimal totalProjectCost;
+    /* Tasks that are bound to project */
     private List<ProjectTask> tasks;
 
     public Project() {

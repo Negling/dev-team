@@ -42,9 +42,10 @@ public class BaseController {
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin', 'Customer')")
     public String showTechnicalTask(@RequestParam Long id, Model model, Authentication auth) throws AccessDeniedException {
         TechnicalTask technicalTask = technicalTasksService.getById(id, true);
+        User user = ((User) auth.getPrincipal());
 
-        if (auth.getAuthorities().stream().findAny().get().equals(Customer)
-                && !Objects.equals(((User) auth.getPrincipal()).getId(), technicalTask.getCustomerId())) {
+        if (user.getRole().equals(Customer)
+                && !Objects.equals(user.getId(), technicalTask.getCustomerId())) {
 
             throw new AccessDeniedException("Customer with this id not allowed to view this document!");
         }
@@ -57,9 +58,10 @@ public class BaseController {
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin', 'Customer')")
     public String showProject(@RequestParam Long id, Model model, Authentication auth) throws AccessDeniedException {
         Project project = projectsService.getById(id, true);
+        User user = ((User) auth.getPrincipal());
 
-        if (auth.getAuthorities().stream().findAny().get().equals(Customer)
-                && !Objects.equals(((User) auth.getPrincipal()).getId(), project.getCustomerId())) {
+        if (user.getRole().equals(Customer)
+                && !Objects.equals(user.getId(), project.getCustomerId())) {
 
             throw new AccessDeniedException("Customer with this id not allowed to view this document!");
         }

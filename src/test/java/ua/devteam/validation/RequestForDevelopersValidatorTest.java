@@ -13,11 +13,11 @@ import ua.devteam.entity.enums.DeveloperSpecialization;
 import ua.devteam.entity.tasks.RequestForDevelopers;
 import ua.devteam.validation.entityValidators.RequestForDevelopersValidator;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 @RunWith(JUnit4.class)
-public class RequestForDevelopersTest {
+public class RequestForDevelopersValidatorTest {
 
     private Validator validator = new RequestForDevelopersValidator();
     private RequestForDevelopers testData = new RequestForDevelopers();

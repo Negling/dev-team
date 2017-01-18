@@ -17,11 +17,12 @@ import java.util.ResourceBundle;
  * Maps {@link RequestForDevelopers} entity to table named "requests_for_developers".
  * <p>
  * Fields which belongs to table is:
- * <p>
- * operationId(operation_id),
- * specialization(specialization),
- * rank(rank),
- * quantity(quantity).
+ * <p><ul>
+ * <li> operationId(operation_id),
+ * <li> specialization(specialization),
+ * <li> rank(rank),
+ * <li> quantity(quantity).
+ * </ul>
  */
 @Repository("requestsForDevelopersDAO")
 public class JDBCRequestsForDevelopersDAO extends JDBCGenericDAO<RequestForDevelopers> implements RequestsForDevelopersDAO {

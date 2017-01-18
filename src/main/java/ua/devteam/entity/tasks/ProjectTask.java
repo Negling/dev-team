@@ -7,12 +7,25 @@ import ua.devteam.entity.enums.Status;
 import java.io.Serializable;
 import java.util.List;
 
-public class ProjectTask extends AbstractTask implements Serializable{
+/**
+ * Low-tier realization of abstract task class. Used as nested project object to describe operations that needs to be done.
+ * Contains information about current development progress as task status, and information about hired developers and their
+ * work status related to this task.
+ * {@link ua.devteam.entity.projects.Project}
+ */
+public class ProjectTask extends AbstractTask implements Serializable {
+
+    /* Id of project that this task is bound to */
     private Long projectId;
+    /* Id of operation that this task is formed from */
     private Long operationId;
+    /* Current task development status */
     private Status taskStatus;
+    /* Amount of hours that all developers summary spent */
     private Integer totalHoursSpent;
+    /* Information about hired developers and their task progress */
     private List<TaskDevelopmentData> tasksDevelopmentData;
+    /* Information about requested developers by customer */
     private List<RequestForDevelopers> requestsForDevelopers;
 
     public ProjectTask() {

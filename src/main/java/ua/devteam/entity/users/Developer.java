@@ -9,11 +9,21 @@ import ua.devteam.entity.enums.Role;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+/**
+ * User subclass. Contains information about developer specialization and class, his current task, status and hire cost.
+ * {@link User}
+ */
 public class Developer extends User implements Serializable {
+
+    /* Id of current project task that developer works on. Can be null if developer is not assigned to task  */
     private Long currentTaskId;
+    /* Developer salary-hire cost. Unit if measure is USD. */
     private BigDecimal hireCost;
+    /* Specialization. This defines type of works that developer is capable for */
     private DeveloperSpecialization specialization;
+    /* Rank of developer */
     private DeveloperRank rank;
+    /* Current developer status. Defines is developer available to hire, or he is already assigned to task */
     private DeveloperStatus status;
 
     public Developer() {

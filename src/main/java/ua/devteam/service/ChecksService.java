@@ -1,7 +1,7 @@
 package ua.devteam.service;
 
 
-import ua.devteam.entity.users.Check;
+import ua.devteam.entity.projects.Check;
 
 import java.util.List;
 

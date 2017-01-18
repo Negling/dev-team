@@ -18,18 +18,19 @@ import java.util.ResourceBundle;
  * Maps {@link Developer} entity to table named "developers".
  * <p>
  * Fields which belongs to table is:
- * <p>
- * id(id),
- * firstName(first_name),
- * lastName(last_name),
- * email(email),
- * phoneNumber(phone),
- * password(password),
- * hireCost(hire_cost),
- * specialization(specialization),
- * rank(rank),
- * status(status),
- * role(role_id).
+ * <p><ul>
+ * <li> id(id),
+ * <li> firstName(first_name),
+ * <li> lastName(last_name),
+ * <li> email(email),
+ * <li> phoneNumber(phone),
+ * <li> password(password),
+ * <li> hireCost(hire_cost),
+ * <li> specialization(specialization),
+ * <li> rank(rank),
+ * <li> status(status),
+ * <li> role(role_id).
+ * </ul>
  */
 @Repository("developerDAO")
 public class JDBCDeveloperDAO extends JDBCGenericIdentifiedDAO<Developer> implements DeveloperDAO {

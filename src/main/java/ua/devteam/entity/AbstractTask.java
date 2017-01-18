@@ -1,9 +1,14 @@
 package ua.devteam.entity;
 
-
+/**
+ * General class for any-level task. Contains 3 key fields that eny task obtain.
+ */
 public abstract class AbstractTask {
+    /* Unique long identification value */
     private Long id;
+    /* Task name that shortly represents what it's about */
     private String name;
+    /* Large and detailed description what it's about*/
     private String description;
 
     protected AbstractTask() {

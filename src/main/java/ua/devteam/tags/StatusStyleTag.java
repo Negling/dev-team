@@ -9,6 +9,27 @@ import javax.servlet.jsp.SkipPageException;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 
+/**
+ * Simple tag that returns appropriate color code that corresponds to ingoing status value.
+ * <p>
+ * Supports next "status" enums:
+ * <p><ul>
+ * <li> Status enum
+ * <li> CheckStatus enum
+ * <li> DeveloperStatus enum
+ * </ul>
+ * <p>
+ * Returns next color values:
+ * <p><ul>
+ * <li> blue - blue
+ * <li> #DC143C - red
+ * <li> purple - purple
+ * <li> darkcyan - cyan
+ * <li> #449d44 - lime
+ * <li> empty string - in case of default values
+ * </ul>
+ * <p>
+ */
 public class StatusStyleTag extends SimpleTagSupport {
 
     private Enum status;
@@ -25,15 +46,21 @@ public class StatusStyleTag extends SimpleTagSupport {
             style = evaluateStatus((Status) status);
         } else if (status instanceof CheckStatus) {
             style = evaluateCheckStatus((CheckStatus) status);
-        } else if (status instanceof  DeveloperStatus){
+        } else if (status instanceof DeveloperStatus) {
             style = evaluateDeveloperStatus((DeveloperStatus) status);
-        }else {
+        } else {
             throw new SkipPageException();
         }
 
         getJspContext().getOut().write(style);
     }
 
+    /**
+     * Returns appropriate color to ingoing Status value
+     *
+     * @param status current status
+     * @return string with colour code
+     */
     private String evaluateStatus(Status status) {
         switch (status) {
             case Pending:
@@ -51,6 +78,12 @@ public class StatusStyleTag extends SimpleTagSupport {
         }
     }
 
+    /**
+     * Returns appropriate color to ingoing CheckStatus value
+     *
+     * @param status current status
+     * @return string with colour code
+     */
     private String evaluateCheckStatus(CheckStatus status) {
         switch (status) {
             case Awaiting:
@@ -64,6 +97,12 @@ public class StatusStyleTag extends SimpleTagSupport {
         }
     }
 
+    /**
+     * Returns appropriate color to ingoing DeveloperStatus value
+     *
+     * @param status current status
+     * @return string with colour code
+     */
     private String evaluateDeveloperStatus(DeveloperStatus status) {
         switch (status) {
             case Available:

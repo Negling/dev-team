@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 import ua.devteam.dao.CheckDAO;
 import ua.devteam.entity.enums.CheckStatus;
-import ua.devteam.entity.users.Check;
+import ua.devteam.entity.projects.Check;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,11 +17,13 @@ import java.util.ResourceBundle;
  * <p>
  * Fields which belongs to table is:
  * <p>
- * projectId(project_id),
- * developersCost(developers_cost),
- * taxes(taxes),
- * servicesCost(services),
- * status(status).
+ * <ul>
+ * <li> projectId(project_id),
+ * <li> developersCost(developers_cost),
+ * <li> taxes(taxes),
+ * <li> servicesCost(services),
+ * <li> status(status).
+ * </ul>
  */
 @Repository("checkDAO")
 public class JDBCCheckDAO extends JDBCGenericDAO<Check> implements CheckDAO {

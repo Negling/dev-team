@@ -44,7 +44,7 @@ public class OperationValidator implements Validator {
 
         // Check name max length
         checkStringMaxLength(operation.getName(), 50, errors, "validationErrors.fieldLengthOverflow",
-                new Object[]{formatStringOverflow(operation.getName()), 50});
+                new Object[]{formatStringOverflow(operation.getName(), 15), 50});
 
         // Check if description is empty
         rejectIfEmptyOrWhitespace(errors, "description", "validationErrors.emptyDescription", new Object[]{30});
@@ -55,11 +55,11 @@ public class OperationValidator implements Validator {
 
         // Check description max length
         checkStringMaxLength(operation.getDescription(), 5000, errors, "validationErrors.fieldLengthOverflow",
-                new Object[]{formatStringOverflow(operation.getDescription()), 5000});
+                new Object[]{formatStringOverflow(operation.getDescription(), 15), 5000});
 
         // Check if rfd is empty
-        if (operation.getRequestsForDevelopers() == null) {
-            rejectIfEmpty(errors, "requestsForDevelopers", "validationErrors.emptyRequestsForDevelopers");
+        if (operation.getRequestsForDevelopers() == null || operation.getRequestsForDevelopers().size() == 0) {
+            errors.reject("validationErrors.emptyRequestsForDevelopers");
         } else {
             // Validate nested requests for developers
             for (int i = 0; i < operation.getRequestsForDevelopers().size(); i++) {

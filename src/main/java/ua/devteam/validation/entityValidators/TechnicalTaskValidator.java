@@ -43,7 +43,7 @@ public class TechnicalTaskValidator implements Validator {
 
         // Check name max length
         checkStringMaxLength(techTask.getName(), 50, errors, "validationErrors.fieldLengthOverflow",
-                new Object[]{formatStringOverflow(techTask.getName()), 50});
+                new Object[]{formatStringOverflow(techTask.getName(), 15), 50});
 
         // Check if description is empty
         rejectIfEmptyOrWhitespace(errors, "description", "validationErrors.emptyDescription", new Object[]{30});
@@ -54,7 +54,7 @@ public class TechnicalTaskValidator implements Validator {
 
         // Check description max length
         checkStringMaxLength(techTask.getDescription(), 5000, errors, "validationErrors.fieldLengthOverflow",
-                new Object[]{formatStringOverflow(techTask.getDescription()), 5000});
+                new Object[]{formatStringOverflow(techTask.getDescription(), 15), 5000});
 
         // Check if operations is empty
         if (techTask.getOperations() == null || techTask.getOperations().size() == 0) {

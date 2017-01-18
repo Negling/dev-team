@@ -16,14 +16,15 @@ import java.util.ResourceBundle;
  * Maps {@link TechnicalTask} entity to table named "technical_tasks".
  * <p>
  * Fields which belongs to table is:
- * <p>
- * id(id),
- * name(name),
- * description(description),
- * customerId(customer_id),
- * status(status),
- * managerCommentary(manager_commentary),
- * managerId(manager_id).
+ * <p><ul>
+ * <li> id(id),
+ * <li> name(name),
+ * <li> description(description),
+ * <li> customerId(customer_id),
+ * <li> status(status),
+ * <li> managerCommentary(manager_commentary),
+ * <li> managerId(manager_id).
+ * </ul>
  */
 @Repository("technicalTaskDAO")
 public class JDBCTechnicalTaskDAO extends JDBCGenericIdentifiedDAO<TechnicalTask> implements TechnicalTaskDAO {

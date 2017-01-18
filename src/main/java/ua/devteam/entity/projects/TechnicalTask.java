@@ -7,7 +7,14 @@ import ua.devteam.entity.tasks.Operation;
 import java.io.Serializable;
 import java.util.List;
 
-public class TechnicalTask extends AbstractTechnicalTask implements Serializable{
+/**
+ * Simple realization of high-tier task. Object of this class is creating when customer submits request to managers.
+ * If Manager confirms technical task - from it creates relied object of project. Or task may be just declined.
+ * Technical task status must depend on project status, if there was created one.
+ * {@link Project}
+ */
+public class TechnicalTask extends AbstractTechnicalTask implements Serializable {
+    /* Operations that bound to this technical task */
     private List<Operation> operations;
 
     public TechnicalTask() {

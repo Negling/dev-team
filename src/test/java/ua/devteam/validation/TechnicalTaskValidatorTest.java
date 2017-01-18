@@ -15,10 +15,11 @@ import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
-public class TechnicalTaskValidationTest {
+public class TechnicalTaskValidatorTest {
     private Validator validator;
     private TechnicalTask testData;
     private Errors errors;
@@ -34,7 +35,11 @@ public class TechnicalTaskValidationTest {
     public void setUp() throws Exception {
         testData.setName("test_test_test");
         testData.setDescription("test_test_test_test_test_test_test_test_test");
-        testData.setOperations(new ArrayList<>());
+        testData.setOperations(new ArrayList<Operation>() {
+            {
+                add(new Operation());
+            }
+        });
         errors = new BeanPropertyBindingResult(testData, "testData");
     }
 
@@ -86,6 +91,15 @@ public class TechnicalTaskValidationTest {
     @Test
     public void nullOperationsTest() {
         testData.setOperations(null);
+
+        validator.validate(testData, errors);
+
+        assertThat(errors.getErrorCount(), is(1));
+    }
+
+    @Test
+    public void emptyOperationsTest() {
+        testData.getOperations().clear();
 
         validator.validate(testData, errors);
 

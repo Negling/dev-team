@@ -25,11 +25,13 @@ public class CompositeValidator implements Validator {
         Validator result = entityValidators.stream().filter(validator ->
                 validator.supports(clazz)).findAny().orElse(null);
 
+        // if there any validator in entityValidators list that supports current class - returns true
         return result != null;
     }
 
     @Override
     public void validate(Object target, Errors errors) {
+        // finds and invokes validator that supports target entity class
         entityValidators.stream().filter(validator ->
                 validator.supports(target.getClass())).findAny().get().validate(target, errors);
     }

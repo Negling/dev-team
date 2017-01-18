@@ -14,14 +14,15 @@ import java.util.ResourceBundle;
  * Maps {@link Manager} entity to table named "managers".
  * <p>
  * Fields which belongs to table is:
- * <p>
- * id(id),
- * firstName(first_name),
- * lastName(last_name),
- * email(email),
- * phoneNumber(phone),
- * password(password),
- * role(role_id).
+ * <p><ul>
+ * <li> id(id),
+ * <li> firstName(first_name),
+ * <li> lastName(last_name),
+ * <li> email(email),
+ * <li> phoneNumber(phone),
+ * <li> password(password),
+ * <li> role(role_id).
+ * </ul>
  */
 @Repository("managerDAO")
 public class JDBCManagerDAO extends JDBCGenericIdentifiedDAO<Manager> implements ManagerDAO {

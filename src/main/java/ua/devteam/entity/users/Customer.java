@@ -1,11 +1,17 @@
 package ua.devteam.entity.users;
 
 import ua.devteam.entity.enums.Role;
+import ua.devteam.entity.projects.Check;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class Customer extends User implements Serializable{
+/**
+ * User subclass. {@link User}
+ */
+public class Customer extends User implements Serializable {
+
+    /* User checks history */
     private List<Check> checks;
 
     public Customer() {

@@ -1,8 +1,12 @@
 package ua.devteam.exceptions;
 
-
+/**
+ * Exception with error code from l10n properties, which can be actually used in response to user to explain what happened.
+ */
 public class LocalizedException extends RuntimeException {
+    /*Error code from l10n properties file like "errorPage.noAccess", etc.*/
     private String localizedErrorCode;
+    /*Array of params which can be bound to errorCode in MessageSource*/
     private Object[] errorParams;
 
     public LocalizedException(String message, Throwable cause, String localizedErrorCode, Object[] errorParams) {

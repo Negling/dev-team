@@ -14,11 +14,12 @@ import java.util.ResourceBundle;
  * Maps {@link Operation} entity to table named "technical_task_operations".
  * <p>
  * Fields which belongs to table is:
- * <p>
- * id(id),
- * technicalTaskId(technical_task_id),
- * name(name),
- * description(description).
+ * <p><ul>
+ * <li> id(id),
+ * <li> technicalTaskId(technical_task_id),
+ * <li> name(name),
+ * <li> description(description).
+ * </ul>
  */
 @Repository("operationDAO")
 public class JDBCOperationDAO extends JDBCGenericIdentifiedDAO<Operation> implements OperationDAO {

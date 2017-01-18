@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.dao.CheckDAO;
-import ua.devteam.entity.users.Check;
+import ua.devteam.entity.projects.Check;
 import ua.devteam.service.ChecksService;
 import ua.devteam.service.ProjectsService;
 

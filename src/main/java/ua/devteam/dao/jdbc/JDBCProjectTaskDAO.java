@@ -15,13 +15,14 @@ import java.util.ResourceBundle;
  * Maps {@link ProjectTask} entity to table named "project_tasks".
  * <p>
  * Fields which belongs to table is:
- * <p>
- * id(id),
- * name(name),
- * description(description),
- * projectId(project_id),
- * operationId(operation_id),
- * taskStatus(status).
+ * <p><ul>
+ * <li> id(id),
+ * <li> name(name),
+ * <li> description(description),
+ * <li> projectId(project_id),
+ * <li> operationId(operation_id),
+ * <li> taskStatus(status).
+ * </ul>
  */
 @Repository("projectTaskDAO")
 public class JDBCProjectTaskDAO extends JDBCGenericIdentifiedDAO<ProjectTask> implements ProjectTaskDAO {
