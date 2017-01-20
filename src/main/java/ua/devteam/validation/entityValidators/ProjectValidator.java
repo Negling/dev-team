@@ -39,11 +39,14 @@ public class ProjectValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Project project = (Project) target;
 
-        for (int i = 0; i < project.getTasks().size(); i++) {
-            errors.pushNestedPath("tasks[" + i + "]");
-            invokeValidator(projectTaskValidator, project.getTasks().get(i), errors);
-            errors.popNestedPath();
+        if (project.getTasks() == null || project.getTasks().isEmpty()) {
+            errors.reject("validationErrors.emptyOperations");
+        } else {
+            for (int i = 0; i < project.getTasks().size(); i++) {
+                errors.pushNestedPath("tasks[" + i + "]");
+                invokeValidator(projectTaskValidator, project.getTasks().get(i), errors);
+                errors.popNestedPath();
+            }
         }
-
     }
 }

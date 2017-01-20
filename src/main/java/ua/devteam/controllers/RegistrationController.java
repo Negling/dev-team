@@ -37,6 +37,7 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.customerRegistrationForm",
                     bindingResult);
+            System.out.println(bindingResult);
             return "redirect:/registration";
         }
         // save customer

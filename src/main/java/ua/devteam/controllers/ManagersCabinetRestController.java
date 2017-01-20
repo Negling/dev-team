@@ -1,7 +1,7 @@
 package ua.devteam.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,20 +34,20 @@ public class ManagersCabinetRestController extends AbstractEntityProcessingContr
     private ProjectsService projectsService;
     private ChecksService checksService;
     private DevelopersService developersService;
-    private TaskDevelopmentDataService taskDevelopersService;
+    private TaskDevelopmentDataService taskDevelopmentDataService;
     private Validator projectValidator;
 
     @Autowired
-    public ManagersCabinetRestController(ResourceBundleMessageSource messageSource, TechnicalTasksService technicalTasksService,
+    public ManagersCabinetRestController(MessageSource messageSource, TechnicalTasksService technicalTasksService,
                                          ProjectsService projectsService, ChecksService checksService,
-                                         TaskDevelopmentDataService taskDevelopersService, Validator projectValidator,
-                                         DevelopersService developersService) {
+                                         TaskDevelopmentDataService taskDevelopmentDataService, DevelopersService developersService,
+                                         Validator projectValidator) {
         super(messageSource);
         this.technicalTasksService = technicalTasksService;
         this.projectsService = projectsService;
         this.checksService = checksService;
         this.developersService = developersService;
-        this.taskDevelopersService = taskDevelopersService;
+        this.taskDevelopmentDataService = taskDevelopmentDataService;
         this.projectValidator = projectValidator;
     }
 
@@ -62,7 +62,7 @@ public class ManagersCabinetRestController extends AbstractEntityProcessingContr
     @RequestMapping(value = "/bind", method = RequestMethod.POST)
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
     public TaskDevelopmentData bindDeveloper(@RequestBody Map<String, Long> params) {
-        return taskDevelopersService.bindDeveloper(params.get("devId"), params.get("taskId"));
+        return taskDevelopmentDataService.bindDeveloper(params.get("devId"), params.get("taskId"));
     }
 
 
@@ -70,7 +70,7 @@ public class ManagersCabinetRestController extends AbstractEntityProcessingContr
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
     public ResponseEntity unbindDeveloper(@RequestBody Long developerId) throws Exception {
 
-        taskDevelopersService.unbindDeveloper(developerId);
+        taskDevelopmentDataService.unbindDeveloper(developerId);
 
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -110,7 +110,7 @@ public class ManagersCabinetRestController extends AbstractEntityProcessingContr
         Errors projectErrors;
 
         if (bindingResult.hasErrors()) {
-            return generateDefaultResponse(new LinkedList<>(), bindingResult, locale);
+            return generateResponse(new LinkedList<>(), bindingResult, locale);
         }
 
         project = projectsService.getById(check.getProjectId(), true);
@@ -122,6 +122,6 @@ public class ManagersCabinetRestController extends AbstractEntityProcessingContr
             checksService.registerCheck(check);
         }
 
-        return generateDefaultResponse(new LinkedList<>(), projectErrors, locale);
+        return generateResponse(new LinkedList<>(), projectErrors, locale);
     }
 }

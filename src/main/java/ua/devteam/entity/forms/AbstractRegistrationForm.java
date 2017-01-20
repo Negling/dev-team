@@ -19,6 +19,16 @@ public abstract class AbstractRegistrationForm<T extends User> {
     AbstractRegistrationForm() {
     }
 
+    public AbstractRegistrationForm(String firstName, String lastName, String email, String phoneNumber, String password,
+                                    String confirmedPassword) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.confirmedPassword = confirmedPassword;
+    }
+
     public String getFirstName() {
         return firstName;
     }

@@ -5,7 +5,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.devteam.entity.enums.DeveloperRank;
 import ua.devteam.entity.enums.DeveloperSpecialization;
@@ -35,7 +34,11 @@ public class CustomersCabinetController {
 
     @RequestMapping
     @PreAuthorize("hasAuthority('Customer')")
-    public String cabinet() {
+    public String cabinet(Model model, Authentication auth) {
+        model.addAttribute("customer", customersService.getById(((User) auth.getPrincipal()).getId()));
+        model.addAttribute("specializations", DeveloperSpecialization.values());
+        model.addAttribute("ranks", DeveloperRank.values());
+
         return "customers-cabinet";
     }
 
@@ -81,14 +84,5 @@ public class CustomersCabinetController {
                 projectsService.getCompleteByCustomer(((User) auth.getPrincipal()).getId(), false));
 
         return "fragments/customer/customer_complete_projects";
-    }
-
-    @ModelAttribute
-    @PreAuthorize("hasAuthority('Customer')")
-    public void addAttributes(Model model, Authentication auth) {
-
-        model.addAttribute("customer", customersService.getById(((User) auth.getPrincipal()).getId()));
-        model.addAttribute("specializations", DeveloperSpecialization.values());
-        model.addAttribute("ranks", DeveloperRank.values());
     }
 }

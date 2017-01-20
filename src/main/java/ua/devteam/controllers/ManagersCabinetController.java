@@ -5,7 +5,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.devteam.entity.enums.DeveloperRank;
 import ua.devteam.entity.enums.DeveloperSpecialization;
@@ -28,7 +27,10 @@ public class ManagersCabinetController {
 
     @RequestMapping
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
-    public String cabinet() {
+    public String cabinet(Model model) {
+        model.addAttribute("ranks", DeveloperRank.values());
+        model.addAttribute("specializations", DeveloperSpecialization.values());
+
         return "management";
     }
 
@@ -53,7 +55,7 @@ public class ManagersCabinetController {
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
     public String manageRunningProjects(Model model, Authentication auth) {
         model.addAttribute("runningProjects",
-                projectsService.getRunningByManager(((User) auth.getPrincipal()).getId(), true));
+                projectsService.getRunningByManager(((User) auth.getPrincipal()).getId(), false));
 
         return "/fragments/management/manage_running_projects";
     }
@@ -65,12 +67,5 @@ public class ManagersCabinetController {
                 projectsService.getCompleteByManager(((User) auth.getPrincipal()).getId(), false));
 
         return "/fragments/management/manage_complete_projects";
-    }
-
-    @ModelAttribute
-    @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
-    public void addAttributes(Model model) {
-        model.addAttribute("ranks", DeveloperRank.values());
-        model.addAttribute("specializations", DeveloperSpecialization.values());
     }
 }

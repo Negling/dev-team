@@ -19,7 +19,7 @@ $(function () {
 
 function completeTaskAjax() {
     $.ajax({
-        method: "POST",
+        method: "PUT",
         url: "/development/completeTask",
         data: JSON.stringify({id: $("#markComplete").attr("value"), hoursSpent: $("#hoursSpent").val()})
     }).done(function (data) {

@@ -1,7 +1,7 @@
 package ua.devteam.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,7 +29,7 @@ public class CustomersCabinetRestController extends AbstractEntityProcessingCont
     private TechnicalTasksService technicalTasksService;
 
     @Autowired
-    public CustomersCabinetRestController(ResourceBundleMessageSource messageSource, ChecksService checksService,
+    public CustomersCabinetRestController(MessageSource messageSource, ChecksService checksService,
                                           TechnicalTasksService technicalTasksService) {
         super(messageSource);
         this.checksService = checksService;
@@ -46,7 +46,7 @@ public class CustomersCabinetRestController extends AbstractEntityProcessingCont
             technicalTasksService.registerTechnicalTask(technicalTask);
         }
 
-        return generateDefaultResponse(new LinkedList<>(), bindingResult, locale);
+        return generateResponse(new LinkedList<>(), bindingResult, locale);
     }
 
     @PreAuthorize("hasAuthority('Customer')")

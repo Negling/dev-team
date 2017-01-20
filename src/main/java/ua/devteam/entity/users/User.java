@@ -97,6 +97,12 @@ public class User implements UserDetails, Serializable {
         return role;
     }
 
+    public void setRole(Role role) {
+        this.role = role;
+        authorities.clear();
+        authorities.add(role);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
@@ -130,12 +136,6 @@ public class User implements UserDetails, Serializable {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    protected void setRole(Role role) {
-        this.role = role;
-        authorities.clear();
-        authorities.add(role);
     }
 
     @Override

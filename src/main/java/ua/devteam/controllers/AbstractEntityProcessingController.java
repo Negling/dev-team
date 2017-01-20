@@ -1,7 +1,7 @@
 package ua.devteam.controllers;
 
 
-import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -11,21 +11,21 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 abstract class AbstractEntityProcessingController {
-    private ResourceBundleMessageSource messageSource;
+    private MessageSource messageSource;
 
-    public AbstractEntityProcessingController(ResourceBundleMessageSource messageSource) {
+    public AbstractEntityProcessingController(MessageSource messageSource) {
         this.messageSource = messageSource;
     }
 
-    public ResourceBundleMessageSource getMessageSource() {
+    public MessageSource getMessageSource() {
         return messageSource;
     }
 
-    public void setMessageSource(ResourceBundleMessageSource messageSource) {
+    public void setMessageSource(MessageSource messageSource) {
         this.messageSource = messageSource;
     }
 
-    ResponseEntity<List<String>> generateDefaultResponse(List<String> responseMsg, Errors bindingResult, Locale locale) {
+    ResponseEntity<List<String>> generateResponse(List<String> responseMsg, Errors bindingResult, Locale locale) {
         if (!bindingResult.hasErrors()) {
 
             responseMsg.add(messageSource.getMessage("general.success", null, locale));

@@ -15,6 +15,17 @@ public class CustomerRegistrationForm extends AbstractRegistrationForm<Customer>
     private String confirmedPhoneNumber;
     private Role role = Customer;
 
+    public CustomerRegistrationForm() {
+    }
+
+    public CustomerRegistrationForm(String firstName, String lastName, String email, String confirmedEmail,
+                                    String phoneNumber, String confirmedPhoneNumber, String password, String confirmedPassword) {
+
+        super(firstName, lastName, email, phoneNumber, password, confirmedPassword);
+        this.confirmedEmail = confirmedEmail;
+        this.confirmedPhoneNumber = confirmedPhoneNumber;
+    }
+
     public String getConfirmedEmail() {
         return confirmedEmail;
     }

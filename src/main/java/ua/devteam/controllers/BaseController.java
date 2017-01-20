@@ -1,6 +1,7 @@
 package ua.devteam.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,6 @@ import ua.devteam.service.ProjectsService;
 import ua.devteam.service.TaskDevelopmentDataService;
 import ua.devteam.service.TechnicalTasksService;
 
-import java.nio.file.AccessDeniedException;
 import java.util.Objects;
 
 import static ua.devteam.entity.enums.Role.Customer;
@@ -40,7 +40,7 @@ public class BaseController {
 
     @RequestMapping(value = "/technicalTask", params = {"id"})
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin', 'Customer')")
-    public String showTechnicalTask(@RequestParam Long id, Model model, Authentication auth) throws AccessDeniedException {
+    public String showTechnicalTask(@RequestParam Long id, Model model, Authentication auth) {
         TechnicalTask technicalTask = technicalTasksService.getById(id, true);
         User user = ((User) auth.getPrincipal());
 
@@ -51,12 +51,13 @@ public class BaseController {
         }
 
         model.addAttribute("technicalTask", technicalTask);
+
         return "technicalTask";
     }
 
     @RequestMapping(value = "/project", params = {"id"})
     @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin', 'Customer')")
-    public String showProject(@RequestParam Long id, Model model, Authentication auth) throws AccessDeniedException {
+    public String showProject(@RequestParam Long id, Model model, Authentication auth) {
         Project project = projectsService.getById(id, true);
         User user = ((User) auth.getPrincipal());
 
@@ -67,6 +68,7 @@ public class BaseController {
         }
 
         model.addAttribute("project", project);
+
         return "project";
     }
 
