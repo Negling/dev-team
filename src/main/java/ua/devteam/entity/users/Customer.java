@@ -60,7 +60,7 @@ public class Customer extends User implements Serializable {
 
     @Override
     public String toString() {
-        return "Customer{" +
+        return "CUSTOMER{" +
                 "checks=" + checks +
                 "} " + super.toString();
     }

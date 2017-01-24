@@ -41,12 +41,12 @@
         <li><a data-toggle="tab" href="#users">
             <spring:message code="managersCabinet.customers"/></a>
         </li>
-        <security:authorize access="hasAnyAuthority('Ultramanager', 'Admin')">
+        <security:authorize access="hasAnyAuthority('ULTRAMANAGER', 'ADMIN')">
             <li><a data-toggle="tab" href="#developers">
                 <spring:message code="managersCabinet.developers"/>
             </a></li>
         </security:authorize>
-        <security:authorize access="hasAuthority('Admin')">
+        <security:authorize access="hasAuthority('ADMIN')">
             <li><a data-toggle="tab" href="#managers">
                 <spring:message code="managersCabinet.managers"/>
             </a></li>

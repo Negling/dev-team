@@ -20,7 +20,7 @@ import java.util.List;
 public class Project extends AbstractTechnicalTask implements Serializable{
     /* General date format */
     private final static DateFormat PROJECT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    /* Manager id that assigned to this project */
+    /* MANAGER id that assigned to this project */
     private Long managerId;
     /* Technical task id that project is formed from */
     private Long technicalTaskId;
@@ -38,7 +38,7 @@ public class Project extends AbstractTechnicalTask implements Serializable{
 
     public Project(Long managerId, TechnicalTask technicalTask) {
         this(technicalTask.getName(), technicalTask.getDescription(), technicalTask.getCustomerId(), managerId, null,
-                technicalTask.getId(), null, new Date(), null, Status.New);
+                technicalTask.getId(), null, new Date(), null, Status.NEW);
     }
 
     public Project(String name, String description, Long customerId, Long managerId, String managerCommentary,

@@ -49,8 +49,8 @@ public class ControllersAdvice {
 
     @ExceptionHandler(AjaxMethodInternalException.class)
     public ResponseEntity<String> handleAjaxMethodException(AjaxMethodInternalException ex, Locale locale) {
-        HttpStatus status;
         HttpHeaders headers = new HttpHeaders();
+        HttpStatus status;
 
         headers.add("Content-type", "text/html;charset=UTF-8");
 
@@ -62,8 +62,7 @@ public class ControllersAdvice {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return new ResponseEntity<String>(
-                messageSource.getMessage(ex.getLocalizedErrorCode(), ex.getErrorParams(), locale), headers, status);
+        return new ResponseEntity<>(messageSource.getMessage(ex.getLocalizedErrorCode(), ex.getErrorParams(), locale), headers, status);
     }
 
     @ExceptionHandler(AccessDeniedException.class)

@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 /**
  * Represents check that sent to customer, when manager completes forming the Project. After check is created it has
- * "Pending" status, customer may accept check, and this decision runs related project, or may decline payment.
+ * "PENDING" status, customer may accept check, and this decision runs related project, or may decline payment.
  * Declining check cancels project as well.
  * {@link Project}
  */

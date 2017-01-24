@@ -54,7 +54,7 @@ public class UsersDAOTest {
 
     @Test
     public void persistsByPhoneFalseTest() {
-        assertFalse(usersDAO.persistsByPhone("+380454345494"));
+        assertFalse(usersDAO.persistsByPhone("+388384345493"));
     }
 
     private void validateUser(User user) {

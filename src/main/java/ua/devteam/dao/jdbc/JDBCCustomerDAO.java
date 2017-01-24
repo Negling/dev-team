@@ -49,7 +49,7 @@ public class JDBCCustomerDAO extends JDBCGenericIdentifiedDAO<Customer> implemen
                 newData.getUsername(),
                 newData.getPhoneNumber(),
                 newData.getPassword(),
-                newData.getRole().getId(),
+                newData.getRole().toString(),
                 oldData.getId());
     }
 
@@ -90,7 +90,7 @@ public class JDBCCustomerDAO extends JDBCGenericIdentifiedDAO<Customer> implemen
         ps.setString(3, entity.getEmail());
         ps.setString(4, entity.getPhoneNumber());
         ps.setString(5, entity.getPassword());
-        ps.setInt(6, entity.getRole().getId());
+        ps.setString(6, entity.getRole().toString());
 
         return ps;
     }

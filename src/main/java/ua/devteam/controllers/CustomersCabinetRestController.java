@@ -7,10 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ua.devteam.entity.projects.TechnicalTask;
 import ua.devteam.entity.users.User;
 import ua.devteam.service.ChecksService;
@@ -23,7 +20,7 @@ import java.util.Locale;
 
 @RestController
 @RequestMapping("/cabinet")
-public class CustomersCabinetRestController extends AbstractEntityProcessingController{
+public class CustomersCabinetRestController extends AbstractEntityProcessingController {
 
     private ChecksService checksService;
     private TechnicalTasksService technicalTasksService;
@@ -36,8 +33,8 @@ public class CustomersCabinetRestController extends AbstractEntityProcessingCont
         this.technicalTasksService = technicalTasksService;
     }
 
-    @PreAuthorize("hasAuthority('Customer')")
-    @RequestMapping(value = "/submit", method = RequestMethod.POST)
+    @PostMapping("/submit")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<List<String>> registerTechnicalTask(@RequestBody @Valid TechnicalTask technicalTask,
                                                               BindingResult bindingResult, Locale locale,
                                                               Authentication auth) {
@@ -49,16 +46,16 @@ public class CustomersCabinetRestController extends AbstractEntityProcessingCont
         return generateResponse(new LinkedList<>(), bindingResult, locale);
     }
 
-    @PreAuthorize("hasAuthority('Customer')")
-    @RequestMapping(value = "/confirmCheck", method = RequestMethod.PUT)
+    @PutMapping("/confirmCheck")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity confirmCheck(@RequestBody Long projectId) {
         checksService.accept(projectId);
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('Customer')")
-    @RequestMapping(value = "/declineCheck", method = RequestMethod.PUT)
+    @PutMapping("/declineCheck")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity declineCheck(@RequestBody Long projectId) {
         checksService.decline(projectId);
 

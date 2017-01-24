@@ -5,7 +5,7 @@ import ua.devteam.entity.users.Customer;
 
 import java.io.Serializable;
 
-import static ua.devteam.entity.enums.Role.Customer;
+import static ua.devteam.entity.enums.Role.CUSTOMER;
 
 /**
  * Form used to map all customer data for following registration.
@@ -13,7 +13,7 @@ import static ua.devteam.entity.enums.Role.Customer;
 public class CustomerRegistrationForm extends AbstractRegistrationForm<Customer> implements Serializable {
     private String confirmedEmail;
     private String confirmedPhoneNumber;
-    private Role role = Customer;
+    private Role role = CUSTOMER;
 
     public CustomerRegistrationForm() {
     }

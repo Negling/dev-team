@@ -21,6 +21,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ua.devteam.EntityUtils.getValidTechnicalTask;
 import static ua.devteam.controllers.WebTestUtils.*;
 
 @RunWith(JUnit4.class)
@@ -29,7 +30,7 @@ public class CustomersCabinetRestControllerTest {
     private TechnicalTasksService technicalTasksService = mock(TechnicalTasksService.class);
     private CustomersCabinetRestController controller =
             new CustomersCabinetRestController(getDefaultMessageSource(), checksService, technicalTasksService);
-    private Principal customer = getUserWithIdAndRole((long) 1, Role.Customer);
+    private Principal customer = getUserWithIdAndRole((long) 1, Role.CUSTOMER);
     private MockMvc mockMvc;
 
     // setup

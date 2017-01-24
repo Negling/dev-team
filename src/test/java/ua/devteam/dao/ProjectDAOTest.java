@@ -22,8 +22,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 import static ua.devteam.dao.DAOTestUtils.*;
-import static ua.devteam.entity.enums.Status.Complete;
-import static ua.devteam.entity.enums.Status.Running;
+import static ua.devteam.entity.enums.Status.COMPLETE;
+import static ua.devteam.entity.enums.Status.RUNNING;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DataAccessConfiguration.class)
@@ -42,7 +42,7 @@ public class ProjectDAOTest {
     @Before
     public void before() {
         testId = countRowsInTable(jdbcTemplate, tableName);
-        testData = new Project("test", "test", (long) 1, (long) 1, null, (long) 1, null, new Date(), null, Running);
+        testData = new Project("test", "test", (long) 1, (long) 1, null, (long) 1, null, new Date(), null, RUNNING);
     }
 
     @Test
@@ -111,7 +111,7 @@ public class ProjectDAOTest {
         /*Because of stored procedures is kind of unable to implement by right way on H2 engine -
         just test for no exceptions*/
 
-        projectDAO.updateStatus((long) 1, Running);
+        projectDAO.updateStatus((long) 1, RUNNING);
     }
 
     @Test
@@ -121,7 +121,7 @@ public class ProjectDAOTest {
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
         assertThat(data.stream()
-                        .filter(project -> project.getStatus().equals(Complete)
+                        .filter(project -> project.getStatus().equals(COMPLETE)
                                 && project.getManagerId() == (long) 1)
                         .count(),
                 is((long) data.size()));
@@ -134,7 +134,7 @@ public class ProjectDAOTest {
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
         assertThat(data.stream()
-                        .filter(project -> project.getStatus().equals(Running)
+                        .filter(project -> project.getStatus().equals(RUNNING)
                                 && project.getManagerId() == (long) 2)
                         .count(),
                 is((long) data.size()));
@@ -147,7 +147,7 @@ public class ProjectDAOTest {
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
         assertThat(data.stream()
-                        .filter(project -> project.getStatus().equals(Complete)
+                        .filter(project -> project.getStatus().equals(COMPLETE)
                                 && project.getCustomerId() == (long) 1)
                         .count(),
                 is((long) data.size()));
@@ -160,7 +160,7 @@ public class ProjectDAOTest {
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
         assertThat(data.stream()
-                        .filter(project -> project.getStatus().equals(Running)
+                        .filter(project -> project.getStatus().equals(RUNNING)
                                 && project.getCustomerId() == (long) 2)
                         .count(),
                 is((long) data.size()));

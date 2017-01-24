@@ -21,11 +21,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 import static ua.devteam.dao.DAOTestUtils.*;
-import static ua.devteam.entity.enums.DeveloperRank.Senior;
-import static ua.devteam.entity.enums.DeveloperSpecialization.Backend;
-import static ua.devteam.entity.enums.DeveloperStatus.Available;
-import static ua.devteam.entity.enums.DeveloperStatus.Locked;
-import static ua.devteam.entity.enums.Role.Developer;
+import static ua.devteam.entity.enums.DeveloperRank.SENIOR;
+import static ua.devteam.entity.enums.DeveloperSpecialization.BACKEND;
+import static ua.devteam.entity.enums.DeveloperStatus.AVAILABLE;
+import static ua.devteam.entity.enums.DeveloperStatus.LOCKED;
+import static ua.devteam.entity.enums.Role.DEVELOPER;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DataAccessConfiguration.class)
@@ -44,8 +44,8 @@ public class DeveloperDAOTest {
     @Before
     public void before() {
         testId = countRowsInTable(jdbcTemplate, tableName);
-        testData = new Developer("test", "test", "test", "test", "test", Developer, (long) 0, new BigDecimal("700.00"),
-                Backend, Senior, Available);
+        testData = new Developer("test", "test", "test", "test", "test", DEVELOPER, (long) 0, new BigDecimal("700.00"),
+                BACKEND, SENIOR, AVAILABLE);
     }
 
     @Test
@@ -119,21 +119,23 @@ public class DeveloperDAOTest {
 
     @Test
     public void updateStatusByProjectTest() {
-        developerDAO.updateStatusByProject(Locked, (long) 2);
+        developerDAO.getById((long) 1);
 
-        assertThat(developerDAO.getById((long) 1).getStatus(), is(Locked));
+        developerDAO.updateStatusByProject(LOCKED, (long) 2);
+
+        assertThat(developerDAO.getById((long) 1).getStatus(), is(LOCKED));
     }
 
     @Test
     public void getAvailableByParamsTest() {
         Developer data = developerDAO.getById(testId);
-        assertThat(data.getStatus(), is(Available));
+        assertThat(data.getStatus(), is(AVAILABLE));
 
         List<Developer> result = developerDAO.getAvailableByParams(data.getSpecialization(), data.getRank());
 
         assertThat(result.size(), is(greaterThan(0)));
         assertThat(result.stream()
-                        .filter(dev -> dev.getStatus().equals(Available)
+                        .filter(dev -> dev.getStatus().equals(AVAILABLE)
                                 && dev.getSpecialization().equals(data.getSpecialization())
                                 && dev.getRank().equals(data.getRank()))
                         .count(),
@@ -144,14 +146,14 @@ public class DeveloperDAOTest {
     public void getAvailableByParamsWithLastnameTest() {
         Developer data = developerDAO.getById(testId);
 
-        assertThat(data.getStatus(), is(Available));
+        assertThat(data.getStatus(), is(AVAILABLE));
 
         List<Developer> result = developerDAO.getAvailableByParams(data.getSpecialization(), data.getRank(),
                 data.getLastName().substring(0, 1));
 
         assertThat(result.size(), is(greaterThan(0)));
         assertThat(result.stream()
-                        .filter(dev -> dev.getStatus().equals(Available) && dev.getSpecialization().equals(data.getSpecialization())
+                        .filter(dev -> dev.getStatus().equals(AVAILABLE) && dev.getSpecialization().equals(data.getSpecialization())
                                 && dev.getRank().equals(data.getRank())
                                 && dev.getLastName().charAt(0) == data.getLastName().charAt(0))
                         .count(),

@@ -32,7 +32,7 @@ public class ProjectTask extends AbstractTask implements Serializable {
     }
 
     public ProjectTask(Long projectId, Operation operation) {
-        this(null, projectId, operation.getId(), operation.getName(), operation.getDescription(), Status.New, 0, null,
+        this(null, projectId, operation.getId(), operation.getName(), operation.getDescription(), Status.NEW, 0, null,
                 operation.getRequestsForDevelopers());
     }
 

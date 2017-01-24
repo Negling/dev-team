@@ -39,7 +39,7 @@ public class CheckDAOTest {
     @Before
     public void before() {
         testData = new Check((long) 1, "test", new BigDecimal("1.00"), new BigDecimal("2.00"), new BigDecimal("3.00"),
-                CheckStatus.Awaiting);
+                CheckStatus.AWAITING);
     }
 
     @Test

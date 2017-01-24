@@ -46,7 +46,7 @@ public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataServic
     public void unbindDeveloper(Long developerId) {
         developersService.unlockDeveloper(developerId);
         taskDevelopmentDataDAO.delete(
-                taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, New).stream().findAny().orElse(null));
+                taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, NEW).stream().findAny().orElse(null));
     }
 
     @Override
@@ -58,19 +58,19 @@ public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataServic
     @Override
     public void runByProject(Long projectId) {
         developersService.approveDevelopersOnProject(projectId);
-        taskDevelopmentDataDAO.setStatusByProject(Running, projectId);
+        taskDevelopmentDataDAO.setStatusByProject(RUNNING, projectId);
     }
 
     @Override
     public void confirmByProject(Long projectId) {
-        taskDevelopmentDataDAO.setStatusByProject(Pending, projectId);
+        taskDevelopmentDataDAO.setStatusByProject(PENDING, projectId);
     }
 
     @Override
     public void complete(Long taskId, Long developerId, Integer hoursSpent) {
         TaskDevelopmentData data = taskDevelopmentDataDAO.getByTaskAndDeveloper(taskId, developerId);
         data.setHoursSpent(hoursSpent);
-        data.setStatus(Complete);
+        data.setStatus(COMPLETE);
 
         developersService.unlockDeveloper(developerId);
         taskDevelopmentDataDAO.update(data, data);
@@ -80,13 +80,13 @@ public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataServic
     @Override
     @Transactional(readOnly = true)
     public TaskDevelopmentData getActive(Long developerId) {
-        return taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, Running).stream().findAny().orElse(null);
+        return taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, RUNNING).stream().findAny().orElse(null);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<TaskDevelopmentData> getComplete(Long developerId) {
-        return taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, Complete);
+        return taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, COMPLETE);
     }
 
     @Override

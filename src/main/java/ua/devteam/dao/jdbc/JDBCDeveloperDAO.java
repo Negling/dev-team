@@ -53,7 +53,7 @@ public class JDBCDeveloperDAO extends JDBCGenericIdentifiedDAO<Developer> implem
                 newEntity.getRank().toString(),
                 newEntity.getHireCost(),
                 newEntity.getStatus().toString(),
-                newEntity.getRole().getId(),
+                newEntity.getRole().toString(),
                 oldEntity.getId());
     }
 
@@ -132,7 +132,7 @@ public class JDBCDeveloperDAO extends JDBCGenericIdentifiedDAO<Developer> implem
         ps.setString(7, entity.getRank().toString());
         ps.setBigDecimal(8, entity.getHireCost());
         ps.setString(9, entity.getStatus().toString());
-        ps.setInt(10, entity.getRole().getId());
+        ps.setString(10, entity.getRole().toString());
 
         return ps;
     }

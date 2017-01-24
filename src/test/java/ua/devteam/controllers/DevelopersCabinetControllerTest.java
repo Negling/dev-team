@@ -39,7 +39,7 @@ public class DevelopersCabinetControllerTest {
     {
         long testId = 1;
 
-        developer = getUserWithIdAndRole(testId, Role.Developer);
+        developer = getUserWithIdAndRole(testId, Role.DEVELOPER);
 
         // default mocks behavior
         when(taskDevelopmentDataService.getActive(testId)).thenReturn(new TaskDevelopmentData());

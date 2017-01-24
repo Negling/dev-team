@@ -41,7 +41,7 @@ public class JDBCManagerDAO extends JDBCGenericIdentifiedDAO<Manager> implements
                 newEntity.getUsername(),
                 newEntity.getPhoneNumber(),
                 newEntity.getPassword(),
-                newEntity.getRole().getId(),
+                newEntity.getRole().toString(),
                 oldEntity.getId());
     }
 
@@ -82,7 +82,7 @@ public class JDBCManagerDAO extends JDBCGenericIdentifiedDAO<Manager> implements
         ps.setString(3, entity.getEmail());
         ps.setString(4, entity.getPassword());
         ps.setString(5, entity.getPhoneNumber());
-        ps.setInt(6, entity.getRole().getId());
+        ps.setString(6, entity.getRole().toString());
 
         return ps;
     }

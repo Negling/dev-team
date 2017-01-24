@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 import static ua.devteam.dao.DAOTestUtils.*;
-import static ua.devteam.entity.enums.Status.Complete;
+import static ua.devteam.entity.enums.Status.COMPLETE;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -41,7 +41,7 @@ public class ProjectTaskDAOTest {
     @Before
     public void before() {
         testId = countRowsInTable(jdbcTemplate, tableName);
-        testData = new ProjectTask((long) 1, (long) 1, "test", "test", Status.Running, 0);
+        testData = new ProjectTask((long) 1, (long) 1, "test", "test", Status.RUNNING, 0);
     }
 
     @Test
@@ -84,13 +84,13 @@ public class ProjectTaskDAOTest {
 
     @Test
     public void setStatusByProjectTest() {
-        projectTaskDAO.setStatusByProject(Complete, (long) 2);
+        projectTaskDAO.setStatusByProject(COMPLETE, (long) 2);
 
         List<ProjectTask> result = projectTaskDAO.getByProject((long) 2);
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(greaterThan(0)));
         assertThat(result.stream()
-                        .filter(task -> task.getTaskStatus().equals(Complete))
+                        .filter(task -> task.getTaskStatus().equals(COMPLETE))
                         .count(),
                 is((long) result.size()));
     }

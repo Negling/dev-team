@@ -7,8 +7,8 @@ CREATE TABLE roles (
 CREATE TABLE managers (
   id         BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(20)      NOT NULL,
-  last_name  VARCHAR(20)      NOT NULL,
-  email      VARCHAR(30)      NOT NULL,
+  last_name  VARCHAR(20)      NOT NULL UNIQUE,
+  email      VARCHAR(30)      NOT NULL UNIQUE,
   phone      VARCHAR(15)      NOT NULL,
   password   VARCHAR(60)      NOT NULL,
   role_id    TINYINT UNSIGNED NOT NULL,
@@ -24,8 +24,8 @@ CREATE TABLE developers (
   id             BIGINT UNSIGNED         NOT NULL AUTO_INCREMENT,
   first_name     VARCHAR(20)             NOT NULL,
   last_name      VARCHAR(20)             NOT NULL,
-  email          VARCHAR(30)             NOT NULL,
-  phone          VARCHAR(15)             NOT NULL,
+  email          VARCHAR(30)             NOT NULL UNIQUE,
+  phone          VARCHAR(15)             NOT NULL UNIQUE,
   password       VARCHAR(60)             NOT NULL,
   specialization VARCHAR(20)             NOT NULL,
   rank           VARCHAR(20)             NOT NULL,
@@ -44,8 +44,8 @@ CREATE TABLE customers (
   id         BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(20)      NOT NULL,
   last_name  VARCHAR(20)      NOT NULL,
-  email      VARCHAR(30)      NOT NULL,
-  phone      VARCHAR(15)      NOT NULL,
+  email      VARCHAR(30)      NOT NULL UNIQUE,
+  phone      VARCHAR(15)      NOT NULL UNIQUE,
   password   VARCHAR(60)      NOT NULL,
   role_id    TINYINT UNSIGNED NOT NULL,
   UNIQUE (email),
@@ -126,7 +126,7 @@ CREATE TABLE project_tasks (
   operation_id BIGINT UNSIGNED NOT NULL,
   name         VARCHAR(50)     NOT NULL,
   description  TEXT            NOT NULL,
-  status       VARCHAR(20)     NOT NULL DEFAULT 'New',
+  status       VARCHAR(20)     NOT NULL DEFAULT 'NEW',
   UNIQUE (operation_id),
   PRIMARY KEY (id),
   FOREIGN KEY (project_id)
@@ -145,7 +145,7 @@ CREATE TABLE task_development_data (
   developer_specialization VARCHAR(20)     NOT NULL,
   developer_rank           VARCHAR(20)     NOT NULL,
   hours_spent              INT             NOT NULL DEFAULT 0,
-  status                   VARCHAR(20)     NOT NULL DEFAULT 'New',
+  status                   VARCHAR(20)     NOT NULL DEFAULT 'NEW',
   FOREIGN KEY (task_id)
   REFERENCES project_tasks (id)
     ON DELETE CASCADE
@@ -161,7 +161,7 @@ CREATE TABLE checks (
   developers_cost DECIMAL(32, 2) UNSIGNED NOT NULL DEFAULT 0.00,
   services        DECIMAL(32, 2) UNSIGNED NOT NULL DEFAULT 0.00,
   taxes           DECIMAL(32, 2) UNSIGNED NOT NULL DEFAULT 0.00,
-  status          VARCHAR(20)             NOT NULL DEFAULT 'Awaiting',
+  status          VARCHAR(20)             NOT NULL DEFAULT 'AWAITING',
   FOREIGN KEY (project_id)
   REFERENCES projects (id)
     ON DELETE CASCADE

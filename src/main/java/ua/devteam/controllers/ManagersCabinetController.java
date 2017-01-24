@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.devteam.entity.enums.DeveloperRank;
 import ua.devteam.entity.enums.DeveloperSpecialization;
@@ -25,8 +26,8 @@ public class ManagersCabinetController {
         this.projectsService = projectsService;
     }
 
-    @RequestMapping
-    @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public String cabinet(Model model) {
         model.addAttribute("ranks", DeveloperRank.values());
         model.addAttribute("specializations", DeveloperSpecialization.values());
@@ -34,16 +35,16 @@ public class ManagersCabinetController {
         return "management";
     }
 
-    @RequestMapping("/fragments/manage_technical_tasks")
-    @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
+    @GetMapping("/fragments/manage_technical_tasks")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public String manageTechnicalTasks(Model model) {
         model.addAttribute("technicalTasks", technicalTasksService.getAllUnassigned(true));
 
         return "/fragments/management/manage_technical_tasks";
     }
 
-    @RequestMapping("/fragments/manage_form_project")
-    @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
+    @GetMapping("/fragments/manage_form_project")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public String manageFormProject(Model model, Authentication auth) {
         model.addAttribute("pendingProjects",
                 projectsService.getNewByManager(((User) auth.getPrincipal()).getId(), true));
@@ -51,8 +52,8 @@ public class ManagersCabinetController {
         return "/fragments/management/manage_form_project";
     }
 
-    @RequestMapping("/fragments/manage_running_projects")
-    @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
+    @GetMapping("/fragments/manage_running_projects")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public String manageRunningProjects(Model model, Authentication auth) {
         model.addAttribute("runningProjects",
                 projectsService.getRunningByManager(((User) auth.getPrincipal()).getId(), false));
@@ -60,8 +61,8 @@ public class ManagersCabinetController {
         return "/fragments/management/manage_running_projects";
     }
 
-    @RequestMapping("/fragments/manage_complete_projects")
-    @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
+    @GetMapping("/fragments/manage_complete_projects")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public String manageCompleteProjects(Model model, Authentication auth) {
         model.addAttribute("completeProjects",
                 projectsService.getCompleteByManager(((User) auth.getPrincipal()).getId(), false));

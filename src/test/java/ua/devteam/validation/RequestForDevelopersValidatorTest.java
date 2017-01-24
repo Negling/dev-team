@@ -25,8 +25,8 @@ public class RequestForDevelopersValidatorTest {
 
     @Before
     public void before() {
-        testData.setSpecialization(DeveloperSpecialization.Backend);
-        testData.setRank(DeveloperRank.Junior);
+        testData.setSpecialization(DeveloperSpecialization.BACKEND);
+        testData.setRank(DeveloperRank.JUNIOR);
         testData.setQuantity(1);
         errors = new BeanPropertyBindingResult(testData, "testData");
     }

@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 import static ua.devteam.dao.DAOTestUtils.*;
-import static ua.devteam.entity.enums.Role.Manager;
+import static ua.devteam.entity.enums.Role.MANAGER;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DataAccessConfiguration.class)
@@ -38,7 +38,7 @@ public class ManagerDAOTest {
     @Before
     public void before() {
         testId = countRowsInTable(jdbcTemplate, tableName);
-        testData = new Manager("test", "test", "test", "test", "test", Manager, (long) 0);
+        testData = new Manager("test", "test", "test", "test", "test", MANAGER, (long) 0);
     }
 
     @Test

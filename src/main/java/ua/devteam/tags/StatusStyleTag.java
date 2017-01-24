@@ -63,15 +63,15 @@ public class StatusStyleTag extends SimpleTagSupport {
      */
     private String evaluateStatus(Status status) {
         switch (status) {
-            case Pending:
+            case PENDING:
                 return "color: blue !important;";// blue
-            case Declined:
+            case DECLINED:
                 return "color: #DC143C !important;";// red
-            case Canceled:
+            case CANCELED:
                 return "color: purple !important;";// purple
-            case Running:
+            case RUNNING:
                 return "color: darkcyan !important;";// cyan
-            case Complete:
+            case COMPLETE:
                 return "color: #449d44 !important;";// lime
             default:
                 return "";
@@ -86,11 +86,11 @@ public class StatusStyleTag extends SimpleTagSupport {
      */
     private String evaluateCheckStatus(CheckStatus status) {
         switch (status) {
-            case Awaiting:
+            case AWAITING:
                 return "color: blue !important;";
-            case Declined:
+            case DECLINED:
                 return "color: #DC143C !important;";
-            case Paid:
+            case PAID:
                 return "color: #449d44 !important;";
             default:
                 return "";
@@ -105,13 +105,13 @@ public class StatusStyleTag extends SimpleTagSupport {
      */
     private String evaluateDeveloperStatus(DeveloperStatus status) {
         switch (status) {
-            case Available:
+            case AVAILABLE:
                 return "color: #449d44 !important;";
-            case Holiday:
+            case HOLIDAY:
                 return "color: darkcyan !important;";
-            case Locked:
+            case LOCKED:
                 return "color: #DC143C !important;";
-            case Hired:
+            case HIRED:
                 return "color: blue !important;";
             default:
                 return "";

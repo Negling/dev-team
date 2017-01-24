@@ -8,5 +8,5 @@ package ua.devteam.entity.enums;
  * {@link ua.devteam.entity.tasks.TaskDevelopmentData}
  */
 public enum Status {
-    New, Pending, Declined, Canceled, Running, Complete
+    NEW, PENDING, DECLINED, CANCELED, RUNNING, COMPLETE
 }

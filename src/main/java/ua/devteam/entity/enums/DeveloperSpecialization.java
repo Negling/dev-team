@@ -5,5 +5,5 @@ package ua.devteam.entity.enums;
  * {@link ua.devteam.entity.users.Developer}
  */
 public enum DeveloperSpecialization {
-    DBA, Designer, Backend, Web
+    DBA, DESIGNER, BACKEND, WEB
 }

@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 import static ua.devteam.dao.DAOTestUtils.*;
-import static ua.devteam.entity.enums.Status.New;
+import static ua.devteam.entity.enums.Status.NEW;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DataAccessConfiguration.class)
@@ -40,7 +40,7 @@ public class TechnicalTaskDAOTest {
     @Before
     public void before() {
         testId = countRowsInTable(jdbcTemplate, tableName);
-        testData = new TechnicalTask("test", "test", (long) 1, null, New);
+        testData = new TechnicalTask("test", "test", (long) 1, null, NEW);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class TechnicalTaskDAOTest {
 
         assertThat(data.size(), is(greaterThan(0)));
         assertThat(data.stream()
-                        .filter(task -> task.getStatus().equals(New))
+                        .filter(task -> task.getStatus().equals(NEW))
                         .count(),
                 is((long) data.size()));
     }

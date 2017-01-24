@@ -16,8 +16,8 @@ import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static ua.devteam.entity.enums.DeveloperRank.Junior;
-import static ua.devteam.entity.enums.DeveloperRank.Middle;
+import static ua.devteam.entity.enums.DeveloperRank.JUNIOR;
+import static ua.devteam.entity.enums.DeveloperRank.MIDDLE;
 import static ua.devteam.entity.enums.DeveloperSpecialization.*;
 
 @RunWith(JUnit4.class)
@@ -34,17 +34,17 @@ public class ProjectTaskValidatorTest {
     @Before
     public void setUp() throws Exception {
         testData.setRequestsForDevelopers(new ArrayList<RequestForDevelopers>() {{
-            add(new RequestForDevelopers(null, Backend, Junior, 1));
+            add(new RequestForDevelopers(null, BACKEND, JUNIOR, 1));
         }});
         testData.setTasksDevelopmentData(new ArrayList<TaskDevelopmentData>() {{
-            add(new TaskDevelopmentData(null, null, Backend, Junior));
+            add(new TaskDevelopmentData(null, null, BACKEND, JUNIOR));
         }});
         errors = new BeanPropertyBindingResult(testData, "testData");
     }
 
     @Test
     public void incorrectDevRankTest() {
-        testData.getTasksDevelopmentData().get(0).setRank(Middle);
+        testData.getTasksDevelopmentData().get(0).setRank(MIDDLE);
 
         validator.validate(testData, errors);
 
@@ -71,7 +71,7 @@ public class ProjectTaskValidatorTest {
 
     @Test
     public void devsHireOverkillTest() {
-        testData.getTasksDevelopmentData().add(new TaskDevelopmentData(null, null, Designer, Junior));
+        testData.getTasksDevelopmentData().add(new TaskDevelopmentData(null, null, DESIGNER, JUNIOR));
 
         validator.validate(testData, errors);
 

@@ -24,7 +24,7 @@ public class DevelopersCabinetRestControllerTest {
     private TaskDevelopmentDataService taskDevelopmentDataService = mock(TaskDevelopmentDataService.class);
     private DevelopersCabinetRestController controller = new DevelopersCabinetRestController(getDefaultMessageSource(),
             taskDevelopmentDataService);
-    private Principal developer = getUserWithIdAndRole((long) 1, Role.Developer);
+    private Principal developer = getUserWithIdAndRole((long) 1, Role.DEVELOPER);
 
     // controller mock object
     private MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller)

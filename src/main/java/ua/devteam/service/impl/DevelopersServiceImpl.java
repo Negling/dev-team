@@ -30,8 +30,8 @@ public class DevelopersServiceImpl implements DevelopersService {
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void lockDeveloper(Long developerId) {
-        if (developerDAO.getById(developerId).getStatus().equals(Available)) {
-            updateDeveloperStatus(developerId, Locked);
+        if (developerDAO.getById(developerId).getStatus().equals(AVAILABLE)) {
+            updateDeveloperStatus(developerId, LOCKED);
         } else {
             throw new InvalidObjectStateException("errorPage.alreadyLocked", null);
         }
@@ -39,17 +39,17 @@ public class DevelopersServiceImpl implements DevelopersService {
 
     @Override
     public void unlockDeveloper(Long developerId) {
-        updateDeveloperStatus(developerId, Available);
+        updateDeveloperStatus(developerId, AVAILABLE);
     }
 
     @Override
     public void removeDevelopersFromProject(Long projectId) {
-        developerDAO.updateStatusByProject(Available, projectId);
+        developerDAO.updateStatusByProject(AVAILABLE, projectId);
     }
 
     @Override
     public void approveDevelopersOnProject(Long projectId) {
-        developerDAO.updateStatusByProject(Hired, projectId);
+        developerDAO.updateStatusByProject(HIRED, projectId);
     }
 
     @Override

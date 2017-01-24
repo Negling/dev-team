@@ -33,7 +33,7 @@ public interface DeveloperDAO extends GenericDAO<Developer>, Identified<Develope
 
 
     /**
-     * Returns list of developers which match to query params and has 'Available' status.
+     * Returns list of developers which match to query params and has 'AVAILABLE' status.
      *
      * @param specialization developer specialization
      * @param rank           developer rank
@@ -42,7 +42,7 @@ public interface DeveloperDAO extends GenericDAO<Developer>, Identified<Develope
     List<Developer> getAvailableByParams(DeveloperSpecialization specialization, DeveloperRank rank);
 
     /**
-     * Returns list of developers which match to query params and has 'Available' status.
+     * Returns list of developers which match to query params and has 'AVAILABLE' status.
      *
      * @param specialization developer specialization
      * @param rank           developer rank

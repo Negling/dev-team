@@ -1,5 +1,5 @@
 package ua.devteam.entity.enums;
 
 public enum DeveloperStatus {
-    Available, Holiday, Locked, Hired
+    AVAILABLE, HOLIDAY, LOCKED, HIRED
 }

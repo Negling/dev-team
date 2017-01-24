@@ -17,14 +17,6 @@ abstract class AbstractEntityProcessingController {
         this.messageSource = messageSource;
     }
 
-    public MessageSource getMessageSource() {
-        return messageSource;
-    }
-
-    public void setMessageSource(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
-
     ResponseEntity<List<String>> generateResponse(List<String> responseMsg, Errors bindingResult, Locale locale) {
         if (!bindingResult.hasErrors()) {
 

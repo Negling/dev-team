@@ -46,7 +46,7 @@ public class CustomersCabinetControllerTest {
     {
         long testId = 1;
 
-        customer = getUserWithIdAndRole(testId, Role.Customer);
+        customer = getUserWithIdAndRole(testId, Role.CUSTOMER);
 
         // default mocks behavior
         when(customersService.getById(testId)).thenReturn(new Customer());

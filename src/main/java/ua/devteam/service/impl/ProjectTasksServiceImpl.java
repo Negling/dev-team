@@ -14,8 +14,8 @@ import ua.devteam.service.ProjectTasksService;
 
 import java.util.List;
 
-import static ua.devteam.entity.enums.Status.Pending;
-import static ua.devteam.entity.enums.Status.Running;
+import static ua.devteam.entity.enums.Status.PENDING;
+import static ua.devteam.entity.enums.Status.RUNNING;
 
 @Service("projectTasksService")
 @Transactional(isolation = Isolation.READ_COMMITTED)
@@ -43,12 +43,12 @@ public class ProjectTasksServiceImpl implements ProjectTasksService {
 
     @Override
     public void runByProject(Long projectId) {
-        projectTaskDAO.setStatusByProject(Running, projectId);
+        projectTaskDAO.setStatusByProject(RUNNING, projectId);
     }
 
     @Override
     public void confirmByProject(Long projectId) {
-        projectTaskDAO.setStatusByProject(Pending, projectId);
+        projectTaskDAO.setStatusByProject(PENDING, projectId);
     }
 
     @Override

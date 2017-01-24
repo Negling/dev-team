@@ -291,7 +291,7 @@
     <%--end Developers Modal button--%>
 </div>
 
-<!-- Bind Developer to Task Modal -->
+<!-- Bind DEVELOPER to Task Modal -->
 <div class="modal fade" id="bindDeveloperModal" role="dialog">
     <div class="modal-dialog">
 

@@ -28,7 +28,7 @@ public class ChecksServiceImpl implements ChecksService {
 
     @Override
     public void registerCheck(Check check) {
-        check.setStatus(Awaiting);
+        check.setStatus(AWAITING);
 
         checkDAO.create(check);
         projectsService.confirmProject(check.getProjectId());
@@ -38,7 +38,7 @@ public class ChecksServiceImpl implements ChecksService {
     public void accept(Long projectId) {
         Check check = checkDAO.getByProject(projectId);
 
-        check.setStatus(Paid);
+        check.setStatus(PAID);
 
         projectsService.runProject(projectId);
         checkDAO.update(check, check);
@@ -48,7 +48,7 @@ public class ChecksServiceImpl implements ChecksService {
     public void decline(Long projectId) {
         Check check = checkDAO.getByProject(projectId);
 
-        check.setStatus(Declined);
+        check.setStatus(DECLINED);
 
         projectsService.cancel(projectId);
         checkDAO.update(check, check);

@@ -32,21 +32,18 @@
             <ul class="nav navbar-nav navbar-right">
                 <security:authorize access="isAuthenticated()">
                     <li>
-                        <security:authorize url="/manage">
-                            <a href="<spring:url value="/manage"/>">
-                                <spring:message code="general.cabinet"/>
-                            </a>
+                        <security:authorize access="hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')">
+                            <c:set var="cabinetLink" value="/manage"/>
                         </security:authorize>
-                        <security:authorize url="/development">
-                            <a href="<spring:url value="/development"/>">
-                                <spring:message code="general.cabinet"/>
-                            </a>
+                        <security:authorize access="hasAuthority('DEVELOPER')">
+                            <c:set var="cabinetLink" value="/development"/>
                         </security:authorize>
-                        <security:authorize url="/cabinet">
-                            <a href="<spring:url value="/cabinet"/>">
-                                <spring:message code="general.cabinet"/>
-                            </a>
+                        <security:authorize access="hasAuthority('CUSTOMER')">
+                            <c:set var="cabinetLink" value="/cabinet"/>
                         </security:authorize>
+                        <a href="<c:out value="${cabinetLink}"/>">
+                            <spring:message code="general.cabinet"/>
+                        </a>
                     </li>
                 </security:authorize>
                 <li class="dropdown">

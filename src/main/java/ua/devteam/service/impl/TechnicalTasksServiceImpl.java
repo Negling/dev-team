@@ -15,8 +15,8 @@ import ua.devteam.service.TechnicalTasksService;
 
 import java.util.List;
 
-import static ua.devteam.entity.enums.Status.New;
-import static ua.devteam.entity.enums.Status.Pending;
+import static ua.devteam.entity.enums.Status.NEW;
+import static ua.devteam.entity.enums.Status.PENDING;
 
 @Service("technicalTasksService")
 @Transactional(isolation = Isolation.READ_COMMITTED)
@@ -39,8 +39,8 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
     public void accept(Long technicalTaskId, Long managerId) {
         TechnicalTask technicalTask = technicalTaskDAO.getById(technicalTaskId);
 
-        if (technicalTask.getStatus().equals(New)) {
-            technicalTask.setStatus(Pending);
+        if (technicalTask.getStatus().equals(NEW)) {
+            technicalTask.setStatus(PENDING);
 
             technicalTaskDAO.update(technicalTask, technicalTask);
             projectsService.createProject(technicalTask, managerId);
@@ -54,8 +54,8 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
     public void decline(Long technicalTaskId, String managerCommentary) {
         TechnicalTask technicalTask = technicalTaskDAO.getById(technicalTaskId);
 
-        if (technicalTask.getStatus().equals(New)) {
-            technicalTask.setStatus(Status.Declined);
+        if (technicalTask.getStatus().equals(NEW)) {
+            technicalTask.setStatus(Status.DECLINED);
 
             if (managerCommentary != null && !managerCommentary.isEmpty()) {
                 technicalTask.setManagerCommentary(managerCommentary);

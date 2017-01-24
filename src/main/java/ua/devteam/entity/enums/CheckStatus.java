@@ -6,5 +6,5 @@ package ua.devteam.entity.enums;
  * {@link ua.devteam.entity.projects.Project}
  */
 public enum CheckStatus {
-    Awaiting, Declined, Paid
+    AWAITING, DECLINED, PAID
 }

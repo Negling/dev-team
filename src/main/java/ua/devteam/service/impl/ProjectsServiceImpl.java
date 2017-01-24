@@ -46,14 +46,14 @@ public class ProjectsServiceImpl implements ProjectsService {
     public void confirmProject(Long projectId) {
         projectTasksService.confirmByProject(projectId);
         taskDevelopersService.confirmByProject(projectId);
-        projectDAO.updateStatus(projectId, Pending);
+        projectDAO.updateStatus(projectId, PENDING);
     }
 
     @Override
     public void runProject(Long projectId) {
         projectTasksService.runByProject(projectId);
         taskDevelopersService.runByProject(projectId);
-        projectDAO.updateStatus(projectId, Running);
+        projectDAO.updateStatus(projectId, RUNNING);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ProjectsServiceImpl implements ProjectsService {
         }
 
         taskDevelopersService.dropByProject(projectId);
-        projectDAO.updateStatus(projectId, Declined);
+        projectDAO.updateStatus(projectId, DECLINED);
         projectDAO.update(project, project);
     }
 
@@ -76,7 +76,7 @@ public class ProjectsServiceImpl implements ProjectsService {
         project.setEndDate(new Date());
 
         taskDevelopersService.dropByProject(projectId);
-        projectDAO.updateStatus(projectId, Canceled);
+        projectDAO.updateStatus(projectId, CANCELED);
         projectDAO.update(project, project);
     }
 
@@ -95,7 +95,7 @@ public class ProjectsServiceImpl implements ProjectsService {
     @Override
     @Transactional(readOnly = true)
     public List<Project> getNewByManager(Long managerId, boolean loadNested) {
-        List<Project> projects = projectDAO.getByManagerAndStatus(managerId, New);
+        List<Project> projects = projectDAO.getByManagerAndStatus(managerId, NEW);
 
         if (loadNested) {
             projects.forEach(project -> project.setTasks(projectTasksService.getAllByProject(project.getId(), true)));

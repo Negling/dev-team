@@ -37,7 +37,7 @@ public interface ProjectDAO extends GenericDAO<Project>, Identified<Project> {
     List<Project> getByManagerAndStatus(Long managerId, Status status);
 
     /**
-     * Returns list of projects which assigned to concrete manager and have status not in 'New', 'Running' or 'Pending'.
+     * Returns list of projects which assigned to concrete manager and have status not in 'NEW', 'RUNNING' or 'PENDING'.
      *
      * @param managerId query param
      * @return List of projects, or empty list if no results found.
@@ -45,7 +45,7 @@ public interface ProjectDAO extends GenericDAO<Project>, Identified<Project> {
     List<Project> getCompleteByManager(Long managerId);
 
     /**
-     * Returns list of projects which assigned to concrete manager and have status in 'New', 'Running' or 'Pending'.
+     * Returns list of projects which assigned to concrete manager and have status in 'NEW', 'RUNNING' or 'PENDING'.
      *
      * @param managerId query param
      * @return List of projects, or empty list if no results found.
@@ -53,7 +53,7 @@ public interface ProjectDAO extends GenericDAO<Project>, Identified<Project> {
     List<Project> getRunningByManager(Long managerId);
 
     /**
-     * Returns list of projects which assigned to concrete customer and have status not in 'New', 'Running' or 'Pending'.
+     * Returns list of projects which assigned to concrete customer and have status not in 'NEW', 'RUNNING' or 'PENDING'.
      *
      * @param customerId query param
      * @return List of projects, or empty list if no results found.
@@ -61,7 +61,7 @@ public interface ProjectDAO extends GenericDAO<Project>, Identified<Project> {
     List<Project> getCompleteByCustomer(Long customerId);
 
     /**
-     * Returns list of projects which assigned to concrete customer and have status in 'New', 'Running' or 'Pending'.
+     * Returns list of projects which assigned to concrete customer and have status in 'NEW', 'RUNNING' or 'PENDING'.
      *
      * @param customerId query param
      * @return List of projects, or empty list if no results found.

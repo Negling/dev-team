@@ -17,7 +17,7 @@ public class Developer extends User implements Serializable {
 
     /* Id of current project task that developer works on. Can be null if developer is not assigned to task  */
     private Long currentTaskId;
-    /* Developer salary-hire cost. Unit if measure is USD. */
+    /* DEVELOPER salary-hire cost. Unit if measure is USD. */
     private BigDecimal hireCost;
     /* Specialization. This defines type of works that developer is capable for */
     private DeveloperSpecialization specialization;
@@ -125,7 +125,7 @@ public class Developer extends User implements Serializable {
 
     @Override
     public String toString() {
-        return "Developer{" +
+        return "DEVELOPER{" +
                 "currentTaskId=" + currentTaskId +
                 ", hireCost=" + hireCost +
                 ", specialization=" + specialization +

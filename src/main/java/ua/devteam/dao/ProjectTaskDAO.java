@@ -13,9 +13,9 @@ public interface ProjectTaskDAO extends GenericDAO<ProjectTask>, Identified<Proj
 
     /**
      * Checks count of all assigned to this task {@link ua.devteam.entity.tasks.TaskDevelopmentData} statuses.
-     * If count of complete data matches to assigned data count - updates task status to 'Complete'.
+     * If count of complete data matches to assigned data count - updates task status to 'COMPLETE'.
      * Than if previous condition is true - checks count of project complete tasks to count of assigned tasks -
-     * if they are equal - updates project status to 'Complete'.
+     * if they are equal - updates project status to 'COMPLETE'.
      *
      * @param taskId query param
      */

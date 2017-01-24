@@ -40,7 +40,7 @@ public class ManagersCabinetControllerTest {
     {
         long testId = 1;
 
-        manager = getUserWithIdAndRole(testId, Role.Customer);
+        manager = getUserWithIdAndRole(testId, Role.CUSTOMER);
 
         // default mocks behavior
         when(technicalTasksService.getAllUnassigned(true)).thenReturn(new ArrayList<>());

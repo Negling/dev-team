@@ -39,7 +39,7 @@ public class CustomerDAOTest {
     @Before
     public void before() {
         testId = countRowsInTable(jdbcTemplate, tableName);
-        testData = new Customer("test", "test", "test", "test", "test", Role.Customer);
+        testData = new Customer("test", "test", "test", "test", "test", Role.CUSTOMER);
     }
 
     @Test

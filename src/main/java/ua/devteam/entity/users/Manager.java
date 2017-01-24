@@ -64,7 +64,7 @@ public class Manager extends User implements Serializable {
 
     @Override
     public String toString() {
-        return "Manager{" +
+        return "MANAGER{" +
                 "totalProjectsServed=" + totalProjectsServed +
                 "} " + super.toString();
     }

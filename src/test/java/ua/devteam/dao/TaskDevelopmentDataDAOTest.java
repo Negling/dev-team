@@ -20,10 +20,10 @@ import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 import static ua.devteam.dao.DAOTestUtils.deleteEntityTest;
 import static ua.devteam.dao.DAOTestUtils.updateEntityTest;
-import static ua.devteam.entity.enums.DeveloperRank.Junior;
-import static ua.devteam.entity.enums.DeveloperSpecialization.Backend;
-import static ua.devteam.entity.enums.Status.Complete;
-import static ua.devteam.entity.enums.Status.Running;
+import static ua.devteam.entity.enums.DeveloperRank.JUNIOR;
+import static ua.devteam.entity.enums.DeveloperSpecialization.BACKEND;
+import static ua.devteam.entity.enums.Status.COMPLETE;
+import static ua.devteam.entity.enums.Status.RUNNING;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DataAccessConfiguration.class)
@@ -39,8 +39,8 @@ public class TaskDevelopmentDataDAOTest {
 
     @Before
     public void before() {
-        testData = new TaskDevelopmentData((long) 1, "test", "test", (long) 1, "test", "test", Backend, Junior,
-                new BigDecimal("0.00"), 1, Running);
+        testData = new TaskDevelopmentData((long) 1, "test", "test", (long) 1, "test", "test", BACKEND, JUNIOR,
+                new BigDecimal("0.00"), 1, RUNNING);
     }
 
     @Test
@@ -119,14 +119,14 @@ public class TaskDevelopmentDataDAOTest {
 
     @Test
     public void setStatusByProjectTest() {
-        taskDevelopmentDataDAO.setStatusByProject(Complete, (long) 2);
+        taskDevelopmentDataDAO.setStatusByProject(COMPLETE, (long) 2);
 
         List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getAllByTask((long) 2);
 
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(greaterThan(0)));
         assertThat(result.stream()
-                        .filter(tdd -> tdd.getStatus().equals(Complete))
+                        .filter(tdd -> tdd.getStatus().equals(COMPLETE))
                         .count(),
                 is((long) result.size()));
     }
@@ -155,13 +155,13 @@ public class TaskDevelopmentDataDAOTest {
 
     @Test
     public void getAllByDeveloperAndStatusTest() {
-        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getByDeveloperAndStatus((long) 1, Complete);
+        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getByDeveloperAndStatus((long) 1, COMPLETE);
 
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(greaterThan(0)));
         assertThat(result.stream()
                         .filter(taskDD -> taskDD.getDeveloperId() == (long) 1
-                                && taskDD.getStatus().equals(Complete))
+                                && taskDD.getStatus().equals(COMPLETE))
                         .count(),
                 is((long) result.size()));
 

@@ -6,5 +6,5 @@ package ua.devteam.entity.enums;
  * {@link ua.devteam.entity.users.Developer}
  */
 public enum DeveloperRank {
-    Junior, Middle, Senior
+    JUNIOR, MIDDLE, SENIOR
 }

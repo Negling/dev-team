@@ -19,7 +19,7 @@ public interface TechnicalTaskDAO extends GenericDAO<TechnicalTask>, Identified<
     List<TechnicalTask> getAllByCustomer(Long customerId);
 
     /**
-     * Returns list of all incoming technical tasks with status 'New' and no managers assigned to it.
+     * Returns list of all incoming technical tasks with status 'NEW' and no managers assigned to it.
      *
      * @return List of technical tasks, or empty list if no results found.
      */

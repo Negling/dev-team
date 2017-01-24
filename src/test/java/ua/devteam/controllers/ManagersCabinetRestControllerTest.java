@@ -22,9 +22,10 @@ import java.util.Map;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ua.devteam.EntityUtils.*;
 import static ua.devteam.controllers.WebTestUtils.*;
-import static ua.devteam.entity.enums.DeveloperRank.Junior;
-import static ua.devteam.entity.enums.DeveloperSpecialization.Backend;
+import static ua.devteam.entity.enums.DeveloperRank.JUNIOR;
+import static ua.devteam.entity.enums.DeveloperSpecialization.BACKEND;
 
 @RunWith(JUnit4.class)
 public class ManagersCabinetRestControllerTest {
@@ -58,13 +59,13 @@ public class ManagersCabinetRestControllerTest {
     @Test
     public void getDevelopersTest() throws Exception {
         mockMvc.perform(get("/manage/getDevelopers")
-                .param("specialization", Backend.toString())
-                .param("rank", Junior.toString())
+                .param("specialization", BACKEND.toString())
+                .param("rank", JUNIOR.toString())
                 .param("lastName", "Kiral"))
                 // checks
                 .andExpect(status().isOk());
 
-        verify(developersService, only()).getAvailableDevelopers(Backend, Junior, "Kiral");
+        verify(developersService, only()).getAvailableDevelopers(BACKEND, JUNIOR, "Kiral");
     }
 
     @Test
@@ -113,7 +114,7 @@ public class ManagersCabinetRestControllerTest {
     @Test
     public void formTechnicalTaskAsProjectTest() throws Exception {
         mockMvc.perform(post("/manage/formAsProject")
-                .principal(getUserWithIdAndRole((long) 1, Role.Admin))
+                .principal(getUserWithIdAndRole((long) 1, Role.ADMIN))
                 .contentType("application/json")
                 .content(getObjectAsJson(1)))
                 // checks

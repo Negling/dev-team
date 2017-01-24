@@ -21,8 +21,8 @@ import static org.junit.Assert.assertTrue;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
 import static ua.devteam.dao.DAOTestUtils.deleteEntityTest;
 import static ua.devteam.dao.DAOTestUtils.updateEntityTest;
-import static ua.devteam.entity.enums.DeveloperRank.Junior;
-import static ua.devteam.entity.enums.DeveloperSpecialization.Backend;
+import static ua.devteam.entity.enums.DeveloperRank.JUNIOR;
+import static ua.devteam.entity.enums.DeveloperSpecialization.BACKEND;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DataAccessConfiguration.class)
@@ -38,7 +38,7 @@ public class RequestsForDevelopersDAOTest {
 
     @Before
     public void before() {
-        testData = new RequestForDevelopers((long) 1, Backend, Junior, 1);
+        testData = new RequestForDevelopers((long) 1, BACKEND, JUNIOR, 1);
     }
 
     @Test

@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.NestedServletException;
@@ -27,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ua.devteam.controllers.WebTestUtils.getDefaultViewResolver;
 import static ua.devteam.controllers.WebTestUtils.getUserWithIdAndRole;
-import static ua.devteam.entity.enums.Role.Customer;
+import static ua.devteam.entity.enums.Role.CUSTOMER;
 
 @RunWith(JUnit4.class)
 public class BaseControllerTest {
@@ -42,7 +41,7 @@ public class BaseControllerTest {
     private DevelopersService developersService = mock(DevelopersService.class);
 
     // principal for tests
-    private Principal principal = getUserWithIdAndRole(testId, Customer);
+    private Principal principal = getUserWithIdAndRole(testId, CUSTOMER);
 
     // controller to test
     private BaseController controller = new BaseController(technicalTasksService, projectsService,
@@ -76,17 +75,6 @@ public class BaseControllerTest {
                 .andExpect(view().name("technicalTask"));
     }
 
-    @Test(expected = AccessDeniedException.class)
-    public void getTechnicalTaskAccessExceptionTest() throws Throwable {
-        try {
-            mockMvc.perform(get("/technicalTask")
-                    .param("id", String.valueOf(testId))
-                    .principal(getUserWithIdAndRole(testId + 1, Customer)));
-        } catch (NestedServletException nse) {
-            throw nse.getCause();
-        }
-    }
-
     @Test(expected = EmptyResultDataAccessException.class)
     public void getNonexistentTechnicalTaskTest() throws Throwable {
         when(technicalTasksService.getById(testId, true)).thenThrow(new EmptyResultDataAccessException(1));
@@ -104,17 +92,6 @@ public class BaseControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("project"))
                 .andExpect(view().name("project"));
-    }
-
-    @Test(expected = AccessDeniedException.class)
-    public void getProjectAccessExceptionTest() throws Throwable {
-        try {
-            mockMvc.perform(get("/project")
-                    .param("id", String.valueOf(testId))
-                    .principal(getUserWithIdAndRole(testId + 1, Customer)));
-        } catch (NestedServletException nse) {
-            throw nse.getCause();
-        }
     }
 
     @Test(expected = EmptyResultDataAccessException.class)

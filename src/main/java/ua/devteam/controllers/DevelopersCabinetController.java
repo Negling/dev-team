@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.devteam.entity.users.User;
 import ua.devteam.service.TaskDevelopmentDataService;
@@ -21,14 +22,14 @@ public class DevelopersCabinetController  {
         this.taskDevelopmentDataService = taskDevelopmentDataService;
     }
 
-    @RequestMapping
-    @PreAuthorize("hasAuthority('Developer')")
+    @GetMapping
+    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String development() {
         return "development";
     }
 
-    @RequestMapping("/fragments/development_active_task")
-    @PreAuthorize("hasAuthority('Developer')")
+    @GetMapping("/fragments/development_active_task")
+    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String developmentActiveTask(Model model, Authentication auth) {
         model.addAttribute("activeTaskData",
                 taskDevelopmentDataService.getActive(((User) auth.getPrincipal()).getId()));
@@ -36,8 +37,8 @@ public class DevelopersCabinetController  {
         return "/fragments/development/development_active_task";
     }
 
-    @RequestMapping("/fragments/development_tasks_history")
-    @PreAuthorize("hasAuthority('Developer')")
+    @GetMapping("/fragments/development_tasks_history")
+    @PreAuthorize("hasAuthority('DEVELOPER')")
     public String developmentTasksHistory(Model model, Authentication auth) {
         model.addAttribute("completeTasks",
                 taskDevelopmentDataService.getComplete(((User) auth.getPrincipal()).getId()));

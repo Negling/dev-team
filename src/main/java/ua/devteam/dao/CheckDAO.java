@@ -36,7 +36,7 @@ public interface CheckDAO extends GenericDAO<Check> {
     List<Check> getAllByCustomer(Long customerId);
 
     /**
-     * Returns list of checks which assigned to specified customer id and have status equal to 'Awaiting'.
+     * Returns list of checks which assigned to specified customer id and have status equal to 'AWAITING'.
      *
      * @param customerId query param.
      * @return List of checks, or empty list if no results found.
@@ -44,7 +44,7 @@ public interface CheckDAO extends GenericDAO<Check> {
     List<Check> getNewByCustomer(Long customerId);
 
     /**
-     * Returns list of checks which assigned to specified customer id and have status not equal to 'Awaiting'.
+     * Returns list of checks which assigned to specified customer id and have status not equal to 'AWAITING'.
      *
      * @param customerId query param
      * @return List of checks, or empty list if no results found.

@@ -28,7 +28,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/manage")
-public class ManagersCabinetRestController extends AbstractEntityProcessingController{
+public class ManagersCabinetRestController extends AbstractEntityProcessingController {
 
     private TechnicalTasksService technicalTasksService;
     private ProjectsService projectsService;
@@ -51,23 +51,23 @@ public class ManagersCabinetRestController extends AbstractEntityProcessingContr
         this.projectValidator = projectValidator;
     }
 
-    @RequestMapping("/getDevelopers")
-    @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
+    @GetMapping("/getDevelopers")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public List<Developer> getDevelopers(@RequestParam DeveloperSpecialization specialization,
                                          @RequestParam DeveloperRank rank,
                                          @RequestParam String lastName) {
         return developersService.getAvailableDevelopers(specialization, rank, lastName);
     }
 
-    @RequestMapping(value = "/bind", method = RequestMethod.POST)
-    @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
+    @PostMapping("/bind")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public TaskDevelopmentData bindDeveloper(@RequestBody Map<String, Long> params) {
         return taskDevelopmentDataService.bindDeveloper(params.get("devId"), params.get("taskId"));
     }
 
 
-    @RequestMapping(value = "/unbind", method = RequestMethod.DELETE)
-    @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
+    @DeleteMapping("/unbind")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public ResponseEntity unbindDeveloper(@RequestBody Long developerId) throws Exception {
 
         taskDevelopmentDataService.unbindDeveloper(developerId);
@@ -75,8 +75,8 @@ public class ManagersCabinetRestController extends AbstractEntityProcessingContr
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/declineTechnicalTask", method = RequestMethod.PUT)
-    @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
+    @PutMapping("/declineTechnicalTask")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public ResponseEntity declineTechnicalTask(@RequestBody Map<String, String> params) throws Exception {
 
         technicalTasksService.decline(Long.parseLong(params.get("technicalTaskId")), params.get("managerCommentary"));
@@ -84,16 +84,16 @@ public class ManagersCabinetRestController extends AbstractEntityProcessingContr
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/formAsProject", method = RequestMethod.POST)
-    @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
+    @PostMapping("/formAsProject")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public ResponseEntity formTechnicalTaskAsProject(@RequestBody Long technicalTaskId, Authentication auth) throws Exception {
         technicalTasksService.accept(technicalTaskId, ((User) auth.getPrincipal()).getId());
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/declineProject", method = RequestMethod.PUT)
-    @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
+    @PutMapping("/declineProject")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public ResponseEntity declineProject(@RequestBody Map<String, String> params) {
 
         projectsService.decline(Long.parseLong(params.get("projectId")), params.get("managerCommentary"));
@@ -102,8 +102,8 @@ public class ManagersCabinetRestController extends AbstractEntityProcessingContr
     }
 
 
-    @RequestMapping(value = "/accept", method = RequestMethod.PUT)
-    @PreAuthorize("hasAnyAuthority('Manager', 'Ultramanager', 'Admin')")
+    @PutMapping("/accept")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public ResponseEntity<List<String>> formProject(@Valid @RequestBody Check check, BindingResult bindingResult,
                                                     Locale locale) {
         Project project;
