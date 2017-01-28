@@ -13,19 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.configuration.DataAccessConfiguration;
 import ua.devteam.entity.users.Developer;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
+import static ua.devteam.EntityUtils.getValidDeveloper;
 import static ua.devteam.dao.DAOTestUtils.*;
-import static ua.devteam.entity.enums.DeveloperRank.SENIOR;
-import static ua.devteam.entity.enums.DeveloperSpecialization.BACKEND;
 import static ua.devteam.entity.enums.DeveloperStatus.AVAILABLE;
 import static ua.devteam.entity.enums.DeveloperStatus.LOCKED;
-import static ua.devteam.entity.enums.Role.DEVELOPER;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DataAccessConfiguration.class)
@@ -44,8 +41,7 @@ public class DeveloperDAOTest {
     @Before
     public void before() {
         testId = countRowsInTable(jdbcTemplate, tableName);
-        testData = new Developer("test", "test", "test", "test", "test", DEVELOPER, (long) 0, new BigDecimal("700.00"),
-                BACKEND, SENIOR, AVAILABLE);
+        testData = getValidDeveloper();
     }
 
     @Test
@@ -119,11 +115,11 @@ public class DeveloperDAOTest {
 
     @Test
     public void updateStatusByProjectTest() {
-        developerDAO.getById((long) 1);
+        developerDAO.getById(1L);
 
-        developerDAO.updateStatusByProject(LOCKED, (long) 2);
+        developerDAO.updateStatusByProject(LOCKED, 2L);
 
-        assertThat(developerDAO.getById((long) 1).getStatus(), is(LOCKED));
+        assertThat(developerDAO.getById(1L).getStatus(), is(LOCKED));
     }
 
     @Test

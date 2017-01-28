@@ -10,7 +10,10 @@ import ua.devteam.dao.CustomerDAO;
 import ua.devteam.entity.users.Customer;
 import ua.devteam.service.CustomersService;
 
-@Service("customersService")
+/**
+ * Provides service operations to {@link Customer customer}.
+ */
+@Service
 @Transactional(isolation = Isolation.READ_COMMITTED)
 public class CustomersServiceImpl implements CustomersService {
 
@@ -23,6 +26,12 @@ public class CustomersServiceImpl implements CustomersService {
         this.encoder = encoder;
     }
 
+    /**
+     * Registers customer entity, and returns its ID.
+     *
+     * @param customer to be registered
+     * @return generated customer ID
+     */
     @Override
     public long registerCustomer(Customer customer) {
         customer.setPassword(encoder.encode(customer.getPassword()));
@@ -30,8 +39,14 @@ public class CustomersServiceImpl implements CustomersService {
         return customerDAO.create(customer);
     }
 
+    /**
+     * Returns customer instance which id match to requested.
+     *
+     * @param customerId query param
+     * @return Customer instance
+     */
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Customer getById(Long customerId) {
         return customerDAO.getById(customerId);
     }

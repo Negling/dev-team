@@ -12,18 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.configuration.DataAccessConfiguration;
 import ua.devteam.entity.tasks.TaskDevelopmentData;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
+import static ua.devteam.EntityUtils.getValidTaskDevelopmentData;
 import static ua.devteam.dao.DAOTestUtils.deleteEntityTest;
 import static ua.devteam.dao.DAOTestUtils.updateEntityTest;
-import static ua.devteam.entity.enums.DeveloperRank.JUNIOR;
-import static ua.devteam.entity.enums.DeveloperSpecialization.BACKEND;
 import static ua.devteam.entity.enums.Status.COMPLETE;
-import static ua.devteam.entity.enums.Status.RUNNING;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DataAccessConfiguration.class)
@@ -39,8 +36,7 @@ public class TaskDevelopmentDataDAOTest {
 
     @Before
     public void before() {
-        testData = new TaskDevelopmentData((long) 1, "test", "test", (long) 1, "test", "test", BACKEND, JUNIOR,
-                new BigDecimal("0.00"), 1, RUNNING);
+        testData = getValidTaskDevelopmentData();
     }
 
     @Test
@@ -73,8 +69,8 @@ public class TaskDevelopmentDataDAOTest {
 
     @Test
     public void updateTest() {
-        TaskDevelopmentData oldData = taskDevelopmentDataDAO.getByTaskAndDeveloper((long) 2, (long) 1);
-        testData.setDeveloperId((long) 10);
+        TaskDevelopmentData oldData = taskDevelopmentDataDAO.getByTaskAndDeveloper(2L, 1L);
+        testData.setDeveloperId(10L);
 
         updateEntityTest(taskDevelopmentDataDAO, oldData, testData, jdbcTemplate, tableName);
 
@@ -98,30 +94,30 @@ public class TaskDevelopmentDataDAOTest {
 
     @Test
     public void getByTaskAndDeveloperTest() {
-        TaskDevelopmentData result = taskDevelopmentDataDAO.getByTaskAndDeveloper((long) 1, (long) 1);
+        TaskDevelopmentData result = taskDevelopmentDataDAO.getByTaskAndDeveloper(1L, 1L);
 
         assertThat(result, is(notNullValue()));
-        assertThat(result.getProjectTaskId(), is((long) 1));
-        assertThat(result.getDeveloperId(), is((long) 1));
+        assertThat(result.getProjectTaskId(), is(1L));
+        assertThat(result.getDeveloperId(), is(1L));
     }
 
     @Test
     public void getAllByTaskTest() {
-        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getAllByTask((long) 1);
+        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getAllByTask(1L);
 
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(greaterThan(0)));
         assertThat(result.stream()
-                        .filter(tdd -> tdd.getProjectTaskId() == (long) 1)
+                        .filter(tdd -> tdd.getProjectTaskId() == 1L)
                         .count(),
                 is((long) result.size()));
     }
 
     @Test
     public void setStatusByProjectTest() {
-        taskDevelopmentDataDAO.setStatusByProject(COMPLETE, (long) 2);
+        taskDevelopmentDataDAO.setStatusByProject(COMPLETE, 2L);
 
-        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getAllByTask((long) 2);
+        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getAllByTask(2L);
 
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(greaterThan(0)));
@@ -133,9 +129,9 @@ public class TaskDevelopmentDataDAOTest {
 
     @Test
     public void deleteAllByProjectTest() {
-        taskDevelopmentDataDAO.deleteAllByProject((long) 2);
+        taskDevelopmentDataDAO.deleteAllByProject(2L);
 
-        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getAllByTask((long) 2);
+        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getAllByTask(2L);
 
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(0));
@@ -143,24 +139,24 @@ public class TaskDevelopmentDataDAOTest {
 
     @Test
     public void getAllByDeveloperTest() {
-        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getAllByDeveloper((long) 1);
+        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getAllByDeveloper(1L);
 
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(2));
         assertThat(result.stream()
-                        .filter(taskDD -> taskDD.getDeveloperId() == (long) 1)
+                        .filter(taskDD -> taskDD.getDeveloperId() == 1L)
                         .count(),
                 is((long) result.size()));
     }
 
     @Test
     public void getAllByDeveloperAndStatusTest() {
-        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getByDeveloperAndStatus((long) 1, COMPLETE);
+        List<TaskDevelopmentData> result = taskDevelopmentDataDAO.getByDeveloperAndStatus(1L, COMPLETE);
 
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(greaterThan(0)));
         assertThat(result.stream()
-                        .filter(taskDD -> taskDD.getDeveloperId() == (long) 1
+                        .filter(taskDD -> taskDD.getDeveloperId() == 1L
                                 && taskDD.getStatus().equals(COMPLETE))
                         .count(),
                 is((long) result.size()));

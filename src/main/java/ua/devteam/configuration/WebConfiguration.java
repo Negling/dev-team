@@ -22,6 +22,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Configures and instantiates all WEB tier beans.
+ */
 @EnableWebMvc
 @Configuration
 @EnableAspectJAutoProxy

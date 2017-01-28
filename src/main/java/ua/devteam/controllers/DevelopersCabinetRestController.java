@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * This controller process REST requests on developers cabinet page.
+ */
 @RestController
 @RequestMapping("/development")
 public class DevelopersCabinetRestController extends AbstractEntityProcessingController {
@@ -29,6 +32,9 @@ public class DevelopersCabinetRestController extends AbstractEntityProcessingCon
         this.taskDevelopmentDataService = taskDevelopmentDataService;
     }
 
+    /**
+     * Checks incoming params, and if they are valid - delegates task completion to service.
+     */
     @PutMapping("/completeTask")
     @PreAuthorize("hasAuthority('DEVELOPER')")
     public ResponseEntity<List<String>> completeTask(@RequestBody Map<String, String> params, Locale locale,

@@ -9,6 +9,10 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
+/**
+ * Registers {@link org.springframework.web.servlet.DispatcherServlet DispatcherServlet} configured with annotated classes, e.g. Spring's
+ * {@link org.springframework.context.annotation.Configuration @Configuration} classes.
+ */
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     private final static Logger logger = LogManager.getLogger(WebInitializer.class);
 
@@ -29,6 +33,11 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
+        /* To handle 404 requests we need to set "throwExceptionIfNoHandlerFound" dispatcherServlet property to true,
+           and with this, if no handler found for specific request path - a NoHandlerFoundException will occur, which
+           can be handled with {@link org.springframework.web.bind.annotation.ControllerAdvice ControllerAdvice}
+           exceptionHandler method. */
+
         DispatcherServlet dispatcherServlet = (DispatcherServlet) super.createDispatcherServlet(servletAppContext);
         dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
 
@@ -42,7 +51,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
 
-        String activeProfiles = "dev";
+        String activeProfiles = "prod";
         servletContext.setInitParameter("spring.profiles.active", activeProfiles);
 
         logger.info("Spring web application active profile is set to \"" + activeProfiles + "\".");

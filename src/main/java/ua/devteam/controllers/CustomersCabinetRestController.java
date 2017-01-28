@@ -18,6 +18,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * This controller process REST requests on customers cabinet page.
+ */
 @RestController
 @RequestMapping("/cabinet")
 public class CustomersCabinetRestController extends AbstractEntityProcessingController {
@@ -33,6 +36,10 @@ public class CustomersCabinetRestController extends AbstractEntityProcessingCont
         this.technicalTasksService = technicalTasksService;
     }
 
+    /**
+     * If technicalTask passes validation - delegates its registration to service. Returns ResponseEntity with status
+     * and messages about processing status.
+     */
     @PostMapping("/submit")
     @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<List<String>> registerTechnicalTask(@RequestBody @Valid TechnicalTask technicalTask,
@@ -46,6 +53,9 @@ public class CustomersCabinetRestController extends AbstractEntityProcessingCont
         return generateResponse(new LinkedList<>(), bindingResult, locale);
     }
 
+    /**
+     * Confirms check and returns OK status.
+     */
     @PutMapping("/confirmCheck")
     @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity confirmCheck(@RequestBody Long projectId) {
@@ -54,6 +64,9 @@ public class CustomersCabinetRestController extends AbstractEntityProcessingCont
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    /**
+     * Declines check and returns OK status.
+     */
     @PutMapping("/declineCheck")
     @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity declineCheck(@RequestBody Long projectId) {

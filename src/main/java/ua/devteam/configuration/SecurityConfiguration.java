@@ -14,6 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static ua.devteam.entity.enums.Role.*;
 
+/**
+ * Configures and instantiates all necessary beans for Security environment.
+ */
 @Configuration
 @EnableAspectJAutoProxy
 @EnableWebSecurity

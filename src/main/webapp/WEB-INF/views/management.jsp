@@ -83,9 +83,12 @@
 
         <%--Users--%>
         <div id="users" class="tab-pane fade">
-            <div class="row">
-                <%--Edit user--%>
-                <%--<div class="col-lg-12">
+            <div class="alert alert-warning text-center">
+                <spring:message code="general.sectionUnderDevelopment"/>
+            </div>
+            <%--<div class="row">
+                &lt;%&ndash;Edit user&ndash;%&gt;
+                &lt;%&ndash;<div class="col-lg-12">
                     <h3 class="page-header lead">Manage Users</h3>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pharetra fringilla metus at
                         eleifend. Nunc elementum pellentesque elit. Phasellus vitae eros ac nibh aliquet tempor vitae
@@ -117,33 +120,39 @@
                     </div>
                     &lt;%&ndash;end Users data&ndash;%&gt;
 
-                </div>--%>
-                <%--end edit User--%>
+                </div>&ndash;%&gt;
+                &lt;%&ndash;end edit User&ndash;%&gt;
 
-            </div>
+            </div>--%>
         </div>
         <%--end Users--%>
 
 
         <%--Developers--%>
-        <security:authorize access="hasAnyAuthority('Ultramanager', 'Admin')">
+        <security:authorize access="hasAnyAuthority('ULTRAMANAGER', 'ADMIN')">
             <div id="developers" class="tab-pane fade">
-
+                <div class="alert alert-warning text-center">
+                    <spring:message code="general.sectionUnderDevelopment"/>
+                </div>
             </div>
         </security:authorize>
         <%--end Developers--%>
 
         <%--Managers--%>
-        <security:authorize access="hasAuthority('Admin')">
+        <security:authorize access="hasAuthority('ADMIN')">
             <div id="managers" class="tab-pane fade">
-
+                <div class="alert alert-warning text-center">
+                    <spring:message code="general.sectionUnderDevelopment"/>
+                </div>
             </div>
         </security:authorize>
         <%--end Managers--%>
 
         <%--Settings--%>
         <div id="settings" class="tab-pane fade">
-
+            <div class="alert alert-warning text-center">
+                <spring:message code="general.sectionUnderDevelopment"/>
+            </div>
         </div>
         <%--end Settings--%>
 

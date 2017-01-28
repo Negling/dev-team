@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
+import static ua.devteam.EntityUtils.getValidProject;
 import static ua.devteam.dao.DAOTestUtils.*;
 import static ua.devteam.entity.enums.Status.COMPLETE;
 import static ua.devteam.entity.enums.Status.RUNNING;
@@ -42,7 +43,9 @@ public class ProjectDAOTest {
     @Before
     public void before() {
         testId = countRowsInTable(jdbcTemplate, tableName);
-        testData = new Project("test", "test", (long) 1, (long) 1, null, (long) 1, null, new Date(), null, RUNNING);
+        testData = getValidProject();
+        testData.setTasks(null);
+        testData.setTotalProjectCost(null);
     }
 
     @Test
@@ -111,57 +114,57 @@ public class ProjectDAOTest {
         /*Because of stored procedures is kind of unable to implement by right way on H2 engine -
         just test for no exceptions*/
 
-        projectDAO.updateStatus((long) 1, RUNNING);
+        projectDAO.updateStatus(1L, RUNNING);
     }
 
     @Test
     public void getCompleteByManagerTest() {
-        List<Project> data = projectDAO.getCompleteByManager((long) 1);
+        List<Project> data = projectDAO.getCompleteByManager(1L);
 
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
         assertThat(data.stream()
                         .filter(project -> project.getStatus().equals(COMPLETE)
-                                && project.getManagerId() == (long) 1)
+                                && project.getManagerId() == 1L)
                         .count(),
                 is((long) data.size()));
     }
 
     @Test
     public void getRunningByManagerTest() {
-        List<Project> data = projectDAO.getRunningByManager((long) 2);
+        List<Project> data = projectDAO.getRunningByManager(2L);
 
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
         assertThat(data.stream()
                         .filter(project -> project.getStatus().equals(RUNNING)
-                                && project.getManagerId() == (long) 2)
+                                && project.getManagerId() == 2L)
                         .count(),
                 is((long) data.size()));
     }
 
     @Test
     public void getCompleteByCustomerTest() {
-        List<Project> data = projectDAO.getCompleteByCustomer((long) 1);
+        List<Project> data = projectDAO.getCompleteByCustomer(1L);
 
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
         assertThat(data.stream()
                         .filter(project -> project.getStatus().equals(COMPLETE)
-                                && project.getCustomerId() == (long) 1)
+                                && project.getCustomerId() == 1L)
                         .count(),
                 is((long) data.size()));
     }
 
     @Test
     public void getRunningByCustomerTest() {
-        List<Project> data = projectDAO.getRunningByCustomer((long) 2);
+        List<Project> data = projectDAO.getRunningByCustomer(2L);
 
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
         assertThat(data.stream()
                         .filter(project -> project.getStatus().equals(RUNNING)
-                                && project.getCustomerId() == (long) 2)
+                                && project.getCustomerId() == 2L)
                         .count(),
                 is((long) data.size()));
     }

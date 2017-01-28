@@ -42,10 +42,12 @@ public class TaskDevelopmentData implements Serializable {
     }
 
     public TaskDevelopmentData(Long projectTaskId, Long developerId, DeveloperSpecialization specialization, DeveloperRank rank) {
-        this.projectTaskId = projectTaskId;
-        this.developerId = developerId;
-        this.specialization = specialization;
-        this.rank = rank;
+        this(projectTaskId, developerId, specialization, rank, null, null);
+    }
+
+    public TaskDevelopmentData(Long projectTaskId, Long developerId, DeveloperSpecialization specialization,
+                               DeveloperRank rank, Integer hoursSpent, Status status) {
+        this(projectTaskId, null, null, developerId, null, null, specialization, rank, null, hoursSpent, status);
     }
 
     public TaskDevelopmentData(Long projectTaskId, String taskName, String taskDescription, Long developerId,

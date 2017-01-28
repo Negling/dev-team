@@ -11,7 +11,10 @@ import ua.devteam.service.OperationsService;
 
 import java.util.List;
 
-@Service("operationsService")
+/**
+ * Provides service operations to {@link Operation operation}.
+ */
+@Service
 @Transactional(isolation = Isolation.READ_COMMITTED)
 public class OperationsServiceImpl implements OperationsService {
 
@@ -24,6 +27,9 @@ public class OperationsServiceImpl implements OperationsService {
         this.requestsForDevelopersDAO = requestsForDevelopersDAO;
     }
 
+    /**
+     * Creates Operation and RequestForDevelopers entity in storage.
+     */
     @Override
     public void registerOperation(Operation operation) {
         operation.setDeepId(operationDAO.create(operation));
@@ -31,13 +37,19 @@ public class OperationsServiceImpl implements OperationsService {
                 requestsForDevelopersDAO.create(requestForDevelopers));
     }
 
+    /**
+     * Creates Operations and RequestForDevelopers entities in storage.
+     */
     @Override
     public void registerOperations(List<Operation> operations) {
         operations.forEach(this::registerOperation);
     }
 
+    /**
+     * @param loadNested if false, loads only operations data, otherwise loads requests for developers data too.
+     * @return list of operations or empty list if no results found
+     */
     @Override
-    @Transactional(readOnly = true)
     public List<Operation> getByTechnicalTask(Long technicalTaskId, boolean loadNested) {
         List<Operation> operations = operationDAO.getByTechnicalTask(technicalTaskId);
 

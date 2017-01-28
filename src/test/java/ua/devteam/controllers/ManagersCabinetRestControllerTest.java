@@ -71,8 +71,8 @@ public class ManagersCabinetRestControllerTest {
     @Test
     public void bindDeveloperTest() throws Exception {
         Map<String, Long> requestBody = new HashMap<String, Long>() {{
-            put("devId", (long) 1);
-            put("taskId", (long) 1);
+            put("devId", 1L);
+            put("taskId", 1L);
         }};
 
         mockMvc.perform(post("/manage/bind")
@@ -81,7 +81,7 @@ public class ManagersCabinetRestControllerTest {
                 // checks
                 .andExpect(status().isOk());
 
-        verify(taskDevelopmentDataService, only()).bindDeveloper((long) 1, (long) 1);
+        verify(taskDevelopmentDataService, only()).bindDeveloper(1L, 1L);
     }
 
     @Test
@@ -92,7 +92,7 @@ public class ManagersCabinetRestControllerTest {
                 // checks
                 .andExpect(status().isOk());
 
-        verify(taskDevelopmentDataService, only()).unbindDeveloper((long) 1);
+        verify(taskDevelopmentDataService, only()).unbindDeveloper(1L);
     }
 
     @Test
@@ -108,19 +108,19 @@ public class ManagersCabinetRestControllerTest {
                 // checks
                 .andExpect(status().isOk());
 
-        verify(technicalTasksService, only()).decline((long) 1, "test");
+        verify(technicalTasksService, only()).decline(1L, "test");
     }
 
     @Test
     public void formTechnicalTaskAsProjectTest() throws Exception {
         mockMvc.perform(post("/manage/formAsProject")
-                .principal(getUserWithIdAndRole((long) 1, Role.ADMIN))
+                .principal(getUserWithIdAndRole(1L, Role.ADMIN))
                 .contentType("application/json")
                 .content(getObjectAsJson(1)))
                 // checks
                 .andExpect(status().isOk());
 
-        verify(technicalTasksService, only()).accept((long) 1, (long) 1);
+        verify(technicalTasksService, only()).accept(1L, 1L);
     }
 
     @Test
@@ -136,7 +136,7 @@ public class ManagersCabinetRestControllerTest {
                 // checks
                 .andExpect(status().isOk());
 
-        verify(projectsService, only()).decline((long) 1, "test");
+        verify(projectsService, only()).decline(1L, "test");
     }
 
     @Test

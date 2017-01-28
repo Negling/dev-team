@@ -18,7 +18,10 @@ import java.util.List;
 import static ua.devteam.entity.enums.Status.NEW;
 import static ua.devteam.entity.enums.Status.PENDING;
 
-@Service("technicalTasksService")
+/**
+ * Provides service operations to {@link TechnicalTask technicalTask}.
+ */
+@Service
 @Transactional(isolation = Isolation.READ_COMMITTED)
 public class TechnicalTasksServiceImpl implements TechnicalTasksService {
 
@@ -34,6 +37,9 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
         this.projectsService = projectsService;
     }
 
+    /**
+     * Updates status of technical task to "PENDING" and creates instance of project based on this Technical Task.
+     */
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void accept(Long technicalTaskId, Long managerId) {
@@ -49,6 +55,9 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
         }
     }
 
+    /**
+     * Updates status of technical task to "DECLINED".
+     */
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void decline(Long technicalTaskId, String managerCommentary) {
@@ -67,6 +76,9 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
         }
     }
 
+    /**
+     * Registers technical task instance and its operations in storage.
+     */
     @Override
     public Long registerTechnicalTask(TechnicalTask task) {
         long resultId = technicalTaskDAO.create(task);
@@ -77,8 +89,14 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
         return resultId;
     }
 
+    /**
+     * Returns Technical Task instance which id match to requested.
+     *
+     * @param loadNested if false, loads only technical task data, otherwise loads operations data too.
+     * @return technical task
+     */
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public TechnicalTask getById(Long technicalTaskId, boolean loadNested) {
         if (loadNested) {
             return formTask(technicalTaskDAO.getById(technicalTaskId));
@@ -87,8 +105,14 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
         return technicalTaskDAO.getById(technicalTaskId);
     }
 
+    /**
+     * Returns list of technical tasks with status "NEW".
+     *
+     * @param loadNested if false, loads only technical task data, otherwise loads operations data too.
+     * @return list of technical tasks, or empty list if no results found
+     */
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<TechnicalTask> getAllUnassigned(boolean loadNested) {
         if (loadNested) {
             return formTask(technicalTaskDAO.getAllNew());
@@ -97,8 +121,14 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
         return technicalTaskDAO.getAllNew();
     }
 
+    /**
+     * Returns list of all technical tasks which customer ID matches to requested.
+     *
+     * @param loadNested if false, loads only technical task data, otherwise loads operations data too.
+     * @return list of technical tasks, or empty list if no results found
+     */
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<TechnicalTask> getAllByCustomer(Long customerId, boolean loadNested) {
         if (loadNested) {
             return formTask(technicalTaskDAO.getAllByCustomer(customerId));
@@ -107,6 +137,9 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
         return technicalTaskDAO.getAllByCustomer(customerId);
     }
 
+    /**
+     * Sets operations to technical task.
+     */
     private TechnicalTask formTask(TechnicalTask technicalTask) {
         technicalTask.setOperations(operationsService.getByTechnicalTask(technicalTask.getId(), true));
 

@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.Validator;
 import ua.devteam.entity.forms.CustomerRegistrationForm;
 import ua.devteam.service.CustomersService;
-import ua.devteam.service.UsersService;
+import ua.devteam.service.impl.UsersServiceImpl;
 import ua.devteam.validation.formValidators.CustomerRegistrationFormValidator;
 
 import static org.mockito.Mockito.*;
@@ -26,7 +26,7 @@ public class RegistrationControllerTest {
 
     // setup
     {
-        UsersService usersService = mock(UsersService.class);
+        UsersServiceImpl usersService = mock(UsersServiceImpl.class);
         Validator validator = new CustomerRegistrationFormValidator(usersService);
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller)

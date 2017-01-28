@@ -12,8 +12,11 @@ import ua.devteam.service.ProjectsService;
 import ua.devteam.service.TaskDevelopmentDataService;
 import ua.devteam.service.TechnicalTasksService;
 
+/**
+ * This controller processing uncategorized requests that don't do changes to any entity state. GET requests mostly.
+ */
 @Controller
-public class BaseController {
+public class StaticContentController {
 
     private TechnicalTasksService technicalTasksService;
     private ProjectsService projectsService;
@@ -21,14 +24,17 @@ public class BaseController {
     private TaskDevelopmentDataService taskDevelopmentDataService;
 
     @Autowired
-    public BaseController(TechnicalTasksService technicalTasksService, ProjectsService projectsService,
-                          DevelopersService developersService, TaskDevelopmentDataService taskDevelopmentDataService) {
+    public StaticContentController(TechnicalTasksService technicalTasksService, ProjectsService projectsService,
+                                   DevelopersService developersService, TaskDevelopmentDataService taskDevelopmentDataService) {
         this.technicalTasksService = technicalTasksService;
         this.projectsService = projectsService;
         this.developersService = developersService;
         this.taskDevelopmentDataService = taskDevelopmentDataService;
     }
 
+    /**
+     * Returns page that displays technical task with specified ID.
+     */
     @GetMapping(value = "/technicalTask", params = {"id"})
     @PostAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN') " +
             "or (hasAuthority('CUSTOMER') and #model[technicalTask].customerId == principal.id)")
@@ -38,6 +44,9 @@ public class BaseController {
         return "technicalTask";
     }
 
+    /**
+     * Returns page that displays project with specified ID.
+     */
     @GetMapping(value = "/project", params = {"id"})
     @PostAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN') " +
             "or (hasAuthority('CUSTOMER') and #model[project].customerId == principal.id)")
@@ -47,6 +56,9 @@ public class BaseController {
         return "project";
     }
 
+    /**
+     * Returns page that displays developer with specified ID.
+     */
     @GetMapping(value = "/developer", params = {"id"})
     @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public String showDeveloper(@RequestParam Long id, Model model) {
@@ -57,11 +69,17 @@ public class BaseController {
         return "developer";
     }
 
+    /**
+     * Returns main project page.
+     */
     @GetMapping("/")
     public String main() {
         return "main";
     }
 
+    /**
+     * Returns login page with attribute based on request params.
+     */
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "logout", required = false) String logout,

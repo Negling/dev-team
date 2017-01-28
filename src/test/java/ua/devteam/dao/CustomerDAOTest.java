@@ -11,7 +11,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.configuration.DataAccessConfiguration;
-import ua.devteam.entity.enums.Role;
 import ua.devteam.entity.users.Customer;
 
 import static org.hamcrest.Matchers.is;
@@ -19,6 +18,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
+import static ua.devteam.EntityUtils.getValidCustomer;
 import static ua.devteam.dao.DAOTestUtils.*;
 
 
@@ -39,7 +39,7 @@ public class CustomerDAOTest {
     @Before
     public void before() {
         testId = countRowsInTable(jdbcTemplate, tableName);
-        testData = new Customer("test", "test", "test", "test", "test", Role.CUSTOMER);
+        testData = getValidCustomer();
     }
 
     @Test

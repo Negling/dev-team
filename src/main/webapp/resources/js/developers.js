@@ -1,4 +1,6 @@
-/*Function, which runs at document.ready(). It maps all event handlers. */
+/*For proper work of all functions, this script must be loaded after Bootstrap, jQuery libraries and utils.js */
+
+/* Maps all event handlers at document.ready(). */
 $(function () {
     $.ajaxSetup({
         // we need to add csrf header to every ajax request accordingly to Spring Security settings
@@ -17,6 +19,7 @@ $(function () {
     $("button[name=refresh]").trigger("click");
 });
 
+/* Sends request to server to mark task as complete, with hours spent and task ID as JSON string. */
 function completeTaskAjax() {
     $.ajax({
         method: "PUT",
@@ -24,12 +27,14 @@ function completeTaskAjax() {
         data: JSON.stringify({id: $("#markComplete").attr("value"), hoursSpent: $("#hoursSpent").val()})
     }).done(function (data) {
         refreshData("#currentTask", true, "/fragments/development_active_task", function () {
-            return prependOrUpdate("#currentTask > div.alert", "#currentTask", formValidatingAlertBox(data, true));
+            // append message box
+            return prependOrUpdate("#currentTask > div.alert", "#currentTask", formAlertBox(data, true));
         });
     }).fail(function (jqXHR) {
         if (jqXHR.status === 422) {
+            // append message box
             prependOrUpdate("#currentTask > div.alert", "#currentTask",
-                formValidatingAlertBox(JSON.parse(jqXHR.responseText), false));
+                formAlertBox(JSON.parse(jqXHR.responseText), false));
         } else {
             showErrorsModal(jqXHR.responseText);
         }

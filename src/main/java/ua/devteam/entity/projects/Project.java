@@ -163,7 +163,7 @@ public class Project extends AbstractTechnicalTask implements Serializable{
         sb.append(", technicalTaskId=").append(technicalTaskId);
         sb.append(", startDate=").append(startDate);
         sb.append(", endDate=").append(endDate);
-        sb.append(", totalProjectCost").append(totalProjectCost);
+        sb.append(", totalProjectCost=").append(totalProjectCost);
         sb.append(", status=").append(getStatus().toString());
         sb.append(", tasks=").append(tasks);
         sb.append('}');

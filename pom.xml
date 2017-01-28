@@ -5,16 +5,10 @@
     <artifactId>dev-team</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>dev-team Maven Webapp</name>
+    <name>Dev-Team</name>
     <url>http://maven.apache.org</url>
 
     <dependencies>
-        <!--<dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.8.8</version>
-        </dependency>-->
-
         <!--Dependencies for tests-->
         <dependency>
             <groupId>org.mockito</groupId>

@@ -27,6 +27,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Locale;
 
+/**
+ * This advice handles all occurred exceptions, and binds validators.
+ */
 @ControllerAdvice
 public class ControllersAdvice {
 
@@ -40,6 +43,12 @@ public class ControllersAdvice {
         this.compositeValidator = compositeValidator;
     }
 
+    /**
+     * If no other handler found  - this method will be invoked to process exception.
+     *
+     * @param ex occurred exception
+     * @return path to forward
+     */
     @ExceptionHandler(Exception.class)
     public String handleInternalError(Exception ex) {
         logException(ex);
@@ -47,6 +56,27 @@ public class ControllersAdvice {
         return "forward:/error-page-500";
     }
 
+    /**
+     * Forwards to appropriate 403 error page.
+     *
+     * @return path to forward
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public String handleAccessDeniedException() {
+        if (logger.isTraceEnabled()) {
+            logger.trace("Access Denied! Forwarding on 403 error page.");
+        }
+
+        return "forward:/error-page-403";
+    }
+
+    /**
+     * Handles {@link AjaxMethodInternalException} and forms {@link ResponseEntity} with message and status code based on exception content.
+     *
+     * @param ex     occurred exception
+     * @param locale current locale
+     * @return {@link ResponseEntity} parametrized with String
+     */
     @ExceptionHandler(AjaxMethodInternalException.class)
     public ResponseEntity<String> handleAjaxMethodException(AjaxMethodInternalException ex, Locale locale) {
         HttpHeaders headers = new HttpHeaders();
@@ -65,24 +95,26 @@ public class ControllersAdvice {
         return new ResponseEntity<>(messageSource.getMessage(ex.getLocalizedErrorCode(), ex.getErrorParams(), locale), headers, status);
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public String handleAccessDeniedException() {
-        if (logger.isTraceEnabled()) {
-            logger.trace("Access Denied! Forwarding on 403 error page.");
-        }
-
-        return "forward:/error-page-403";
-    }
-
+    /**
+     * Handles all possible exceptions tied to attempts to GET resource. Generates request string that caused exception
+     * and forwards to appropriate error page.
+     *
+     * @param ex    occurred exception
+     * @param model model
+     * @return path to forward
+     */
     @ExceptionHandler({NoHandlerFoundException.class, MethodArgumentTypeMismatchException.class, ResourceNotFoundException.class})
     public String handleNoHandlerFound(Exception ex, Model model) throws UnsupportedEncodingException {
         String requestedURL;
 
         if (ex instanceof NoHandlerFoundException) {
+            // retrieve and decode request path from exception content
             requestedURL = UriUtils.decode(((NoHandlerFoundException) ex).getRequestURL(), "UTF-8");
         } else if (ex instanceof ResourceNotFoundException) {
+            // simply retrieve request path from exception content
             requestedURL = ((ResourceNotFoundException) ex).getRequestedURL();
         } else {
+            // if occurred exception is MethodArgumentTypeMismatchException - retrieve request path from annotation
             MethodArgumentTypeMismatchException ex1 = (MethodArgumentTypeMismatchException) ex;
             RequestMapping requestMapping = (RequestMapping) Arrays.stream(ex1.getParameter().getMethodAnnotations()).
                     filter(annotation -> (annotation instanceof RequestMapping)).findAny().get();
@@ -100,11 +132,21 @@ public class ControllersAdvice {
         return "forward:/error-page-404";
     }
 
+    /**
+     * Binds validators to entities.
+     *
+     * @param binder web binder
+     */
     @InitBinder({"check", "customerRegistrationForm", "technicalTask"})
     public void dataBinding(WebDataBinder binder) {
         binder.addValidators(compositeValidator);
     }
 
+    /**
+     * Logs exception with level based on exception type.
+     *
+     * @param ex exception
+     */
     private void logException(Throwable ex) {
         if (ex instanceof NullPointerException) {
             logger.warn(formExceptionMessage(ex));
@@ -115,6 +157,12 @@ public class ControllersAdvice {
         }
     }
 
+    /**
+     * Forms message from exception data.
+     *
+     * @param ex exception
+     * @return mgs string
+     */
     private String formExceptionMessage(Throwable ex) {
         StringBuilder builder = new StringBuilder();
 

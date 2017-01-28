@@ -24,7 +24,7 @@ public class DevelopersCabinetRestControllerTest {
     private TaskDevelopmentDataService taskDevelopmentDataService = mock(TaskDevelopmentDataService.class);
     private DevelopersCabinetRestController controller = new DevelopersCabinetRestController(getDefaultMessageSource(),
             taskDevelopmentDataService);
-    private Principal developer = getUserWithIdAndRole((long) 1, Role.DEVELOPER);
+    private Principal developer = getUserWithIdAndRole(1L, Role.DEVELOPER);
 
     // controller mock object
     private MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller)
@@ -61,6 +61,6 @@ public class DevelopersCabinetRestControllerTest {
                 // checks
                 .andExpect(status().isOk());
 
-        verify(taskDevelopmentDataService, only()).complete((long) 1, (long) 1, 10);
+        verify(taskDevelopmentDataService, only()).complete(1L, 1L, 10);
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ua.devteam.entity.forms.CustomerRegistrationForm;
-import ua.devteam.service.UsersService;
+import ua.devteam.service.impl.UsersServiceImpl;
 import ua.devteam.validation.formValidators.CustomerRegistrationFormValidator;
 
 import static org.hamcrest.Matchers.is;
@@ -19,12 +19,12 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class CustomerRegistrationFormValidatorTest {
     private Validator validator;
-    private UsersService usersServiceMock;
+    private UsersServiceImpl usersServiceMock;
     private CustomerRegistrationForm testData;
     private Errors errors;
 
     {
-        usersServiceMock = mock(UsersService.class);
+        usersServiceMock = mock(UsersServiceImpl.class);
         validator = new CustomerRegistrationFormValidator(usersServiceMock);
         testData = new CustomerRegistrationForm();
     }

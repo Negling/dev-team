@@ -11,16 +11,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.configuration.DataAccessConfiguration;
-import ua.devteam.entity.enums.CheckStatus;
 import ua.devteam.entity.projects.Check;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
+import static ua.devteam.EntityUtils.getValidCheck;
 import static ua.devteam.dao.DAOTestUtils.deleteEntityTest;
 import static ua.devteam.dao.DAOTestUtils.updateEntityTest;
 
@@ -38,8 +37,7 @@ public class CheckDAOTest {
 
     @Before
     public void before() {
-        testData = new Check((long) 1, "test", new BigDecimal("1.00"), new BigDecimal("2.00"), new BigDecimal("3.00"),
-                CheckStatus.AWAITING);
+        testData = getValidCheck();
     }
 
     @Test
@@ -59,7 +57,7 @@ public class CheckDAOTest {
 
     @Test
     public void updateTest() {
-        Check oldData = checkDAO.getByProject((long) 1);
+        Check oldData = checkDAO.getByProject(1L);
 
         updateEntityTest(checkDAO, oldData, testData, jdbcTemplate, tableName);
         testData.setProjectName(oldData.getProjectName());
@@ -74,22 +72,22 @@ public class CheckDAOTest {
 
     @Test
     public void getByProjectTest() {
-        Check data = checkDAO.getByProject((long) 1);
+        Check data = checkDAO.getByProject(1L);
 
         assertThat(data, is(notNullValue()));
-        assertThat(data.getProjectId(), is((long) 1));
+        assertThat(data.getProjectId(), is(1L));
     }
 
     @Test(expected = EmptyResultDataAccessException.class)
     public void getByProjectWrongIdTest() {
-        checkDAO.getByProject((long) 0);
+        checkDAO.getByProject(0L);
     }
 
     @Test
     public void getNewByCustomerTest() {
         checkDAO.create(testData);
 
-        List<Check> data = checkDAO.getNewByCustomer((long) 1);
+        List<Check> data = checkDAO.getNewByCustomer(1L);
 
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
@@ -97,7 +95,7 @@ public class CheckDAOTest {
 
     @Test
     public void getCompleteByCustomerTest() {
-        List<Check> data = checkDAO.getCompleteByCustomer((long) 1);
+        List<Check> data = checkDAO.getCompleteByCustomer(1L);
 
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
@@ -105,7 +103,7 @@ public class CheckDAOTest {
 
     @Test
     public void getByCustomerTest() {
-        List<Check> data = checkDAO.getAllByCustomer((long) 1);
+        List<Check> data = checkDAO.getAllByCustomer(1L);
 
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
@@ -113,6 +111,6 @@ public class CheckDAOTest {
 
     @Test
     public void getByCustomerWrongIdTest() {
-        assertThat(checkDAO.getAllByCustomer((long) 0).size(), is(0));
+        assertThat(checkDAO.getAllByCustomer(0L).size(), is(0));
     }
 }

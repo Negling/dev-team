@@ -80,8 +80,8 @@ public class JDBCManagerDAO extends JDBCGenericIdentifiedDAO<Manager> implements
         ps.setString(1, entity.getFirstName());
         ps.setString(2, entity.getLastName());
         ps.setString(3, entity.getEmail());
-        ps.setString(4, entity.getPassword());
-        ps.setString(5, entity.getPhoneNumber());
+        ps.setString(4, entity.getPhoneNumber());
+        ps.setString(5, entity.getPassword());
         ps.setString(6, entity.getRole().toString());
 
         return ps;

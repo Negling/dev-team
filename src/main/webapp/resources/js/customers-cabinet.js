@@ -1,6 +1,6 @@
-/*For proper work of all functions, this script must be loaded after Bootstrap and jQuery libraries.*/
+/*For proper work of all functions, this script must be loaded after Bootstrap, jQuery libraries and utils.js */
 
-/*Global counter for tasks accordion in project. */
+/* Global counter for tasks accordion in project. */
 var taskId = createIdCounter();
 
 function createIdCounter() {
@@ -11,7 +11,7 @@ function createIdCounter() {
     }
 }
 
-/*Function, which runs at document.ready(). It maps all event handlers. */
+/* Maps all event handlers at document.ready(). */
 $(function () {
     var modal = $("#addTaskModal");
 
@@ -147,6 +147,7 @@ function addTask() {
     taskModal.find("#addTaskButton").prop('disabled', true);
 }
 
+/* Creates Technical Task object based on corresponding input values. */
 function createTechnicalTask() {
     var tasks, technicalTask, operations, requestsForDevelopers, operation, devRequest, tableRow;
 
@@ -155,10 +156,11 @@ function createTechnicalTask() {
     technicalTask = {
         name: $("#technicalTaskName").val(),
         description: $("#technicalTaskDescription").val(),
-        status: 'New',
+        status: 'NEW',
         operations: operations
     };
 
+    // append operations
     tasks.children().each(function (index, element) {
         requestsForDevelopers = [];
         operation = {
@@ -167,6 +169,7 @@ function createTechnicalTask() {
             requestsForDevelopers: requestsForDevelopers
         };
 
+        // append request for developers to operation
         $(element).find("tbody tr").each(function (index, element) {
             tableRow = $(element).children();
 
@@ -205,6 +208,7 @@ function checkTaskModalNumberInput(input) {
     else if (input.val() < 1) input.val(1);
 }
 
+/* Refreshes technical task inputs(name, description) and removes assigned tasks.*/
 function refreshTechnicalTask(callback) {
     $("#formTechnicalTask").fadeTo(800, 0.01, function () {
         $("#technicalTaskName, #technicalTaskDescription").val('');
@@ -216,6 +220,7 @@ function refreshTechnicalTask(callback) {
     }).delay(800).fadeTo(800, 1);
 }
 
+/* Sends technical task object to serves as JSON object. */
 function submitTechnicalTaskAjax(button) {
     $.ajax({
         method: "POST",
@@ -223,18 +228,21 @@ function submitTechnicalTaskAjax(button) {
         data: JSON.stringify(createTechnicalTask())
     }).done(function (data) {
         refreshTechnicalTask(function () {
-            return prependOrUpdate("#createProject > div.alert", "#createProject", formValidatingAlertBox(data, true));
+            // append message box
+            return prependOrUpdate("#createProject > div.alert", "#createProject", formAlertBox(data, true));
         });
     }).fail(function (jqXHR) {
         if (jqXHR.status === 422) {
+            // append message box
             prependOrUpdate("#createProject > div.alert", "#createProject",
-                formValidatingAlertBox(JSON.parse(jqXHR.responseText), false));
+                formAlertBox(JSON.parse(jqXHR.responseText), false));
         } else {
             showErrorsModal(jqXHR.responseText);
         }
     });
 }
 
+/* Sends request to accept check to server, and removes from/refreshes checks section. */
 function declineCheckAjax(button) {
     $.ajax({
         method: "PUT",
@@ -247,6 +255,7 @@ function declineCheckAjax(button) {
     });
 }
 
+/* Sends request to decline check to server, and removes from/refreshes checks section. */
 function confirmCheckAjax(button) {
     $.ajax({
         method: "PUT",

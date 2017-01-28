@@ -13,6 +13,9 @@ import ua.devteam.entity.users.User;
 import ua.devteam.service.ProjectsService;
 import ua.devteam.service.TechnicalTasksService;
 
+/**
+ * This controller processing GET requests to managers cabinet page and its fragments.
+ */
 @Controller
 @RequestMapping("/manage")
 public class ManagersCabinetController {
@@ -26,6 +29,9 @@ public class ManagersCabinetController {
         this.projectsService = projectsService;
     }
 
+    /**
+     * Returns managers cabinet main page.
+     */
     @GetMapping
     @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public String cabinet(Model model) {
@@ -35,6 +41,9 @@ public class ManagersCabinetController {
         return "management";
     }
 
+    /**
+     * Returns managers cabinet new technical tasks section.
+     */
     @GetMapping("/fragments/manage_technical_tasks")
     @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public String manageTechnicalTasks(Model model) {
@@ -43,6 +52,9 @@ public class ManagersCabinetController {
         return "/fragments/management/manage_technical_tasks";
     }
 
+    /**
+     * Returns managers cabinet form projects section.
+     */
     @GetMapping("/fragments/manage_form_project")
     @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public String manageFormProject(Model model, Authentication auth) {
@@ -52,6 +64,9 @@ public class ManagersCabinetController {
         return "/fragments/management/manage_form_project";
     }
 
+    /**
+     * Returns managers cabinet running projects section.
+     */
     @GetMapping("/fragments/manage_running_projects")
     @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public String manageRunningProjects(Model model, Authentication auth) {
@@ -61,6 +76,9 @@ public class ManagersCabinetController {
         return "/fragments/management/manage_running_projects";
     }
 
+    /**
+     * Returns managers cabinet complete projects section.
+     */
     @GetMapping("/fragments/manage_complete_projects")
     @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public String manageCompleteProjects(Model model, Authentication auth) {

@@ -223,7 +223,7 @@
                                                 <input id="project<c:out value="${project.id}"/>DevsCost" type="number"
                                                        class="form-control text-right" value="0" title="devsCost"
                                                        readonly>
-                                                <span class="input-group-addon">.00 $</span>
+                                                <span class="input-group-addon">$</span>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 project-cost-input">
@@ -233,7 +233,7 @@
                                                        title="servicesCost"
                                                        class="form-control text-right" value="0"
                                                        data-project-id="<c:out value="${project.id}"/>">
-                                                <span class="input-group-addon">.00 $</span>
+                                                <span class="input-group-addon">$</span>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 project-cost-input">
@@ -241,7 +241,7 @@
                                             <div class="input-group">
                                                 <input id="project<c:out value="${project.id}"/>Taxes" type="number"
                                                        class="form-control text-right" value="0" title="taxes" readonly>
-                                                <span class="input-group-addon">.00 $</span>
+                                                <span class="input-group-addon">$</span>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 project-cost-input">
@@ -250,7 +250,7 @@
                                                 <input id="project<c:out value="${project.id}"/>TotalCost" type="number"
                                                        class="form-control text-right" value="0" title="totalCost"
                                                        readonly>
-                                                <span class="input-group-addon">.00 $</span>
+                                                <span class="input-group-addon">$</span>
                                             </div>
                                         </div>
                                     </div>

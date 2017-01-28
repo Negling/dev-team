@@ -4,7 +4,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%--Settings--%>
-<div class="row">
+<div class="alert alert-warning text-center">
+    <spring:message code="general.sectionUnderDevelopment"/>
+</div>
+<%--<div class="row">
     <div class="col-lg-12">
         <h3 class="page-header lead">
             <spring:message code="customersCabinet.settingsLead"/>
@@ -67,7 +70,7 @@
                 data-target="#passwordModal"><spring:message code="general.continue"/>
         </button>
     </div>
-</div>
+</div>--%>
 
 <!-- Password modal -->
 <div id="passwordModal" class="modal fade" role="dialog">

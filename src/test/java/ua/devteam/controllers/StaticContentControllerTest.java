@@ -29,7 +29,7 @@ import static ua.devteam.controllers.WebTestUtils.getUserWithIdAndRole;
 import static ua.devteam.entity.enums.Role.CUSTOMER;
 
 @RunWith(JUnit4.class)
-public class BaseControllerTest {
+public class StaticContentControllerTest {
 
     // id for tests
     private long testId = 1;
@@ -44,7 +44,7 @@ public class BaseControllerTest {
     private Principal principal = getUserWithIdAndRole(testId, CUSTOMER);
 
     // controller to test
-    private BaseController controller = new BaseController(technicalTasksService, projectsService,
+    private StaticContentController controller = new StaticContentController(technicalTasksService, projectsService,
             developersService, taskDevelopmentDataService);
 
     // controller mock object

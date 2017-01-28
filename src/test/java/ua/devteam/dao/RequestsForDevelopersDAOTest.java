@@ -19,10 +19,9 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
+import static ua.devteam.EntityUtils.getValidRequestForDevelopers;
 import static ua.devteam.dao.DAOTestUtils.deleteEntityTest;
 import static ua.devteam.dao.DAOTestUtils.updateEntityTest;
-import static ua.devteam.entity.enums.DeveloperRank.JUNIOR;
-import static ua.devteam.entity.enums.DeveloperSpecialization.BACKEND;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DataAccessConfiguration.class)
@@ -38,7 +37,7 @@ public class RequestsForDevelopersDAOTest {
 
     @Before
     public void before() {
-        testData = new RequestForDevelopers((long) 1, BACKEND, JUNIOR, 1);
+        testData = getValidRequestForDevelopers();
     }
 
     @Test
@@ -56,12 +55,12 @@ public class RequestsForDevelopersDAOTest {
 
     @Test
     public void updateTest() {
-        RequestForDevelopers oldData = requestsForDevelopersDAO.getByOperation((long) 1).get(0);
-        testData.setOperationId((long) 2);
+        RequestForDevelopers oldData = requestsForDevelopersDAO.getByOperation(1L).get(0);
+        testData.setOperationId(2L);
 
         updateEntityTest(requestsForDevelopersDAO, oldData, testData, jdbcTemplate, tableName);
 
-        assertTrue(requestsForDevelopersDAO.getByOperation((long) 2).contains(testData));
+        assertTrue(requestsForDevelopersDAO.getByOperation(2L).contains(testData));
     }
 
     @Test(expected = NullPointerException.class)
@@ -83,12 +82,12 @@ public class RequestsForDevelopersDAOTest {
 
     @Test
     public void getByOperationTest() {
-        List<RequestForDevelopers> data = requestsForDevelopersDAO.getByOperation((long) 1);
+        List<RequestForDevelopers> data = requestsForDevelopersDAO.getByOperation(1L);
 
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
         assertThat(data.stream()
-                        .filter(rfd -> rfd.getOperationId() == (long) 1)
+                        .filter(rfd -> rfd.getOperationId() == 1L)
                         .count(),
                 is((long) data.size()));
     }

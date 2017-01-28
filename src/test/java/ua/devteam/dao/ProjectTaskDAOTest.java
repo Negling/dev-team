@@ -11,7 +11,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ua.devteam.configuration.DataAccessConfiguration;
-import ua.devteam.entity.enums.Status;
 import ua.devteam.entity.tasks.ProjectTask;
 
 import java.util.List;
@@ -20,6 +19,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
+import static ua.devteam.EntityUtils.getValidProjectTask;
 import static ua.devteam.dao.DAOTestUtils.*;
 import static ua.devteam.entity.enums.Status.COMPLETE;
 
@@ -41,7 +41,9 @@ public class ProjectTaskDAOTest {
     @Before
     public void before() {
         testId = countRowsInTable(jdbcTemplate, tableName);
-        testData = new ProjectTask((long) 1, (long) 1, "test", "test", Status.RUNNING, 0);
+        testData = getValidProjectTask();
+        testData.setRequestsForDevelopers(null);
+        testData.setTasksDevelopmentData(null);
     }
 
     @Test
@@ -79,14 +81,14 @@ public class ProjectTaskDAOTest {
         /*Because of stored procedures is kind of unable to implement by right way on H2 engine -
         just test for no exceptions*/
 
-        projectTaskDAO.checkStatus((long) 1);
+        projectTaskDAO.checkStatus(1L);
     }
 
     @Test
     public void setStatusByProjectTest() {
-        projectTaskDAO.setStatusByProject(COMPLETE, (long) 2);
+        projectTaskDAO.setStatusByProject(COMPLETE, 2L);
 
-        List<ProjectTask> result = projectTaskDAO.getByProject((long) 2);
+        List<ProjectTask> result = projectTaskDAO.getByProject(2L);
         assertThat(result, is(notNullValue()));
         assertThat(result.size(), is(greaterThan(0)));
         assertThat(result.stream()
@@ -109,12 +111,12 @@ public class ProjectTaskDAOTest {
 
     @Test
     public void getByProjectIdTest() {
-        List<ProjectTask> data = projectTaskDAO.getByProject((long) 1);
+        List<ProjectTask> data = projectTaskDAO.getByProject(1L);
 
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));
         assertThat(data.stream()
-                        .filter(task -> task.getProjectId() == (long) 1)
+                        .filter(task -> task.getProjectId() == 1L)
                         .count(),
                 is((long) data.size()));
     }

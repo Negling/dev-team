@@ -16,6 +16,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.annotation.PostConstruct;
 import java.util.ResourceBundle;
 
+/**
+ * Configures and instantiates all DAO tier beans.
+ */
 @Configuration
 @EnableAspectJAutoProxy
 @ComponentScan(basePackages = "ua.devteam.dao.jdbc")
@@ -127,6 +130,7 @@ public class DataAccessConfiguration {
 
                 logger.info("Tweaking MYSQL compatibility mode for H2 database:");
 
+                // By default H2 db converts null to "0", to proper compatibility we need to turn if off
                 Mode.getInstance("MYSQL").convertInsertNullToZero = false;
 
                 logger.info("Setting convertInsertNullToZero to false.");

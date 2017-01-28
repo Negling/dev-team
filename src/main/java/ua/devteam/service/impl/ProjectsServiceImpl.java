@@ -17,7 +17,10 @@ import java.util.List;
 
 import static ua.devteam.entity.enums.Status.*;
 
-@Service("projectsService")
+/**
+ * Provides service operations to {@link Project project}.
+ */
+@Service
 @Transactional(isolation = Isolation.READ_COMMITTED)
 public class ProjectsServiceImpl implements ProjectsService {
 
@@ -33,55 +36,30 @@ public class ProjectsServiceImpl implements ProjectsService {
         this.taskDevelopersService = taskDevelopersService;
     }
 
-    @Override
-    public long createProject(TechnicalTask technicalTask, Long managerId) {
-        long projectId = projectDAO.create(new Project(managerId, technicalTask));
-
-        projectTasksService.registerFromTechnicalTask(technicalTask.getId(), projectId);
-
-        return projectId;
-    }
-
-    @Override
-    public void confirmProject(Long projectId) {
-        projectTasksService.confirmByProject(projectId);
-        taskDevelopersService.confirmByProject(projectId);
-        projectDAO.updateStatus(projectId, PENDING);
-    }
-
-    @Override
-    public void runProject(Long projectId) {
-        projectTasksService.runByProject(projectId);
-        taskDevelopersService.runByProject(projectId);
-        projectDAO.updateStatus(projectId, RUNNING);
-    }
-
+    /**
+     * Updates projects status to "DECLINED", endDate to current time, and delegates to task developers service subsequent operations.
+     */
     @Override
     public void decline(Long projectId, String managerCommentary) {
         Project project = projectDAO.getById(projectId);
         project.setEndDate(new Date());
 
-        if (managerCommentary != null) {
-            project.setManagerCommentary(managerCommentary.isEmpty() ? null : managerCommentary);
+        if (managerCommentary != null && !managerCommentary.isEmpty()) {
+            project.setManagerCommentary(managerCommentary);
         }
 
-        taskDevelopersService.dropByProject(projectId);
         projectDAO.updateStatus(projectId, DECLINED);
-        projectDAO.update(project, project);
-    }
-
-    @Override
-    public void cancel(Long projectId) {
-        Project project = projectDAO.getById(projectId);
-        project.setEndDate(new Date());
-
         taskDevelopersService.dropByProject(projectId);
-        projectDAO.updateStatus(projectId, CANCELED);
-        projectDAO.update(project, project);
     }
 
+    /**
+     * Returns project instance which id match to requested.
+     *
+     * @param loadNested if false, loads only project data, otherwise loads projectsTasks data too.
+     * @return projects instance
+     */
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Project getById(Long projectId, boolean loadNested) {
         Project project = projectDAO.getById(projectId);
 
@@ -92,8 +70,14 @@ public class ProjectsServiceImpl implements ProjectsService {
         return project;
     }
 
+    /**
+     * Returns list of projects, which manager ID match to requested and status is "NEW" or "PENDING", or empty list if no results found.
+     *
+     * @param loadNested if false, loads only project data, otherwise loads projectsTasks data too.
+     * @return list of projects or empty list
+     */
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<Project> getNewByManager(Long managerId, boolean loadNested) {
         List<Project> projects = projectDAO.getByManagerAndStatus(managerId, NEW);
 
@@ -104,8 +88,14 @@ public class ProjectsServiceImpl implements ProjectsService {
         return projects;
     }
 
+    /**
+     * Returns list of projects, which manager ID match to requested and status is "RUNNING" or "PENDING", or empty list if no results found.
+     *
+     * @param loadNested if false, loads only project data, otherwise loads projectsTasks data too.
+     * @return list of projects or empty list
+     */
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<Project> getRunningByManager(Long managerId, boolean loadNested) {
         List<Project> projects = projectDAO.getRunningByManager(managerId);
 
@@ -116,8 +106,15 @@ public class ProjectsServiceImpl implements ProjectsService {
         return projects;
     }
 
+    /**
+     * Returns list of projects, which manager ID match to requested and status is "COMPLETE", "CANCELED" or "DECLINED",
+     * or empty list if no results found.
+     *
+     * @param loadNested if false, loads only project data, otherwise loads projectsTasks data too.
+     * @return list of projects or empty list
+     */
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<Project> getCompleteByManager(Long managerId, boolean loadNested) {
         List<Project> projects = projectDAO.getCompleteByManager(managerId);
 
@@ -128,8 +125,14 @@ public class ProjectsServiceImpl implements ProjectsService {
         return projects;
     }
 
+    /**
+     * Returns list of projects, which customer ID match to requested and status is "RUNNING" or "PENDING", or empty list if no results found.
+     *
+     * @param loadNested if false, loads only project data, otherwise loads projectsTasks data too.
+     * @return list of projects or empty list
+     */
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<Project> getRunningByCustomer(Long customerId, boolean loadNested) {
         List<Project> projects = projectDAO.getRunningByCustomer(customerId);
 
@@ -140,8 +143,15 @@ public class ProjectsServiceImpl implements ProjectsService {
         return projects;
     }
 
+    /**
+     * Returns list of projects, which customer ID match to requested and status is "COMPLETE", "CANCELED" or "DECLINED",
+     * or empty list if no results found.
+     *
+     * @param loadNested if false, loads only project data, otherwise loads projectsTasks data too.
+     * @return list of projects or empty list
+     */
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<Project> getCompleteByCustomer(Long customerId, boolean loadNested) {
         List<Project> projects = projectDAO.getCompleteByCustomer(customerId);
 
@@ -150,5 +160,54 @@ public class ProjectsServiceImpl implements ProjectsService {
         }
 
         return projects;
+    }
+
+    /**
+     * Creates and records Project instance from specified Technical task, and delegates to project tasks service subsequent operations.
+     *
+     * @return generated ID
+     */
+    @Override
+    public long createProject(TechnicalTask technicalTask, Long managerId) {
+        long projectId = projectDAO.create(new Project(managerId, technicalTask));
+
+        projectTasksService.registerFromTechnicalTask(technicalTask.getId(), projectId);
+
+        return projectId;
+    }
+
+    /**
+     * Updates project, project tasks and task developers data status to "PENDING".
+     */
+    @Override
+    public void confirmProject(Long projectId) {
+        projectTasksService.confirmByProject(projectId);
+        taskDevelopersService.confirmByProject(projectId);
+        projectDAO.updateStatus(projectId, PENDING);
+    }
+
+    /**
+     * Updates project, project tasks and task developers data status to "RUNNING".
+     */
+    @Override
+    public void runProject(Long projectId) {
+        projectTasksService.runByProject(projectId);
+        taskDevelopersService.runByProject(projectId);
+        projectDAO.updateStatus(projectId, RUNNING);
+    }
+
+
+    /**
+     * Updates project, project tasks status to "CANCELED" Sets project end date to current time.
+     * Deletes project task developers data..
+     */
+    @Override
+    public void cancel(Long projectId) {
+        Project project = projectDAO.getById(projectId);
+        project.setEndDate(new Date());
+
+        projectTasksService.cancelByProject(projectId);
+        taskDevelopersService.dropByProject(projectId);
+        projectDAO.updateStatus(projectId, CANCELED);
     }
 }

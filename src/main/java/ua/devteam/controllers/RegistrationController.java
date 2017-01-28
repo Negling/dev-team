@@ -14,6 +14,9 @@ import ua.devteam.service.CustomersService;
 
 import javax.validation.Valid;
 
+/**
+ * This controller process customer registration procedure.
+ */
 @Controller
 @SessionAttributes("customerRegistrationForm")
 public class RegistrationController {
@@ -25,11 +28,18 @@ public class RegistrationController {
         this.customersService = customersService;
     }
 
+    /**
+     * Returns registration page.
+     */
     @GetMapping("/registration")
     public String registration() {
         return "registration";
     }
 
+    /**
+     * Validates registration form, and if validation successful - delegates customer registration to service,
+     * otherwise redirects back with binding errors.
+     */
     @PostMapping("/registration")
     public String registerCustomer(@Valid @ModelAttribute CustomerRegistrationForm customerRegistrationForm,
                                    BindingResult bindingResult, SessionStatus sessionStatus,
@@ -43,6 +53,7 @@ public class RegistrationController {
         // save customer
         customersService.registerCustomer(customerRegistrationForm.getEntity());
         sessionStatus.setComplete();
+
         return "redirect:/login?registered";
     }
 

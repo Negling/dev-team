@@ -1,3 +1,6 @@
+/*Script for common project purposes. For proper work of all functions, this script must be loaded after Bootstrap and jQuery libraries. */
+
+/* Maps all event handlers at document.ready(). */
 $(function () {
     $("#logoutLink").click(function () {
         $("#logoutForm").submit();
@@ -9,6 +12,7 @@ $(function () {
     });
 });
 
+/* Refreshes page with new locale value. Simply appends locale value as GET param based on clicked language dropdown option. */
 function changeLocale(link) {
     var URL;
 
@@ -23,10 +27,18 @@ function changeLocale(link) {
     window.open(URL, "_self");
 }
 
-function refreshData(containerId, fadeOut, source, callback) {
+/**
+ * Refreshes element with specified id by GET request to server. Can be animated. FadeOut animation speed is set to 600.
+ *
+ * @param containerId id of element that should be refreshed
+ * @param isFaded should element be animated or not
+ * @param source current page URL
+ * @param callback function that should be executed after work is done
+ */
+function refreshData(containerId, isFaded, source, callback) {
     var URL = source === undefined ? location.href.split('?')[0] + " " : location.href.split('?')[0] + source + " ";
 
-    if (fadeOut) {
+    if (isFaded) {
         $(containerId).fadeTo(600, 0.01, function () {
             $(containerId).load(URL + containerId + " > *", callback);
         }).delay(600).fadeTo(600, 1);
@@ -35,6 +47,13 @@ function refreshData(containerId, fadeOut, source, callback) {
     }
 }
 
+/**
+ * Removes elements in specific container(parentId). Can be animated. FadeOut animation speed is set to 600.
+ *
+ * @param parentId element which content should be removed
+ * @param isFaded is fadeOut animation required? boolean value
+ * @param callback function that should be executed after work is done
+ */
 function removeUntilParent(element, parentId, isFaded, callback) {
     if (isFaded) {
         $(element).parentsUntil(parentId).last().fadeOut(600, function () {
@@ -53,6 +72,8 @@ function removeUntilParent(element, parentId, isFaded, callback) {
     }
 }
 
+/* Removes element from parent, if after operation element is empty - sends GET request to load new content.
+ Can be animated. FadeOut animation speed is set to 600. */
 function removeAndRefreshIfEmpty(element, parentId, source, callback) {
     removeUntilParent(element, parentId, true, function () {
         if ($(parentId).children().length == 0) {
@@ -63,6 +84,8 @@ function removeAndRefreshIfEmpty(element, parentId, source, callback) {
     });
 }
 
+/* Prepends content to specific element that match to targetSelector.
+ If that element has as children element, that match to contentSelector - it will be just updated. */
 function prependOrUpdate(contentSelector, targetSelector, content) {
     var expectedContent = $(contentSelector);
 
@@ -73,7 +96,8 @@ function prependOrUpdate(contentSelector, targetSelector, content) {
     $(targetSelector).prepend(content);
 }
 
-function formValidatingAlertBox(data, isSuccessful) {
+/* Forms box with unordered list of messages. */
+function formAlertBox(data, isSuccessful) {
     var alertBox, msgContainer;
 
     alertBox = $("<div></div>").addClass("alert alert-dismissible fade in");
@@ -101,6 +125,7 @@ function formValidatingAlertBox(data, isSuccessful) {
     return alertBox;
 }
 
+/* Displays ERROR modal with msg param. Other modals will be closed. */
 function showErrorsModal(msg) {
     var modal = $("#errorsModal");
 

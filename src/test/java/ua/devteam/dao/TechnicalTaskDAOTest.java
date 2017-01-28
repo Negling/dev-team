@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.jdbc.JdbcTestUtils.countRowsInTable;
+import static ua.devteam.EntityUtils.getValidTechnicalTask;
 import static ua.devteam.dao.DAOTestUtils.*;
 import static ua.devteam.entity.enums.Status.NEW;
 
@@ -40,7 +41,8 @@ public class TechnicalTaskDAOTest {
     @Before
     public void before() {
         testId = countRowsInTable(jdbcTemplate, tableName);
-        testData = new TechnicalTask("test", "test", (long) 1, null, NEW);
+        testData = getValidTechnicalTask(1L);
+        testData.setOperations(null);
     }
 
     @Test
@@ -115,11 +117,11 @@ public class TechnicalTaskDAOTest {
 
     @Test
     public void getAllByCustomerTest() {
-        List<TechnicalTask> data = technicalTaskDAO.getAllByCustomer((long) 1);
+        List<TechnicalTask> data = technicalTaskDAO.getAllByCustomer(1L);
 
         assertThat(data.size(), is(greaterThan(0)));
         assertThat(data.stream()
-                        .filter(task -> task.getCustomerId() == (long) 1)
+                        .filter(task -> task.getCustomerId() == 1L)
                         .count(),
                 is((long) data.size()));
     }

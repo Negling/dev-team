@@ -1,3 +1,6 @@
+/*For proper work of all functions, this script must be loaded after Bootstrap, jQuery libraries and utils.js */
+
+/* Maps all event handlers at document.ready(). */
 $(function () {
     calculateRegisteredProjectsChecks();
 
@@ -54,13 +57,14 @@ $(function () {
     $("button[name~=refresh]").trigger("click");
 });
 
-
+/* Opens decline Technical Task/Project modal. */
 function showDeclineModal(entityId, entityType) {
     $("#declineId").text(entityId);
     $("#declineButton").attr("data-entity-type", entityType);
     $("#declineModal").modal("show");
 }
 
+/* Updates task select options after active projects has changed. */
 function changeActiveTaskSelectOptions() {
     var activeTaskSelect = $("#activeTaskSelect");
     var activeProjectId = $("#activeProjectSelect > option:selected").val();
@@ -69,17 +73,17 @@ function changeActiveTaskSelectOptions() {
     activeTaskSelect.children().remove();
 
     $("#pendingProject" + activeProjectId)
-        .find("a[data-toggle=collapse]")
-        .each(function (index, element) {
-            selectValue = $(element).attr("data-task-id");
+        .find("a[data-toggle=collapse]").each(function (index, element) {
+        selectValue = $(element).attr("data-task-id");
 
-            $("<option></option>")
-                .text($(element).text())
-                .val(selectValue)
-                .appendTo(activeTaskSelect);
-        });
+        $("<option></option>")
+            .text($(element).text())
+            .val(selectValue)
+            .appendTo(activeTaskSelect);
+    });
 }
 
+/* Forms and displays found devs as table, or displays message that no devs found with such criteria. */
 function displayDevsSearchResults(data) {
     var resultTableBody = $("#devsResultTable > tbody");
     var newRow, newColumn;
@@ -123,6 +127,7 @@ function displayDevsSearchResults(data) {
     }
 }
 
+/* Calculates all unformed projects checks based on hired on project-tasks devs. */
 function calculateRegisteredProjectsChecks() {
     var devsHireCost, projectId;
 
@@ -139,6 +144,7 @@ function calculateRegisteredProjectsChecks() {
     });
 }
 
+/* Calculates check value to one concrete project. */
 function calculateProjectCheck(projectId) {
     var devsHireCost, servicesCost, taxes, totalCost, servicesAndDevs;
 
@@ -151,9 +157,10 @@ function calculateProjectCheck(projectId) {
     totalCost.val(parseFloat(devsHireCost.val()) + parseFloat(servicesCost.val()) + parseFloat(taxes.val()));
 }
 
+/* Updates active project and tasks select options. Used on updating status of one of forming projects. */
 function updateBindSelectOptions() {
 
-    //TODO: find a solution to upload bind options without load request
+    // TODO: refactor method to upload bind options without load request, just by traversing DOM tree
 
     var URL = location.href.split('?')[0] + "/fragments/manage_form_project";
 
@@ -161,6 +168,7 @@ function updateBindSelectOptions() {
     $("#activeTaskSelect").load(URL + " #activeTaskSelect > option");
 }
 
+/* Binds developer to specified task. */
 function bindDeveloper(button, data) {
     var link, unbindButton, newRow, tableBody, resultTableBody, projectId, projectDevsCost, currentTaskId;
 
@@ -208,6 +216,7 @@ function bindDeveloper(button, data) {
     calculateProjectCheck(projectId)
 }
 
+/* Unbinds developer from specified task. */
 function unbindDeveloper(button) {
     var table = $(button).closest("table");
     var projectId = $(button).attr("data-project-id");
@@ -224,6 +233,7 @@ function unbindDeveloper(button) {
     calculateProjectCheck(projectId);
 }
 
+/* Sends request to decline project to server, and removes from/refreshes projects section. */
 function declineProjectAjax() {
     var projectId = $("#declineId").text();
     var data = {
@@ -243,6 +253,7 @@ function declineProjectAjax() {
     });
 }
 
+/* Sends request to accept project to server, and removes from/refreshes projects section. */
 function acceptProjectAjax(button) {
     var projectId = $(button).attr("value");
     var check = {
@@ -258,20 +269,23 @@ function acceptProjectAjax(button) {
         data: JSON.stringify(check)
     }).done(function (data) {
         return removeAndRefreshIfEmpty(button, "#pendingProjectsAccordion", "/fragments/manage_form_project", function () {
-                prependOrUpdate("#pendingProjectsAccordion > div.alert", "#pendingProjectsAccordion",
-                    formValidatingAlertBox(data, true));
-                updateBindSelectOptions();
-            });
+            // append message box
+            prependOrUpdate("#pendingProjectsAccordion > div.alert", "#pendingProjectsAccordion",
+                formAlertBox(data, true));
+            updateBindSelectOptions();
+        });
     }).fail(function (jqXHR) {
         if (jqXHR.status === 422) {
+            // append message box
             prependOrUpdate("#pendingProjectsAccordion > div.alert", "#pendingProjectsAccordion",
-                formValidatingAlertBox(JSON.parse(jqXHR.responseText), false));
+                formAlertBox(JSON.parse(jqXHR.responseText), false));
         } else {
             showErrorsModal(jqXHR.responseText);
         }
     });
 }
 
+/* Sends request to decline technical task to server, and removes from/refreshes technical tasks section. */
 function declineTechnicalTaskAjax() {
     var technicalTaskId = $("#declineId").text();
     var data = {
@@ -291,6 +305,7 @@ function declineTechnicalTaskAjax() {
     });
 }
 
+/* Sends request to accept technical task and form it as project to server, and removes from/refreshes technical tasks section. */
 function formTechnicalTaskAsProjectAjax(button) {
     $.ajax({
         method: "POST",
@@ -303,6 +318,7 @@ function formTechnicalTaskAsProjectAjax(button) {
     });
 }
 
+/* Sends request to GET available developers that match to given search criteria. */
 function searchForDevsAjax() {
     var requestParams = {
         specialization: $("#developerSpecialization").val(),
@@ -317,6 +333,7 @@ function searchForDevsAjax() {
     });
 }
 
+/* Sends request to server to bind specific developer to task. */
 function bindDeveloperAjax(button) {
     var activeTask = $("#activeTaskSelect > option:selected").attr("value");
 
@@ -335,6 +352,7 @@ function bindDeveloperAjax(button) {
     });
 }
 
+/* Sends request to server to unbind specific developer from task. */
 function unbindDeveloperAjax(button) {
     $.ajax({
         method: "DELETE",

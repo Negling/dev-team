@@ -15,6 +15,9 @@ import ua.devteam.service.CustomersService;
 import ua.devteam.service.ProjectsService;
 import ua.devteam.service.TechnicalTasksService;
 
+/**
+ * This controller processing GET requests to customers cabinet page and its fragments.
+ */
 @Controller
 @RequestMapping("/cabinet")
 public class CustomersCabinetController {
@@ -33,6 +36,9 @@ public class CustomersCabinetController {
         this.technicalTasksService = technicalTasksService;
     }
 
+    /**
+     * Returns customers cabinet main page.
+     */
     @GetMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
     public String cabinet(Model model, Authentication auth) {
@@ -44,6 +50,9 @@ public class CustomersCabinetController {
     }
 
 
+    /**
+     * Returns customers cabinet new checks section.
+     */
     @PreAuthorize("hasAuthority('CUSTOMER')")
     @GetMapping("/fragments/customer_new_checks")
     public String cabinetNewChecks(Model model, Authentication auth) {
@@ -52,6 +61,9 @@ public class CustomersCabinetController {
         return "/fragments/customer/customer_new_checks";
     }
 
+    /**
+     * Returns customers cabinet considered checks section.
+     */
     @PreAuthorize("hasAuthority('CUSTOMER')")
     @GetMapping("/fragments/customer_considered_checks")
     public String cabinetConsideredChecks(Model model, Authentication auth) {
@@ -60,6 +72,9 @@ public class CustomersCabinetController {
         return "/fragments/customer/customer_considered_checks";
     }
 
+    /**
+     * Returns customers cabinet running projects section.
+     */
     @PreAuthorize("hasAuthority('CUSTOMER')")
     @GetMapping("/fragments/customer_running_projects")
     public String cabinetRunningProjects(Model model, Authentication auth) {
@@ -69,6 +84,9 @@ public class CustomersCabinetController {
         return "/fragments/customer/customer_running_projects";
     }
 
+    /**
+     * Returns customers cabinet technical tasks section.
+     */
     @PreAuthorize("hasAuthority('CUSTOMER')")
     @GetMapping("/fragments/customer_technical_tasks")
     public String cabinetTechnicalTasks(Model model, Authentication auth) {
@@ -78,6 +96,9 @@ public class CustomersCabinetController {
         return "/fragments/customer/customer_technical_tasks";
     }
 
+    /**
+     * Returns customers cabinet complete projects section.
+     */
     @PreAuthorize("hasAuthority('CUSTOMER')")
     @GetMapping("/fragments/customer_complete_projects")
     public String cabinetCompleteProjects(Model model, Authentication auth) {

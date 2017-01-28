@@ -16,7 +16,10 @@ import java.util.List;
 
 import static ua.devteam.entity.enums.DeveloperStatus.*;
 
-@Service("developersService")
+/**
+ * Provides service operations to {@link Developer developer}.
+ */
+@Service
 @Transactional(isolation = Isolation.READ_COMMITTED)
 public class DevelopersServiceImpl implements DevelopersService {
 
@@ -27,39 +30,25 @@ public class DevelopersServiceImpl implements DevelopersService {
         this.developerDAO = developerDAO;
     }
 
+    /**
+     * Returns developer instance which id matches to requested.
+     *
+     * @return developer instance
+     */
     @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public void lockDeveloper(Long developerId) {
-        if (developerDAO.getById(developerId).getStatus().equals(AVAILABLE)) {
-            updateDeveloperStatus(developerId, LOCKED);
-        } else {
-            throw new InvalidObjectStateException("errorPage.alreadyLocked", null);
-        }
-    }
-
-    @Override
-    public void unlockDeveloper(Long developerId) {
-        updateDeveloperStatus(developerId, AVAILABLE);
-    }
-
-    @Override
-    public void removeDevelopersFromProject(Long projectId) {
-        developerDAO.updateStatusByProject(AVAILABLE, projectId);
-    }
-
-    @Override
-    public void approveDevelopersOnProject(Long projectId) {
-        developerDAO.updateStatusByProject(HIRED, projectId);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Developer getById(Long developerId) {
         return developerDAO.getById(developerId);
     }
 
+    /**
+     * Returns list of developers, which params match to requested, and status is "AVAILABLE".
+     * If no results found - empty list will be returned.
+     *
+     * @return List of developers that match to params, or empty list
+     */
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<Developer> getAvailableDevelopers(DeveloperSpecialization specialization, DeveloperRank rank, String lastName) {
         if (lastName == null || lastName.isEmpty()) {
             return developerDAO.getAvailableByParams(specialization, rank);
@@ -68,6 +57,61 @@ public class DevelopersServiceImpl implements DevelopersService {
         }
     }
 
+    /**
+     * If requested developer status is "AVAILABLE" - changes it to "LOCKED", otherwise throws exception.
+     */
+    @Override
+    public void lockDeveloper(Long developerId) {
+        if (developerDAO.getById(developerId).getStatus().equals(AVAILABLE)) {
+            updateDeveloperStatus(developerId, LOCKED);
+        } else {
+            throw new InvalidObjectStateException("errorPage.alreadyLocked", null);
+        }
+    }
+
+    /**
+     * If requested developer status is "LOCKED" - changes it to "AVAILABLE", otherwise throws exception.
+     */
+    @Override
+    public void unlockDeveloper(Long developerId) {
+        if (developerDAO.getById(developerId).getStatus().equals(LOCKED)) {
+            updateDeveloperStatus(developerId, AVAILABLE);
+        } else {
+            throw new InvalidObjectStateException("errorPage.notLocked", null);
+        }
+    }
+
+    /**
+     * If requested developer status is "HIRED" - changes it to "AVAILABLE", otherwise throws exception.
+     */
+    @Override
+    public void releaseDeveloper(Long developerId) {
+        if (developerDAO.getById(developerId).getStatus().equals(HIRED)) {
+            updateDeveloperStatus(developerId, AVAILABLE);
+        } else {
+            throw new InvalidObjectStateException("errorPage.notHired", null);
+        }
+    }
+
+    /**
+     * Updates status of all devs, that bind to tasks to specified project to "AVAILABLE".
+     */
+    @Override
+    public void removeDevelopersFromProject(Long projectId) {
+        developerDAO.updateStatusByProject(AVAILABLE, projectId);
+    }
+
+    /**
+     * Updates status of all devs, that bind to tasks to specified project to "HIRED".
+     */
+    @Override
+    public void approveDevelopersOnProject(Long projectId) {
+        developerDAO.updateStatusByProject(HIRED, projectId);
+    }
+
+    /**
+     * Updates status of specified developer.
+     */
     private void updateDeveloperStatus(Long developerId, DeveloperStatus developerStatus) {
         Developer dev = developerDAO.getById(developerId);
         dev.setStatus(developerStatus);

@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ua.devteam.advice.ExceptionsAdvice;
 import ua.devteam.advice.LoggingAdvice;
 
+/**
+ * Configures and instantiates all service tier beans.
+ */
 @Configuration
 @EnableAspectJAutoProxy
 @EnableTransactionManagement

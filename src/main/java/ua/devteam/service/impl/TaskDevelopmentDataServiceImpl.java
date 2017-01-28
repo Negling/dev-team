@@ -15,7 +15,10 @@ import java.util.List;
 
 import static ua.devteam.entity.enums.Status.*;
 
-@Service("taskDevelopersService")
+/**
+ * Provides service operations to {@link TaskDevelopmentData taskDevelopmentData}.
+ */
+@Service
 @Transactional(isolation = Isolation.READ_COMMITTED)
 public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataService {
 
@@ -31,7 +34,13 @@ public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataServic
         this.projectTasksService = projectTasksService;
     }
 
+    /**
+     * Creates instance of taskDevelopmentData and delegates to developers service subsequent operations.
+     *
+     * @return TaskDevelopmentData instance
+     */
     @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public TaskDevelopmentData bindDeveloper(Long developerId, Long taskId) {
         Developer dev = developersService.getById(developerId);
 
@@ -42,6 +51,9 @@ public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataServic
         return taskDevelopmentDataDAO.getByTaskAndDeveloper(taskId, developerId);
     }
 
+    /**
+     * Deletes instance of taskDevelopmentData and delegates to developers service subsequent operations.
+     */
     @Override
     public void unbindDeveloper(Long developerId) {
         developersService.unlockDeveloper(developerId);
@@ -49,49 +61,66 @@ public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataServic
                 taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, NEW).stream().findAny().orElse(null));
     }
 
-    @Override
-    public void dropByProject(Long projectId) {
-        developersService.removeDevelopersFromProject(projectId);
-        taskDevelopmentDataDAO.deleteAllByProject(projectId);
-    }
-
-    @Override
-    public void runByProject(Long projectId) {
-        developersService.approveDevelopersOnProject(projectId);
-        taskDevelopmentDataDAO.setStatusByProject(RUNNING, projectId);
-    }
-
-    @Override
-    public void confirmByProject(Long projectId) {
-        taskDevelopmentDataDAO.setStatusByProject(PENDING, projectId);
-    }
-
+    /**
+     * Updates task development data status to complete, and updates hours spent on task value.
+     * Than unlocks developers and checks status of project task.
+     */
     @Override
     public void complete(Long taskId, Long developerId, Integer hoursSpent) {
         TaskDevelopmentData data = taskDevelopmentDataDAO.getByTaskAndDeveloper(taskId, developerId);
         data.setHoursSpent(hoursSpent);
         data.setStatus(COMPLETE);
 
-        developersService.unlockDeveloper(developerId);
+        developersService.releaseDeveloper(developerId);
         taskDevelopmentDataDAO.update(data, data);
         projectTasksService.checkStatus(taskId);
     }
 
+    /**
+     * Returns task development data with status "RUNNING" and specified developer ID.
+     *
+     * @return task development data
+     */
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public TaskDevelopmentData getActive(Long developerId) {
         return taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, RUNNING).stream().findAny().orElse(null);
     }
 
+    /**
+     * Returns list of task development data with status "COMPLETE" and specified developer ID.
+     *
+     * @return list of task development data, or empty list if no results found
+     */
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<TaskDevelopmentData> getComplete(Long developerId) {
         return taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, COMPLETE);
     }
 
+    /**
+     * Deletes all task development data mapped to specific project and updates assigned developers status to "AVAILABLE".
+     */
     @Override
-    @Transactional(readOnly = true)
-    public List<TaskDevelopmentData> getAllByDeveloper(Long developerId) {
-        return taskDevelopmentDataDAO.getAllByDeveloper(developerId);
+    public void dropByProject(Long projectId) {
+        developersService.removeDevelopersFromProject(projectId);
+        taskDevelopmentDataDAO.deleteAllByProject(projectId);
+    }
+
+    /**
+     * Updates all assigned to project developers status to "HIRED", and updates all assigned to project task development data to "RUNNING".
+     */
+    @Override
+    public void runByProject(Long projectId) {
+        developersService.approveDevelopersOnProject(projectId);
+        taskDevelopmentDataDAO.setStatusByProject(RUNNING, projectId);
+    }
+
+    /**
+     * Updates all assigned to project task development data status to "PENDING".
+     */
+    @Override
+    public void confirmByProject(Long projectId) {
+        taskDevelopmentDataDAO.setStatusByProject(PENDING, projectId);
     }
 }

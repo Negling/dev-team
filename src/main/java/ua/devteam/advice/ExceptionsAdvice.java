@@ -15,9 +15,19 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 
+/**
+ * This aspect provides specific exception dispatching and forming logic.
+ */
 @Aspect
 public class ExceptionsAdvice {
 
+    /**
+     * When an exception occurs in RestController method, this advice catches and translates it
+     * to appropriate {@link AjaxMethodInternalException} exception, which can be properly processed
+     * by {@link org.springframework.web.bind.annotation.ExceptionHandler}.
+     *
+     * @param ex occurred exception
+     */
     @AfterThrowing(pointcut = "ua.devteam.advice.SystemArchitecture.inRestControllers()", throwing = "ex")
     public void afterThrowingExceptionInAjaxMethod(Exception ex) {
 
@@ -30,6 +40,15 @@ public class ExceptionsAdvice {
         }
     }
 
+    /**
+     * When GET request trying to obtain resource that not exist - {@link EmptyResultDataAccessException} occurs.
+     * This advice forms appropriate {@link ResourceNotFoundException}, which can be properly processed by
+     * {@link org.springframework.web.bind.annotation.ExceptionHandler}.
+     *
+     * @param jp method
+     * @param ex occurred exception in case if resource is not found by DAO object
+     * @throws NoSuchMethodException ex
+     */
     @AfterThrowing(pointcut = "ua.devteam.advice.SystemArchitecture.inControllerMethods() " +
             "&& !ua.devteam.advice.SystemArchitecture.inRestControllers()", throwing = "ex")
     public void afterThrowingExceptionInAjaxMethod(JoinPoint jp, EmptyResultDataAccessException ex) throws NoSuchMethodException {

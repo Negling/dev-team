@@ -30,7 +30,7 @@ public class CustomersCabinetRestControllerTest {
     private TechnicalTasksService technicalTasksService = mock(TechnicalTasksService.class);
     private CustomersCabinetRestController controller =
             new CustomersCabinetRestController(getDefaultMessageSource(), checksService, technicalTasksService);
-    private Principal customer = getUserWithIdAndRole((long) 1, Role.CUSTOMER);
+    private Principal customer = getUserWithIdAndRole(1L, Role.CUSTOMER);
     private MockMvc mockMvc;
 
     // setup
@@ -45,7 +45,7 @@ public class CustomersCabinetRestControllerTest {
         mockMvc.perform(put("/cabinet/confirmCheck").contentType("application/json").content(getObjectAsJson(1)))
                 .andExpect(status().isOk());
 
-        verify(checksService, only()).accept((long) 1);
+        verify(checksService, only()).accept(1L);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class CustomersCabinetRestControllerTest {
         mockMvc.perform(put("/cabinet/declineCheck").contentType("application/json").content(getObjectAsJson(1)))
                 .andExpect(status().isOk());
 
-        verify(checksService, only()).decline((long) 1);
+        verify(checksService, only()).decline(1L);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class CustomersCabinetRestControllerTest {
 
     @Test
     public void registerTechnicalTaskSuccessTest() throws Exception {
-        TechnicalTask requestBody = getValidTechnicalTask((long) 1);
+        TechnicalTask requestBody = getValidTechnicalTask(1L);
 
         mockMvc.perform(post("/cabinet/submit")
                 .locale(Locale.ENGLISH)
