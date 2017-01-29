@@ -1,6 +1,7 @@
 package ua.devteam.service.impl;
 
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,16 +16,11 @@ import ua.devteam.service.CustomersService;
  */
 @Service
 @Transactional(isolation = Isolation.READ_COMMITTED)
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class CustomersServiceImpl implements CustomersService {
 
     private CustomerDAO customerDAO;
     private PasswordEncoder encoder;
-
-    @Autowired
-    public CustomersServiceImpl(CustomerDAO customerDAO, PasswordEncoder encoder) {
-        this.customerDAO = customerDAO;
-        this.encoder = encoder;
-    }
 
     /**
      * Registers customer entity, and returns its ID.

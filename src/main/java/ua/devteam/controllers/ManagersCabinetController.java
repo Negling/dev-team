@@ -1,5 +1,6 @@
 package ua.devteam.controllers;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -18,16 +19,11 @@ import ua.devteam.service.TechnicalTasksService;
  */
 @Controller
 @RequestMapping("/manage")
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class ManagersCabinetController {
 
     private TechnicalTasksService technicalTasksService;
     private ProjectsService projectsService;
-
-    @Autowired
-    public ManagersCabinetController(TechnicalTasksService technicalTasksService, ProjectsService projectsService) {
-        this.technicalTasksService = technicalTasksService;
-        this.projectsService = projectsService;
-    }
 
     /**
      * Returns managers cabinet main page.

@@ -1,5 +1,6 @@
 package ua.devteam.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -16,16 +17,11 @@ import java.util.List;
  */
 @Service
 @Transactional(isolation = Isolation.READ_COMMITTED)
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class OperationsServiceImpl implements OperationsService {
 
     private OperationDAO operationDAO;
     private RequestsForDevelopersDAO requestsForDevelopersDAO;
-
-    @Autowired
-    public OperationsServiceImpl(OperationDAO operationDAO, RequestsForDevelopersDAO requestsForDevelopersDAO) {
-        this.operationDAO = operationDAO;
-        this.requestsForDevelopersDAO = requestsForDevelopersDAO;
-    }
 
     /**
      * Creates Operation and RequestForDevelopers entity in storage.

@@ -1,6 +1,7 @@
 package ua.devteam.advice;
 
 
+import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.MessageSource;
@@ -31,17 +32,12 @@ import java.util.Locale;
  * This advice handles all occurred exceptions, and binds validators.
  */
 @ControllerAdvice
+@AllArgsConstructor
 public class ControllersAdvice {
 
     private final static Logger logger = LogManager.getLogger("ExceptionsLogger");
     private MessageSource messageSource;
     private Validator compositeValidator;
-
-
-    public ControllersAdvice(MessageSource messageSource, Validator compositeValidator) {
-        this.messageSource = messageSource;
-        this.compositeValidator = compositeValidator;
-    }
 
     /**
      * If no other handler found  - this method will be invoked to process exception.

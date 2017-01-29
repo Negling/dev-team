@@ -1,5 +1,6 @@
 package ua.devteam.controllers;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,14 +20,9 @@ import javax.validation.Valid;
  */
 @Controller
 @SessionAttributes("customerRegistrationForm")
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class RegistrationController {
-
     private CustomersService customersService;
-
-    @Autowired
-    public RegistrationController(CustomersService customersService) {
-        this.customersService = customersService;
-    }
 
     /**
      * Returns registration page.
@@ -47,7 +43,6 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.customerRegistrationForm",
                     bindingResult);
-            System.out.println(bindingResult);
             return "redirect:/registration";
         }
         // save customer

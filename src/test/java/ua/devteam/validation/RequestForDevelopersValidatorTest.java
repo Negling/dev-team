@@ -13,13 +13,15 @@ import ua.devteam.entity.enums.DeveloperSpecialization;
 import ua.devteam.entity.tasks.RequestForDevelopers;
 import ua.devteam.validation.entityValidators.RequestForDevelopersValidator;
 
+import java.util.ResourceBundle;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(JUnit4.class)
 public class RequestForDevelopersValidatorTest {
 
-    private Validator validator = new RequestForDevelopersValidator();
+    private Validator validator = new RequestForDevelopersValidator(ResourceBundle.getBundle("properties/validation"));
     private RequestForDevelopers testData = new RequestForDevelopers();
     private Errors errors;
 

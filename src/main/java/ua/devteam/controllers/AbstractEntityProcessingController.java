@@ -1,6 +1,7 @@
 package ua.devteam.controllers;
 
 
+import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,9 @@ import java.util.stream.Collectors;
  * Abstract class that provides to its subclasses possibility to generate {@link ResponseEntity}
  * with messages List and status based on bindingsResult content.
  */
+@AllArgsConstructor
 abstract class AbstractEntityProcessingController {
     private MessageSource messageSource;
-
-    public AbstractEntityProcessingController(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
 
     /**
      * Generates ResponseEntity filled with list of localized messages and status based on bindingResult content.

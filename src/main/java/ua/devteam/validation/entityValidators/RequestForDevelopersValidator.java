@@ -1,15 +1,22 @@
 package ua.devteam.validation.entityValidators;
 
 
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ua.devteam.entity.tasks.RequestForDevelopers;
 
-import static ua.devteam.validation.ValidationUtils.*;
+import java.util.ResourceBundle;
+
+import static ua.devteam.validation.ValidationUtils.rejectIfEmptyOrWhitespace;
 
 @Component
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class RequestForDevelopersValidator implements Validator {
+
+    private ResourceBundle validationProperties;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -36,12 +43,14 @@ public class RequestForDevelopersValidator implements Validator {
 
         // Check if quantity is lower than 1
         if (rfd.getQuantity() < 1) {
-            errors.reject("validationErrors.fieldInsufficientValue", new Object[]{rfd.getQuantity(), 1}, null);
+            errors.reject("validationErrors.fieldInsufficientValue", new Object[]{rfd.getQuantity(),
+                    validationProperties.getString("quantity.minValue")}, null);
         }
 
         // Check if quantity is greater than 100
         if (rfd.getQuantity() > 100) {
-            errors.reject("validationErrors.fieldValueOverflow", new Object[]{rfd.getQuantity(), 100}, null);
+            errors.reject("validationErrors.fieldValueOverflow", new Object[]{rfd.getQuantity(),
+                    validationProperties.getString("quantity.maxValue")}, null);
         }
     }
 }

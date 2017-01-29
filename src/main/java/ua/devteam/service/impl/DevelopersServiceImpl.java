@@ -1,5 +1,6 @@
 package ua.devteam.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -21,14 +22,10 @@ import static ua.devteam.entity.enums.DeveloperStatus.*;
  */
 @Service
 @Transactional(isolation = Isolation.READ_COMMITTED)
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class DevelopersServiceImpl implements DevelopersService {
 
     private DeveloperDAO developerDAO;
-
-    @Autowired
-    public DevelopersServiceImpl(DeveloperDAO developerDAO) {
-        this.developerDAO = developerDAO;
-    }
 
     /**
      * Returns developer instance which id matches to requested.

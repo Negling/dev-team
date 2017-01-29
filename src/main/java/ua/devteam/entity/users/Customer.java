@@ -1,5 +1,9 @@
 package ua.devteam.entity.users;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import ua.devteam.entity.enums.Role;
 import ua.devteam.entity.projects.Check;
 
@@ -9,13 +13,14 @@ import java.util.List;
 /**
  * User subclass. {@link User}
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@ToString(callSuper = true)
 public class Customer extends User implements Serializable {
 
     /* User checks history */
     private List<Check> checks;
-
-    public Customer() {
-    }
 
     public Customer(Long id, String firstName, String lastName, String email, String phoneNumber, String password, Role role) {
         this(id, firstName, lastName, email, phoneNumber, password, role, null);
@@ -29,39 +34,5 @@ public class Customer extends User implements Serializable {
                     Role role, List<Check> checks) {
         super(id, firstName, lastName, email, phoneNumber, password, role);
         this.checks = checks;
-    }
-
-    public List<Check> getChecks() {
-        return checks;
-    }
-
-    public void setChecks(List<Check> checks) {
-        this.checks = checks;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        Customer customer = (Customer) o;
-
-        return checks != null ? checks.equals(customer.checks) : customer.checks == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (checks != null ? checks.hashCode() : 0);
-
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "CUSTOMER{" +
-                "checks=" + checks +
-                "} " + super.toString();
     }
 }

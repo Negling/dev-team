@@ -26,17 +26,17 @@ import java.util.ResourceBundle;
  * <li> managerId(manager_id).
  * </ul>
  */
-@Repository("technicalTaskDAO")
+@Repository
 public class JDBCTechnicalTaskDAO extends JDBCGenericIdentifiedDAO<TechnicalTask> implements TechnicalTaskDAO {
 
     @Autowired
-    public JDBCTechnicalTaskDAO(JdbcOperations jdbcOperations, ResourceBundle sqlBundle) {
-        super(jdbcOperations, sqlBundle);
+    public JDBCTechnicalTaskDAO(JdbcOperations jdbcOperations, ResourceBundle sqlProperties) {
+        super(jdbcOperations, sqlProperties);
     }
 
     @Override
     public void update(TechnicalTask oldEntity, TechnicalTask newEntity) {
-        jdbcOperations.update(sqlBundle.getString("technicalTask.update"),
+        jdbcOperations.update(sqlProperties.getString("technicalTask.update"),
                 newEntity.getId(),
                 newEntity.getCustomerId(),
                 newEntity.getName(),
@@ -48,27 +48,27 @@ public class JDBCTechnicalTaskDAO extends JDBCGenericIdentifiedDAO<TechnicalTask
 
     @Override
     public void delete(TechnicalTask entity) {
-        jdbcOperations.update(sqlBundle.getString("technicalTask.delete"), entity.getId());
+        jdbcOperations.update(sqlProperties.getString("technicalTask.delete"), entity.getId());
     }
 
     @Override
     public TechnicalTask getById(Long id) {
-        return jdbcOperations.queryForObject(sqlBundle.getString("technicalTask.selectById"), this::mapEntity, id);
+        return jdbcOperations.queryForObject(sqlProperties.getString("technicalTask.selectById"), this::mapEntity, id);
     }
 
     @Override
     public List<TechnicalTask> getAll() {
-        return jdbcOperations.query(sqlBundle.getString("technicalTask.selectAll"), this::mapEntity);
+        return jdbcOperations.query(sqlProperties.getString("technicalTask.selectAll"), this::mapEntity);
     }
 
     @Override
     public List<TechnicalTask> getAllByCustomer(Long customerId) {
-        return jdbcOperations.query(sqlBundle.getString("technicalTask.selectByCustomerId"), this::mapEntity, customerId);
+        return jdbcOperations.query(sqlProperties.getString("technicalTask.selectByCustomerId"), this::mapEntity, customerId);
     }
 
     @Override
     public List<TechnicalTask> getAllNew() {
-        return jdbcOperations.query(sqlBundle.getString("technicalTask.selectAllNew"), this::mapEntity);
+        return jdbcOperations.query(sqlProperties.getString("technicalTask.selectAllNew"), this::mapEntity);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class JDBCTechnicalTaskDAO extends JDBCGenericIdentifiedDAO<TechnicalTask
 
     @Override
     protected PreparedStatement insertionStatement(Connection connection, TechnicalTask entity) throws SQLException {
-        final PreparedStatement ps = connection.prepareStatement(sqlBundle.getString("technicalTask.insertSQL"),
+        final PreparedStatement ps = connection.prepareStatement(sqlProperties.getString("technicalTask.insertSQL"),
                 Statement.RETURN_GENERATED_KEYS);
 
 

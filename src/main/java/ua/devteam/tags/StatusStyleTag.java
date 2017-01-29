@@ -1,5 +1,6 @@
 package ua.devteam.tags;
 
+import lombok.Setter;
 import ua.devteam.entity.enums.CheckStatus;
 import ua.devteam.entity.enums.DeveloperStatus;
 import ua.devteam.entity.enums.Status;
@@ -32,11 +33,7 @@ import java.io.IOException;
  */
 public class StatusStyleTag extends SimpleTagSupport {
 
-    private Enum status;
-
-    public void setStatus(Enum status) {
-        this.status = status;
-    }
+    private @Setter Enum status;
 
     @Override
     public void doTag() throws JspException, IOException {
@@ -82,7 +79,7 @@ public class StatusStyleTag extends SimpleTagSupport {
      * Returns appropriate color to ingoing CheckStatus value
      *
      * @param status current status
-     * @return string with colour code
+     * @return string with color code
      */
     private String evaluateCheckStatus(CheckStatus status) {
         switch (status) {
@@ -101,7 +98,7 @@ public class StatusStyleTag extends SimpleTagSupport {
      * Returns appropriate color to ingoing DeveloperStatus value
      *
      * @param status current status
-     * @return string with colour code
+     * @return string with color code
      */
     private String evaluateDeveloperStatus(DeveloperStatus status) {
         switch (status) {

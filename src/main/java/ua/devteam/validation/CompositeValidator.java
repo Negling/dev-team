@@ -1,6 +1,8 @@
 package ua.devteam.validation;
 
 
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -9,16 +11,9 @@ import org.springframework.validation.Validator;
 import java.util.List;
 
 @Component
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class CompositeValidator implements Validator {
-    private List<Validator> entityValidators;
-
-    @Autowired
-    public CompositeValidator(List<Validator> entityValidators) {
-        if (entityValidators == null) {
-            throw new IllegalArgumentException("Validators list can't be null!");
-        }
-        this.entityValidators = entityValidators;
-    }
+    private @NonNull List<Validator> entityValidators;
 
     @Override
     public boolean supports(Class<?> clazz) {

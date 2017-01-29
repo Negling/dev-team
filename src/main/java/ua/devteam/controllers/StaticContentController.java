@@ -1,5 +1,6 @@
 package ua.devteam.controllers;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,21 +17,13 @@ import ua.devteam.service.TechnicalTasksService;
  * This controller processing uncategorized requests that don't do changes to any entity state. GET requests mostly.
  */
 @Controller
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class StaticContentController {
 
     private TechnicalTasksService technicalTasksService;
     private ProjectsService projectsService;
     private DevelopersService developersService;
     private TaskDevelopmentDataService taskDevelopmentDataService;
-
-    @Autowired
-    public StaticContentController(TechnicalTasksService technicalTasksService, ProjectsService projectsService,
-                                   DevelopersService developersService, TaskDevelopmentDataService taskDevelopmentDataService) {
-        this.technicalTasksService = technicalTasksService;
-        this.projectsService = projectsService;
-        this.developersService = developersService;
-        this.taskDevelopmentDataService = taskDevelopmentDataService;
-    }
 
     /**
      * Returns page that displays technical task with specified ID.

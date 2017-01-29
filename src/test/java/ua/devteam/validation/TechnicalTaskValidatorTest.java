@@ -12,6 +12,7 @@ import ua.devteam.entity.tasks.Operation;
 import ua.devteam.validation.entityValidators.TechnicalTaskValidator;
 
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -27,7 +28,7 @@ public class TechnicalTaskValidatorTest {
     {
         Validator operationValidator = mock(Validator.class);
         when(operationValidator.supports(Operation.class)).thenReturn(true);
-        validator = new TechnicalTaskValidator(operationValidator);
+        validator = new TechnicalTaskValidator(operationValidator, ResourceBundle.getBundle("properties/validation"));
         testData = new TechnicalTask();
     }
 
@@ -66,7 +67,7 @@ public class TechnicalTaskValidatorTest {
         testData.setName(testData.getDescription().concat(testData.getDescription()));
 
         validator.validate(testData, errors);
-
+        System.out.println(errors);
         assertThat(errors.getErrorCount(), is(1));
     }
 

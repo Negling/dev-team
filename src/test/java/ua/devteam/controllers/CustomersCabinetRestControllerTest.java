@@ -16,6 +16,7 @@ import ua.devteam.validation.entityValidators.TechnicalTaskValidator;
 
 import java.security.Principal;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -35,7 +36,12 @@ public class CustomersCabinetRestControllerTest {
 
     // setup
     {
-        Validator validator = new TechnicalTaskValidator(new OperationValidator(new RequestForDevelopersValidator()));
+        ResourceBundle validationProperties = ResourceBundle.getBundle("properties/validation");
+        Validator validator = new TechnicalTaskValidator(
+                new OperationValidator(
+                        new RequestForDevelopersValidator(validationProperties),
+                        validationProperties),
+                validationProperties);
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
                 .setViewResolvers(getDefaultViewResolver()).setValidator(validator).build();
     }

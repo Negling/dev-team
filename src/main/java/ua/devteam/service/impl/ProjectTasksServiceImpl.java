@@ -1,5 +1,6 @@
 package ua.devteam.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -21,21 +22,13 @@ import static ua.devteam.entity.enums.Status.*;
  */
 @Service
 @Transactional(isolation = Isolation.READ_COMMITTED)
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class ProjectTasksServiceImpl implements ProjectTasksService{
 
     private ProjectTaskDAO projectTaskDAO;
     private TaskDevelopmentDataDAO taskDevelopmentDataDAO;
     private OperationDAO operationDAO;
     private RequestsForDevelopersDAO requestsForDevelopersDAO;
-
-    @Autowired
-    public ProjectTasksServiceImpl(ProjectTaskDAO projectTaskDAO, TaskDevelopmentDataDAO taskDevelopmentDataDAO,
-                                   OperationDAO operationDAO, RequestsForDevelopersDAO requestsForDevelopersDAO) {
-        this.projectTaskDAO = projectTaskDAO;
-        this.taskDevelopmentDataDAO = taskDevelopmentDataDAO;
-        this.operationDAO = operationDAO;
-        this.requestsForDevelopersDAO = requestsForDevelopersDAO;
-    }
 
     /**
      * Creates and maps projectTasks to project from existing operations.

@@ -13,6 +13,7 @@ import ua.devteam.entity.tasks.RequestForDevelopers;
 import ua.devteam.validation.entityValidators.OperationValidator;
 
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -28,7 +29,7 @@ public class OperationValidatorTest {
     {
         Validator rfdValidator = mock(Validator.class);
         when(rfdValidator.supports(RequestForDevelopers.class)).thenReturn(true);
-        validator = new OperationValidator(rfdValidator);
+        validator = new OperationValidator(rfdValidator, ResourceBundle.getBundle("properties/validation"));
         testData = new Operation();
     }
 

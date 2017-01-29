@@ -24,17 +24,17 @@ import java.util.ResourceBundle;
  * <li> role(role_id).
  * </ul>
  */
-@Repository("managerDAO")
+@Repository
 public class JDBCManagerDAO extends JDBCGenericIdentifiedDAO<Manager> implements ManagerDAO {
 
     @Autowired
-    public JDBCManagerDAO(JdbcOperations jdbcOperations, ResourceBundle sqlBundle) {
-        super(jdbcOperations, sqlBundle);
+    public JDBCManagerDAO(JdbcOperations jdbcOperations, ResourceBundle sqlProperties) {
+        super(jdbcOperations, sqlProperties);
     }
 
     @Override
     public void update(Manager oldEntity, Manager newEntity) {
-        jdbcOperations.update(sqlBundle.getString("manager.update"),
+        jdbcOperations.update(sqlProperties.getString("manager.update"),
                 newEntity.getId(),
                 newEntity.getFirstName(),
                 newEntity.getLastName(),
@@ -47,17 +47,17 @@ public class JDBCManagerDAO extends JDBCGenericIdentifiedDAO<Manager> implements
 
     @Override
     public void delete(Manager entity) {
-        jdbcOperations.update(sqlBundle.getString("manager.delete"), entity.getId());
+        jdbcOperations.update(sqlProperties.getString("manager.delete"), entity.getId());
     }
 
     @Override
     public Manager getById(Long id) {
-        return jdbcOperations.queryForObject(sqlBundle.getString("manager.selectById"), this::mapEntity, id);
+        return jdbcOperations.queryForObject(sqlProperties.getString("manager.selectById"), this::mapEntity, id);
     }
 
     @Override
     public Manager getByEmail(String email) {
-        return jdbcOperations.queryForObject(sqlBundle.getString("manager.selectByEmail"), this::mapEntity, email);
+        return jdbcOperations.queryForObject(sqlProperties.getString("manager.selectByEmail"), this::mapEntity, email);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class JDBCManagerDAO extends JDBCGenericIdentifiedDAO<Manager> implements
 
     @Override
     protected PreparedStatement insertionStatement(Connection connection, Manager entity) throws SQLException {
-        final PreparedStatement ps = connection.prepareStatement(sqlBundle.getString("manager.insertSQL"),
+        final PreparedStatement ps = connection.prepareStatement(sqlProperties.getString("manager.insertSQL"),
                 Statement.RETURN_GENERATED_KEYS);
 
         ps.setString(1, entity.getFirstName());

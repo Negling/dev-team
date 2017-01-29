@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ua.devteam.advice.ExceptionsAdvice;
 import ua.devteam.advice.LoggingAdvice;
 
+import java.util.ResourceBundle;
+
 /**
  * Configures and instantiates all service tier beans.
  */
@@ -18,6 +20,11 @@ import ua.devteam.advice.LoggingAdvice;
 @EnableTransactionManagement
 @ComponentScan(basePackages = "ua.devteam.service.impl")
 public class ServicesConfiguration {
+
+    @Bean
+    public ResourceBundle validationProperties() {
+        return ResourceBundle.getBundle("/properties/validation");
+    }
 
     @Bean
     public LoggingAdvice loggingAdvice() {

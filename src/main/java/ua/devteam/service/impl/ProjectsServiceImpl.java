@@ -1,6 +1,7 @@
 package ua.devteam.service.impl;
 
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -22,19 +23,12 @@ import static ua.devteam.entity.enums.Status.*;
  */
 @Service
 @Transactional(isolation = Isolation.READ_COMMITTED)
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class ProjectsServiceImpl implements ProjectsService {
 
     private ProjectDAO projectDAO;
     private ProjectTasksService projectTasksService;
     private TaskDevelopmentDataService taskDevelopersService;
-
-    @Autowired
-    public ProjectsServiceImpl(ProjectDAO projectDAO, ProjectTasksService projectTasksService,
-                               TaskDevelopmentDataService taskDevelopersService) {
-        this.projectDAO = projectDAO;
-        this.projectTasksService = projectTasksService;
-        this.taskDevelopersService = taskDevelopersService;
-    }
 
     /**
      * Updates projects status to "DECLINED", endDate to current time, and delegates to task developers service subsequent operations.

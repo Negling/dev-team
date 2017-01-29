@@ -12,6 +12,7 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -23,7 +24,7 @@ public class DevelopersCabinetRestControllerTest {
 
     private TaskDevelopmentDataService taskDevelopmentDataService = mock(TaskDevelopmentDataService.class);
     private DevelopersCabinetRestController controller = new DevelopersCabinetRestController(getDefaultMessageSource(),
-            taskDevelopmentDataService);
+            taskDevelopmentDataService, ResourceBundle.getBundle("properties/validation"));
     private Principal developer = getUserWithIdAndRole(1L, Role.DEVELOPER);
 
     // controller mock object

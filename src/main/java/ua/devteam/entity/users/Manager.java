@@ -1,5 +1,9 @@
 package ua.devteam.entity.users;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import ua.devteam.entity.enums.Role;
 
 import java.io.Serializable;
@@ -8,13 +12,14 @@ import java.io.Serializable;
  * User subclass. As additional field contains counter of total served projects.
  * {@link User}
  */
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@ToString(callSuper = true)
 public class Manager extends User implements Serializable {
 
     /* Total amount of projects that this manager served */
     private Long totalProjectsServed;
-
-    public Manager() {
-    }
 
     public Manager(String firstName, String lastName, String email, String phoneNumber, String password, Role role,
                    Long totalProjectsServed) {
@@ -27,45 +32,5 @@ public class Manager extends User implements Serializable {
 
         super(id, firstName, lastName, email, phoneNumber, password, role);
         this.totalProjectsServed = totalProjectsServed;
-    }
-
-    @Override
-    public void setRole(Role role) {
-        super.setRole(role);
-    }
-
-    public Long getTotalProjectsServed() {
-        return totalProjectsServed;
-    }
-
-    public void setTotalProjectsServed(Long totalProjectsServed) {
-        this.totalProjectsServed = totalProjectsServed;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        Manager manager = (Manager) o;
-
-        return totalProjectsServed != null ?
-                totalProjectsServed.equals(manager.totalProjectsServed) : manager.totalProjectsServed == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (totalProjectsServed != null ? totalProjectsServed.hashCode() : 0);
-
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "MANAGER{" +
-                "totalProjectsServed=" + totalProjectsServed +
-                "} " + super.toString();
     }
 }

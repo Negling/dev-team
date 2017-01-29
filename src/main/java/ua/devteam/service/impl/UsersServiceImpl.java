@@ -1,5 +1,6 @@
 package ua.devteam.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,14 +16,10 @@ import ua.devteam.service.UsersService;
  */
 @Service
 @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class UsersServiceImpl implements UsersService {
 
     private UsersDAO usersDAO;
-
-    @Autowired
-    public UsersServiceImpl(UsersDAO usersDAO) {
-        this.usersDAO = usersDAO;
-    }
 
     /**
      * Returns user with email that match requested.

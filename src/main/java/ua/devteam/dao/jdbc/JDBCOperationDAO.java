@@ -25,13 +25,13 @@ import java.util.ResourceBundle;
 public class JDBCOperationDAO extends JDBCGenericIdentifiedDAO<Operation> implements OperationDAO {
 
     @Autowired
-    public JDBCOperationDAO(JdbcOperations jdbcOperations, ResourceBundle sqlBundle) {
-        super(jdbcOperations, sqlBundle);
+    public JDBCOperationDAO(JdbcOperations jdbcOperations, ResourceBundle sqlProperties) {
+        super(jdbcOperations, sqlProperties);
     }
 
     @Override
     public void update(Operation oldEntity, Operation newEntity) {
-        jdbcOperations.update(sqlBundle.getString("operations.update"),
+        jdbcOperations.update(sqlProperties.getString("operations.update"),
                 newEntity.getId(),
                 newEntity.getTechnicalTaskId(),
                 newEntity.getName(),
@@ -41,17 +41,17 @@ public class JDBCOperationDAO extends JDBCGenericIdentifiedDAO<Operation> implem
 
     @Override
     public void delete(Operation entity) {
-        jdbcOperations.update(sqlBundle.getString("operations.delete"), entity.getId());
+        jdbcOperations.update(sqlProperties.getString("operations.delete"), entity.getId());
     }
 
     @Override
     public Operation getById(Long id) {
-        return jdbcOperations.queryForObject(sqlBundle.getString("operations.selectById"), this::mapEntity, id);
+        return jdbcOperations.queryForObject(sqlProperties.getString("operations.selectById"), this::mapEntity, id);
     }
 
     @Override
     public List<Operation> getByTechnicalTask(Long technicalTaskId) {
-        return jdbcOperations.query(sqlBundle.getString("operations.selectByTechnicalTask"), this::mapEntity, technicalTaskId);
+        return jdbcOperations.query(sqlProperties.getString("operations.selectByTechnicalTask"), this::mapEntity, technicalTaskId);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class JDBCOperationDAO extends JDBCGenericIdentifiedDAO<Operation> implem
 
     @Override
     protected PreparedStatement insertionStatement(Connection connection, Operation entity) throws SQLException {
-        final PreparedStatement ps = connection.prepareStatement(sqlBundle.getString("operations.insertSQL"),
+        final PreparedStatement ps = connection.prepareStatement(sqlProperties.getString("operations.insertSQL"),
                 Statement.RETURN_GENERATED_KEYS);
 
         ps.setLong(1, entity.getTechnicalTaskId());

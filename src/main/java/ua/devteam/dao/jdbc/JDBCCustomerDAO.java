@@ -25,12 +25,12 @@ import java.util.ResourceBundle;
  * <li> role(role_id).
  * </ul>
  */
-@Repository("customerDAO")
+@Repository
 public class JDBCCustomerDAO extends JDBCGenericIdentifiedDAO<Customer> implements CustomerDAO {
 
     @Autowired
-    public JDBCCustomerDAO(JdbcOperations jdbcOperations, ResourceBundle sqlBundle) {
-        super(jdbcOperations, sqlBundle);
+    public JDBCCustomerDAO(JdbcOperations jdbcOperations, ResourceBundle sqlProperties) {
+        super(jdbcOperations, sqlProperties);
     }
 
 
@@ -42,7 +42,7 @@ public class JDBCCustomerDAO extends JDBCGenericIdentifiedDAO<Customer> implemen
 
     @Override
     public void update(Customer oldData, Customer newData) {
-        jdbcOperations.update(sqlBundle.getString("customer.update"),
+        jdbcOperations.update(sqlProperties.getString("customer.update"),
                 newData.getId(),
                 newData.getFirstName(),
                 newData.getLastName(),
@@ -56,17 +56,17 @@ public class JDBCCustomerDAO extends JDBCGenericIdentifiedDAO<Customer> implemen
 
     @Override
     public void delete(Customer customer) {
-        jdbcOperations.update(sqlBundle.getString("customer.delete"), customer.getId());
+        jdbcOperations.update(sqlProperties.getString("customer.delete"), customer.getId());
     }
 
     @Override
     public Customer getById(Long id) {
-        return jdbcOperations.queryForObject(sqlBundle.getString("customer.selectById"), this::mapEntity, id);
+        return jdbcOperations.queryForObject(sqlProperties.getString("customer.selectById"), this::mapEntity, id);
     }
 
     @Override
     public Customer getByEmail(String email) {
-        return jdbcOperations.queryForObject(sqlBundle.getString("customer.selectByEmail"), this::mapEntity, email);
+        return jdbcOperations.queryForObject(sqlProperties.getString("customer.selectByEmail"), this::mapEntity, email);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class JDBCCustomerDAO extends JDBCGenericIdentifiedDAO<Customer> implemen
 
     @Override
     protected PreparedStatement insertionStatement(Connection connection, Customer entity) throws SQLException {
-        final PreparedStatement ps = connection.prepareStatement(sqlBundle.getString("customer.insertSQL"),
+        final PreparedStatement ps = connection.prepareStatement(sqlProperties.getString("customer.insertSQL"),
                 Statement.RETURN_GENERATED_KEYS);
 
         ps.setString(1, entity.getFirstName());

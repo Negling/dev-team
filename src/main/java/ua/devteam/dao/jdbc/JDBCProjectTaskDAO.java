@@ -24,17 +24,17 @@ import java.util.ResourceBundle;
  * <li> taskStatus(status).
  * </ul>
  */
-@Repository("projectTaskDAO")
+@Repository
 public class JDBCProjectTaskDAO extends JDBCGenericIdentifiedDAO<ProjectTask> implements ProjectTaskDAO {
 
     @Autowired
-    public JDBCProjectTaskDAO(JdbcOperations jdbcOperations, ResourceBundle sqlBundle) {
-        super(jdbcOperations, sqlBundle);
+    public JDBCProjectTaskDAO(JdbcOperations jdbcOperations, ResourceBundle sqlProperties) {
+        super(jdbcOperations, sqlProperties);
     }
 
     @Override
     public void update(ProjectTask oldEntity, ProjectTask newEntity) {
-        jdbcOperations.update(sqlBundle.getString("projectTask.update"),
+        jdbcOperations.update(sqlProperties.getString("projectTask.update"),
                 newEntity.getId(),
                 newEntity.getProjectId(),
                 newEntity.getOperationId(),
@@ -46,27 +46,27 @@ public class JDBCProjectTaskDAO extends JDBCGenericIdentifiedDAO<ProjectTask> im
 
     @Override
     public void delete(ProjectTask entity) {
-        jdbcOperations.update(sqlBundle.getString("projectTask.delete"), entity.getId());
+        jdbcOperations.update(sqlProperties.getString("projectTask.delete"), entity.getId());
     }
 
     @Override
     public void checkStatus(Long taskId) {
-        jdbcOperations.update(sqlBundle.getString("projectTask.checkStatus"), taskId);
+        jdbcOperations.update(sqlProperties.getString("projectTask.checkStatus"), taskId);
     }
 
     @Override
     public void setStatusByProject(Status status, Long projectId) {
-        jdbcOperations.update(sqlBundle.getString("projectTask.updateStatusByProject"), status.toString(), projectId);
+        jdbcOperations.update(sqlProperties.getString("projectTask.updateStatusByProject"), status.toString(), projectId);
     }
 
     @Override
     public ProjectTask getById(Long id) {
-        return jdbcOperations.queryForObject(sqlBundle.getString("projectTask.selectById"), this::mapEntity, id);
+        return jdbcOperations.queryForObject(sqlProperties.getString("projectTask.selectById"), this::mapEntity, id);
     }
 
     @Override
     public List<ProjectTask> getByProject(Long projectId) {
-        return jdbcOperations.query(sqlBundle.getString("projectTask.selectByProject"), this::mapEntity, projectId);
+        return jdbcOperations.query(sqlProperties.getString("projectTask.selectByProject"), this::mapEntity, projectId);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class JDBCProjectTaskDAO extends JDBCGenericIdentifiedDAO<ProjectTask> im
 
     @Override
     protected PreparedStatement insertionStatement(Connection connection, ProjectTask entity) throws SQLException {
-        final PreparedStatement ps = connection.prepareStatement(sqlBundle.getString("projectTask.insertSQL"),
+        final PreparedStatement ps = connection.prepareStatement(sqlProperties.getString("projectTask.insertSQL"),
                 Statement.RETURN_GENERATED_KEYS);
 
         ps.setLong(1, entity.getProjectId());

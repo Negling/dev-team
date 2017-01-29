@@ -1,5 +1,6 @@
 package ua.devteam.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -20,19 +21,12 @@ import static ua.devteam.entity.enums.Status.*;
  */
 @Service
 @Transactional(isolation = Isolation.READ_COMMITTED)
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataService {
 
     private TaskDevelopmentDataDAO taskDevelopmentDataDAO;
     private DevelopersService developersService;
     private ProjectTasksService projectTasksService;
-
-    @Autowired
-    public TaskDevelopmentDataServiceImpl(TaskDevelopmentDataDAO taskDevelopmentDataDAO, DevelopersService developersService,
-                                          ProjectTasksService projectTasksService) {
-        this.taskDevelopmentDataDAO = taskDevelopmentDataDAO;
-        this.developersService = developersService;
-        this.projectTasksService = projectTasksService;
-    }
 
     /**
      * Creates instance of taskDevelopmentData and delegates to developers service subsequent operations.

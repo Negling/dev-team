@@ -26,22 +26,18 @@ import java.util.ResourceBundle;
  * <li> role(role_id).
  * </ul>
  */
-@Repository("usersDAO")
-public class JDBCUsersDAO implements UsersDAO {
-
-    private JdbcOperations jdbcOperations;
-    private ResourceBundle sqlBundle;
+@Repository
+public class JDBCUsersDAO extends JDBCGenericDAO<User> implements UsersDAO {
 
     @Autowired
-    public JDBCUsersDAO(JdbcOperations jdbcOperations, ResourceBundle sqlBundle) {
-        this.jdbcOperations = jdbcOperations;
-        this.sqlBundle = sqlBundle;
+    public JDBCUsersDAO(JdbcOperations jdbcOperations, ResourceBundle sqlProperties) {
+        super(jdbcOperations, sqlProperties);
     }
 
     @Override
     public boolean persistsByEmail(String email) {
         try {
-            return jdbcOperations.queryForObject(sqlBundle.getString("users.persistsByEmail"),
+            return jdbcOperations.queryForObject(sqlProperties.getString("users.persistsByEmail"),
                     (ResultSet rs, int rowNum) -> rs.getString("email"), email) != null;
         } catch (EmptyResultDataAccessException ex) {
             return false;
@@ -51,7 +47,7 @@ public class JDBCUsersDAO implements UsersDAO {
     @Override
     public boolean persistsByPhone(String phoneNumber) {
         try {
-            return jdbcOperations.queryForObject(sqlBundle.getString("users.persistsByPhone"),
+            return jdbcOperations.queryForObject(sqlProperties.getString("users.persistsByPhone"),
                     (ResultSet rs, int rowNum) -> rs.getString("phone"), phoneNumber) != null;
         } catch (EmptyResultDataAccessException ex) {
             return false;
@@ -60,10 +56,11 @@ public class JDBCUsersDAO implements UsersDAO {
 
     @Override
     public User getUser(String email) {
-        return jdbcOperations.queryForObject(sqlBundle.getString("users.selectUser"), this::mapEntity, email);
+        return jdbcOperations.queryForObject(sqlProperties.getString("users.selectUser"), this::mapEntity, email);
     }
 
-    private User mapEntity(ResultSet rs, int row) throws SQLException {
+    @Override
+    protected User mapEntity(ResultSet rs, int row) throws SQLException {
         return new User(rs.getLong("id"),
                 rs.getString("first_name"),
                 rs.getString("last_name"),

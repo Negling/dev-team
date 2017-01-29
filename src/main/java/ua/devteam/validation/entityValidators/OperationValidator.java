@@ -8,15 +8,18 @@ import org.springframework.validation.Validator;
 import ua.devteam.entity.tasks.Operation;
 import ua.devteam.entity.tasks.RequestForDevelopers;
 
+import java.util.ResourceBundle;
+
 import static ua.devteam.validation.ValidationUtils.*;
 
 @Component
 public class OperationValidator implements Validator {
 
     private Validator requestForDevelopersValidator;
+    private ResourceBundle validationProperties;
 
     @Autowired
-    public OperationValidator(Validator requestForDevelopersValidator) {
+    public OperationValidator(Validator requestForDevelopersValidator, ResourceBundle validationProperties) {
         if (requestForDevelopersValidator == null) {
             throw new IllegalArgumentException("RequestForDevelopers validator is necessary, and can't be null!");
         }
@@ -24,6 +27,7 @@ public class OperationValidator implements Validator {
             throw new IllegalArgumentException("RequestForDevelopers validator must support RequestForDevelopers.class!");
         }
         this.requestForDevelopersValidator = requestForDevelopersValidator;
+        this.validationProperties = validationProperties;
     }
 
     @Override
@@ -36,26 +40,32 @@ public class OperationValidator implements Validator {
         Operation operation = (Operation) target;
 
         // Check if name is empty
-        rejectIfEmptyOrWhitespace(errors, "name", "validationErrors.emptyName", new Object[]{10});
+        rejectIfEmptyOrWhitespace(errors, "name", "validationErrors.emptyName",
+                new Object[]{validationProperties.getString("name.minLength")});
 
         // Check name min length
-        checkStringMinLength(operation.getName(), 10, errors, "validationErrors.fieldInsufficientLength",
-                new Object[]{operation.getName(), 10});
+        checkStringMinLength(operation.getName(), Integer.parseInt(validationProperties.getString("name.minLength")),
+                errors, "validationErrors.fieldInsufficientLength",
+                new Object[]{operation.getName(), validationProperties.getString("name.minLength")});
 
         // Check name max length
-        checkStringMaxLength(operation.getName(), 50, errors, "validationErrors.fieldLengthOverflow",
-                new Object[]{formatStringOverflow(operation.getName(), 15), 50});
+        checkStringMaxLength(operation.getName(), Integer.parseInt(validationProperties.getString("name.maxLength")),
+                errors, "validationErrors.fieldLengthOverflow", new Object[]{formatStringOverflow(operation.getName(), 15),
+                        validationProperties.getString("name.maxLength")});
 
         // Check if description is empty
-        rejectIfEmptyOrWhitespace(errors, "description", "validationErrors.emptyDescription", new Object[]{30});
+        rejectIfEmptyOrWhitespace(errors, "description", "validationErrors.emptyDescription",
+                new Object[]{validationProperties.getString("description.minLength")});
 
         // Check description max length
-        checkStringMinLength(operation.getDescription(), 30, errors, "validationErrors.fieldInsufficientLength",
-                new Object[]{operation.getDescription(), 30});
+        checkStringMinLength(operation.getDescription(), Integer.parseInt(validationProperties.getString("description.minLength")),
+                errors, "validationErrors.fieldInsufficientLength",
+                new Object[]{operation.getDescription(), validationProperties.getString("description.minLength")});
 
         // Check description max length
-        checkStringMaxLength(operation.getDescription(), 5000, errors, "validationErrors.fieldLengthOverflow",
-                new Object[]{formatStringOverflow(operation.getDescription(), 15), 5000});
+        checkStringMaxLength(operation.getDescription(), Integer.parseInt(validationProperties.getString("description.maxLength")),
+                errors, "validationErrors.fieldLengthOverflow",
+                new Object[]{formatStringOverflow(operation.getDescription(), 15), validationProperties.getString("description.maxLength")});
 
         // Check if rfd is empty
         if (operation.getRequestsForDevelopers() == null || operation.getRequestsForDevelopers().size() == 0) {

@@ -1,6 +1,7 @@
 package ua.devteam.service.impl;
 
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -23,19 +24,12 @@ import static ua.devteam.entity.enums.Status.PENDING;
  */
 @Service
 @Transactional(isolation = Isolation.READ_COMMITTED)
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class TechnicalTasksServiceImpl implements TechnicalTasksService {
 
     private TechnicalTaskDAO technicalTaskDAO;
     private OperationsService operationsService;
     private ProjectsService projectsService;
-
-    @Autowired
-    public TechnicalTasksServiceImpl(TechnicalTaskDAO technicalTaskDAO, OperationsService operationsService,
-                                     ProjectsService projectsService) {
-        this.technicalTaskDAO = technicalTaskDAO;
-        this.operationsService = operationsService;
-        this.projectsService = projectsService;
-    }
 
     /**
      * Updates status of technical task to "PENDING" and creates instance of project based on this Technical Task.

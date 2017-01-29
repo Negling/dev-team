@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ua.devteam.entity.users.User;
 import ua.devteam.service.TaskDevelopmentDataService;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This controller process REST requests on developers cabinet page.
@@ -25,11 +22,14 @@ import java.util.Map;
 public class DevelopersCabinetRestController extends AbstractEntityProcessingController {
 
     private TaskDevelopmentDataService taskDevelopmentDataService;
+    private ResourceBundle validationProperties;
 
     @Autowired
-    public DevelopersCabinetRestController(MessageSource messageSource, TaskDevelopmentDataService taskDevelopmentDataService) {
+    public DevelopersCabinetRestController(MessageSource messageSource, TaskDevelopmentDataService taskDevelopmentDataService,
+                                           ResourceBundle validationProperties) {
         super(messageSource);
         this.taskDevelopmentDataService = taskDevelopmentDataService;
+        this.validationProperties = validationProperties;
     }
 
     /**
@@ -41,14 +41,23 @@ public class DevelopersCabinetRestController extends AbstractEntityProcessingCon
                                                      Authentication auth) {
         int hoursSpent = Integer.parseInt(params.get("hoursSpent"));
 
-        if (hoursSpent < 1 || hoursSpent > 999) {
-            return getDefaultErrorResponse(new LinkedList<>(), locale);
-        } else {
+        if (isAcceptableHoursSpentValue(hoursSpent)) {
             taskDevelopmentDataService.complete(Long.parseLong(params.get("id")), ((User) auth.getPrincipal()).getId(),
                     hoursSpent);
 
             return getDefaultSuccessResponse(new LinkedList<>(), locale);
+        } else {
+            return getDefaultErrorResponse(new LinkedList<>(), locale);
         }
+    }
 
+    /**
+     * Returns true if value is in acceptable values diapason.
+     */
+    private boolean isAcceptableHoursSpentValue(int value) {
+        int minValue = Integer.parseInt(validationProperties.getString("hoursSpent.minValue"));
+        int maxValue = Integer.parseInt(validationProperties.getString("hoursSpent.maxValue"));
+
+        return value > minValue && value < maxValue;
     }
 }

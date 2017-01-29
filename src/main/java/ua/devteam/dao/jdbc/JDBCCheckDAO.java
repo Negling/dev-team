@@ -25,17 +25,17 @@ import java.util.ResourceBundle;
  * <li> status(status).
  * </ul>
  */
-@Repository("checkDAO")
+@Repository
 public class JDBCCheckDAO extends JDBCGenericDAO<Check> implements CheckDAO {
 
     @Autowired
-    public JDBCCheckDAO(JdbcOperations jdbcOperations, ResourceBundle sqlBundle) {
-        super(jdbcOperations, sqlBundle);
+    public JDBCCheckDAO(JdbcOperations jdbcOperations, ResourceBundle sqlProperties) {
+        super(jdbcOperations, sqlProperties);
     }
 
     @Override
     public void create(Check check) {
-        jdbcOperations.update(sqlBundle.getString("check.insertSQL"),
+        jdbcOperations.update(sqlProperties.getString("check.insertSQL"),
                 check.getProjectId(),
                 check.getDevelopersCost(),
                 check.getServicesCost(),
@@ -45,7 +45,7 @@ public class JDBCCheckDAO extends JDBCGenericDAO<Check> implements CheckDAO {
 
     @Override
     public void update(Check oldEntity, Check newEntity) {
-        jdbcOperations.update(sqlBundle.getString("check.update"),
+        jdbcOperations.update(sqlProperties.getString("check.update"),
                 newEntity.getProjectId(),
                 newEntity.getDevelopersCost(),
                 newEntity.getServicesCost(),
@@ -56,27 +56,27 @@ public class JDBCCheckDAO extends JDBCGenericDAO<Check> implements CheckDAO {
 
     @Override
     public void delete(Check entity) {
-        jdbcOperations.update(sqlBundle.getString("check.delete"), entity.getProjectId());
+        jdbcOperations.update(sqlProperties.getString("check.delete"), entity.getProjectId());
     }
 
     @Override
     public Check getByProject(Long projectId) {
-        return jdbcOperations.queryForObject(sqlBundle.getString("check.selectByProject"), this::mapEntity, projectId);
+        return jdbcOperations.queryForObject(sqlProperties.getString("check.selectByProject"), this::mapEntity, projectId);
     }
 
     @Override
     public List<Check> getNewByCustomer(Long customerId) {
-        return jdbcOperations.query(sqlBundle.getString("check.selectNewByCustomer"), this::mapEntity, customerId);
+        return jdbcOperations.query(sqlProperties.getString("check.selectNewByCustomer"), this::mapEntity, customerId);
     }
 
     @Override
     public List<Check> getCompleteByCustomer(Long customerId) {
-        return jdbcOperations.query(sqlBundle.getString("check.selectCompleteByCustomer"), this::mapEntity, customerId);
+        return jdbcOperations.query(sqlProperties.getString("check.selectCompleteByCustomer"), this::mapEntity, customerId);
     }
 
     @Override
     public List<Check> getAllByCustomer(Long customerId) {
-        return jdbcOperations.query(sqlBundle.getString("check.selectByCustomer"), this::mapEntity, customerId);
+        return jdbcOperations.query(sqlProperties.getString("check.selectByCustomer"), this::mapEntity, customerId);
     }
 
     @Override

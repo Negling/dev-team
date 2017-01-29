@@ -32,17 +32,17 @@ import java.util.ResourceBundle;
  * <li> role(role_id).
  * </ul>
  */
-@Repository("developerDAO")
+@Repository
 public class JDBCDeveloperDAO extends JDBCGenericIdentifiedDAO<Developer> implements DeveloperDAO {
 
     @Autowired
-    public JDBCDeveloperDAO(JdbcOperations jdbcOperations, ResourceBundle sqlBundle) {
-        super(jdbcOperations, sqlBundle);
+    public JDBCDeveloperDAO(JdbcOperations jdbcOperations, ResourceBundle sqlProperties) {
+        super(jdbcOperations, sqlProperties);
     }
 
     @Override
     public void update(Developer oldEntity, Developer newEntity) {
-        jdbcOperations.update(sqlBundle.getString("developer.update"),
+        jdbcOperations.update(sqlProperties.getString("developer.update"),
                 newEntity.getId(),
                 newEntity.getFirstName(),
                 newEntity.getLastName(),
@@ -59,46 +59,46 @@ public class JDBCDeveloperDAO extends JDBCGenericIdentifiedDAO<Developer> implem
 
     @Override
     public void delete(Developer entity) {
-        jdbcOperations.update(sqlBundle.getString("developer.delete"), entity.getId());
+        jdbcOperations.update(sqlProperties.getString("developer.delete"), entity.getId());
     }
 
 
     @Override
     public void updateStatusByProject(DeveloperStatus status, Long projectId) {
-        jdbcOperations.update(sqlBundle.getString("developer.updateStatusByProject"), status.toString(), projectId);
+        jdbcOperations.update(sqlProperties.getString("developer.updateStatusByProject"), status.toString(), projectId);
     }
 
     @Override
     public Developer getById(Long id) {
-        return jdbcOperations.queryForObject(sqlBundle.getString("developer.selectById"), this::mapEntity, id);
+        return jdbcOperations.queryForObject(sqlProperties.getString("developer.selectById"), this::mapEntity, id);
     }
 
     @Override
     public Developer getByEmail(String email) {
-        return jdbcOperations.queryForObject(sqlBundle.getString("developer.selectByEmail"), this::mapEntity, email);
+        return jdbcOperations.queryForObject(sqlProperties.getString("developer.selectByEmail"), this::mapEntity, email);
     }
 
     @Override
     public List<Developer> getAvailableByParams(DeveloperSpecialization specialization, DeveloperRank rank) {
-        return jdbcOperations.query(sqlBundle.getString("developer.selectAvailableBySpecAndRank"), this::mapEntity,
+        return jdbcOperations.query(sqlProperties.getString("developer.selectAvailableBySpecAndRank"), this::mapEntity,
                 specialization.toString(), rank.toString());
     }
 
     @Override
     public List<Developer> getAvailableByParams(DeveloperSpecialization specialization, DeveloperRank rank, String lastName) {
-        return jdbcOperations.query(sqlBundle.getString("developer.selectAvailableBySpecAndRankAndLastname"), this::mapEntity,
+        return jdbcOperations.query(sqlProperties.getString("developer.selectAvailableBySpecAndRankAndLastname"), this::mapEntity,
                 specialization.toString(), rank.toString(), lastName.concat("%"));
     }
 
     @Override
     public List<Developer> getByParams(DeveloperSpecialization specialization, DeveloperRank rank) {
-        return jdbcOperations.query(sqlBundle.getString("developer.selectBySpecAndRank"), this::mapEntity,
+        return jdbcOperations.query(sqlProperties.getString("developer.selectBySpecAndRank"), this::mapEntity,
                 specialization.toString(), rank.toString());
     }
 
     @Override
     public List<Developer> getByParams(DeveloperSpecialization specialization, DeveloperRank rank, String lastName) {
-        return jdbcOperations.query(sqlBundle.getString("developer.selectBySpecAndRankAndLastname"), this::mapEntity,
+        return jdbcOperations.query(sqlProperties.getString("developer.selectBySpecAndRankAndLastname"), this::mapEntity,
                 specialization.toString(), rank.toString(), lastName.concat("%"));
     }
 
@@ -120,7 +120,7 @@ public class JDBCDeveloperDAO extends JDBCGenericIdentifiedDAO<Developer> implem
 
     @Override
     protected PreparedStatement insertionStatement(Connection connection, Developer entity) throws SQLException {
-        final PreparedStatement ps = connection.prepareStatement(sqlBundle.getString("developer.insertSQL"),
+        final PreparedStatement ps = connection.prepareStatement(sqlProperties.getString("developer.insertSQL"),
                 Statement.RETURN_GENERATED_KEYS);
 
         ps.setString(1, entity.getFirstName());

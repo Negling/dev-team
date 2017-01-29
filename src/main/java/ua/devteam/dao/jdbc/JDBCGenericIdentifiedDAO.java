@@ -19,8 +19,8 @@ import java.util.ResourceBundle;
  */
 abstract class JDBCGenericIdentifiedDAO<T> extends JDBCGenericDAO<T> implements Identified<T> {
 
-    JDBCGenericIdentifiedDAO(JdbcOperations jdbcOperations, ResourceBundle sqlBundle) {
-        super(jdbcOperations, sqlBundle);
+    JDBCGenericIdentifiedDAO(JdbcOperations jdbcOperations, ResourceBundle sqlProperties) {
+        super(jdbcOperations, sqlProperties);
     }
 
     @Override
