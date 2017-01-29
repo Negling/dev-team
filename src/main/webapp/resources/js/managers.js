@@ -64,21 +64,36 @@ function showDeclineModal(entityId, entityType) {
     $("#declineModal").modal("show");
 }
 
+/* Updates active project and tasks select options. Used on updating status of one of forming projects. */
+function updateBindSelectOptions() {
+    var activeProjectSelect = $("#activeProjectSelect");
+
+    activeProjectSelect.children().remove();
+
+    $("#pendingProjectsAccordion a[data-project-id]").each(function (index, element) {
+
+        $("<option></option>")
+            .text($(element).text())
+            .val($(element).attr("data-project-id"))
+            .appendTo(activeProjectSelect);
+    });
+
+    changeActiveTaskSelectOptions();
+}
+
 /* Updates task select options after active projects has changed. */
 function changeActiveTaskSelectOptions() {
     var activeTaskSelect = $("#activeTaskSelect");
     var activeProjectId = $("#activeProjectSelect > option:selected").val();
-    var selectValue;
 
     activeTaskSelect.children().remove();
 
     $("#pendingProject" + activeProjectId)
         .find("a[data-toggle=collapse]").each(function (index, element) {
-        selectValue = $(element).attr("data-task-id");
 
         $("<option></option>")
             .text($(element).text())
-            .val(selectValue)
+            .val($(element).attr("data-task-id"))
             .appendTo(activeTaskSelect);
     });
 }
@@ -155,17 +170,6 @@ function calculateProjectCheck(projectId) {
 
     taxes.val(((parseFloat(devsHireCost.val()) + parseFloat(servicesCost.val())) * 0.2).toFixed(0));
     totalCost.val(parseFloat(devsHireCost.val()) + parseFloat(servicesCost.val()) + parseFloat(taxes.val()));
-}
-
-/* Updates active project and tasks select options. Used on updating status of one of forming projects. */
-function updateBindSelectOptions() {
-
-    // TODO: refactor method to upload bind options without load request, just by traversing DOM tree
-
-    var URL = location.href.split('?')[0] + "/fragments/manage_form_project";
-
-    $("#activeProjectSelect").load(URL + " #activeProjectSelect > option");
-    $("#activeTaskSelect").load(URL + " #activeTaskSelect > option");
 }
 
 /* Binds developer to specified task. */

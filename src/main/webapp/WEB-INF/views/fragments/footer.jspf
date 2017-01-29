@@ -13,7 +13,7 @@
                     </li>
                 </ul>
             </div>
-            <p class="text-muted"><spring:message code="general.author"/> &copy; Dev-Team Project 2016</p>
+            <p class="text-muted"><spring:message code="general.author"/> &copy; Dev-Team Project 2017</p>
         </div>
     </div>
 </footer>

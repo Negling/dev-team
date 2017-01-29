@@ -55,11 +55,6 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="<spring:url value="/about"/>">
-                        <spring:message code="general.about"/>
-                    </a>
-                </li>
-                <li>
                     <security:authorize access="isAnonymous()">
                         <a href="<spring:url value="/login"/>">
                             <span class="login-icon glyphicon glyphicon-log-in"></span>

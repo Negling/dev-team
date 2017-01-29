@@ -31,6 +31,7 @@
                             <h4 class="panel-title">
                                 <a id="project<c:out value="${project.id}"/>Link" data-toggle="collapse"
                                    data-parent="#pendingProjectsAccordion"
+                                   data-project-id="<c:out value="${project.id}"/>"
                                    href="#pendingProject<c:out value="${project.id}"/>">
                                     <c:out value="${project.name}"/>
                                 </a>
