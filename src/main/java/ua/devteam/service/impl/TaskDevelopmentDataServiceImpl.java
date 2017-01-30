@@ -71,28 +71,6 @@ public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataServic
     }
 
     /**
-     * Returns task development data with status "RUNNING" and specified developer ID.
-     *
-     * @return task development data
-     */
-    @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
-    public TaskDevelopmentData getActive(Long developerId) {
-        return taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, RUNNING).stream().findAny().orElse(null);
-    }
-
-    /**
-     * Returns list of task development data with status "COMPLETE" and specified developer ID.
-     *
-     * @return list of task development data, or empty list if no results found
-     */
-    @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
-    public List<TaskDevelopmentData> getComplete(Long developerId) {
-        return taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, COMPLETE);
-    }
-
-    /**
      * Deletes all task development data mapped to specific project and updates assigned developers status to "AVAILABLE".
      */
     @Override
@@ -116,5 +94,27 @@ public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataServic
     @Override
     public void confirmByProject(Long projectId) {
         taskDevelopmentDataDAO.setStatusByProject(PENDING, projectId);
+    }
+
+    /**
+     * Returns task development data with status "RUNNING" and specified developer ID.
+     *
+     * @return task development data
+     */
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    public TaskDevelopmentData getActive(Long developerId) {
+        return taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, RUNNING).stream().findAny().orElse(null);
+    }
+
+    /**
+     * Returns list of task development data with status "COMPLETE" and specified developer ID.
+     *
+     * @return list of task development data, or empty list if no results found
+     */
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    public List<TaskDevelopmentData> getComplete(Long developerId) {
+        return taskDevelopmentDataDAO.getByDeveloperAndStatus(developerId, COMPLETE);
     }
 }

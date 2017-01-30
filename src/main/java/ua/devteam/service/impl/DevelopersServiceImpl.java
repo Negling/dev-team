@@ -28,33 +28,6 @@ public class DevelopersServiceImpl implements DevelopersService {
     private DeveloperDAO developerDAO;
 
     /**
-     * Returns developer instance which id matches to requested.
-     *
-     * @return developer instance
-     */
-    @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
-    public Developer getById(Long developerId) {
-        return developerDAO.getById(developerId);
-    }
-
-    /**
-     * Returns list of developers, which params match to requested, and status is "AVAILABLE".
-     * If no results found - empty list will be returned.
-     *
-     * @return List of developers that match to params, or empty list
-     */
-    @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
-    public List<Developer> getAvailableDevelopers(DeveloperSpecialization specialization, DeveloperRank rank, String lastName) {
-        if (lastName == null || lastName.isEmpty()) {
-            return developerDAO.getAvailableByParams(specialization, rank);
-        } else {
-            return developerDAO.getAvailableByParams(specialization, rank, lastName);
-        }
-    }
-
-    /**
      * If requested developer status is "AVAILABLE" - changes it to "LOCKED", otherwise throws exception.
      */
     @Override
@@ -114,5 +87,32 @@ public class DevelopersServiceImpl implements DevelopersService {
         dev.setStatus(developerStatus);
 
         developerDAO.update(dev, dev);
+    }
+
+    /**
+     * Returns developer instance which id matches to requested.
+     *
+     * @return developer instance
+     */
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    public Developer getById(Long developerId) {
+        return developerDAO.getById(developerId);
+    }
+
+    /**
+     * Returns list of developers, which params match to requested, and status is "AVAILABLE".
+     * If no results found - empty list will be returned.
+     *
+     * @return List of developers that match to params, or empty list
+     */
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    public List<Developer> getAvailableDevelopers(DeveloperSpecialization specialization, DeveloperRank rank, String lastName) {
+        if (lastName == null || lastName.isEmpty()) {
+            return developerDAO.getAvailableByParams(specialization, rank);
+        } else {
+            return developerDAO.getAvailableByParams(specialization, rank, lastName);
+        }
     }
 }

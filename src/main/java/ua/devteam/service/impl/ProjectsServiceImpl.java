@@ -31,6 +31,20 @@ public class ProjectsServiceImpl implements ProjectsService {
     private TaskDevelopmentDataService taskDevelopersService;
 
     /**
+     * Creates and records Project instance from specified Technical task, and delegates to project tasks service subsequent operations.
+     *
+     * @return generated ID
+     */
+    @Override
+    public long createProject(TechnicalTask technicalTask, Long managerId) {
+        long projectId = projectDAO.create(new Project(managerId, technicalTask));
+
+        projectTasksService.registerFromTechnicalTask(technicalTask.getId(), projectId);
+
+        return projectId;
+    }
+
+    /**
      * Updates projects status to "DECLINED", endDate to current time, and delegates to task developers service subsequent operations.
      */
     @Override
@@ -45,6 +59,42 @@ public class ProjectsServiceImpl implements ProjectsService {
         projectDAO.update(project, project);
         projectDAO.updateStatus(projectId, DECLINED);
         taskDevelopersService.dropByProject(projectId);
+    }
+
+    /**
+     * Updates project, project tasks and task developers data status to "PENDING".
+     */
+    @Override
+    public void confirmProject(Long projectId) {
+        projectTasksService.confirmByProject(projectId);
+        taskDevelopersService.confirmByProject(projectId);
+        projectDAO.updateStatus(projectId, PENDING);
+    }
+
+    /**
+     * Updates project, project tasks and task developers data status to "RUNNING".
+     */
+    @Override
+    public void runProject(Long projectId) {
+        projectTasksService.runByProject(projectId);
+        taskDevelopersService.runByProject(projectId);
+        projectDAO.updateStatus(projectId, RUNNING);
+    }
+
+
+    /**
+     * Updates project, project tasks status to "CANCELED" Sets project end date to current time.
+     * Deletes project task developers data.
+     */
+    @Override
+    public void cancel(Long projectId) {
+        Project project = projectDAO.getById(projectId);
+        project.setEndDate(new Date());
+
+        projectTasksService.cancelByProject(projectId);
+        taskDevelopersService.dropByProject(projectId);
+        projectDAO.update(project, project);
+        projectDAO.updateStatus(projectId, CANCELED);
     }
 
     /**
@@ -155,55 +205,5 @@ public class ProjectsServiceImpl implements ProjectsService {
         }
 
         return projects;
-    }
-
-    /**
-     * Creates and records Project instance from specified Technical task, and delegates to project tasks service subsequent operations.
-     *
-     * @return generated ID
-     */
-    @Override
-    public long createProject(TechnicalTask technicalTask, Long managerId) {
-        long projectId = projectDAO.create(new Project(managerId, technicalTask));
-
-        projectTasksService.registerFromTechnicalTask(technicalTask.getId(), projectId);
-
-        return projectId;
-    }
-
-    /**
-     * Updates project, project tasks and task developers data status to "PENDING".
-     */
-    @Override
-    public void confirmProject(Long projectId) {
-        projectTasksService.confirmByProject(projectId);
-        taskDevelopersService.confirmByProject(projectId);
-        projectDAO.updateStatus(projectId, PENDING);
-    }
-
-    /**
-     * Updates project, project tasks and task developers data status to "RUNNING".
-     */
-    @Override
-    public void runProject(Long projectId) {
-        projectTasksService.runByProject(projectId);
-        taskDevelopersService.runByProject(projectId);
-        projectDAO.updateStatus(projectId, RUNNING);
-    }
-
-
-    /**
-     * Updates project, project tasks status to "CANCELED" Sets project end date to current time.
-     * Deletes project task developers data..
-     */
-    @Override
-    public void cancel(Long projectId) {
-        Project project = projectDAO.getById(projectId);
-        project.setEndDate(new Date());
-
-        projectTasksService.cancelByProject(projectId);
-        taskDevelopersService.dropByProject(projectId);
-        projectDAO.update(project, project);
-        projectDAO.updateStatus(projectId, CANCELED);
     }
 }

@@ -23,6 +23,9 @@ public interface ProjectsService {
      */
     void confirmProject(Long projectId);
 
+    /**
+     * Updates project, project tasks and task developers data status to "RUNNING".
+     */
     void runProject(Long projectId);
 
     /**
@@ -32,7 +35,8 @@ public interface ProjectsService {
 
 
     /**
-     * Updates project, project tasks and task developers data status to "RUNNING".
+     * Updates project, project tasks status to "CANCELED" Sets project end date to current time.
+     * Deletes project task developers data.
      */
     void cancel(Long projectId);
 
