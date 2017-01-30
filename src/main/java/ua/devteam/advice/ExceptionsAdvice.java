@@ -5,7 +5,7 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ua.devteam.exceptions.AjaxMethodInternalException;
 import ua.devteam.exceptions.LocalizedException;
@@ -49,7 +49,7 @@ public class ExceptionsAdvice {
      * @param ex occurred exception in case if resource is not found by DAO object
      * @throws NoSuchMethodException ex
      */
-    @AfterThrowing(pointcut = "ua.devteam.advice.SystemArchitecture.inControllerMethods() " +
+    @AfterThrowing(pointcut = "ua.devteam.advice.SystemArchitecture.inControllerGETMethods() " +
             "&& !ua.devteam.advice.SystemArchitecture.inRestControllers()", throwing = "ex")
     public void afterThrowingExceptionInAjaxMethod(JoinPoint jp, EmptyResultDataAccessException ex) throws NoSuchMethodException {
         StringBuilder builder = new StringBuilder();
@@ -57,8 +57,8 @@ public class ExceptionsAdvice {
         Parameter[] params = method.getParameters();
 
         // requestMapping value
-        String mapping = ((RequestMapping) Arrays.stream(method.getDeclaredAnnotations())
-                .filter(ann -> ann instanceof RequestMapping).findAny().get()).value()[0];
+        String mapping = ((GetMapping) Arrays.stream(method.getDeclaredAnnotations())
+                .filter(ann -> ann instanceof GetMapping).findAny().get()).value()[0];
 
 
         // add query params

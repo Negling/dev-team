@@ -42,6 +42,7 @@ public class ProjectsServiceImpl implements ProjectsService {
             project.setManagerCommentary(managerCommentary);
         }
 
+        projectDAO.update(project, project);
         projectDAO.updateStatus(projectId, DECLINED);
         taskDevelopersService.dropByProject(projectId);
     }
@@ -202,6 +203,7 @@ public class ProjectsServiceImpl implements ProjectsService {
 
         projectTasksService.cancelByProject(projectId);
         taskDevelopersService.dropByProject(projectId);
+        projectDAO.update(project, project);
         projectDAO.updateStatus(projectId, CANCELED);
     }
 }

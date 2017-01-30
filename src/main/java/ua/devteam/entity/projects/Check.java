@@ -31,4 +31,8 @@ public class Check implements Serializable {
     private BigDecimal taxes;
     /* Check current status  */
     private CheckStatus status;
+
+    public BigDecimal getTotalProjectCost() {
+        return developersCost.add(taxes).add(servicesCost);
+    }
 }

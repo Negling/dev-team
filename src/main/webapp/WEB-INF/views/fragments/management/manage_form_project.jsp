@@ -281,10 +281,12 @@
 
     <%--Developers Modal button--%>
     <div class="col-lg-3">
-        <button type="button" class="btn btn-success pull-left mb-10" data-toggle="modal"
-                data-target="#bindDeveloperModal">
-            <spring:message code="managersCabinet.searchForAvailableDevs"/>
-        </button>
+        <div class="col-xs-12 no-padding">
+            <button type="button" class="btn btn-success pull-left mb-10" data-toggle="modal"
+                    data-target="#bindDeveloperModal">
+                <spring:message code="managersCabinet.searchForAvailableDevs"/>
+            </button>
+        </div>
         <p>
             <spring:message code="managersCabinet.searchForAvailableDevsDecs"/>
         </p>

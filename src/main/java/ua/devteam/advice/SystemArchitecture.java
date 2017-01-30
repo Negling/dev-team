@@ -10,10 +10,10 @@ import org.aspectj.lang.annotation.Pointcut;
 public class SystemArchitecture {
 
     /**
-     * All methods annotated with {@link org.springframework.web.bind.annotation.RequestMapping}.
+     * All methods annotated with {@link org.springframework.web.bind.annotation.GetMapping}.
      */
-    @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
-    public void inControllerMethods() {
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping)")
+    public void inControllerGETMethods() {
     }
 
     /**

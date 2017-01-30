@@ -12,7 +12,6 @@ CREATE TABLE managers (
   phone      VARCHAR(15)      NOT NULL,
   password   VARCHAR(60)      NOT NULL,
   role_id    TINYINT UNSIGNED NOT NULL,
-  UNIQUE (email),
   PRIMARY KEY (id),
   FOREIGN KEY (role_id)
   REFERENCES roles (role_id)
@@ -32,7 +31,6 @@ CREATE TABLE developers (
   hire_cost      DECIMAL(32, 2) UNSIGNED NOT NULL,
   status         VARCHAR(20)             NOT NULL,
   role_id        TINYINT UNSIGNED        NOT NULL,
-  UNIQUE (email),
   PRIMARY KEY (id),
   FOREIGN KEY (role_id)
   REFERENCES roles (role_id)
@@ -48,7 +46,6 @@ CREATE TABLE customers (
   phone      VARCHAR(15)      NOT NULL UNIQUE,
   password   VARCHAR(60)      NOT NULL,
   role_id    TINYINT UNSIGNED NOT NULL,
-  UNIQUE (email),
   PRIMARY KEY (id),
   FOREIGN KEY (role_id)
   REFERENCES roles (role_id)

@@ -39,25 +39,29 @@ public class DevelopersCabinetRestController extends AbstractEntityProcessingCon
     @PreAuthorize("hasAuthority('DEVELOPER')")
     public ResponseEntity<List<String>> completeTask(@RequestBody Map<String, String> params, Locale locale,
                                                      Authentication auth) {
-        int hoursSpent = Integer.parseInt(params.get("hoursSpent"));
+        int hoursSpent;
+        try {
+            hoursSpent = Integer.parseInt(params.get("hoursSpent"));
+            validateHoursSpentValue(hoursSpent);
 
-        if (isAcceptableHoursSpentValue(hoursSpent)) {
             taskDevelopmentDataService.complete(Long.parseLong(params.get("id")), ((User) auth.getPrincipal()).getId(),
                     hoursSpent);
 
             return getDefaultSuccessResponse(new LinkedList<>(), locale);
-        } else {
+        } catch (NumberFormatException ex) {
             return getDefaultErrorResponse(new LinkedList<>(), locale);
         }
     }
 
     /**
-     * Returns true if value is in acceptable values diapason.
+     * Throws {@link NumberFormatException ex} if value not in acceptable values diapason.
      */
-    private boolean isAcceptableHoursSpentValue(int value) {
+    private void validateHoursSpentValue(int value) {
         int minValue = Integer.parseInt(validationProperties.getString("hoursSpent.minValue"));
         int maxValue = Integer.parseInt(validationProperties.getString("hoursSpent.maxValue"));
 
-        return value > minValue && value < maxValue;
+        if (value < minValue || value > maxValue) {
+            throw new NumberFormatException();
+        }
     }
 }
