@@ -21,6 +21,8 @@ import java.math.BigDecimal;
 public class Check implements Serializable {
     /* Project id this check is bind to */
     private Long projectId;
+    /* Customer id this check is bind to */
+    private Long customerId;
     /* Project name this check is bind to */
     private String projectName;
     /* Total cost to hire all assigned to this project developers */

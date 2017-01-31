@@ -86,10 +86,10 @@ INSERT INTO requests_for_developers (operation_id, specialization, rank, quantit
 VALUES (3, 'DESIGNER', 'JUNIOR', 1);
 
 
-INSERT INTO projects (technical_task_id, customer_id, manager_id, name, description, start_date, end_date, status)
-VALUES (2, 1, 1, 'This is test task.', 'This is test task.', '2016-12-16', '2016-12-19', 'COMPLETE');
-INSERT INTO projects (technical_task_id, customer_id, manager_id, name, description, start_date, end_date, status)
-VALUES (3, 2, 2, 'This is test task.', 'This is test task.', '2016-12-16', '2016-12-19', 'RUNNING');
+INSERT INTO projects (technical_task_id, manager_id, name, description, start_date, end_date, status)
+VALUES (2, 1, 'This is test task.', 'This is test task.', '2016-12-16', '2016-12-19', 'COMPLETE');
+INSERT INTO projects (technical_task_id, manager_id, name, description, start_date, end_date, status)
+VALUES (3, 2, 'This is test task.', 'This is test task.', '2016-12-16', '2016-12-19', 'RUNNING');
 
 INSERT INTO project_tasks (project_id, operation_id, name, description, status)
 VALUES (1, 2, 'This is test task.', 'This is test task.', 'COMPLETE');
@@ -102,4 +102,5 @@ VALUES (1, 1, 'DBA' ,'JUNIOR', 12, 'COMPLETE');
 INSERT INTO task_development_data (task_id, developer_id, developer_specialization, developer_rank, hours_spent, status)
 VALUES (2, 1, 'DBA' ,'JUNIOR', 0, 'RUNNING');
 
-INSERT INTO checks (project_id, developers_cost, services, taxes, status) VALUES (1, 700.00, 1000.00, 340.00, 'PAID');
+INSERT INTO checks (project_id, customer_id, developers_cost, services, taxes, status)
+VALUES (1, 1, 700.00, 1000.00, 340.00, 'PAID');
