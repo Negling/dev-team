@@ -35,7 +35,7 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
      * Updates status of technical task to "PENDING" and creates instance of project based on this Technical Task.
      */
     @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void accept(Long technicalTaskId, Long managerId) {
         TechnicalTask technicalTask = technicalTaskDAO.getById(technicalTaskId);
 
@@ -53,7 +53,7 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
      * Updates status of technical task to "DECLINED".
      */
     @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void decline(Long technicalTaskId, String managerCommentary) {
         TechnicalTask technicalTask = technicalTaskDAO.getById(technicalTaskId);
 

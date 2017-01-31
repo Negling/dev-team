@@ -19,7 +19,6 @@ import java.util.ResourceBundle;
  * <li> id(id),
  * <li> name(name),
  * <li> description(description),
- * <li> customerId(customer_id),
  * <li> status(status),
  * <li> managerCommentary(manager_commentary),
  * <li> managerId(manager_id),
@@ -41,7 +40,6 @@ public class JDBCProjectDAO extends JDBCGenericIdentifiedDAO<Project> implements
         jdbcOperations.update(sqlProperties.getString("project.update"),
                 newEntity.getId(),
                 newEntity.getTechnicalTaskId(),
-                newEntity.getCustomerId(),
                 newEntity.getManagerId(),
                 newEntity.getName(),
                 newEntity.getDescription(),
@@ -120,22 +118,21 @@ public class JDBCProjectDAO extends JDBCGenericIdentifiedDAO<Project> implements
         Date startDate = entity.getStartDate() == null ? null : new Date(entity.getStartDate().getTime());
 
         ps.setLong(1, entity.getTechnicalTaskId());
-        ps.setLong(2, entity.getCustomerId());
-        ps.setLong(3, entity.getManagerId());
-        ps.setString(4, entity.getName());
-        ps.setString(5, entity.getDescription());
-        ps.setDate(7, startDate);
-        ps.setString(9, entity.getStatus().toString());
+        ps.setLong(2, entity.getManagerId());
+        ps.setString(3, entity.getName());
+        ps.setString(4, entity.getDescription());
+        ps.setDate(6, startDate);
+        ps.setString(8, entity.getStatus().toString());
 
         if (entity.getManagerCommentary() == null) {
-            ps.setNull(6, Types.VARCHAR);
+            ps.setNull(5, Types.VARCHAR);
         } else {
-            ps.setString(6, entity.getManagerCommentary());
+            ps.setString(5, entity.getManagerCommentary());
         }
         if (entity.getEndDate() == null) {
-            ps.setNull(8, Types.TIMESTAMP);
+            ps.setNull(7, Types.TIMESTAMP);
         } else {
-            ps.setDate(8, new Date(entity.getEndDate().getTime()));
+            ps.setDate(7, new Date(entity.getEndDate().getTime()));
         }
 
         return ps;

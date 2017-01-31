@@ -85,9 +85,10 @@ public class CheckDAOTest {
 
     @Test
     public void getNewByCustomerTest() {
+        testData.setCustomerId(2L);
         checkDAO.create(testData);
 
-        List<Check> data = checkDAO.getNewByCustomer(1L);
+        List<Check> data = checkDAO.getNewByCustomer(2L);
 
         assertThat(data, is(notNullValue()));
         assertThat(data.size(), is(greaterThan(0)));

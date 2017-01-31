@@ -34,7 +34,7 @@ public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataServic
      * @return TaskDevelopmentData instance
      */
     @Override
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public TaskDevelopmentData bindDeveloper(Long developerId, Long taskId) {
         Developer dev = developersService.getById(developerId);
 

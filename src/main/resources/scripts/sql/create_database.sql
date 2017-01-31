@@ -93,7 +93,6 @@ CREATE TABLE requests_for_developers (
 CREATE TABLE projects (
   id                 BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   technical_task_id  BIGINT UNSIGNED NOT NULL,
-  customer_id        BIGINT UNSIGNED NOT NULL,
   manager_id         BIGINT UNSIGNED NOT NULL,
   name               VARCHAR(50)     NOT NULL,
   description        TEXT            NOT NULL,
@@ -105,10 +104,6 @@ CREATE TABLE projects (
   PRIMARY KEY (id),
   FOREIGN KEY (technical_task_id)
   REFERENCES technical_tasks (id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  FOREIGN KEY (customer_id)
-  REFERENCES customers (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   FOREIGN KEY (manager_id)
@@ -155,12 +150,18 @@ CREATE TABLE task_development_data (
 
 CREATE TABLE checks (
   project_id      BIGINT UNSIGNED         NOT NULL,
+  customer_id     BIGINT UNSIGNED         NOT NULL,
   developers_cost DECIMAL(32, 2) UNSIGNED NOT NULL DEFAULT 0.00,
   services        DECIMAL(32, 2) UNSIGNED NOT NULL DEFAULT 0.00,
   taxes           DECIMAL(32, 2) UNSIGNED NOT NULL DEFAULT 0.00,
   status          VARCHAR(20)             NOT NULL DEFAULT 'AWAITING',
+  PRIMARY KEY (project_id, customer_id),
   FOREIGN KEY (project_id)
   REFERENCES projects (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (customer_id)
+  REFERENCES customers (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );

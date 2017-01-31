@@ -139,6 +139,7 @@ public class ManagersCabinetRestController extends AbstractEntityProcessingContr
         projectValidator.validate(project, projectErrors);
 
         if (!projectErrors.hasErrors()) {
+            check.setCustomerId(project.getCustomerId());
             checksService.registerCheck(check);
         }
 

@@ -155,7 +155,7 @@ public abstract class EntityUtils {
      * @return {@link Check} valid entity
      */
     public static Check getValidCheck() {
-        return new Check(ID, LENGTH_10, new BigDecimal("10.00"), new BigDecimal("10.00"), new BigDecimal("4.00"), AWAITING);
+        return new Check(ID, ID, LENGTH_10, new BigDecimal("10.00"), new BigDecimal("10.00"), new BigDecimal("4.00"), AWAITING);
     }
 
     /**
@@ -165,6 +165,6 @@ public abstract class EntityUtils {
      * @return {@link Check} invalid entity
      */
     public static Check getInvalidCheck() {
-        return new Check(ID, LENGTH_10, new BigDecimal("10.00"), new BigDecimal("10.00"), new BigDecimal("5.00"), AWAITING);
+        return new Check(ID, ID, LENGTH_10, new BigDecimal("10.00"), new BigDecimal("10.00"), new BigDecimal("5.00"), AWAITING);
     }
 }

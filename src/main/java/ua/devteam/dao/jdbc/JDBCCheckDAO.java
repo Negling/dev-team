@@ -37,6 +37,7 @@ public class JDBCCheckDAO extends JDBCGenericDAO<Check> implements CheckDAO {
     public void create(Check check) {
         jdbcOperations.update(sqlProperties.getString("check.insertSQL"),
                 check.getProjectId(),
+                check.getCustomerId(),
                 check.getDevelopersCost(),
                 check.getServicesCost(),
                 check.getTaxes(),
@@ -47,16 +48,18 @@ public class JDBCCheckDAO extends JDBCGenericDAO<Check> implements CheckDAO {
     public void update(Check oldEntity, Check newEntity) {
         jdbcOperations.update(sqlProperties.getString("check.update"),
                 newEntity.getProjectId(),
+                newEntity.getCustomerId(),
                 newEntity.getDevelopersCost(),
                 newEntity.getServicesCost(),
                 newEntity.getTaxes(),
                 newEntity.getStatus().toString(),
-                oldEntity.getProjectId());
+                oldEntity.getProjectId(),
+                oldEntity.getCustomerId());
     }
 
     @Override
     public void delete(Check entity) {
-        jdbcOperations.update(sqlProperties.getString("check.delete"), entity.getProjectId());
+        jdbcOperations.update(sqlProperties.getString("check.deleteByProject"), entity.getProjectId());
     }
 
     @Override
@@ -82,6 +85,7 @@ public class JDBCCheckDAO extends JDBCGenericDAO<Check> implements CheckDAO {
     @Override
     protected Check mapEntity(ResultSet rs, int row) throws SQLException {
         return new Check(rs.getLong("project_id"),
+                rs.getLong("customer_id"),
                 rs.getString("name"),
                 rs.getBigDecimal("developers_cost"),
                 rs.getBigDecimal("services"),
