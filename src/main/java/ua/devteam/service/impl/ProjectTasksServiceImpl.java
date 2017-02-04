@@ -23,7 +23,7 @@ import static ua.devteam.entity.enums.Status.*;
 @Service
 @Transactional(isolation = Isolation.READ_COMMITTED)
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
-public class ProjectTasksServiceImpl implements ProjectTasksService{
+public class ProjectTasksServiceImpl implements ProjectTasksService {
 
     private ProjectTaskDAO projectTaskDAO;
     private TaskDevelopmentDataDAO taskDevelopmentDataDAO;
@@ -35,8 +35,16 @@ public class ProjectTasksServiceImpl implements ProjectTasksService{
      */
     @Override
     public void registerFromTechnicalTask(Long technicalTaskId, Long projectId) {
-        operationDAO.getByTechnicalTask(technicalTaskId).forEach(operation ->
-                projectTaskDAO.create(new ProjectTask(projectId, operation)));
+        operationDAO.getByTechnicalTask(technicalTaskId)
+                .forEach(operation -> projectTaskDAO.create(
+                        new ProjectTask.Builder(
+                                projectId,
+                                operation.getId(),
+                                operation.getName(),
+                                operation.getDescription()).
+                                build()
+                        )
+                );
     }
 
     /**

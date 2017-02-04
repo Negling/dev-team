@@ -7,38 +7,27 @@ import org.junit.runners.JUnit4;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import ua.devteam.EntityUtils;
 import ua.devteam.entity.tasks.ProjectTask;
-import ua.devteam.entity.tasks.RequestForDevelopers;
 import ua.devteam.entity.tasks.TaskDevelopmentData;
 import ua.devteam.validation.entityValidators.ProjectTaskValidator;
-
-import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static ua.devteam.entity.enums.DeveloperRank.JUNIOR;
 import static ua.devteam.entity.enums.DeveloperRank.MIDDLE;
-import static ua.devteam.entity.enums.DeveloperSpecialization.*;
+import static ua.devteam.entity.enums.DeveloperSpecialization.DBA;
+import static ua.devteam.entity.enums.DeveloperSpecialization.DESIGNER;
 
 @RunWith(JUnit4.class)
 public class ProjectTaskValidatorTest {
-    private Validator validator;
+    private Validator validator = new ProjectTaskValidator();
     private ProjectTask testData;
     private Errors errors;
 
-    {
-        validator = new ProjectTaskValidator();
-        testData = new ProjectTask();
-    }
-
     @Before
     public void setUp() throws Exception {
-        testData.setRequestsForDevelopers(new ArrayList<RequestForDevelopers>() {{
-            add(new RequestForDevelopers(null, BACKEND, JUNIOR, 1));
-        }});
-        testData.setTasksDevelopmentData(new ArrayList<TaskDevelopmentData>() {{
-            add(new TaskDevelopmentData(null, null, BACKEND, JUNIOR));
-        }});
+        testData = EntityUtils.getValidProjectTask();
         errors = new BeanPropertyBindingResult(testData, "testData");
     }
 
@@ -71,7 +60,11 @@ public class ProjectTaskValidatorTest {
 
     @Test
     public void devsHireOverkillTest() {
-        testData.getTasksDevelopmentData().add(new TaskDevelopmentData(null, null, DESIGNER, JUNIOR));
+        TaskDevelopmentData anotherData = EntityUtils.getValidTaskDevelopmentData();
+        anotherData.setRank(JUNIOR);
+        anotherData.setSpecialization(DESIGNER);
+
+        testData.getTasksDevelopmentData().add(anotherData);
 
         validator.validate(testData, errors);
 

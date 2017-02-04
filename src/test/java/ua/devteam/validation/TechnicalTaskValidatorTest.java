@@ -7,11 +7,11 @@ import org.junit.runners.JUnit4;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import ua.devteam.EntityUtils;
 import ua.devteam.entity.projects.TechnicalTask;
 import ua.devteam.entity.tasks.Operation;
 import ua.devteam.validation.entityValidators.TechnicalTaskValidator;
 
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static org.hamcrest.Matchers.is;
@@ -28,19 +28,13 @@ public class TechnicalTaskValidatorTest {
     {
         Validator operationValidator = mock(Validator.class);
         when(operationValidator.supports(Operation.class)).thenReturn(true);
+
         validator = new TechnicalTaskValidator(operationValidator, ResourceBundle.getBundle("properties/validation"));
-        testData = new TechnicalTask();
     }
 
     @Before
     public void setUp() throws Exception {
-        testData.setName("test_test_test");
-        testData.setDescription("test_test_test_test_test_test_test_test_test");
-        testData.setOperations(new ArrayList<Operation>() {
-            {
-                add(new Operation());
-            }
-        });
+        testData = EntityUtils.getValidTechnicalTask(1L);
         errors = new BeanPropertyBindingResult(testData, "testData");
     }
 
@@ -67,7 +61,6 @@ public class TechnicalTaskValidatorTest {
         testData.setName(testData.getDescription().concat(testData.getDescription()));
 
         validator.validate(testData, errors);
-        System.out.println(errors);
         assertThat(errors.getErrorCount(), is(1));
     }
 

@@ -104,18 +104,21 @@ public class JDBCDeveloperDAO extends JDBCGenericIdentifiedDAO<Developer> implem
 
     @Override
     protected Developer mapEntity(ResultSet rs, int row) throws SQLException {
-        return new Developer(rs.getLong("id"),
-                rs.getString("first_name"),
-                rs.getString("last_name"),
-                rs.getString("email"),
-                rs.getString("phone"),
-                rs.getString("password"),
-                Role.valueOf(rs.getString("role")),
-                rs.getLong("active_task_id"),
-                rs.getBigDecimal("hire_cost"),
-                DeveloperSpecialization.valueOf(rs.getString("specialization")),
-                DeveloperRank.valueOf(rs.getString("rank")),
-                DeveloperStatus.valueOf(rs.getString("status")));
+        return new
+                Developer.Builder()
+                .setId(rs.getLong("id"))
+                .setFirstName(rs.getString("first_name"))
+                .setLastName(rs.getString("last_name"))
+                .setEmail(rs.getString("email"))
+                .setPhoneNumber(rs.getString("phone"))
+                .setPassword(rs.getString("password"))
+                .setRole(Role.valueOf(rs.getString("role")))
+                .setCurrentTaskId(rs.getLong("active_task_id"))
+                .setHireCost(rs.getBigDecimal("hire_cost"))
+                .setSpecialization(DeveloperSpecialization.valueOf(rs.getString("specialization")))
+                .setRank(DeveloperRank.valueOf(rs.getString("rank")))
+                .setStatus(DeveloperStatus.valueOf(rs.getString("status")))
+                .build();
     }
 
     @Override

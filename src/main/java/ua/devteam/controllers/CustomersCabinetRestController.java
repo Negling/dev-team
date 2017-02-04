@@ -5,7 +5,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.devteam.entity.projects.TechnicalTask;
@@ -22,7 +22,6 @@ import java.util.Locale;
  * This controller process REST requests on customers cabinet page.
  */
 @RestController
-@RequestMapping("/cabinet")
 public class CustomersCabinetRestController extends AbstractEntityProcessingController {
 
     private ChecksService checksService;
@@ -40,13 +39,13 @@ public class CustomersCabinetRestController extends AbstractEntityProcessingCont
      * If technicalTask passes validation - delegates its registration to service. Returns ResponseEntity with status
      * and messages about processing status.
      */
-    @PostMapping("/submit")
+    @PostMapping("${customer.action.technicalTask}")
     @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<List<String>> registerTechnicalTask(@RequestBody @Valid TechnicalTask technicalTask,
                                                               BindingResult bindingResult, Locale locale,
-                                                              Authentication auth) {
+                                                              @AuthenticationPrincipal User currentUser) {
         if (!bindingResult.hasErrors()) {
-            technicalTask.setCustomerId(((User) auth.getPrincipal()).getId());
+            technicalTask.setCustomerId(currentUser.getId());
             technicalTasksService.registerTechnicalTask(technicalTask);
         }
 
@@ -56,9 +55,9 @@ public class CustomersCabinetRestController extends AbstractEntityProcessingCont
     /**
      * Confirms check and returns OK status.
      */
-    @PutMapping("/confirmCheck")
+    @PatchMapping("${customer.action.acceptCheck}{projectId}")
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    public ResponseEntity confirmCheck(@RequestBody Long projectId) {
+    public ResponseEntity confirmCheck(@PathVariable Long projectId) {
         checksService.accept(projectId);
 
         return new ResponseEntity(HttpStatus.OK);
@@ -67,9 +66,9 @@ public class CustomersCabinetRestController extends AbstractEntityProcessingCont
     /**
      * Declines check and returns OK status.
      */
-    @PutMapping("/declineCheck")
+    @PatchMapping("${customer.action.declineCheck}{projectId}")
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    public ResponseEntity declineCheck(@RequestBody Long projectId) {
+    public ResponseEntity declineCheck(@PathVariable Long projectId) {
         checksService.decline(projectId);
 
         return new ResponseEntity(HttpStatus.OK);

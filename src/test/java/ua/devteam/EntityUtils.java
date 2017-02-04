@@ -15,13 +15,13 @@ import ua.devteam.entity.users.Manager;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static ua.devteam.entity.enums.CheckStatus.AWAITING;
 import static ua.devteam.entity.enums.DeveloperRank.JUNIOR;
 import static ua.devteam.entity.enums.DeveloperSpecialization.BACKEND;
 import static ua.devteam.entity.enums.DeveloperStatus.AVAILABLE;
 import static ua.devteam.entity.enums.Role.*;
-import static ua.devteam.entity.enums.Status.NEW;
 import static ua.devteam.entity.enums.Status.PENDING;
 
 /**
@@ -46,9 +46,10 @@ public abstract class EntityUtils {
      * @return {@link TechnicalTask} valid entity
      */
     public static TechnicalTask getValidTechnicalTask(Long customerId) {
-        return new TechnicalTask(ID, LENGTH_10, LENGTH_30, customerId, "", NEW, new ArrayList<Operation>() {{
-            add(getValidOperation());
-        }});
+        return new
+                TechnicalTask.Builder(LENGTH_10, LENGTH_30, customerId).setId(ID)
+                .setOperations(getListWith(getValidOperation()))
+                .build();
     }
 
     /**
@@ -58,7 +59,16 @@ public abstract class EntityUtils {
      * @return {@link Customer} valid entity
      */
     public static Customer getValidCustomer() {
-        return new Customer(ID, FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER, PASSWORD, CUSTOMER);
+        return new
+                Customer.Builder()
+                .setId(ID)
+                .setFirstName(FIRST_NAME)
+                .setLastName(LAST_NAME)
+                .setEmail(EMAIL)
+                .setPhoneNumber(PHONE_NUMBER)
+                .setPassword(PASSWORD)
+                .setRole(CUSTOMER)
+                .build();
     }
 
     /**
@@ -69,8 +79,21 @@ public abstract class EntityUtils {
      * @return {@link Developer} valid entity
      */
     public static Developer getValidDeveloper() {
-        return new Developer(ID, FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER, PASSWORD, DEVELOPER, 0L,
-                new BigDecimal("500.00"), BACKEND, JUNIOR, AVAILABLE);
+        return new
+                Developer.Builder()
+                .setId(ID)
+                .setFirstName(FIRST_NAME)
+                .setLastName(LAST_NAME)
+                .setEmail(EMAIL)
+                .setPhoneNumber(PHONE_NUMBER)
+                .setPassword(PASSWORD)
+                .setRole(DEVELOPER)
+                .setCurrentTaskId(0L)
+                .setHireCost(new BigDecimal("500.00"))
+                .setSpecialization(BACKEND)
+                .setRank(JUNIOR)
+                .setStatus(AVAILABLE)
+                .build();
     }
 
     /**
@@ -80,7 +103,17 @@ public abstract class EntityUtils {
      * @return {@link Manager} valid entity
      */
     public static Manager getValidManager() {
-        return new Manager(ID, FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER, PASSWORD, MANAGER, 0L);
+        return new
+                Manager.Builder()
+                .setId(ID)
+                .setFirstName(FIRST_NAME)
+                .setLastName(LAST_NAME)
+                .setEmail(EMAIL)
+                .setPhoneNumber(PHONE_NUMBER)
+                .setPassword(PASSWORD)
+                .setRole(MANAGER)
+                .setTotalProjectsServed(0L)
+                .build();
     }
 
     /**
@@ -90,9 +123,10 @@ public abstract class EntityUtils {
      * @return {@link Operation} valid entity
      */
     public static Operation getValidOperation() {
-        return new Operation(ID, ID, LENGTH_10, LENGTH_30, new ArrayList<RequestForDevelopers>() {{
-            add(getValidRequestForDevelopers());
-        }});
+        return new Operation.Builder(ID, LENGTH_10, LENGTH_30)
+                .setId(ID)
+                .setRequestsForDevelopers(getListWith(getValidRequestForDevelopers()))
+                .build();
     }
 
     /**
@@ -112,13 +146,14 @@ public abstract class EntityUtils {
      * @return {@link ProjectTask} valid entity
      */
     public static ProjectTask getValidProjectTask() {
-        return new ProjectTask(ID, ID, ID, LENGTH_10, LENGTH_30, PENDING, 0,
-                new ArrayList<TaskDevelopmentData>() {{
-                    add(getValidTaskDevelopmentData());
-                }},
-                new ArrayList<RequestForDevelopers>() {{
-                    add(getValidRequestForDevelopers());
-                }});
+        return new
+                ProjectTask.Builder(ID, ID, LENGTH_10, LENGTH_30)
+                .setId(ID)
+                .setTotalHoursSpent(0)
+                .setTaskStatus(PENDING)
+                .setRequestsForDevelopers(getListWith(getValidRequestForDevelopers()))
+                .setTasksDevelopmentData(getListWith(getValidTaskDevelopmentData()))
+                .build();
     }
 
     /**
@@ -128,7 +163,7 @@ public abstract class EntityUtils {
      * @return {@link TaskDevelopmentData} valid entity
      */
     public static TaskDevelopmentData getValidTaskDevelopmentData() {
-        return new TaskDevelopmentData(ID, ID, BACKEND, JUNIOR, 0, PENDING);
+        return new TaskDevelopmentData.Builder(ID, ID, BACKEND, JUNIOR).setHoursSpent(0).setStatus(PENDING).build();
     }
 
     /**
@@ -139,13 +174,16 @@ public abstract class EntityUtils {
      * @return {@link Project} valid entity
      */
     public static Project getValidProject() {
-        Project project = new Project(LENGTH_10, LENGTH_30, ID, ID, "", ID, new BigDecimal("0.00"), new Date(), new Date(), PENDING);
-
-        project.setTasks(new ArrayList<ProjectTask>() {{
-            add(getValidProjectTask());
-        }});
-
-        return project;
+        return new
+                Project.Builder(LENGTH_10, LENGTH_30, ID, ID)
+                .setTechnicalTaskId(ID)
+                .setManagerCommentary("")
+                .setTotalProjectCost(new BigDecimal("0.00"))
+                .setStartDate(new Date())
+                .setEndDate(new Date())
+                .setStatus(PENDING)
+                .setTasks(getListWith(getValidProjectTask()))
+                .build();
     }
 
     /**
@@ -155,7 +193,12 @@ public abstract class EntityUtils {
      * @return {@link Check} valid entity
      */
     public static Check getValidCheck() {
-        return new Check(ID, ID, LENGTH_10, new BigDecimal("10.00"), new BigDecimal("10.00"), new BigDecimal("4.00"), AWAITING);
+        return new
+                Check.Builder(new BigDecimal("10.00"), new BigDecimal("10.00"), new BigDecimal("4.00"), AWAITING)
+                .setCustomerId(ID)
+                .setProjectId(ID)
+                .setProjectName(LENGTH_10)
+                .build();
     }
 
     /**
@@ -165,6 +208,17 @@ public abstract class EntityUtils {
      * @return {@link Check} invalid entity
      */
     public static Check getInvalidCheck() {
-        return new Check(ID, ID, LENGTH_10, new BigDecimal("10.00"), new BigDecimal("10.00"), new BigDecimal("5.00"), AWAITING);
+        return new
+                Check.Builder(new BigDecimal("10.00"), new BigDecimal("10.00"), new BigDecimal("5.00"), AWAITING)
+                .setCustomerId(ID)
+                .setProjectId(ID)
+                .setProjectName(LENGTH_10)
+                .build();
+    }
+
+    private static <T> List<T> getListWith(T arg) {
+        return new ArrayList<T>() {{
+            add(arg);
+        }};
     }
 }

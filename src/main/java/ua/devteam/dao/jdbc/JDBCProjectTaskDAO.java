@@ -71,13 +71,16 @@ public class JDBCProjectTaskDAO extends JDBCGenericIdentifiedDAO<ProjectTask> im
 
     @Override
     protected ProjectTask mapEntity(ResultSet rs, int row) throws SQLException {
-        return new ProjectTask(rs.getLong("id"),
+        return new
+                ProjectTask.Builder(
                 rs.getLong("project_id"),
                 rs.getLong("operation_id"),
                 rs.getString("name"),
-                rs.getString("description"),
-                Status.valueOf(rs.getString("status")),
-                rs.getInt("total_hours_spent"));
+                rs.getString("description"))
+                .setId(rs.getLong("id"))
+                .setTotalHoursSpent(rs.getInt("total_hours_spent"))
+                .setTaskStatus(Status.valueOf(rs.getString("status")))
+                .build();
     }
 
     @Override

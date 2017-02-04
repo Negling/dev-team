@@ -56,10 +56,13 @@ public class JDBCOperationDAO extends JDBCGenericIdentifiedDAO<Operation> implem
 
     @Override
     protected Operation mapEntity(ResultSet rs, int row) throws SQLException {
-        return new Operation(rs.getLong("id"),
+        return new
+                Operation.Builder(
                 rs.getLong("technical_task_id"),
                 rs.getString("name"),
-                rs.getString("description"));
+                rs.getString("description")).
+                setId(rs.getLong("id"))
+                .build();
     }
 
     @Override

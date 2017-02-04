@@ -7,6 +7,7 @@ import org.junit.runners.JUnit4;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import ua.devteam.EntityUtils;
 import ua.devteam.entity.projects.Check;
 import ua.devteam.validation.entityValidators.CheckValidator;
 
@@ -17,20 +18,13 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(JUnit4.class)
 public class CheckValidatorTest {
-    private Validator validator;
+    private Validator validator = new CheckValidator();
     private Check testData;
     private Errors errors;
 
-    {
-        validator = new CheckValidator();
-        testData = new Check();
-    }
-
     @Before
     public void setUp() throws Exception {
-        testData.setDevelopersCost(new BigDecimal("10.00"));
-        testData.setServicesCost(new BigDecimal("10.00"));
-        testData.setTaxes(new BigDecimal("4.00"));
+        testData = EntityUtils.getValidCheck();
         errors = new BeanPropertyBindingResult(testData, "testData");
     }
 

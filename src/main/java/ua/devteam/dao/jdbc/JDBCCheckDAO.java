@@ -84,12 +84,13 @@ public class JDBCCheckDAO extends JDBCGenericDAO<Check> implements CheckDAO {
 
     @Override
     protected Check mapEntity(ResultSet rs, int row) throws SQLException {
-        return new Check(rs.getLong("project_id"),
-                rs.getLong("customer_id"),
-                rs.getString("name"),
-                rs.getBigDecimal("developers_cost"),
+        return new
+                Check.Builder(rs.getBigDecimal("developers_cost"),
                 rs.getBigDecimal("services"),
                 rs.getBigDecimal("taxes"),
-                CheckStatus.valueOf(rs.getString("status")));
+                CheckStatus.valueOf(rs.getString("status")))
+                .setProjectId(rs.getLong("project_id"))
+                .setProjectName(rs.getString("name"))
+                .setCustomerId(rs.getLong("customer_id")).build();
     }
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import ua.devteam.entity.AbstractBuilder;
 import ua.devteam.entity.AbstractTask;
 import ua.devteam.entity.enums.Status;
 
@@ -36,35 +37,51 @@ public class ProjectTask extends AbstractTask implements Serializable {
     /* Information about requested developers by customer */
     private List<RequestForDevelopers> requestsForDevelopers;
 
-    public ProjectTask(Long projectId, Operation operation) {
-        this(null, projectId, operation.getId(), operation.getName(), operation.getDescription(), Status.NEW, 0, null,
-                operation.getRequestsForDevelopers());
-    }
-
-    public ProjectTask(Long projectId, Long operationId, String name, String description, Status taskStatus,
-                       Integer totalHoursSpent) {
-        this(null, projectId, operationId, name, description, taskStatus, totalHoursSpent);
-    }
-
-    public ProjectTask(Long id, Long projectId, Long operationId, String name, String description, Status taskStatus,
-                       Integer totalHoursSpent) {
-        this(id, projectId, operationId, name, description, taskStatus, totalHoursSpent, null, null);
-    }
-
-    public ProjectTask(Long id, Long projectId, Long operationId, String name, String description, Status taskStatus,
-                       Integer totalHoursSpent, List<TaskDevelopmentData> tasksDevelopmentData, List<RequestForDevelopers> requestsForDevelopers) {
-        super(id, name, description);
+    private ProjectTask(Long projectId, Long operationId, String name, String description) {
+        super(null, name, description);
         this.projectId = projectId;
         this.operationId = operationId;
-        this.taskStatus = taskStatus;
-        this.totalHoursSpent = totalHoursSpent;
-        this.tasksDevelopmentData = tasksDevelopmentData;
-        this.requestsForDevelopers = requestsForDevelopers;
     }
 
     @Override
     public void setDeepId(Long id) {
         setId(id);
         tasksDevelopmentData.forEach(taskDeveloper -> taskDeveloper.setProjectTaskId(id));
+    }
+
+    public static class Builder extends AbstractBuilder<ProjectTask> {
+        public Builder(Long projectId, Long operationId, String name, String description) {
+            super(new ProjectTask(projectId, operationId, name, description));
+        }
+
+        public Builder setTotalHoursSpent(Integer totalHoursSpent) {
+            instance.setTotalHoursSpent(totalHoursSpent);
+            return this;
+        }
+
+        public Builder setProjectId(Long projectId) {
+            instance.setProjectId(projectId);
+            return this;
+        }
+
+        public Builder setRequestsForDevelopers(List<RequestForDevelopers> requestsForDevelopers) {
+            instance.setRequestsForDevelopers(requestsForDevelopers);
+            return this;
+        }
+
+        public Builder setTasksDevelopmentData(List<TaskDevelopmentData> tasksDevelopmentData) {
+            instance.setTasksDevelopmentData(tasksDevelopmentData);
+            return this;
+        }
+
+        public Builder setTaskStatus(Status taskStatus) {
+            instance.setTaskStatus(taskStatus);
+            return this;
+        }
+
+        public Builder setId(Long id) {
+            instance.setId(id);
+            return this;
+        }
     }
 }

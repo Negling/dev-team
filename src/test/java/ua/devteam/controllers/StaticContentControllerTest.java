@@ -6,26 +6,24 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.NestedServletException;
 import ua.devteam.entity.projects.Project;
 import ua.devteam.entity.projects.TechnicalTask;
 import ua.devteam.entity.tasks.TaskDevelopmentData;
 import ua.devteam.entity.users.Developer;
+import ua.devteam.entity.users.User;
 import ua.devteam.service.DevelopersService;
 import ua.devteam.service.ProjectsService;
 import ua.devteam.service.TaskDevelopmentDataService;
 import ua.devteam.service.TechnicalTasksService;
 
-import java.security.Principal;
 import java.util.ArrayList;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ua.devteam.controllers.WebTestUtils.getDefaultViewResolver;
-import static ua.devteam.controllers.WebTestUtils.getUserWithIdAndRole;
+import static ua.devteam.controllers.WebTestUtils.*;
 import static ua.devteam.entity.enums.Role.CUSTOMER;
 
 @RunWith(JUnit4.class)
@@ -41,14 +39,15 @@ public class StaticContentControllerTest {
     private DevelopersService developersService = mock(DevelopersService.class);
 
     // principal for tests
-    private Principal principal = getUserWithIdAndRole(testId, CUSTOMER);
+    private User customer = getUserWithIdAndRole(testId, CUSTOMER);
 
     // controller to test
     private StaticContentController controller = new StaticContentController(technicalTasksService, projectsService,
-            developersService, taskDevelopmentDataService);
+            developersService, taskDevelopmentDataService, getPagesBundle());
 
     // controller mock object
-    private MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller)
+    private MockMvc mockMvc = getConfiguredWithPlaceholdersStandaloneMockMvcBuilder(controller)
+            .setCustomArgumentResolvers(getUserArgumentResolverWith(customer))
             .setViewResolvers(getDefaultViewResolver()).build();
 
     // mocks setup
@@ -69,7 +68,7 @@ public class StaticContentControllerTest {
 
     @Test
     public void getTechnicalTaskTest() throws Exception {
-        mockMvc.perform(get("/technicalTask").param("id", String.valueOf(testId)).principal(principal))
+        mockMvc.perform(get("/technicalTask").param("id", String.valueOf(testId)))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("technicalTask"))
                 .andExpect(view().name("technicalTask"));
@@ -88,7 +87,7 @@ public class StaticContentControllerTest {
 
     @Test
     public void getProjectTest() throws Exception {
-        mockMvc.perform(get("/project").param("id", String.valueOf(testId)).principal(principal))
+        mockMvc.perform(get("/project").param("id", String.valueOf(testId)))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("project"))
                 .andExpect(view().name("project"));

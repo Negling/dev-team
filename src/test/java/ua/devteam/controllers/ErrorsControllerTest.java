@@ -4,21 +4,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static ua.devteam.controllers.WebTestUtils.getDefaultViewResolver;
+import static ua.devteam.controllers.WebTestUtils.*;
 
 @RunWith(JUnit4.class)
 public class ErrorsControllerTest {
 
     // controller to test
-    private ErrorsController controller = new ErrorsController();
+    private ErrorsController controller = new ErrorsController(getPagesBundle());
 
     // controller mock object
-    private MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller)
+    private MockMvc mockMvc = getConfiguredWithPlaceholdersStandaloneMockMvcBuilder(controller)
             .setViewResolvers(getDefaultViewResolver()).build();
 
     @Test

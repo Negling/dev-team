@@ -39,7 +39,7 @@ public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataServic
         Developer dev = developersService.getById(developerId);
 
         taskDevelopmentDataDAO.createDefault(
-                new TaskDevelopmentData(taskId, developerId, dev.getSpecialization(), dev.getRank()));
+                new TaskDevelopmentData.Builder(taskId, developerId, dev.getSpecialization(), dev.getRank()).build());
         developersService.lockDeveloper(developerId);
 
         return taskDevelopmentDataDAO.getByTaskAndDeveloper(taskId, developerId);

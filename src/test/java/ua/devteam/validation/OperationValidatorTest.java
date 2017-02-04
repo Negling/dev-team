@@ -8,11 +8,11 @@ import org.junit.runners.JUnit4;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import ua.devteam.EntityUtils;
 import ua.devteam.entity.tasks.Operation;
 import ua.devteam.entity.tasks.RequestForDevelopers;
 import ua.devteam.validation.entityValidators.OperationValidator;
 
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static org.hamcrest.Matchers.is;
@@ -29,19 +29,13 @@ public class OperationValidatorTest {
     {
         Validator rfdValidator = mock(Validator.class);
         when(rfdValidator.supports(RequestForDevelopers.class)).thenReturn(true);
+
         validator = new OperationValidator(rfdValidator, ResourceBundle.getBundle("properties/validation"));
-        testData = new Operation();
     }
 
     @Before
     public void setUp() {
-        testData.setName("test_test_test");
-        testData.setDescription("test_test_test_test_test_test_test_test_test");
-        testData.setRequestsForDevelopers(new ArrayList<RequestForDevelopers>() {
-            {
-                add(new RequestForDevelopers());
-            }
-        });
+        testData = EntityUtils.getValidOperation();
         errors = new BeanPropertyBindingResult(testData, "testData");
     }
 

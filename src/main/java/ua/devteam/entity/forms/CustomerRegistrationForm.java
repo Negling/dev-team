@@ -19,9 +19,9 @@ import static ua.devteam.entity.enums.Role.CUSTOMER;
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class CustomerRegistrationForm extends AbstractUserForm<Customer> implements Serializable {
+    private final Role role = CUSTOMER;
     private String confirmedEmail;
     private String confirmedPhoneNumber;
-    private Role role = CUSTOMER;
 
     public CustomerRegistrationForm(String firstName, String lastName, String email, String confirmedEmail,
                                     String phoneNumber, String confirmedPhoneNumber, String password, String confirmedPassword) {
@@ -33,6 +33,14 @@ public class CustomerRegistrationForm extends AbstractUserForm<Customer> impleme
 
     @Override
     public Customer getEntity() {
-        return new Customer(getFirstName(), getLastName(), getEmail(), getPhoneNumber(), getPassword(), role);
+        return new
+                Customer.Builder()
+                .setFirstName(getFirstName())
+                .setLastName(getLastName())
+                .setEmail(getEmail())
+                .setPhoneNumber(getPhoneNumber())
+                .setPassword(getPassword())
+                .setRole(role)
+                .build();
     }
 }

@@ -1,9 +1,11 @@
 package ua.devteam.entity.projects;
 
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ua.devteam.entity.AbstractBuilder;
 import ua.devteam.entity.enums.CheckStatus;
 
 import java.io.Serializable;
@@ -17,7 +19,7 @@ import java.math.BigDecimal;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Check implements Serializable {
     /* Project id this check is bind to */
     private Long projectId;
@@ -36,5 +38,26 @@ public class Check implements Serializable {
 
     public BigDecimal getTotalProjectCost() {
         return developersCost.add(taxes).add(servicesCost);
+    }
+
+    public static class Builder extends AbstractBuilder<Check> {
+        public Builder(BigDecimal developersCost, BigDecimal servicesCost, BigDecimal taxes, CheckStatus status) {
+            super(new Check(null, null, null, developersCost, servicesCost, taxes, status));
+        }
+
+        public Builder setProjectId(Long projectId){
+            instance.setProjectId(projectId);
+            return this;
+        }
+
+        public Builder setCustomerId(Long customerId){
+            instance.setCustomerId(customerId);
+            return this;
+        }
+
+        public Builder setProjectName(String projectName){
+            instance.setProjectName(projectName);
+            return this;
+        }
     }
 }

@@ -39,7 +39,7 @@ $(function () {
         return formTechnicalTaskAsProjectAjax($(this));
     }).on("click", "button[name=acceptProject]", function () {
         //
-        return acceptProjectAjax($(this));
+        return formProjectAjax($(this));
     }).on("click", "button[name=unbindDeveloper]", function () {
         // unbind dev from pending project task
         return unbindDeveloperAjax($(this));
@@ -240,15 +240,12 @@ function unbindDeveloper(button) {
 /* Sends request to decline project to server, and removes from/refreshes projects section. */
 function declineProjectAjax() {
     var projectId = $("#declineId").text();
-    var data = {
-        projectId: projectId,
-        managerCommentary: $("#declineManagerCommentary").val()
-    };
 
     $.ajax({
-        method: "PUT",
-        url: "/manage/declineProject",
-        data: JSON.stringify(data)
+        method: "PATCH",
+        url: "/manage/project/" + projectId,
+        contentType: "text/plain",
+        data: $("#declineManagerCommentary").val()
     }).done(function () {
         return removeAndRefreshIfEmpty($("button[value=" + projectId + "][name=declineProject]"),
             "#pendingProjectsAccordion", "/fragments/manage_form_project", updateBindSelectOptions);
@@ -258,7 +255,7 @@ function declineProjectAjax() {
 }
 
 /* Sends request to accept project to server, and removes from/refreshes projects section. */
-function acceptProjectAjax(button) {
+function formProjectAjax(button) {
     var projectId = $(button).attr("value");
     var check = {
         projectId: projectId,
@@ -268,8 +265,8 @@ function acceptProjectAjax(button) {
     };
 
     $.ajax({
-        method: "PUT",
-        url: "/manage/accept",
+        method: "POST",
+        url: "/manage/check",
         data: JSON.stringify(check)
     }).done(function (data) {
         return removeAndRefreshIfEmpty(button, "#pendingProjectsAccordion", "/fragments/manage_form_project", function () {
@@ -292,15 +289,12 @@ function acceptProjectAjax(button) {
 /* Sends request to decline technical task to server, and removes from/refreshes technical tasks section. */
 function declineTechnicalTaskAjax() {
     var technicalTaskId = $("#declineId").text();
-    var data = {
-        technicalTaskId: technicalTaskId,
-        managerCommentary: $("#declineManagerCommentary").val()
-    };
 
     $.ajax({
-        method: "PUT",
-        url: "/manage/declineTechnicalTask",
-        data: JSON.stringify(data)
+        method: "PATCH",
+        url: "/manage/technicalTask/" + technicalTaskId,
+        contentType: "text/plain",
+        data: $("#declineManagerCommentary").val()
     }).done(function () {
         return removeAndRefreshIfEmpty($("button[value=" + technicalTaskId + "][name=declineTechnicalTask]"),
             "#technicalTasksAccordion", "/fragments/manage_technical_tasks");
@@ -313,8 +307,7 @@ function declineTechnicalTaskAjax() {
 function formTechnicalTaskAsProjectAjax(button) {
     $.ajax({
         method: "POST",
-        url: "/manage/formAsProject",
-        data: JSON.stringify($(button).attr("value"))
+        url: "/manage/project/" + $(button).attr("value")
     }).done(function () {
         return removeAndRefreshIfEmpty(button, "#technicalTasksAccordion", "/fragments/manage_technical_tasks");
     }).fail(function (jqXHR) {
@@ -330,7 +323,7 @@ function searchForDevsAjax() {
         lastName: $("#developerLastName").val()
     };
 
-    $.getJSON("/manage/getDevelopers", requestParams, function (data) {
+    $.getJSON("/manage/developers", requestParams, function (data) {
         displayDevsSearchResults(data)
     }).fail(function (jqXHR) {
         showErrorsModal(jqXHR.responseText);
@@ -347,8 +340,8 @@ function bindDeveloperAjax(button) {
 
     $.ajax({
         method: "POST",
-        url: "/manage/bind",
-        data: JSON.stringify({devId: $(button).attr("value"), taskId: activeTask})
+        url: "/manage/taskDevelopmentData/" + $(button).attr("value"),
+        data: JSON.stringify(activeTask)
     }).done(function (data) {
         return bindDeveloper(button, data);
     }).fail(function (jqXHR) {
@@ -360,8 +353,7 @@ function bindDeveloperAjax(button) {
 function unbindDeveloperAjax(button) {
     $.ajax({
         method: "DELETE",
-        url: "/manage/unbind",
-        data: JSON.stringify($(button).attr("data-developer-id"))
+        url: "/manage/taskDevelopmentData/" + $(button).attr("data-developer-id")
     }).done(function (data) {
         return unbindDeveloper(button);
     }).fail(function (jqXHR) {

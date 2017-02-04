@@ -1,5 +1,6 @@
 package ua.devteam.configuration;
 
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -18,9 +19,7 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import ua.devteam.advice.ControllersAdvice;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Configures and instantiates all WEB tier beans.
@@ -68,6 +67,19 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Bean
+    public PropertyPlaceholderConfigurer placeholderConfigurer() {
+        PropertyPlaceholderConfigurer configurer = new PropertyPlaceholderConfigurer();
+        configurer.setProperties(convertResourceBundleToProperties(ResourceBundle.getBundle("/properties/mapping")));
+
+        return configurer;
+    }
+
+    @Bean
+    public ResourceBundle pagesProperties() {
+        return ResourceBundle.getBundle("/properties/view_naming");
+    }
+
+    @Bean
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("/l10n/localization");
@@ -86,5 +98,13 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
         interceptor.setParamName("language");
         registry.addInterceptor(interceptor);
+    }
+
+    private Properties convertResourceBundleToProperties(ResourceBundle resource) {
+        Properties properties = new Properties();
+
+        resource.keySet().forEach(key -> properties.put(key, resource.getString(key)));
+
+        return properties;
     }
 }

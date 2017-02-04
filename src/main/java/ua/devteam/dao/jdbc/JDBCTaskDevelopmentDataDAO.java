@@ -106,16 +106,19 @@ public class JDBCTaskDevelopmentDataDAO extends JDBCGenericDAO<TaskDevelopmentDa
 
     @Override
     protected TaskDevelopmentData mapEntity(ResultSet rs, int row) throws SQLException {
-        return new TaskDevelopmentData(rs.getLong("task_id"),
-                rs.getString("name"),
-                rs.getString("description"),
+        return new
+                TaskDevelopmentData.Builder(
+                rs.getLong("task_id"),
                 rs.getLong("developer_id"),
-                rs.getString("first_name"),
-                rs.getString("last_name"),
                 DeveloperSpecialization.valueOf(rs.getString("developer_specialization")),
-                DeveloperRank.valueOf(rs.getString("developer_rank")),
-                rs.getBigDecimal("hire_cost"),
-                rs.getInt("hours_spent"),
-                Status.valueOf(rs.getString("status")));
+                DeveloperRank.valueOf(rs.getString("developer_rank")))
+                .setTaskName(rs.getString("name"))
+                .setTaskDescription(rs.getString("description"))
+                .setDeveloperFirstName(rs.getString("first_name"))
+                .setDeveloperLastName(rs.getString("last_name"))
+                .setHireCost(rs.getBigDecimal("hire_cost"))
+                .setHoursSpent(rs.getInt("hours_spent"))
+                .setStatus(Status.valueOf(rs.getString("status")))
+                .build();
     }
 }

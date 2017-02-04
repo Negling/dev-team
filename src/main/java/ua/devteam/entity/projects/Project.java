@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import ua.devteam.entity.AbstractBuilder;
 import ua.devteam.entity.enums.Status;
 import ua.devteam.entity.tasks.ProjectTask;
 
@@ -41,33 +42,10 @@ public class Project extends AbstractTechnicalTask implements Serializable {
     /* Tasks that are bound to project */
     private List<ProjectTask> tasks;
 
-    public Project(Long managerId, TechnicalTask technicalTask) {
-        this(technicalTask.getName(), technicalTask.getDescription(), technicalTask.getCustomerId(), managerId, null,
-                technicalTask.getId(), null, new Date(), null, Status.NEW);
-    }
-
-    public Project(String name, String description, Long customerId, Long managerId, String managerCommentary,
-                   Long technicalTaskId, BigDecimal totalProjectCost, Date startDate, Date endDate, Status status) {
-        this(null, name, description, customerId, managerId, managerCommentary, technicalTaskId, totalProjectCost,
-                startDate, endDate, status);
-    }
-
-    public Project(Long id, String name, String description, Long customerId, Long managerId, String managerCommentary,
-                   Long technicalTaskId, BigDecimal totalProjectCost, Date startDate, Date endDate, Status status) {
-        this(id, name, description, customerId, managerId, managerCommentary, technicalTaskId, totalProjectCost,
-                startDate, endDate, status, null);
-    }
-
-    public Project(Long id, String name, String description, Long customerId, Long managerId, String managerCommentary,
-                   Long technicalTaskId, BigDecimal totalProjectCost, Date startDate, Date endDate, Status status,
-                   List<ProjectTask> tasks) {
-        super(id, name, description, customerId, status, managerCommentary);
+    private Project(String name, String description, Long customerId, Long managerId) {
+        super(null, name, description, customerId, Status.NEW, null);
         this.managerId = managerId;
-        this.technicalTaskId = technicalTaskId;
-        this.totalProjectCost = totalProjectCost;
-        this.startDate = formatDate(startDate);
-        this.endDate = formatDate(endDate);
-        this.tasks = tasks;
+        this.startDate = formatDate(new Date());
     }
 
     public void setStartDate(Date startDate) {
@@ -86,14 +64,56 @@ public class Project extends AbstractTechnicalTask implements Serializable {
     }
 
     private Date formatDate(Date date) {
-        if (date != null) {
-            try {
-                return PROJECT_DATE_FORMAT.parse(PROJECT_DATE_FORMAT.format(date));
-            } catch (ParseException e) {
-                throw new IllegalArgumentException("Illegal date params!", e);
-            }
-        } else {
-            return null;
+        try {
+            return PROJECT_DATE_FORMAT.parse(PROJECT_DATE_FORMAT.format(date));
+        } catch (ParseException | NullPointerException e) {
+            throw new IllegalArgumentException("Illegal date params!", e);
+        }
+    }
+
+    public static class Builder extends AbstractBuilder<Project> {
+        public Builder(String name, String description, Long customerId, Long managerId) {
+            super(new Project(name, description, customerId, managerId));
+        }
+
+        public Builder setId(Long id) {
+            instance.setId(id);
+            return this;
+        }
+
+        public Builder setTasks(List<ProjectTask> tasks) {
+            instance.setTasks(tasks);
+            return this;
+        }
+
+        public Builder setTechnicalTaskId(Long technicalTaskId) {
+            instance.setTechnicalTaskId(technicalTaskId);
+            return this;
+        }
+
+        public Builder setTotalProjectCost(BigDecimal totalProjectCost) {
+            instance.setTotalProjectCost(totalProjectCost);
+            return this;
+        }
+
+        public Builder setStartDate(Date startDate) {
+            instance.setStartDate(startDate);
+            return this;
+        }
+
+        public Builder setEndDate(Date endDate) {
+            instance.setEndDate(endDate);
+            return this;
+        }
+
+        public Builder setStatus(Status status) {
+            instance.setStatus(status);
+            return this;
+        }
+
+        public Builder setManagerCommentary(String managerCommentary) {
+            instance.setManagerCommentary(managerCommentary);
+            return this;
         }
     }
 }

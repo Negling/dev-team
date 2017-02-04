@@ -8,8 +8,7 @@ import org.junit.runners.JUnit4;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ua.devteam.entity.enums.DeveloperRank;
-import ua.devteam.entity.enums.DeveloperSpecialization;
+import ua.devteam.EntityUtils;
 import ua.devteam.entity.tasks.RequestForDevelopers;
 import ua.devteam.validation.entityValidators.RequestForDevelopersValidator;
 
@@ -22,14 +21,12 @@ import static org.junit.Assert.assertThat;
 public class RequestForDevelopersValidatorTest {
 
     private Validator validator = new RequestForDevelopersValidator(ResourceBundle.getBundle("properties/validation"));
-    private RequestForDevelopers testData = new RequestForDevelopers();
+    private RequestForDevelopers testData;
     private Errors errors;
 
     @Before
     public void before() {
-        testData.setSpecialization(DeveloperSpecialization.BACKEND);
-        testData.setRank(DeveloperRank.JUNIOR);
-        testData.setQuantity(1);
+        testData = EntityUtils.getValidRequestForDevelopers();
         errors = new BeanPropertyBindingResult(testData, "testData");
     }
 

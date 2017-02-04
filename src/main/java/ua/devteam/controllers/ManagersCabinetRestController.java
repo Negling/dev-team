@@ -5,7 +5,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
@@ -24,13 +24,11 @@ import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * This controller process REST requests on managers cabinet page.
  */
 @RestController
-@RequestMapping("/manage")
 public class ManagersCabinetRestController extends AbstractEntityProcessingController {
 
     private TechnicalTasksService technicalTasksService;
@@ -57,7 +55,7 @@ public class ManagersCabinetRestController extends AbstractEntityProcessingContr
     /**
      * Returns list of developers, or empty list if no suitable developers were found.
      */
-    @GetMapping("/getDevelopers")
+    @GetMapping("${manager.action.developer}")
     @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public List<Developer> getDevelopers(@RequestParam DeveloperSpecialization specialization,
                                          @RequestParam DeveloperRank rank,
@@ -68,19 +66,19 @@ public class ManagersCabinetRestController extends AbstractEntityProcessingContr
     /**
      * Binds specified developer to specified task.
      */
-    @PostMapping("/bind")
+    @PostMapping("${manager.action.taskDevelopmentData}{developerId}")
     @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
-    public TaskDevelopmentData bindDeveloper(@RequestBody Map<String, Long> params) {
-        return taskDevelopmentDataService.bindDeveloper(params.get("devId"), params.get("taskId"));
+    public TaskDevelopmentData bindDeveloper(@PathVariable Long developerId, @RequestBody Long taskId) {
+        return taskDevelopmentDataService.bindDeveloper(developerId, taskId);
     }
 
 
     /**
      * Unbinds specified developer to specified task.
      */
-    @DeleteMapping("/unbind")
+    @DeleteMapping("${manager.action.taskDevelopmentData}{developerId}")
     @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
-    public ResponseEntity unbindDeveloper(@RequestBody Long developerId) throws Exception {
+    public ResponseEntity unbindDeveloper(@PathVariable Long developerId) throws Exception {
         taskDevelopmentDataService.unbindDeveloper(developerId);
 
         return new ResponseEntity(HttpStatus.OK);
@@ -89,21 +87,21 @@ public class ManagersCabinetRestController extends AbstractEntityProcessingContr
     /**
      * Declines technical task.
      */
-    @PutMapping("/declineTechnicalTask")
+    @PatchMapping("${manager.action.technicalTask}{technicalTaskId}")
     @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
-    public ResponseEntity declineTechnicalTask(@RequestBody Map<String, String> params) throws Exception {
-        technicalTasksService.decline(Long.parseLong(params.get("technicalTaskId")), params.get("managerCommentary"));
+    public ResponseEntity declineTechnicalTask(@PathVariable Long technicalTaskId, @RequestBody String managerCommentary) throws Exception {
+        technicalTasksService.decline(technicalTaskId, managerCommentary);
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
     /**
-     * Accepts technical task anf creates project based on accepted technical task.
+     * Accepts technical task and creates project based on accepted technical task.
      */
-    @PostMapping("/formAsProject")
+    @PostMapping("${manager.action.project}{technicalTaskId}")
     @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
-    public ResponseEntity formTechnicalTaskAsProject(@RequestBody Long technicalTaskId, Authentication auth) throws Exception {
-        technicalTasksService.accept(technicalTaskId, ((User) auth.getPrincipal()).getId());
+    public ResponseEntity formTechnicalTaskAsProject(@PathVariable Long technicalTaskId, @AuthenticationPrincipal User currentUser) throws Exception {
+        technicalTasksService.accept(technicalTaskId, currentUser.getId());
 
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -111,10 +109,10 @@ public class ManagersCabinetRestController extends AbstractEntityProcessingContr
     /**
      * Declines project.
      */
-    @PutMapping("/declineProject")
+    @PatchMapping("${manager.action.project}{projectId}")
     @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
-    public ResponseEntity declineProject(@RequestBody Map<String, String> params) {
-        projectsService.decline(Long.parseLong(params.get("projectId")), params.get("managerCommentary"));
+    public ResponseEntity declineProject(@PathVariable Long projectId, @RequestBody String managerCommentary) {
+        projectsService.decline(projectId, managerCommentary);
 
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -122,7 +120,7 @@ public class ManagersCabinetRestController extends AbstractEntityProcessingContr
     /**
      * Creates and binds check to projects in case of check and project both valid formed.
      */
-    @PutMapping("/accept")
+    @PostMapping("${manager.action.check}")
     @PreAuthorize("hasAnyAuthority('MANAGER', 'ULTRAMANAGER', 'ADMIN')")
     public ResponseEntity<List<String>> formProject(@Valid @RequestBody Check check, BindingResult bindingResult,
                                                     Locale locale) {

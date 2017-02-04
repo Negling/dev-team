@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import ua.devteam.entity.AbstractBuilder;
 import ua.devteam.entity.AbstractTask;
 
 import java.io.Serializable;
@@ -26,23 +27,30 @@ public class Operation extends AbstractTask implements Serializable {
     /* Developers that customer is requested to perform this operation */
     private List<RequestForDevelopers> requestsForDevelopers;
 
-    public Operation(Long technicalTaskId, String name, String description) {
-        this(null, technicalTaskId, name, description);
-    }
-
-    public Operation(Long id, Long technicalTaskId, String name, String description) {
-        this(id, technicalTaskId, name, description, null);
-    }
-
-    public Operation(Long id, Long technicalTaskId, String name, String description, List<RequestForDevelopers> requestsForDevelopers) {
-        super(id, name, description);
+    private Operation(Long technicalTaskId, String name, String description) {
+        super(null, name, description);
         this.technicalTaskId = technicalTaskId;
-        this.requestsForDevelopers = requestsForDevelopers;
     }
 
     @Override
     public void setDeepId(Long id) {
         setId(id);
         requestsForDevelopers.forEach(requestForDevelopers -> requestForDevelopers.setOperationId(id));
+    }
+
+    public static class Builder extends AbstractBuilder<Operation> {
+        public Builder(Long technicalTaskId, String name, String description) {
+            super(new Operation(technicalTaskId, name, description));
+        }
+
+        public Builder setRequestsForDevelopers(List<RequestForDevelopers> requestsForDevelopers) {
+            instance.setRequestsForDevelopers(requestsForDevelopers);
+            return this;
+        }
+
+        public Builder setId(Long id) {
+            instance.setId(id);
+            return this;
+        }
     }
 }

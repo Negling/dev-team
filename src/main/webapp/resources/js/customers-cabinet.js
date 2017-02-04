@@ -224,7 +224,7 @@ function refreshTechnicalTask(callback) {
 function submitTechnicalTaskAjax(button) {
     $.ajax({
         method: "POST",
-        url: "/cabinet/submit",
+        url: "/cabinet/technicalTask",
         data: JSON.stringify(createTechnicalTask())
     }).done(function (data) {
         refreshTechnicalTask(function () {
@@ -245,9 +245,8 @@ function submitTechnicalTaskAjax(button) {
 /* Sends request to accept check to server, and removes from/refreshes checks section. */
 function declineCheckAjax(button) {
     $.ajax({
-        method: "PUT",
-        url: "/cabinet/declineCheck",
-        data: JSON.stringify($(button).attr("value"))
+        method: "PATCH",
+        url: "/cabinet/check/decline/" + $(button).attr("value")
     }).done(function () {
         return removeAndRefreshIfEmpty(button, "#newChecksAccordion", "/fragments/customer_new_checks");
     }).fail(function (jqXHR) {
@@ -258,9 +257,8 @@ function declineCheckAjax(button) {
 /* Sends request to decline check to server, and removes from/refreshes checks section. */
 function confirmCheckAjax(button) {
     $.ajax({
-        method: "PUT",
-        url: "/cabinet/confirmCheck",
-        data: JSON.stringify($(button).attr("value"))
+        method: "PATCH",
+        url: "/cabinet/check/accept/" + $(button).attr("value")
     }).done(function () {
         return removeAndRefreshIfEmpty(button, "#newChecksAccordion", "/fragments/customer_new_checks");
     }).fail(function (jqXHR) {

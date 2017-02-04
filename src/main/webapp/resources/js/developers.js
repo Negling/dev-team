@@ -22,9 +22,9 @@ $(function () {
 /* Sends request to server to mark task as complete, with hours spent and task ID as JSON string. */
 function completeTaskAjax() {
     $.ajax({
-        method: "PUT",
-        url: "/development/completeTask",
-        data: JSON.stringify({id: $("#markComplete").attr("value"), hoursSpent: $("#hoursSpent").val()})
+        method: "PATCH",
+        url: "/development/task/" + $("#markComplete").attr("value"),
+        data: JSON.stringify($("#hoursSpent").val())
     }).done(function (data) {
         refreshData("#currentTask", true, "/fragments/development_active_task", function () {
             // append message box

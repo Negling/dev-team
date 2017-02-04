@@ -1,9 +1,9 @@
 package ua.devteam.entity.tasks;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ua.devteam.entity.AbstractBuilder;
 import ua.devteam.entity.enums.DeveloperRank;
 import ua.devteam.entity.enums.DeveloperSpecialization;
 import ua.devteam.entity.enums.Status;
@@ -18,7 +18,6 @@ import java.math.BigDecimal;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class TaskDevelopmentData implements Serializable {
 
     /* Id of task that this development data is bind to */
@@ -44,12 +43,51 @@ public class TaskDevelopmentData implements Serializable {
     /* Current development status of concrete developer assigned to task */
     private Status status;
 
-    public TaskDevelopmentData(Long projectTaskId, Long developerId, DeveloperSpecialization specialization, DeveloperRank rank) {
-        this(projectTaskId, developerId, specialization, rank, null, null);
+    private TaskDevelopmentData(Long projectTaskId, Long developerId, DeveloperSpecialization specialization, DeveloperRank rank) {
+        this.projectTaskId = projectTaskId;
+        this.developerId = developerId;
+        this.specialization = specialization;
+        this.rank = rank;
     }
 
-    public TaskDevelopmentData(Long projectTaskId, Long developerId, DeveloperSpecialization specialization,
-                               DeveloperRank rank, Integer hoursSpent, Status status) {
-        this(projectTaskId, null, null, developerId, null, null, specialization, rank, null, hoursSpent, status);
+    public static class Builder extends AbstractBuilder<TaskDevelopmentData> {
+        public Builder(Long projectTaskId, Long developerId, DeveloperSpecialization specialization, DeveloperRank rank) {
+            super(new TaskDevelopmentData(projectTaskId, developerId, specialization, rank));
+        }
+
+        public Builder setDeveloperFirstName(String developerFirstName) {
+            instance.setDeveloperFirstName(developerFirstName);
+            return this;
+        }
+
+        public Builder setDeveloperLastName(String developerLastName) {
+            instance.setDeveloperLastName(developerLastName);
+            return this;
+        }
+
+        public Builder setHireCost(BigDecimal hireCost) {
+            instance.setHireCost(hireCost);
+            return this;
+        }
+
+        public Builder setHoursSpent(Integer hoursSpent) {
+            instance.setHoursSpent(hoursSpent);
+            return this;
+        }
+
+        public Builder setStatus(Status status) {
+            instance.setStatus(status);
+            return this;
+        }
+
+        public Builder setTaskDescription(String taskDescription) {
+            instance.setTaskDescription(taskDescription);
+            return this;
+        }
+
+        public Builder setTaskName(String taskName) {
+            instance.setTaskName(taskName);
+            return this;
+        }
     }
 }

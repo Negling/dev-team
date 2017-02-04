@@ -14,6 +14,7 @@ import ua.devteam.entity.forms.CustomerRegistrationForm;
 import ua.devteam.service.CustomersService;
 
 import javax.validation.Valid;
+import java.util.ResourceBundle;
 
 /**
  * This controller process customer registration procedure.
@@ -23,33 +24,34 @@ import javax.validation.Valid;
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class RegistrationController {
     private CustomersService customersService;
+    private ResourceBundle pagesProperties;
 
     /**
      * Returns registration page.
      */
-    @GetMapping("/registration")
+    @GetMapping("${registration.page}")
     public String registration() {
-        return "registration";
+        return pagesProperties.getString("registration.page");
     }
 
     /**
      * Validates registration form, and if validation successful - delegates customer registration to service,
      * otherwise redirects back with binding errors.
      */
-    @PostMapping("/registration")
+    @PostMapping("${registration.action}")
     public String registerCustomer(@Valid @ModelAttribute CustomerRegistrationForm customerRegistrationForm,
                                    BindingResult bindingResult, SessionStatus sessionStatus,
                                    RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.customerRegistrationForm",
+            redirectAttributes.addFlashAttribute(pagesProperties.getString("model.customerRegistrationErrors"),
                     bindingResult);
-            return "redirect:/registration";
+            return pagesProperties.getString("registration.page.redirect");
         }
         // save customer
         customersService.registerCustomer(customerRegistrationForm.getEntity());
         sessionStatus.setComplete();
 
-        return "redirect:/login?registered";
+        return pagesProperties.getString("login.page.registered");
     }
 
     @ModelAttribute("customerRegistrationForm")

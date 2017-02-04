@@ -4,21 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ua.devteam.entity.users.User;
 import ua.devteam.service.TaskDevelopmentDataService;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * This controller process REST requests on developers cabinet page.
  */
 @RestController
-@RequestMapping("/development")
 public class DevelopersCabinetRestController extends AbstractEntityProcessingController {
 
     private TaskDevelopmentDataService taskDevelopmentDataService;
@@ -35,17 +37,14 @@ public class DevelopersCabinetRestController extends AbstractEntityProcessingCon
     /**
      * Checks incoming params, and if they are valid - delegates task completion to service.
      */
-    @PutMapping("/completeTask")
+    @PatchMapping("${developer.action.task}{taskId}")
     @PreAuthorize("hasAuthority('DEVELOPER')")
-    public ResponseEntity<List<String>> completeTask(@RequestBody Map<String, String> params, Locale locale,
-                                                     Authentication auth) {
-        int hoursSpent;
+    public ResponseEntity<List<String>> completeTask(@PathVariable Long taskId, @RequestBody Integer hoursSpent, Locale locale,
+                                                     @AuthenticationPrincipal User currentUser) {
         try {
-            hoursSpent = Integer.parseInt(params.get("hoursSpent"));
             validateHoursSpentValue(hoursSpent);
 
-            taskDevelopmentDataService.complete(Long.parseLong(params.get("id")), ((User) auth.getPrincipal()).getId(),
-                    hoursSpent);
+            taskDevelopmentDataService.complete(taskId, currentUser.getId(), hoursSpent);
 
             return getDefaultSuccessResponse(new LinkedList<>(), locale);
         } catch (NumberFormatException ex) {

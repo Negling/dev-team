@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import ua.devteam.entity.AbstractBuilder;
 import ua.devteam.entity.enums.DeveloperRank;
 import ua.devteam.entity.enums.DeveloperSpecialization;
 import ua.devteam.entity.enums.DeveloperStatus;
@@ -34,24 +35,69 @@ public class Developer extends User implements Serializable {
     /* Current developer status. Defines is developer available to hire, or he is already assigned to task */
     private DeveloperStatus status;
 
+    public static class Builder extends AbstractBuilder<Developer>{
+        public Builder() {
+            super(new Developer());
+        }
 
-    public Developer(String firstName, String lastName, String email, String phoneNumber, String password,
-                     Role role, Long currentTaskId, BigDecimal hireCost, DeveloperSpecialization specialization,
-                     DeveloperRank rank, DeveloperStatus status) {
+        public Builder setCurrentTaskId(Long currentTaskId) {
+            instance.setCurrentTaskId(currentTaskId);
+            return this;
+        }
 
-        this(null, firstName, lastName, email, phoneNumber, password, role, currentTaskId, hireCost, specialization,
-                rank, status);
-    }
+        public Builder setHireCost(BigDecimal hireCost) {
+            instance.setHireCost(hireCost);
+            return this;
+        }
 
-    public Developer(Long id, String firstName, String lastName, String email, String phoneNumber, String password,
-                     Role role, Long currentTaskId, BigDecimal hireCost, DeveloperSpecialization specialization,
-                     DeveloperRank rank, DeveloperStatus status) {
+        public Builder setRank(DeveloperRank rank) {
+            instance.setRank(rank);
+            return this;
+        }
 
-        super(id, firstName, lastName, email, phoneNumber, password, role);
-        this.currentTaskId = currentTaskId;
-        this.hireCost = hireCost;
-        this.specialization = specialization;
-        this.rank = rank;
-        this.status = status;
+        public Builder setSpecialization(DeveloperSpecialization specialization) {
+            instance.setSpecialization(specialization);
+            return this;
+        }
+
+        public Builder setStatus(DeveloperStatus status) {
+            instance.setStatus(status);
+            return this;
+        }
+
+        public Builder setId(Long id) {
+            instance.setId(id);
+            return this;
+        }
+
+        public Builder setFirstName(String firstName) {
+            instance.setFirstName(firstName);
+            return this;
+        }
+
+        public Builder setLastName(String lastName) {
+            instance.setLastName(lastName);
+            return this;
+        }
+
+        public Builder setEmail(String email) {
+            instance.setEmail(email);
+            return this;
+        }
+
+        public Builder setPhoneNumber(String phoneNumber) {
+            instance.setPhoneNumber(phoneNumber);
+            return this;
+        }
+
+        public Builder setPassword(String password) {
+            instance.setPassword(password);
+            return this;
+        }
+
+        public Builder setRole(Role role) {
+            instance.setRole(role);
+            return this;
+        }
     }
 }

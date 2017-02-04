@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import ua.devteam.entity.AbstractBuilder;
 import ua.devteam.entity.enums.Role;
 
 import java.io.Serializable;
@@ -21,16 +22,49 @@ public class Manager extends User implements Serializable {
     /* Total amount of projects that this manager served */
     private Long totalProjectsServed;
 
-    public Manager(String firstName, String lastName, String email, String phoneNumber, String password, Role role,
-                   Long totalProjectsServed) {
+    public static class Builder extends AbstractBuilder<Manager> {
+        public Builder() {
+            super(new Manager());
+        }
 
-        this(null, firstName, lastName, email, phoneNumber, password, role, totalProjectsServed);
-    }
+        public Builder setTotalProjectsServed(Long totalProjectsServed) {
+            instance.setTotalProjectsServed(totalProjectsServed);
+            return this;
+        }
 
-    public Manager(Long id, String firstName, String lastName, String email, String phoneNumber, String password,
-                   Role role, Long totalProjectsServed) {
+        public Builder setEmail(String email) {
+            instance.setEmail(email);
+            return this;
+        }
 
-        super(id, firstName, lastName, email, phoneNumber, password, role);
-        this.totalProjectsServed = totalProjectsServed;
+        public Builder setFirstName(String firstName) {
+            instance.setFirstName(firstName);
+            return this;
+        }
+
+        public Builder setId(Long id) {
+            instance.setId(id);
+            return this;
+        }
+
+        public Builder setLastName(String lastName) {
+            instance.setLastName(lastName);
+            return this;
+        }
+
+        public Builder setPassword(String password) {
+            instance.setPassword(password);
+            return this;
+        }
+
+        public Builder setPhoneNumber(String phoneNumber) {
+            instance.setPhoneNumber(phoneNumber);
+            return this;
+        }
+
+        public Builder setRole(Role role) {
+            instance.setRole(role);
+            return this;
+        }
     }
 }

@@ -20,16 +20,11 @@ import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class CustomerRegistrationFormValidatorTest {
-    private Validator validator;
-    private UsersService usersServiceMock;
-    private CustomerRegistrationForm testData;
+    private UsersService usersServiceMock = mock(UsersService.class);
+    private Validator validator = new CustomerRegistrationFormValidator(usersServiceMock,
+            ResourceBundle.getBundle("properties/validation"));
+    private CustomerRegistrationForm testData = new CustomerRegistrationForm();
     private Errors errors;
-
-    {
-        usersServiceMock = mock(UsersService.class);
-        validator = new CustomerRegistrationFormValidator(usersServiceMock, ResourceBundle.getBundle("properties/validation"));
-        testData = new CustomerRegistrationForm();
-    }
 
     @Before
     public void setUp() throws Exception {

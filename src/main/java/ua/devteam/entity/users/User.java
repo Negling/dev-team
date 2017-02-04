@@ -3,6 +3,7 @@ package ua.devteam.entity.users;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ua.devteam.entity.AbstractBuilder;
 import ua.devteam.entity.enums.Role;
 
 import java.io.Serializable;
@@ -36,19 +37,6 @@ public class User implements UserDetails, Serializable {
 
     public User() {
         authorities = new HashSet<>();
-    }
-
-    public User(Long id, String firstName, String lastName, String email, String phoneNumber, String password, Role role) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-        this.role = role;
-        this.authorities = new HashSet<GrantedAuthority>() {{
-            add(role);
-        }};
     }
 
     public void setRole(Role role) {
@@ -90,5 +78,46 @@ public class User implements UserDetails, Serializable {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public static class Builder extends AbstractBuilder<User> {
+        public Builder() {
+            super(new User());
+        }
+
+        public Builder setEmail(String email) {
+            instance.setEmail(email);
+            return this;
+        }
+
+        public Builder setFirstName(String firstName) {
+            instance.setFirstName(firstName);
+            return this;
+        }
+
+        public Builder setId(Long id) {
+            instance.setId(id);
+            return this;
+        }
+
+        public Builder setLastName(String lastName) {
+            instance.setLastName(lastName);
+            return this;
+        }
+
+        public Builder setPassword(String password) {
+            instance.setPassword(password);
+            return this;
+        }
+
+        public Builder setPhoneNumber(String phoneNumber) {
+            instance.setPhoneNumber(phoneNumber);
+            return this;
+        }
+
+        public Builder setRole(Role role) {
+            instance.setRole(role);
+            return this;
+        }
     }
 }

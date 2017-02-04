@@ -97,17 +97,18 @@ public class JDBCProjectDAO extends JDBCGenericIdentifiedDAO<Project> implements
 
     @Override
     protected Project mapEntity(ResultSet rs, int row) throws SQLException {
-        return new Project(rs.getLong("id"),
-                rs.getString("name"),
+        return new Project.Builder(rs.getString("name"),
                 rs.getString("description"),
                 rs.getLong("customer_id"),
-                rs.getLong("manager_id"),
-                rs.getString("manager_commentary"),
-                rs.getLong("technical_task_id"),
-                rs.getBigDecimal("totalCost"),
-                rs.getDate("start_date"),
-                rs.getDate("end_date"),
-                Status.valueOf(rs.getString("status")));
+                rs.getLong("manager_id"))
+                .setId(rs.getLong("id"))
+                .setManagerCommentary(rs.getString("manager_commentary"))
+                .setTechnicalTaskId(rs.getLong("technical_task_id"))
+                .setTotalProjectCost(rs.getBigDecimal("totalCost"))
+                .setStartDate(rs.getDate("start_date"))
+                .setEndDate(rs.getDate("end_date"))
+                .setStatus(Status.valueOf(rs.getString("status")))
+                .build();
     }
 
     @Override

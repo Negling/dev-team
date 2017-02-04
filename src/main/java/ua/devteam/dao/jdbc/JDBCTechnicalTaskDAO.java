@@ -73,12 +73,14 @@ public class JDBCTechnicalTaskDAO extends JDBCGenericIdentifiedDAO<TechnicalTask
 
     @Override
     protected TechnicalTask mapEntity(ResultSet rs, int row) throws SQLException {
-        return new TechnicalTask(rs.getLong("id"),
+        return new TechnicalTask.Builder(
                 rs.getString("name"),
                 rs.getString("description"),
-                rs.getLong("customer_id"),
-                rs.getString("manager_commentary"),
-                Status.valueOf(rs.getString("status")));
+                rs.getLong("customer_id")).
+                setId(rs.getLong("id")).
+                setStatus(Status.valueOf(rs.getString("status"))).
+                setManagerCommentary(rs.getString("manager_commentary")).
+                build();
     }
 
     @Override

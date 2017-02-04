@@ -37,7 +37,14 @@ public class ProjectsServiceImpl implements ProjectsService {
      */
     @Override
     public long createProject(TechnicalTask technicalTask, Long managerId) {
-        long projectId = projectDAO.create(new Project(managerId, technicalTask));
+        long projectId = projectDAO.create(
+                new Project.Builder(
+                        technicalTask.getName(),
+                        technicalTask.getDescription(),
+                        technicalTask.getCustomerId(),
+                        managerId)
+                        .build()
+        );
 
         projectTasksService.registerFromTechnicalTask(technicalTask.getId(), projectId);
 

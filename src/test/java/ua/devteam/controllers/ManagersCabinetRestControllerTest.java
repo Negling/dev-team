@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.Validator;
 import ua.devteam.entity.enums.Role;
 import ua.devteam.entity.projects.Project;
@@ -15,9 +14,7 @@ import ua.devteam.validation.entityValidators.ProjectTaskValidator;
 import ua.devteam.validation.entityValidators.ProjectValidator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -48,8 +45,10 @@ public class ManagersCabinetRestControllerTest {
 
     // setup
     {
-        mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                .setViewResolvers(getDefaultViewResolver()).setValidator(new CheckValidator()).build();
+        mockMvc = getConfiguredWithPlaceholdersStandaloneMockMvcBuilder(controller)
+                .setCustomArgumentResolvers(getUserArgumentResolverWith(getUserWithIdAndRole(1L, Role.ADMIN)))
+                .setViewResolvers(getDefaultViewResolver())
+                .setValidator(new CheckValidator()).build();
 
         // default mocks behavior
         when(developersService.getAvailableDevelopers(any(), any(), any())).thenReturn(new ArrayList<>());
@@ -58,7 +57,7 @@ public class ManagersCabinetRestControllerTest {
 
     @Test
     public void getDevelopersTest() throws Exception {
-        mockMvc.perform(get("/manage/getDevelopers")
+        mockMvc.perform(get("/manage/developers")
                 .param("specialization", BACKEND.toString())
                 .param("rank", JUNIOR.toString())
                 .param("lastName", "Kiral"))
@@ -70,14 +69,9 @@ public class ManagersCabinetRestControllerTest {
 
     @Test
     public void bindDeveloperTest() throws Exception {
-        Map<String, Long> requestBody = new HashMap<String, Long>() {{
-            put("devId", 1L);
-            put("taskId", 1L);
-        }};
-
-        mockMvc.perform(post("/manage/bind")
+        mockMvc.perform(post("/manage/taskDevelopmentData/{developerId}", 1L)
                 .contentType("application/json")
-                .content(getObjectAsJson(requestBody)))
+                .content(getObjectAsJson(1L)))
                 // checks
                 .andExpect(status().isOk());
 
@@ -86,9 +80,7 @@ public class ManagersCabinetRestControllerTest {
 
     @Test
     public void unbindDeveloperTest() throws Exception {
-        mockMvc.perform(delete("/manage/unbind")
-                .contentType("application/json")
-                .content(getObjectAsJson(1)))
+        mockMvc.perform(delete("/manage/taskDevelopmentData/{developerId}", 1L))
                 // checks
                 .andExpect(status().isOk());
 
@@ -97,14 +89,9 @@ public class ManagersCabinetRestControllerTest {
 
     @Test
     public void declineTechnicalTaskTest() throws Exception {
-        Map<String, String> requestBody = new HashMap<String, String>() {{
-            put("technicalTaskId", "1");
-            put("managerCommentary", "test");
-        }};
-
-        mockMvc.perform(put("/manage/declineTechnicalTask")
-                .contentType("application/json")
-                .content(getObjectAsJson(requestBody)))
+        mockMvc.perform(patch("/manage/technicalTask/{technicalTaskId}", 1L)
+                .contentType("text/plain")
+                .content("test"))
                 // checks
                 .andExpect(status().isOk());
 
@@ -113,10 +100,8 @@ public class ManagersCabinetRestControllerTest {
 
     @Test
     public void formTechnicalTaskAsProjectTest() throws Exception {
-        mockMvc.perform(post("/manage/formAsProject")
-                .principal(getUserWithIdAndRole(1L, Role.ADMIN))
-                .contentType("application/json")
-                .content(getObjectAsJson(1)))
+        mockMvc.perform(post("/manage/project/{technicalTaskId}", 1L)
+                .contentType("application/json"))
                 // checks
                 .andExpect(status().isOk());
 
@@ -125,14 +110,9 @@ public class ManagersCabinetRestControllerTest {
 
     @Test
     public void declineProjectTest() throws Exception {
-        Map<String, String> requestBody = new HashMap<String, String>() {{
-            put("projectId", "1");
-            put("managerCommentary", "test");
-        }};
-
-        mockMvc.perform(put("/manage/declineProject")
-                .contentType("application/json")
-                .content(getObjectAsJson(requestBody)))
+        mockMvc.perform(patch("/manage/project/{projectId}", 1L)
+                .contentType("text/plain")
+                .content("test"))
                 // checks
                 .andExpect(status().isOk());
 
@@ -141,7 +121,7 @@ public class ManagersCabinetRestControllerTest {
 
     @Test
     public void formProjectWithInvalidCheckTest() throws Exception {
-        mockMvc.perform(put("/manage/accept")
+        mockMvc.perform(post("/manage/check")
                 .locale(Locale.ENGLISH)
                 .contentType("application/json")
                 .content(getObjectAsJson(getInvalidCheck())))
@@ -153,7 +133,7 @@ public class ManagersCabinetRestControllerTest {
     public void formProjectWithInvalidProjectStateTest() throws Exception {
         when(projectsService.getById(anyLong(), eq(true))).thenReturn(new Project());
 
-        mockMvc.perform(put("/manage/accept")
+        mockMvc.perform(post("/manage/check")
                 .locale(Locale.ENGLISH)
                 .contentType("application/json")
                 .content(getObjectAsJson(getValidCheck())))
@@ -167,7 +147,7 @@ public class ManagersCabinetRestControllerTest {
     public void formProjectSuccessTest() throws Exception {
         when(projectsService.getById(anyLong(), eq(true))).thenReturn(getValidProject());
 
-        mockMvc.perform(put("/manage/accept")
+        mockMvc.perform(post("/manage/check")
                 .locale(Locale.ENGLISH)
                 .contentType("application/json")
                 .content(getObjectAsJson(getValidCheck())))

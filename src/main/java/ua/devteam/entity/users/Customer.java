@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import ua.devteam.entity.AbstractBuilder;
 import ua.devteam.entity.enums.Role;
 import ua.devteam.entity.projects.Check;
 
@@ -22,17 +23,49 @@ public class Customer extends User implements Serializable {
     /* User checks history */
     private List<Check> checks;
 
-    public Customer(Long id, String firstName, String lastName, String email, String phoneNumber, String password, Role role) {
-        this(id, firstName, lastName, email, phoneNumber, password, role, null);
-    }
+    public static class Builder extends AbstractBuilder<Customer> {
+        public Builder() {
+            super(new Customer());
+        }
 
-    public Customer(String firstName, String lastName, String email, String phoneNumber, String password, Role role) {
-        this(null, firstName, lastName, email, phoneNumber, password, role);
-    }
+        public Builder setChecks(List<Check> checks) {
+            instance.setChecks(checks);
+            return this;
+        }
 
-    public Customer(Long id, String firstName, String lastName, String email, String phoneNumber, String password,
-                    Role role, List<Check> checks) {
-        super(id, firstName, lastName, email, phoneNumber, password, role);
-        this.checks = checks;
+        public Builder setEmail(String email) {
+            instance.setEmail(email);
+            return this;
+        }
+
+        public Builder setFirstName(String firstName) {
+            instance.setFirstName(firstName);
+            return this;
+        }
+
+        public Builder setId(Long id) {
+            instance.setId(id);
+            return this;
+        }
+
+        public Builder setLastName(String lastName) {
+            instance.setLastName(lastName);
+            return this;
+        }
+
+        public Builder setPassword(String password) {
+            instance.setPassword(password);
+            return this;
+        }
+
+        public Builder setPhoneNumber(String phoneNumber) {
+            instance.setPhoneNumber(phoneNumber);
+            return this;
+        }
+
+        public Builder setRole(Role role) {
+            instance.setRole(role);
+            return this;
+        }
     }
 }

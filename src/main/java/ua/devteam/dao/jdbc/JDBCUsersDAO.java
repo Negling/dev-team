@@ -61,12 +61,15 @@ public class JDBCUsersDAO extends JDBCGenericDAO<User> implements UsersDAO {
 
     @Override
     protected User mapEntity(ResultSet rs, int row) throws SQLException {
-        return new User(rs.getLong("id"),
-                rs.getString("first_name"),
-                rs.getString("last_name"),
-                rs.getString("email"),
-                rs.getString("phone"),
-                rs.getString("password"),
-                Role.valueOf(rs.getString("role")));
+        return new
+                User.Builder()
+                .setId(rs.getLong("id"))
+                .setFirstName(rs.getString("first_name"))
+                .setLastName(rs.getString("last_name"))
+                .setEmail(rs.getString("email"))
+                .setPhoneNumber(rs.getString("phone"))
+                .setPassword(rs.getString("password"))
+                .setRole(Role.valueOf(rs.getString("role")))
+                .build();
     }
 }
