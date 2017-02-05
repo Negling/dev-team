@@ -34,7 +34,7 @@ public class JDBCRequestsForDevelopersDAO extends JDBCGenericDAO<RequestForDevel
 
     @Override
     public void create(RequestForDevelopers requestForDevelopers) {
-        jdbcOperations.update(sqlProperties.getString("developersRequest.insertSQL"),
+        getJdbcOperations().update(getSqlProperties().getString("developersRequest.insertSQL"),
                 requestForDevelopers.getOperationId(),
                 requestForDevelopers.getSpecialization().toString(),
                 requestForDevelopers.getRank().toString(),
@@ -43,7 +43,7 @@ public class JDBCRequestsForDevelopersDAO extends JDBCGenericDAO<RequestForDevel
 
     @Override
     public void update(RequestForDevelopers oldEntity, RequestForDevelopers newEntity) {
-        jdbcOperations.update(sqlProperties.getString("developersRequest.update"),
+        getJdbcOperations().update(getSqlProperties().getString("developersRequest.update"),
                 newEntity.getOperationId(),
                 newEntity.getSpecialization().toString(),
                 newEntity.getRank().toString(),
@@ -56,7 +56,7 @@ public class JDBCRequestsForDevelopersDAO extends JDBCGenericDAO<RequestForDevel
 
     @Override
     public void delete(RequestForDevelopers entity) {
-        jdbcOperations.update(sqlProperties.getString("developersRequest.delete"),
+        getJdbcOperations().update(getSqlProperties().getString("developersRequest.delete"),
                 entity.getOperationId(),
                 entity.getSpecialization().toString(),
                 entity.getRank().toString(),
@@ -65,7 +65,8 @@ public class JDBCRequestsForDevelopersDAO extends JDBCGenericDAO<RequestForDevel
 
     @Override
     public List<RequestForDevelopers> getByOperation(Long operationId) {
-        return jdbcOperations.query(sqlProperties.getString("developersRequest.selectByOperation"), this::mapEntity, operationId);
+        return getJdbcOperations().query(getSqlProperties().getString("developersRequest.selectByOperation"),
+                this::mapEntity, operationId);
     }
 
     @Override

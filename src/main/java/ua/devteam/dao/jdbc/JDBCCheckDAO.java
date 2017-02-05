@@ -35,7 +35,7 @@ public class JDBCCheckDAO extends JDBCGenericDAO<Check> implements CheckDAO {
 
     @Override
     public void create(Check check) {
-        jdbcOperations.update(sqlProperties.getString("check.insertSQL"),
+        getJdbcOperations().update(getSqlProperties().getString("check.insertSQL"),
                 check.getProjectId(),
                 check.getCustomerId(),
                 check.getDevelopersCost(),
@@ -46,7 +46,7 @@ public class JDBCCheckDAO extends JDBCGenericDAO<Check> implements CheckDAO {
 
     @Override
     public void update(Check oldEntity, Check newEntity) {
-        jdbcOperations.update(sqlProperties.getString("check.update"),
+        getJdbcOperations().update(getSqlProperties().getString("check.update"),
                 newEntity.getProjectId(),
                 newEntity.getCustomerId(),
                 newEntity.getDevelopersCost(),
@@ -59,27 +59,27 @@ public class JDBCCheckDAO extends JDBCGenericDAO<Check> implements CheckDAO {
 
     @Override
     public void delete(Check entity) {
-        jdbcOperations.update(sqlProperties.getString("check.deleteByProject"), entity.getProjectId());
+        getJdbcOperations().update(getSqlProperties().getString("check.deleteByProject"), entity.getProjectId());
     }
 
     @Override
     public Check getByProject(Long projectId) {
-        return jdbcOperations.queryForObject(sqlProperties.getString("check.selectByProject"), this::mapEntity, projectId);
+        return getJdbcOperations().queryForObject(getSqlProperties().getString("check.selectByProject"), this::mapEntity, projectId);
     }
 
     @Override
     public List<Check> getNewByCustomer(Long customerId) {
-        return jdbcOperations.query(sqlProperties.getString("check.selectNewByCustomer"), this::mapEntity, customerId);
+        return getJdbcOperations().query(getSqlProperties().getString("check.selectNewByCustomer"), this::mapEntity, customerId);
     }
 
     @Override
     public List<Check> getCompleteByCustomer(Long customerId) {
-        return jdbcOperations.query(sqlProperties.getString("check.selectCompleteByCustomer"), this::mapEntity, customerId);
+        return getJdbcOperations().query(getSqlProperties().getString("check.selectCompleteByCustomer"), this::mapEntity, customerId);
     }
 
     @Override
     public List<Check> getAllByCustomer(Long customerId) {
-        return jdbcOperations.query(sqlProperties.getString("check.selectByCustomer"), this::mapEntity, customerId);
+        return getJdbcOperations().query(getSqlProperties().getString("check.selectByCustomer"), this::mapEntity, customerId);
     }
 
     @Override

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import ua.devteam.entity.AbstractBuilder;
 import ua.devteam.entity.AbstractTask;
+import ua.devteam.entity.Operation;
 import ua.devteam.entity.enums.Status;
 
 import java.io.Serializable;
@@ -55,32 +56,32 @@ public class ProjectTask extends AbstractTask implements Serializable {
         }
 
         public Builder setTotalHoursSpent(Integer totalHoursSpent) {
-            instance.setTotalHoursSpent(totalHoursSpent);
-            return this;
+            return perform(() -> getConstruction().setTotalHoursSpent(totalHoursSpent));
         }
 
         public Builder setProjectId(Long projectId) {
-            instance.setProjectId(projectId);
-            return this;
+            return perform(() -> getConstruction().setProjectId(projectId));
         }
 
         public Builder setRequestsForDevelopers(List<RequestForDevelopers> requestsForDevelopers) {
-            instance.setRequestsForDevelopers(requestsForDevelopers);
-            return this;
+            return perform(() -> getConstruction().setRequestsForDevelopers(requestsForDevelopers));
         }
 
         public Builder setTasksDevelopmentData(List<TaskDevelopmentData> tasksDevelopmentData) {
-            instance.setTasksDevelopmentData(tasksDevelopmentData);
-            return this;
+            return perform(() -> getConstruction().setTasksDevelopmentData(tasksDevelopmentData));
         }
 
         public Builder setTaskStatus(Status taskStatus) {
-            instance.setTaskStatus(taskStatus);
-            return this;
+            return perform(() -> getConstruction().setTaskStatus(taskStatus));
         }
 
         public Builder setId(Long id) {
-            instance.setId(id);
+            return perform(() -> getConstruction().setId(id));
+        }
+
+        @Override
+        protected Builder perform(Operation operation) {
+            operation.perform();
             return this;
         }
     }

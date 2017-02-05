@@ -42,7 +42,7 @@ public class JDBCCustomerDAO extends JDBCGenericIdentifiedDAO<Customer> implemen
 
     @Override
     public void update(Customer oldData, Customer newData) {
-        jdbcOperations.update(sqlProperties.getString("customer.update"),
+        getJdbcOperations().update(getSqlProperties().getString("customer.update"),
                 newData.getId(),
                 newData.getFirstName(),
                 newData.getLastName(),
@@ -56,17 +56,17 @@ public class JDBCCustomerDAO extends JDBCGenericIdentifiedDAO<Customer> implemen
 
     @Override
     public void delete(Customer customer) {
-        jdbcOperations.update(sqlProperties.getString("customer.delete"), customer.getId());
+        getJdbcOperations().update(getSqlProperties().getString("customer.delete"), customer.getId());
     }
 
     @Override
     public Customer getById(Long id) {
-        return jdbcOperations.queryForObject(sqlProperties.getString("customer.selectById"), this::mapEntity, id);
+        return getJdbcOperations().queryForObject(getSqlProperties().getString("customer.selectById"), this::mapEntity, id);
     }
 
     @Override
     public Customer getByEmail(String email) {
-        return jdbcOperations.queryForObject(sqlProperties.getString("customer.selectByEmail"), this::mapEntity, email);
+        return getJdbcOperations().queryForObject(getSqlProperties().getString("customer.selectByEmail"), this::mapEntity, email);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class JDBCCustomerDAO extends JDBCGenericIdentifiedDAO<Customer> implemen
 
     @Override
     protected PreparedStatement insertionStatement(Connection connection, Customer entity) throws SQLException {
-        final PreparedStatement ps = connection.prepareStatement(sqlProperties.getString("customer.insertSQL"),
+        final PreparedStatement ps = connection.prepareStatement(getSqlProperties().getString("customer.insertSQL"),
                 Statement.RETURN_GENERATED_KEYS);
 
         ps.setString(1, entity.getFirstName());

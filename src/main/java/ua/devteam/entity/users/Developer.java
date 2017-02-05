@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import ua.devteam.entity.AbstractBuilder;
+import ua.devteam.entity.Operation;
 import ua.devteam.entity.enums.DeveloperRank;
 import ua.devteam.entity.enums.DeveloperSpecialization;
 import ua.devteam.entity.enums.DeveloperStatus;
@@ -41,62 +42,56 @@ public class Developer extends User implements Serializable {
         }
 
         public Builder setCurrentTaskId(Long currentTaskId) {
-            instance.setCurrentTaskId(currentTaskId);
-            return this;
+            return perform(() -> getConstruction().setCurrentTaskId(currentTaskId));
         }
 
         public Builder setHireCost(BigDecimal hireCost) {
-            instance.setHireCost(hireCost);
-            return this;
+            return perform(() -> getConstruction().setHireCost(hireCost));
         }
 
         public Builder setRank(DeveloperRank rank) {
-            instance.setRank(rank);
-            return this;
+            return perform(() -> getConstruction().setRank(rank));
         }
 
         public Builder setSpecialization(DeveloperSpecialization specialization) {
-            instance.setSpecialization(specialization);
-            return this;
+            return perform(() -> getConstruction().setSpecialization(specialization));
         }
 
         public Builder setStatus(DeveloperStatus status) {
-            instance.setStatus(status);
-            return this;
+            return perform(() -> getConstruction().setStatus(status));
         }
 
         public Builder setId(Long id) {
-            instance.setId(id);
-            return this;
+            return perform(() -> getConstruction().setId(id));
         }
 
         public Builder setFirstName(String firstName) {
-            instance.setFirstName(firstName);
-            return this;
+            return perform(() -> getConstruction().setFirstName(firstName));
         }
 
         public Builder setLastName(String lastName) {
-            instance.setLastName(lastName);
-            return this;
+            return perform(() -> getConstruction().setLastName(lastName));
         }
 
         public Builder setEmail(String email) {
-            instance.setEmail(email);
-            return this;
+            return perform(() -> getConstruction().setEmail(email));
         }
 
         public Builder setPhoneNumber(String phoneNumber) {
-            instance.setPhoneNumber(phoneNumber);
-            return this;
+            return perform(() -> getConstruction().setPhoneNumber(phoneNumber));
         }
 
         public Builder setPassword(String password) {
-            instance.setPassword(password);
-            return this;
+            return perform(() -> getConstruction().setPassword(password));
         }
 
         public Builder setRole(Role role) {
-            instance.setRole(role);
+            return perform(() -> getConstruction().setRole(role));
+        }
+
+        @Override
+        protected Builder perform(Operation operation) {
+            operation.perform();
             return this;
         }
     }

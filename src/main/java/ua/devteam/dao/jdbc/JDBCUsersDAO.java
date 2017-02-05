@@ -37,7 +37,7 @@ public class JDBCUsersDAO extends JDBCGenericDAO<User> implements UsersDAO {
     @Override
     public boolean persistsByEmail(String email) {
         try {
-            return jdbcOperations.queryForObject(sqlProperties.getString("users.persistsByEmail"),
+            return getJdbcOperations().queryForObject(getSqlProperties().getString("users.persistsByEmail"),
                     (ResultSet rs, int rowNum) -> rs.getString("email"), email) != null;
         } catch (EmptyResultDataAccessException ex) {
             return false;
@@ -47,7 +47,7 @@ public class JDBCUsersDAO extends JDBCGenericDAO<User> implements UsersDAO {
     @Override
     public boolean persistsByPhone(String phoneNumber) {
         try {
-            return jdbcOperations.queryForObject(sqlProperties.getString("users.persistsByPhone"),
+            return getJdbcOperations().queryForObject(getSqlProperties().getString("users.persistsByPhone"),
                     (ResultSet rs, int rowNum) -> rs.getString("phone"), phoneNumber) != null;
         } catch (EmptyResultDataAccessException ex) {
             return false;
@@ -56,7 +56,7 @@ public class JDBCUsersDAO extends JDBCGenericDAO<User> implements UsersDAO {
 
     @Override
     public User getUser(String email) {
-        return jdbcOperations.queryForObject(sqlProperties.getString("users.selectUser"), this::mapEntity, email);
+        return getJdbcOperations().queryForObject(getSqlProperties().getString("users.selectUser"), this::mapEntity, email);
     }
 
     @Override

@@ -1,5 +1,8 @@
 package ua.devteam.dao.jdbc;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.jdbc.core.JdbcOperations;
 
 import java.sql.ResultSet;
@@ -12,15 +15,11 @@ import java.util.ResourceBundle;
  *
  * @param <T>
  */
+@AllArgsConstructor
 abstract class JDBCGenericDAO<T> {
 
-    protected JdbcOperations jdbcOperations;
-    protected ResourceBundle sqlProperties;
-
-    JDBCGenericDAO(JdbcOperations jdbcOperations, ResourceBundle sqlProperties) {
-        this.jdbcOperations = jdbcOperations;
-        this.sqlProperties = sqlProperties;
-    }
+    private @Getter(AccessLevel.PROTECTED) JdbcOperations jdbcOperations;
+    private @Getter(AccessLevel.PROTECTED) ResourceBundle sqlProperties;
 
 
     protected abstract T mapEntity(ResultSet rs, int row) throws SQLException;

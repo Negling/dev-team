@@ -4,6 +4,7 @@ package ua.devteam.entity.tasks;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ua.devteam.entity.AbstractBuilder;
+import ua.devteam.entity.Operation;
 import ua.devteam.entity.enums.DeveloperRank;
 import ua.devteam.entity.enums.DeveloperSpecialization;
 import ua.devteam.entity.enums.Status;
@@ -56,37 +57,36 @@ public class TaskDevelopmentData implements Serializable {
         }
 
         public Builder setDeveloperFirstName(String developerFirstName) {
-            instance.setDeveloperFirstName(developerFirstName);
-            return this;
+            return perform(() -> getConstruction().setDeveloperFirstName(developerFirstName));
         }
 
         public Builder setDeveloperLastName(String developerLastName) {
-            instance.setDeveloperLastName(developerLastName);
-            return this;
+            return perform(() -> getConstruction().setDeveloperLastName(developerLastName));
         }
 
         public Builder setHireCost(BigDecimal hireCost) {
-            instance.setHireCost(hireCost);
-            return this;
+            return perform(() -> getConstruction().setHireCost(hireCost));
         }
 
         public Builder setHoursSpent(Integer hoursSpent) {
-            instance.setHoursSpent(hoursSpent);
-            return this;
+            return perform(() -> getConstruction().setHoursSpent(hoursSpent));
         }
 
         public Builder setStatus(Status status) {
-            instance.setStatus(status);
-            return this;
+            return perform(() -> getConstruction().setStatus(status));
         }
 
         public Builder setTaskDescription(String taskDescription) {
-            instance.setTaskDescription(taskDescription);
-            return this;
+            return perform(() -> getConstruction().setTaskDescription(taskDescription));
         }
 
         public Builder setTaskName(String taskName) {
-            instance.setTaskName(taskName);
+            return perform(() -> getConstruction().setTaskName(taskName));
+        }
+
+        @Override
+        protected Builder perform(Operation operation) {
+            operation.perform();
             return this;
         }
     }

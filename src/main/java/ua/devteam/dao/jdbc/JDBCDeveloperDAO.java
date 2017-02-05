@@ -42,7 +42,7 @@ public class JDBCDeveloperDAO extends JDBCGenericIdentifiedDAO<Developer> implem
 
     @Override
     public void update(Developer oldEntity, Developer newEntity) {
-        jdbcOperations.update(sqlProperties.getString("developer.update"),
+        getJdbcOperations().update(getSqlProperties().getString("developer.update"),
                 newEntity.getId(),
                 newEntity.getFirstName(),
                 newEntity.getLastName(),
@@ -59,47 +59,47 @@ public class JDBCDeveloperDAO extends JDBCGenericIdentifiedDAO<Developer> implem
 
     @Override
     public void delete(Developer entity) {
-        jdbcOperations.update(sqlProperties.getString("developer.delete"), entity.getId());
+        getJdbcOperations().update(getSqlProperties().getString("developer.delete"), entity.getId());
     }
 
 
     @Override
     public void updateStatusByProject(DeveloperStatus status, Long projectId) {
-        jdbcOperations.update(sqlProperties.getString("developer.updateStatusByProject"), status.toString(), projectId);
+        getJdbcOperations().update(getSqlProperties().getString("developer.updateStatusByProject"), status.toString(), projectId);
     }
 
     @Override
     public Developer getById(Long id) {
-        return jdbcOperations.queryForObject(sqlProperties.getString("developer.selectById"), this::mapEntity, id);
+        return getJdbcOperations().queryForObject(getSqlProperties().getString("developer.selectById"), this::mapEntity, id);
     }
 
     @Override
     public Developer getByEmail(String email) {
-        return jdbcOperations.queryForObject(sqlProperties.getString("developer.selectByEmail"), this::mapEntity, email);
+        return getJdbcOperations().queryForObject(getSqlProperties().getString("developer.selectByEmail"), this::mapEntity, email);
     }
 
     @Override
     public List<Developer> getAvailableByParams(DeveloperSpecialization specialization, DeveloperRank rank) {
-        return jdbcOperations.query(sqlProperties.getString("developer.selectAvailableBySpecAndRank"), this::mapEntity,
+        return getJdbcOperations().query(getSqlProperties().getString("developer.selectAvailableBySpecAndRank"), this::mapEntity,
                 specialization.toString(), rank.toString());
     }
 
     @Override
     public List<Developer> getAvailableByParams(DeveloperSpecialization specialization, DeveloperRank rank, String lastName) {
-        return jdbcOperations.query(sqlProperties.getString("developer.selectAvailableBySpecAndRankAndLastname"), this::mapEntity,
-                specialization.toString(), rank.toString(), lastName.concat("%"));
+        return getJdbcOperations().query(getSqlProperties().getString("developer.selectAvailableBySpecAndRankAndLastname"),
+                this::mapEntity, specialization.toString(), rank.toString(), lastName.concat("%"));
     }
 
     @Override
     public List<Developer> getByParams(DeveloperSpecialization specialization, DeveloperRank rank) {
-        return jdbcOperations.query(sqlProperties.getString("developer.selectBySpecAndRank"), this::mapEntity,
+        return getJdbcOperations().query(getSqlProperties().getString("developer.selectBySpecAndRank"), this::mapEntity,
                 specialization.toString(), rank.toString());
     }
 
     @Override
     public List<Developer> getByParams(DeveloperSpecialization specialization, DeveloperRank rank, String lastName) {
-        return jdbcOperations.query(sqlProperties.getString("developer.selectBySpecAndRankAndLastname"), this::mapEntity,
-                specialization.toString(), rank.toString(), lastName.concat("%"));
+        return getJdbcOperations().query(getSqlProperties().getString("developer.selectBySpecAndRankAndLastname"),
+                this::mapEntity, specialization.toString(), rank.toString(), lastName.concat("%"));
     }
 
     @Override
@@ -123,7 +123,7 @@ public class JDBCDeveloperDAO extends JDBCGenericIdentifiedDAO<Developer> implem
 
     @Override
     protected PreparedStatement insertionStatement(Connection connection, Developer entity) throws SQLException {
-        final PreparedStatement ps = connection.prepareStatement(sqlProperties.getString("developer.insertSQL"),
+        final PreparedStatement ps = connection.prepareStatement(getSqlProperties().getString("developer.insertSQL"),
                 Statement.RETURN_GENERATED_KEYS);
 
         ps.setString(1, entity.getFirstName());

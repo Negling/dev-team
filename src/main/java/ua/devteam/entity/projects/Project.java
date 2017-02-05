@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import ua.devteam.entity.AbstractBuilder;
+import ua.devteam.entity.Operation;
 import ua.devteam.entity.enums.Status;
 import ua.devteam.entity.tasks.ProjectTask;
 
@@ -77,42 +78,40 @@ public class Project extends AbstractTechnicalTask implements Serializable {
         }
 
         public Builder setId(Long id) {
-            instance.setId(id);
-            return this;
+            return perform(() -> getConstruction().setId(id));
         }
 
         public Builder setTasks(List<ProjectTask> tasks) {
-            instance.setTasks(tasks);
-            return this;
+            return perform(() -> getConstruction().setTasks(tasks));
         }
 
         public Builder setTechnicalTaskId(Long technicalTaskId) {
-            instance.setTechnicalTaskId(technicalTaskId);
-            return this;
+            return perform(() -> getConstruction().setTechnicalTaskId(technicalTaskId));
         }
 
         public Builder setTotalProjectCost(BigDecimal totalProjectCost) {
-            instance.setTotalProjectCost(totalProjectCost);
-            return this;
+            return perform(() -> getConstruction().setTotalProjectCost(totalProjectCost));
         }
 
         public Builder setStartDate(Date startDate) {
-            instance.setStartDate(startDate);
-            return this;
+            return perform(() -> getConstruction().setStartDate(startDate));
         }
 
         public Builder setEndDate(Date endDate) {
-            instance.setEndDate(endDate);
-            return this;
+            return perform(() -> getConstruction().setEndDate(endDate));
         }
 
         public Builder setStatus(Status status) {
-            instance.setStatus(status);
-            return this;
+            return perform(() -> getConstruction().setStatus(status));
         }
 
         public Builder setManagerCommentary(String managerCommentary) {
-            instance.setManagerCommentary(managerCommentary);
+            return perform(() -> getConstruction().setManagerCommentary(managerCommentary));
+        }
+
+        @Override
+        protected Builder perform(Operation operation) {
+            operation.perform();
             return this;
         }
     }

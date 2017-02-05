@@ -42,22 +42,24 @@ public class TechnicalTask extends AbstractTechnicalTask implements Serializable
         }
 
         public Builder setId(long id) {
-            instance.setId(id);
-            return this;
+            return perform(() -> getConstruction().setId(id));
         }
 
         public Builder setStatus(Status status) {
-            instance.setStatus(status);
-            return this;
+            return perform(() -> getConstruction().setStatus(status));
         }
 
         public Builder setManagerCommentary(String managerCommentary) {
-            instance.setManagerCommentary(managerCommentary);
-            return this;
+            return perform(() -> getConstruction().setManagerCommentary(managerCommentary));
         }
 
         public Builder setOperations(List<Operation> operations) {
-            instance.setOperations(operations);
+            return perform(() -> getConstruction().setOperations(operations));
+        }
+
+        @Override
+        protected Builder perform(ua.devteam.entity.Operation operation) {
+            operation.perform();
             return this;
         }
     }

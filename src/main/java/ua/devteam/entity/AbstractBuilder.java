@@ -1,14 +1,17 @@
 package ua.devteam.entity;
 
 
-public abstract class AbstractBuilder<T> {
-    protected final T instance;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-    protected AbstractBuilder(T instance) {
-        this.instance = instance;
-    }
+@AllArgsConstructor
+public abstract class AbstractBuilder<T> {
+    private @Getter(AccessLevel.PROTECTED) final T construction;
 
     public T build(){
-        return  instance;
+        return construction;
     }
+
+    protected abstract AbstractBuilder<T> perform(Operation operation);
 }

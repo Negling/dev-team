@@ -27,7 +27,7 @@ abstract class JDBCGenericIdentifiedDAO<T> extends JDBCGenericDAO<T> implements 
     public long create(T entity) {
         final KeyHolder key = new GeneratedKeyHolder();
 
-        jdbcOperations.update(con -> insertionStatement(con, entity), key);
+        getJdbcOperations().update(con -> insertionStatement(con, entity), key);
 
         return key.getKey().longValue();
     }

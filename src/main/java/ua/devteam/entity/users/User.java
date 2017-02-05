@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ua.devteam.entity.AbstractBuilder;
+import ua.devteam.entity.Operation;
 import ua.devteam.entity.enums.Role;
 
 import java.io.Serializable;
@@ -86,37 +87,36 @@ public class User implements UserDetails, Serializable {
         }
 
         public Builder setEmail(String email) {
-            instance.setEmail(email);
-            return this;
+            return perform(() -> getConstruction().setEmail(email));
         }
 
         public Builder setFirstName(String firstName) {
-            instance.setFirstName(firstName);
-            return this;
+            return perform(() -> getConstruction().setFirstName(firstName));
         }
 
         public Builder setId(Long id) {
-            instance.setId(id);
-            return this;
+            return perform(() -> getConstruction().setId(id));
         }
 
         public Builder setLastName(String lastName) {
-            instance.setLastName(lastName);
-            return this;
+            return perform(() -> getConstruction().setLastName(lastName));
         }
 
         public Builder setPassword(String password) {
-            instance.setPassword(password);
-            return this;
+            return perform(() -> getConstruction().setPassword(password));
         }
 
         public Builder setPhoneNumber(String phoneNumber) {
-            instance.setPhoneNumber(phoneNumber);
-            return this;
+            return perform(() -> getConstruction().setPhoneNumber(phoneNumber));
         }
 
         public Builder setRole(Role role) {
-            instance.setRole(role);
+            return perform(() -> getConstruction().setRole(role));
+        }
+
+        @Override
+        protected Builder perform(Operation operation) {
+            operation.perform();
             return this;
         }
     }

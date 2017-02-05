@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ua.devteam.entity.AbstractBuilder;
+import ua.devteam.entity.Operation;
 import ua.devteam.entity.enums.CheckStatus;
 
 import java.io.Serializable;
@@ -46,17 +47,20 @@ public class Check implements Serializable {
         }
 
         public Builder setProjectId(Long projectId){
-            instance.setProjectId(projectId);
-            return this;
+            return perform(() -> getConstruction().setProjectId(projectId));
         }
 
         public Builder setCustomerId(Long customerId){
-            instance.setCustomerId(customerId);
-            return this;
+            return perform(() -> getConstruction().setCustomerId(customerId));
         }
 
         public Builder setProjectName(String projectName){
-            instance.setProjectName(projectName);
+            return perform(() -> getConstruction().setProjectName(projectName));
+        }
+
+        @Override
+        protected Builder perform(Operation operation) {
+            operation.perform();
             return this;
         }
     }

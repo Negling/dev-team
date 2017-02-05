@@ -44,12 +44,16 @@ public class Operation extends AbstractTask implements Serializable {
         }
 
         public Builder setRequestsForDevelopers(List<RequestForDevelopers> requestsForDevelopers) {
-            instance.setRequestsForDevelopers(requestsForDevelopers);
-            return this;
+            return perform(() -> getConstruction().setRequestsForDevelopers(requestsForDevelopers));
         }
 
         public Builder setId(Long id) {
-            instance.setId(id);
+            return perform(() -> getConstruction().setId(id));
+        }
+
+        @Override
+        protected Builder perform(ua.devteam.entity.Operation operation) {
+            operation.perform();
             return this;
         }
     }

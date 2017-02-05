@@ -34,7 +34,7 @@ public class JDBCManagerDAO extends JDBCGenericIdentifiedDAO<Manager> implements
 
     @Override
     public void update(Manager oldEntity, Manager newEntity) {
-        jdbcOperations.update(sqlProperties.getString("manager.update"),
+        getJdbcOperations().update(getSqlProperties().getString("manager.update"),
                 newEntity.getId(),
                 newEntity.getFirstName(),
                 newEntity.getLastName(),
@@ -47,17 +47,17 @@ public class JDBCManagerDAO extends JDBCGenericIdentifiedDAO<Manager> implements
 
     @Override
     public void delete(Manager entity) {
-        jdbcOperations.update(sqlProperties.getString("manager.delete"), entity.getId());
+        getJdbcOperations().update(getSqlProperties().getString("manager.delete"), entity.getId());
     }
 
     @Override
     public Manager getById(Long id) {
-        return jdbcOperations.queryForObject(sqlProperties.getString("manager.selectById"), this::mapEntity, id);
+        return getJdbcOperations().queryForObject(getSqlProperties().getString("manager.selectById"), this::mapEntity, id);
     }
 
     @Override
     public Manager getByEmail(String email) {
-        return jdbcOperations.queryForObject(sqlProperties.getString("manager.selectByEmail"), this::mapEntity, email);
+        return getJdbcOperations().queryForObject(getSqlProperties().getString("manager.selectByEmail"), this::mapEntity, email);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class JDBCManagerDAO extends JDBCGenericIdentifiedDAO<Manager> implements
 
     @Override
     protected PreparedStatement insertionStatement(Connection connection, Manager entity) throws SQLException {
-        final PreparedStatement ps = connection.prepareStatement(sqlProperties.getString("manager.insertSQL"),
+        final PreparedStatement ps = connection.prepareStatement(getSqlProperties().getString("manager.insertSQL"),
                 Statement.RETURN_GENERATED_KEYS);
 
         ps.setString(1, entity.getFirstName());

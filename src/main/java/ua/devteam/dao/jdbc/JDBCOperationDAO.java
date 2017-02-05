@@ -31,7 +31,7 @@ public class JDBCOperationDAO extends JDBCGenericIdentifiedDAO<Operation> implem
 
     @Override
     public void update(Operation oldEntity, Operation newEntity) {
-        jdbcOperations.update(sqlProperties.getString("operations.update"),
+        getJdbcOperations().update(getSqlProperties().getString("operations.update"),
                 newEntity.getId(),
                 newEntity.getTechnicalTaskId(),
                 newEntity.getName(),
@@ -41,17 +41,17 @@ public class JDBCOperationDAO extends JDBCGenericIdentifiedDAO<Operation> implem
 
     @Override
     public void delete(Operation entity) {
-        jdbcOperations.update(sqlProperties.getString("operations.delete"), entity.getId());
+        getJdbcOperations().update(getSqlProperties().getString("operations.delete"), entity.getId());
     }
 
     @Override
     public Operation getById(Long id) {
-        return jdbcOperations.queryForObject(sqlProperties.getString("operations.selectById"), this::mapEntity, id);
+        return getJdbcOperations().queryForObject(getSqlProperties().getString("operations.selectById"), this::mapEntity, id);
     }
 
     @Override
     public List<Operation> getByTechnicalTask(Long technicalTaskId) {
-        return jdbcOperations.query(sqlProperties.getString("operations.selectByTechnicalTask"), this::mapEntity, technicalTaskId);
+        return getJdbcOperations().query(getSqlProperties().getString("operations.selectByTechnicalTask"), this::mapEntity, technicalTaskId);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class JDBCOperationDAO extends JDBCGenericIdentifiedDAO<Operation> implem
 
     @Override
     protected PreparedStatement insertionStatement(Connection connection, Operation entity) throws SQLException {
-        final PreparedStatement ps = connection.prepareStatement(sqlProperties.getString("operations.insertSQL"),
+        final PreparedStatement ps = connection.prepareStatement(getSqlProperties().getString("operations.insertSQL"),
                 Statement.RETURN_GENERATED_KEYS);
 
         ps.setLong(1, entity.getTechnicalTaskId());

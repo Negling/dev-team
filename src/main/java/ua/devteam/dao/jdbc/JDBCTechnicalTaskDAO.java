@@ -36,7 +36,7 @@ public class JDBCTechnicalTaskDAO extends JDBCGenericIdentifiedDAO<TechnicalTask
 
     @Override
     public void update(TechnicalTask oldEntity, TechnicalTask newEntity) {
-        jdbcOperations.update(sqlProperties.getString("technicalTask.update"),
+        getJdbcOperations().update(getSqlProperties().getString("technicalTask.update"),
                 newEntity.getId(),
                 newEntity.getCustomerId(),
                 newEntity.getName(),
@@ -48,27 +48,28 @@ public class JDBCTechnicalTaskDAO extends JDBCGenericIdentifiedDAO<TechnicalTask
 
     @Override
     public void delete(TechnicalTask entity) {
-        jdbcOperations.update(sqlProperties.getString("technicalTask.delete"), entity.getId());
+        getJdbcOperations().update(getSqlProperties().getString("technicalTask.delete"), entity.getId());
     }
 
     @Override
     public TechnicalTask getById(Long id) {
-        return jdbcOperations.queryForObject(sqlProperties.getString("technicalTask.selectById"), this::mapEntity, id);
+        return getJdbcOperations().queryForObject(getSqlProperties().getString("technicalTask.selectById"), this::mapEntity, id);
     }
 
     @Override
     public List<TechnicalTask> getAll() {
-        return jdbcOperations.query(sqlProperties.getString("technicalTask.selectAll"), this::mapEntity);
+        return getJdbcOperations().query(getSqlProperties().getString("technicalTask.selectAll"), this::mapEntity);
     }
 
     @Override
     public List<TechnicalTask> getAllByCustomer(Long customerId) {
-        return jdbcOperations.query(sqlProperties.getString("technicalTask.selectByCustomerId"), this::mapEntity, customerId);
+        return getJdbcOperations().query(getSqlProperties().getString("technicalTask.selectByCustomerId"), this::mapEntity,
+                customerId);
     }
 
     @Override
     public List<TechnicalTask> getAllNew() {
-        return jdbcOperations.query(sqlProperties.getString("technicalTask.selectAllNew"), this::mapEntity);
+        return getJdbcOperations().query(getSqlProperties().getString("technicalTask.selectAllNew"), this::mapEntity);
     }
 
     @Override
@@ -85,7 +86,7 @@ public class JDBCTechnicalTaskDAO extends JDBCGenericIdentifiedDAO<TechnicalTask
 
     @Override
     protected PreparedStatement insertionStatement(Connection connection, TechnicalTask entity) throws SQLException {
-        final PreparedStatement ps = connection.prepareStatement(sqlProperties.getString("technicalTask.insertSQL"),
+        final PreparedStatement ps = connection.prepareStatement(getSqlProperties().getString("technicalTask.insertSQL"),
                 Statement.RETURN_GENERATED_KEYS);
 
 
