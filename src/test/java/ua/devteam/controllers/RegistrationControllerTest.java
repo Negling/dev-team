@@ -21,8 +21,10 @@ import static ua.devteam.controllers.WebTestUtils.*;
 @RunWith(JUnit4.class)
 public class RegistrationControllerTest {
 
+    private ResourceBundle names = getViewNamingsBundle();
+    private ResourceBundle mappings = getMappingBundle();
     private CustomersService customersService = mock(CustomersService.class);
-    private RegistrationController controller = new RegistrationController(customersService, getPagesBundle());
+    private RegistrationController controller = new RegistrationController(customersService, getViewNamingsBundle());
     private MockMvc mockMvc;
 
     // setup
@@ -41,10 +43,10 @@ public class RegistrationControllerTest {
 
     @Test
     public void getRegistrationPageTest() throws Exception {
-        mockMvc.perform(get("/registration"))
+        mockMvc.perform(get(mappings.getString("registration.page")))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("customerRegistrationForm"))
-                .andExpect(view().name("registration"));
+                .andExpect(view().name(names.getString("registration.page")));
     }
 
     @Test
@@ -52,10 +54,10 @@ public class RegistrationControllerTest {
         // invalid form
         CustomerRegistrationForm form = new CustomerRegistrationForm();
 
-        mockMvc.perform(post("/registration").sessionAttr("customerRegistrationForm", form))
+        mockMvc.perform(post(mappings.getString("registration.page")).sessionAttr("customerRegistrationForm", form))
                 .andExpect(status().isFound())
-                .andExpect(flash().attributeExists("org.springframework.validation.BindingResult.customerRegistrationForm"))
-                .andExpect(redirectedUrl("/registration"));
+                .andExpect(flash().attributeExists(names.getString("model.customerRegistrationErrors")))
+                .andExpect(redirectedUrl(mappings.getString("registration.page")));
     }
 
     @Test
@@ -64,7 +66,7 @@ public class RegistrationControllerTest {
         CustomerRegistrationForm form = new CustomerRegistrationForm("Joe", "Sea", "teat@mail.com", "teat@mail.com",
                 "+380965433192", "+380965433192", "password", "password");
 
-        mockMvc.perform(post("/registration").sessionAttr("customerRegistrationForm", form))
+        mockMvc.perform(post(mappings.getString("registration.page")).sessionAttr("customerRegistrationForm", form))
                 .andExpect(status().isFound())
                 .andExpect(redirectedUrl("/login?registered"));
 

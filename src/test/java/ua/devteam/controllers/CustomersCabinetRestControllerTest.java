@@ -26,6 +26,7 @@ import static ua.devteam.controllers.WebTestUtils.*;
 
 @RunWith(JUnit4.class)
 public class CustomersCabinetRestControllerTest {
+    private ResourceBundle mappings = getMappingBundle();
     private ChecksService checksService = mock(ChecksService.class);
     private TechnicalTasksService technicalTasksService = mock(TechnicalTasksService.class);
     private CustomersCabinetRestController controller =
@@ -50,7 +51,7 @@ public class CustomersCabinetRestControllerTest {
 
     @Test
     public void confirmCheckTest() throws Exception {
-        mockMvc.perform(patch("/cabinet/check/accept/{projectId}", 1L)
+        mockMvc.perform(patch(mappings.getString("customer.action.acceptCheck").concat("{projectId}"), 1L)
                 .contentType("application/json"))
                 .andExpect(status().isOk());
 
@@ -59,7 +60,7 @@ public class CustomersCabinetRestControllerTest {
 
     @Test
     public void declineCheckTest() throws Exception {
-        mockMvc.perform(patch("/cabinet/check/decline/{projectId}", 1L)
+        mockMvc.perform(patch(mappings.getString("customer.action.declineCheck").concat("{projectId}"), 1L)
                 .contentType("application/json"))
                 .andExpect(status().isOk());
 
@@ -70,7 +71,7 @@ public class CustomersCabinetRestControllerTest {
     public void registerInvalidTechnicalTaskTest() throws Exception {
         TechnicalTask requestBody = new TechnicalTask();
 
-        mockMvc.perform(post("/cabinet/technicalTask")
+        mockMvc.perform(post(mappings.getString("customer.action.technicalTask"))
                 .locale(Locale.ENGLISH)
                 .contentType("application/json")
                 .content(getObjectAsJson(requestBody)))
@@ -82,7 +83,7 @@ public class CustomersCabinetRestControllerTest {
     public void registerTechnicalTaskSuccessTest() throws Exception {
         TechnicalTask requestBody = getValidTechnicalTask(1L);
 
-        mockMvc.perform(post("/cabinet/technicalTask")
+        mockMvc.perform(post(mappings.getString("customer.action.technicalTask"))
                 .locale(Locale.ENGLISH)
                 .contentType("application/json")
                 .content(getObjectAsJson(requestBody)))

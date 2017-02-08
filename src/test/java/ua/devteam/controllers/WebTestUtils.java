@@ -53,15 +53,29 @@ abstract class WebTestUtils {
         return messageSource;
     }
 
-
-    static ResourceBundle getPagesBundle() {
+    /**
+     * Returns bundle with controller view names and model names.
+     *
+     * @return {@link ResourceBundle} instance
+     */
+    static ResourceBundle getViewNamingsBundle() {
         return ResourceBundle.getBundle("properties/view_naming");
     }
 
+    /**
+     * Returns bundle with controller view request mappings.
+     *
+     * @return {@link ResourceBundle} instance
+     */
     static ResourceBundle getMappingBundle() {
         return ResourceBundle.getBundle("properties/mapping");
     }
 
+    /**
+     * Returns standalone mockmvc builder configured with placeholders on request mappings.
+     *
+     * @return {@link StandaloneMockMvcBuilder} configured instance
+     */
     static StandaloneMockMvcBuilder getConfiguredWithPlaceholdersStandaloneMockMvcBuilder(Object... controllers) {
         StandaloneMockMvcBuilder builder = MockMvcBuilders.standaloneSetup(controllers);
         ResourceBundle mappings = getMappingBundle();
@@ -97,6 +111,11 @@ abstract class WebTestUtils {
         return jsonMapper.writeValueAsString(object);
     }
 
+    /**
+     * Binds User to controller argument params, when User annotated with {@link AuthenticationPrincipal annotation}.
+     * @param user user to bind
+     * @return {@link HandlerMethodArgumentResolver implementation}
+     */
     static HandlerMethodArgumentResolver getUserArgumentResolverWith(User user) {
         return new UserArgumentResolver(user);
     }

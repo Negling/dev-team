@@ -18,6 +18,7 @@ import ua.devteam.service.TaskDevelopmentDataService;
 import ua.devteam.service.TechnicalTasksService;
 
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -37,13 +38,15 @@ public class StaticContentControllerTest {
     private ProjectsService projectsService = mock(ProjectsService.class);
     private TaskDevelopmentDataService taskDevelopmentDataService = mock(TaskDevelopmentDataService.class);
     private DevelopersService developersService = mock(DevelopersService.class);
+    private ResourceBundle names = getViewNamingsBundle();
+    private ResourceBundle mappings = getMappingBundle();
 
     // principal for tests
     private User customer = getUserWithIdAndRole(testId, CUSTOMER);
 
     // controller to test
     private StaticContentController controller = new StaticContentController(technicalTasksService, projectsService,
-            developersService, taskDevelopmentDataService, getPagesBundle());
+            developersService, taskDevelopmentDataService, getViewNamingsBundle());
 
     // controller mock object
     private MockMvc mockMvc = getConfiguredWithPlaceholdersStandaloneMockMvcBuilder(controller)
@@ -68,10 +71,10 @@ public class StaticContentControllerTest {
 
     @Test
     public void getTechnicalTaskTest() throws Exception {
-        mockMvc.perform(get("/technicalTask").param("id", String.valueOf(testId)))
+        mockMvc.perform(get(mappings.getString("technicalTask.page")).param("id", String.valueOf(testId)))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("technicalTask"))
-                .andExpect(view().name("technicalTask"));
+                .andExpect(model().attributeExists(names.getString("model.technicalTask")))
+                .andExpect(view().name(names.getString("technicalTask.page")));
     }
 
     @Test(expected = EmptyResultDataAccessException.class)
@@ -79,7 +82,7 @@ public class StaticContentControllerTest {
         when(technicalTasksService.getById(testId, true)).thenThrow(new EmptyResultDataAccessException(1));
 
         try {
-            mockMvc.perform(get("/technicalTask").param("id", String.valueOf(testId)));
+            mockMvc.perform(get(mappings.getString("technicalTask.page")).param("id", String.valueOf(testId)));
         } catch (NestedServletException nse) {
             throw nse.getCause();
         }
@@ -87,10 +90,10 @@ public class StaticContentControllerTest {
 
     @Test
     public void getProjectTest() throws Exception {
-        mockMvc.perform(get("/project").param("id", String.valueOf(testId)))
+        mockMvc.perform(get(mappings.getString("project.page")).param("id", String.valueOf(testId)))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("project"))
-                .andExpect(view().name("project"));
+                .andExpect(model().attributeExists(names.getString("model.project")))
+                .andExpect(view().name(names.getString("project.page")));
     }
 
     @Test(expected = EmptyResultDataAccessException.class)
@@ -98,7 +101,7 @@ public class StaticContentControllerTest {
         when(projectsService.getById(testId, true)).thenThrow(new EmptyResultDataAccessException(1));
 
         try {
-            mockMvc.perform(get("/project").param("id", String.valueOf(testId)));
+            mockMvc.perform(get(mappings.getString("project.page")).param("id", String.valueOf(testId)));
         } catch (NestedServletException nse) {
             throw nse.getCause();
         }
@@ -106,10 +109,13 @@ public class StaticContentControllerTest {
 
     @Test
     public void getDeveloperTest() throws Exception {
-        mockMvc.perform(get("/developer").param("id", String.valueOf(testId)))
+        mockMvc.perform(get(mappings.getString("developer_.page")).param("id", String.valueOf(testId)))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("developer", "developersBackground", "currentTask"))
-                .andExpect(view().name("developer"));
+                .andExpect(model().attributeExists(
+                        names.getString("model.developer"),
+                        names.getString("model.developersBackground"),
+                        names.getString("model.currentTask")))
+                .andExpect(view().name(names.getString("developer_.page")));
     }
 
     @Test(expected = EmptyResultDataAccessException.class)
@@ -117,7 +123,7 @@ public class StaticContentControllerTest {
         when(developersService.getById(testId)).thenThrow(new EmptyResultDataAccessException(1));
 
         try {
-            mockMvc.perform(get("/developer").param("id", String.valueOf(testId)));
+            mockMvc.perform(get(mappings.getString("developer_.page")).param("id", String.valueOf(testId)));
         } catch (NestedServletException nse) {
             throw nse.getCause();
         }
@@ -125,39 +131,39 @@ public class StaticContentControllerTest {
 
     @Test
     public void getMainTest() throws Exception {
-        mockMvc.perform(get("/"))
+        mockMvc.perform(get(mappings.getString("main.page")))
                 .andExpect(status().isOk())
-                .andExpect(view().name("main"));
+                .andExpect(view().name(names.getString("main.page")));
     }
 
     @Test
     public void getLoginTest() throws Exception {
-        mockMvc.perform(get("/login"))
+        mockMvc.perform(get(mappings.getString("login.page")))
                 .andExpect(status().isOk())
-                .andExpect(view().name("login"));
+                .andExpect(view().name(names.getString("login.page")));
     }
 
     @Test
     public void getLoginRegisteredTest() throws Exception {
-        mockMvc.perform(get("/login").param("registered", ""))
+        mockMvc.perform(get(mappings.getString("login.page")).param("registered", ""))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("registered"))
-                .andExpect(view().name("login"));
+                .andExpect(view().name(names.getString("login.page")));
     }
 
     @Test
     public void getLoginErrorTest() throws Exception {
-        mockMvc.perform(get("/login").param("error", ""))
+        mockMvc.perform(get(mappings.getString("login.page")).param("error", ""))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("error"))
-                .andExpect(view().name("login"));
+                .andExpect(view().name(names.getString("login.page")));
     }
 
     @Test
     public void getLoginLogoutTest() throws Exception {
-        mockMvc.perform(get("/login").param("logout", ""))
+        mockMvc.perform(get(mappings.getString("login.page")).param("logout", ""))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("logout"))
-                .andExpect(view().name("login"));
+                .andExpect(view().name(names.getString("login.page")));
     }
 }

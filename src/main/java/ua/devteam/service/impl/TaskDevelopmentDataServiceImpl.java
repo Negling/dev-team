@@ -30,6 +30,9 @@ public class TaskDevelopmentDataServiceImpl implements TaskDevelopmentDataServic
 
     /**
      * Creates instance of taskDevelopmentData and delegates to developers service subsequent operations.
+     * Cuz of reason, that all available developers can be accessed by multiple managers at the same time, we can face situation,
+     * when two or more managers will try to lock single developer on multiple tasks. To prevent this, transaction level
+     * must be "SERIALIZABLE", this level simply locks tables and prohibits parallel transactions to affected data.
      *
      * @return TaskDevelopmentData instance
      */

@@ -15,6 +15,7 @@ import ua.devteam.validation.entityValidators.ProjectValidator;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -33,6 +34,8 @@ public class ManagersCabinetRestControllerTest {
     private ChecksService checksService = mock(ChecksService.class);
     private DevelopersService developersService = mock(DevelopersService.class);
     private TaskDevelopmentDataService taskDevelopmentDataService = mock(TaskDevelopmentDataService.class);
+    private ResourceBundle mappings = getMappingBundle();
+
 
     // necessary data
     private Validator projectValidator = new ProjectValidator(new ProjectTaskValidator());
@@ -57,7 +60,7 @@ public class ManagersCabinetRestControllerTest {
 
     @Test
     public void getDevelopersTest() throws Exception {
-        mockMvc.perform(get("/manage/developers")
+        mockMvc.perform(get(mappings.getString("manager.action.developer"))
                 .param("specialization", BACKEND.toString())
                 .param("rank", JUNIOR.toString())
                 .param("lastName", "Kiral"))
@@ -69,7 +72,7 @@ public class ManagersCabinetRestControllerTest {
 
     @Test
     public void bindDeveloperTest() throws Exception {
-        mockMvc.perform(post("/manage/taskDevelopmentData/{developerId}", 1L)
+        mockMvc.perform(post(mappings.getString("manager.action.taskDevelopmentData").concat("{developerId}"), 1L)
                 .contentType("application/json")
                 .content(getObjectAsJson(1L)))
                 // checks
@@ -80,7 +83,7 @@ public class ManagersCabinetRestControllerTest {
 
     @Test
     public void unbindDeveloperTest() throws Exception {
-        mockMvc.perform(delete("/manage/taskDevelopmentData/{developerId}", 1L))
+        mockMvc.perform(delete(mappings.getString("manager.action.taskDevelopmentData").concat("{developerId}"), 1L))
                 // checks
                 .andExpect(status().isOk());
 
@@ -89,7 +92,7 @@ public class ManagersCabinetRestControllerTest {
 
     @Test
     public void declineTechnicalTaskTest() throws Exception {
-        mockMvc.perform(patch("/manage/technicalTask/{technicalTaskId}", 1L)
+        mockMvc.perform(patch(mappings.getString("manager.action.technicalTask").concat("{technicalTaskId}"), 1L)
                 .contentType("text/plain")
                 .content("test"))
                 // checks
@@ -100,7 +103,7 @@ public class ManagersCabinetRestControllerTest {
 
     @Test
     public void formTechnicalTaskAsProjectTest() throws Exception {
-        mockMvc.perform(post("/manage/project/{technicalTaskId}", 1L)
+        mockMvc.perform(post(mappings.getString("manager.action.project").concat("{technicalTaskId}"), 1L)
                 .contentType("application/json"))
                 // checks
                 .andExpect(status().isOk());
@@ -110,7 +113,7 @@ public class ManagersCabinetRestControllerTest {
 
     @Test
     public void declineProjectTest() throws Exception {
-        mockMvc.perform(patch("/manage/project/{projectId}", 1L)
+        mockMvc.perform(patch(mappings.getString("manager.action.project").concat("{projectId}"), 1L)
                 .contentType("text/plain")
                 .content("test"))
                 // checks
@@ -121,7 +124,7 @@ public class ManagersCabinetRestControllerTest {
 
     @Test
     public void formProjectWithInvalidCheckTest() throws Exception {
-        mockMvc.perform(post("/manage/check")
+        mockMvc.perform(post(mappings.getString("manager.action.check"))
                 .locale(Locale.ENGLISH)
                 .contentType("application/json")
                 .content(getObjectAsJson(getInvalidCheck())))
@@ -133,7 +136,7 @@ public class ManagersCabinetRestControllerTest {
     public void formProjectWithInvalidProjectStateTest() throws Exception {
         when(projectsService.getById(anyLong(), eq(true))).thenReturn(new Project());
 
-        mockMvc.perform(post("/manage/check")
+        mockMvc.perform(post(mappings.getString("manager.action.check"))
                 .locale(Locale.ENGLISH)
                 .contentType("application/json")
                 .content(getObjectAsJson(getValidCheck())))
@@ -147,7 +150,7 @@ public class ManagersCabinetRestControllerTest {
     public void formProjectSuccessTest() throws Exception {
         when(projectsService.getById(anyLong(), eq(true))).thenReturn(getValidProject());
 
-        mockMvc.perform(post("/manage/check")
+        mockMvc.perform(post(mappings.getString("manager.action.check"))
                 .locale(Locale.ENGLISH)
                 .contentType("application/json")
                 .content(getObjectAsJson(getValidCheck())))
