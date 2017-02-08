@@ -33,6 +33,9 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
 
     /**
      * Updates status of technical task to "PENDING" and creates instance of project based on this Technical Task.
+     * Cuz of reason, that all new technical tasks are in common pool, we can face situation, when two or more managers
+     * will accept single technical task. To prevent this, transaction level must be "SERIALIZABLE", this level simply
+     * locks tables and prohibits parallel transactions to affected data.
      */
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
@@ -51,6 +54,9 @@ public class TechnicalTasksServiceImpl implements TechnicalTasksService {
 
     /**
      * Updates status of technical task to "DECLINED".
+     * Cuz of reason, that all new technical tasks are in common pool, we can face situation, when two or more managers
+     * will decline single technical task. To prevent this, transaction level must be "SERIALIZABLE", this level simply
+     * locks tables and prohibits parallel transactions to affected data.
      */
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)

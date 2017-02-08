@@ -8,6 +8,8 @@ import ua.devteam.entity.enums.Role;
 import ua.devteam.service.ProjectsService;
 import ua.devteam.service.TechnicalTasksService;
 
+import java.util.ResourceBundle;
+
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -19,9 +21,11 @@ public class ManagersCabinetControllerTest {
     // service mocks
     private TechnicalTasksService technicalTasksService = mock(TechnicalTasksService.class);
     private ProjectsService projectsService = mock(ProjectsService.class);
+    private ResourceBundle names = getViewNamingsBundle();
+    private ResourceBundle mappings = getMappingBundle();
 
     // controller to test
-    private ManagersCabinetController controller = new ManagersCabinetController(technicalTasksService, projectsService, getPagesBundle());
+    private ManagersCabinetController controller = new ManagersCabinetController(technicalTasksService, projectsService, getViewNamingsBundle());
 
     // controller mock object
     private MockMvc mockMvc = getConfiguredWithPlaceholdersStandaloneMockMvcBuilder(controller)
@@ -30,41 +34,41 @@ public class ManagersCabinetControllerTest {
 
     @Test
     public void getCabinetTest() throws Exception {
-        mockMvc.perform(get("/manage"))
+        mockMvc.perform(get(mappings.getString("manager.page")))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("ranks", "specializations"))
-                .andExpect(view().name("management"));
+                .andExpect(model().attributeExists(names.getString("model.ranks"), names.getString("model.specializations")))
+                .andExpect(view().name(names.getString("manager.page")));
     }
 
     @Test
     public void getManageTechnicalTasksFragmentTest() throws Exception {
-        mockMvc.perform(get("/manage/fragments/manage_technical_tasks"))
+        mockMvc.perform(get(mappings.getString("manager.technicalTasks")))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("technicalTasks"))
-                .andExpect(view().name("/fragments/management/manage_technical_tasks"));
+                .andExpect(model().attributeExists(names.getString("model.technicalTasks")))
+                .andExpect(view().name(names.getString("manager.technicalTasks")));
     }
 
     @Test
     public void getFormProjectFragmentTest() throws Exception {
-        mockMvc.perform(get("/manage/fragments/manage_form_project"))
+        mockMvc.perform(get(mappings.getString("manager.formProjects")))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("pendingProjects"))
-                .andExpect(view().name("/fragments/management/manage_form_project"));
+                .andExpect(model().attributeExists(names.getString("model.pendingProjects")))
+                .andExpect(view().name(names.getString("manager.formProjects")));
     }
 
     @Test
     public void getRunningProjectsFragmentTest() throws Exception {
-        mockMvc.perform(get("/manage/fragments/manage_running_projects"))
+        mockMvc.perform(get(mappings.getString("manager.runningProjects")))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("runningProjects"))
-                .andExpect(view().name("/fragments/management/manage_running_projects"));
+                .andExpect(model().attributeExists(names.getString("model.runningProjects")))
+                .andExpect(view().name(names.getString("manager.runningProjects")));
     }
 
     @Test
     public void getCompleteProjectsFragmentTest() throws Exception {
-        mockMvc.perform(get("/manage/fragments/manage_complete_projects"))
+        mockMvc.perform(get(mappings.getString("manager.completeProjects")))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("completeProjects"))
-                .andExpect(view().name("/fragments/management/manage_complete_projects"));
+                .andExpect(model().attributeExists(names.getString("model.completeProjects")))
+                .andExpect(view().name(names.getString("manager.completeProjects")));
     }
 }

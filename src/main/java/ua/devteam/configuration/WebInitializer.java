@@ -51,7 +51,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
 
-        String activeProfiles = "dev";
+        String activeProfiles = "prod";
         servletContext.setInitParameter("spring.profiles.active", activeProfiles);
 
         logger.info("Spring web application active profile is set to \"" + activeProfiles + "\".");

@@ -1,30 +1,27 @@
 # Dev-Team
-<b>DESCRIPTION:</b>
 
-Построить веб-систему, поддерживающую заданную функциональность:
-
-1.	На основе сущностей предметной области создать классы их описывающие.
-2.	Классы и методы должны иметь отражающую их функциональность названия и должны быть грамотно структурированы по пакетам. 
-3.	Оформление кода должно соответствовать Java Code Convention.
-4.	Информацию о предметной области хранить в БД, для доступа использовать API JDBC с использованием пула соединений, стандартного или разработанного самостоятельно. В качестве СУБД рекомендуется MySQL или Derby.
-5.	Приложение должно поддерживать работу с кириллицей (быть многоязычной), в том числе и при хранении информации в БД.
-6.	Архитектура приложения должна соответствовать шаблону Model-View-Controller.
-7.	При реализации алгоритмов бизнес-логики использовать шаблоны GoF: Factory Method, Command, Builder, Strategy, State, Observer etc.
-8.	Используя сервлеты и JSP, реализовать функциональности, предложенные в постановке конкретной задачи.
-9.	В страницах JSP применять библиотеку JSTL и разработать собственные теги.
-10.	При разработке бизнес логики использовать сессии и фильтры.
-11.	Выполнить журналирование событий, то есть информацию о возникающих исключениях и событиях в системе обрабатывать с помощью Log4j.
-12.	Код должен содержать комментарии.
-
-<b>TARGET:</b>
-
+In system were implemented and maintained next functionality:
 <ul>
-<li>Система <b>Команда разработчиков</b>.</li>
-<li><b>Заказчик</b> представляет <b>Техническое Задание (ТЗ)</b>, в котором перечислен перечень <b>Работ</b> с указанием квалификации и количества требуемых специалистов.</li>
-<li><b>Менеджер</b> рассматривает <b>ТЗ</b> и оформляет <b>Проект</b>, назначая на него незанятых <b>Разработчиков</b> требуемой квалификации,
-после чего рассчитывается стоимость <b>Проекта</b> и <b>Заказчику</b> выставляется <b>Счет</b>.</li>
-<li><b>Разработчик</b> имеет возможность отметить количество часов, затраченных на работу над проектом.</li>
+<li><b>Customer</b> presents <b>Technical Task(TT)</b>, which contain list of <b>Tasks</b> with designation of developers quantity and qualification.</li>
+<li><b>Manager</b> considers <b>TT</b> and forms <b>Project</b>, by appointing available <b>Developers</b> with requested qualification, whereupon <b>Project</b> cost is calculating, and <b>Customer</b> receives <b>Check</b>.</li>
+<li><b>Developer</b> has opportunity to note amount of hours, spent on project.</li>
 </ul>
+
+<b>Front-End</b><br />
+For creating GUI, and client-server interactions, next frameworks and technologies were used:<br />
+HTML5, CSS, Bootstrap, JavaScript, jQuery, AJAX(JSON), JSP, Spring TagLib, JSTL.
+
+<b>Back-End</b><br />
+Project architecture built with next frameworks and tools:<br />
+Spring(MVC, Security, JDBC, AOP), Jackson, JSR-303 API, Log4j, Lombok, Tomcat JDBC Connection Pool, Maven.
+
+As RDBMS used MySQL, also for development profile and integration tests were used embedded H2 DB.
+Current profile can be found/replaced in 'configuration/WebInitializer'.
+Totally system configured to support 3 different active profiles: 'prod' - production profile, 'dev' - development profile, 'test' - profile for tests.
+Deployment scripts for MySQL can be found in 'sql' directory, and database connection options in 'resources/properties/application.properties' file.
+
+<b>Tests environment</b> <br />
+JUnit, Mockito.
 
 
 
